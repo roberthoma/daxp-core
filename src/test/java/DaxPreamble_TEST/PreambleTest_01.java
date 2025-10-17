@@ -20,11 +20,12 @@ public class PreambleTest_01 {
 
         DaxPreambleCodec codec = new DaxPreambleCodec();
 
+        String wireStr = codec.encode(pre);
+        wireStr = wireStr.replace((char)0x0001,'|');
+
+        assertEquals("DAXP=1|TF=DEC|EN=UTF8|\n", wireStr);
+
         String wire = codec.encode(pre);
-        wire = wire.replace((char)0x0001,'|');
-
-        assertEquals("DAXP=1|TF=DEC|EN=UTF8|\n", wire);
-
         DaxPreamble copy = codec.decode(wire);
         assertEquals(pre.getProtocolVersion(), copy.getProtocolVersion());
         assertEquals(pre.getTagFormat(), copy.getTagFormat());

@@ -17,10 +17,27 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.codec;
-import org.daxprotocol.core.model.DaxMessage;
+package org.daxprotocol.core.model.head;
 
-public interface DaxCodec {
-    String encode(DaxMessage message);
-    DaxMessage decode(String wire);
+public enum DaxHeadTag {
+    MSG_TYPE(9),
+    TOKEN(15),
+    BLOCK_COUNT(6);
+
+    private final int tag;
+
+    DaxHeadTag(int tag) {
+        this.tag = tag;
+    }
+
+    public int tag() {
+        return tag;
+    }
+
+    public static DaxHeadTag fromTag(int tag) {
+        for (DaxHeadTag t : values()) {
+            if (t.tag == tag) return t;
+        }
+        return null;
+    }
 }

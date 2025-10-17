@@ -1,10 +1,3 @@
-package org.daxprotocol.core.model.preamble;
-
-import org.daxprotocol.core.types.DaxEncoding;
-import org.daxprotocol.core.types.DaxTagFormat;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
  * Copyright 2025 Robert Homa
@@ -25,6 +18,14 @@ import java.util.Map;
  * ***********************************************************************
  */
 
+
+package org.daxprotocol.core.model.preamble;
+
+import org.daxprotocol.core.types.DaxEncoding;
+import org.daxprotocol.core.types.DaxTagFormat;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Represents the preamble of a DAXP message — defines

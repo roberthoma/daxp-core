@@ -1,5 +1,3 @@
-package org.daxprotocol.core.model.preamble;
-
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
  * Copyright 2025 Robert Homa
@@ -19,6 +17,7 @@ package org.daxprotocol.core.model.preamble;
  * limitations under the License.
  * ***********************************************************************
  */
+package org.daxprotocol.core.model.preamble;
 
 
 import java.util.LinkedHashMap;
@@ -54,9 +53,9 @@ public class DaxPreambleCodec {
         }
 
         Map<String, String> map = new LinkedHashMap<>();
-        for (String pair : line.split("\\|")) {
+        for (String pair : line.split(String.valueOf(PAIR_SEPARATOR))) {
             if (pair.isEmpty()) continue;
-            int idx = pair.indexOf('=');
+            int idx = pair.indexOf(EQUAL);
             if (idx < 0) continue;
             String tag = pair.substring(0, idx);
             String val = pair.substring(idx + 1);

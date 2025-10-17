@@ -1,4 +1,3 @@
-package org.daxprotocol.core.model.preamble;
 
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
@@ -19,6 +18,7 @@ package org.daxprotocol.core.model.preamble;
  * limitations under the License.
  * ***********************************************************************
  */
+package org.daxprotocol.core.model.preamble;
 
 import org.daxprotocol.core.types.DaxEncoding;
 import org.daxprotocol.core.types.DaxTagFormat;
