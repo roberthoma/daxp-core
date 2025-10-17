@@ -1,7 +1,8 @@
 package org.daxprotocol.core.types;
 
 public enum DaxEncoding {
-    DEC("DEC"), HEX("HEX");
+    ASCII("ASCII"), UTF8("UTF8"), UTF16("UTF16");
+
 
 
     private final String value;

@@ -1,8 +1,7 @@
 package org.daxprotocol.core.types;
 
 public enum DaxTagFormat {
-    ASCII("ASCII"), UTF8("UTF8"), UTF16("UTF16");
-
+    DEC("DEC"), HEX("HEX");
     private final String value;
 
     DaxTagFormat(String value) {
