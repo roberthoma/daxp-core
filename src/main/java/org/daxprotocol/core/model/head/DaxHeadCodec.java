@@ -20,27 +20,26 @@
 package org.daxprotocol.core.model.head;
 
 import org.daxprotocol.core.codec.DaxCodec;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
-
+import org.daxprotocol.core.codec.DaxPairCodec;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static org.daxprotocol.core.codec.DaxCodecSymbols.EQUAL;
-import static org.daxprotocol.core.codec.DaxCodecSymbols.PAIR_SEPARATOR;
 import static org.daxprotocol.core.codec.DaxTag.*;
 
 public class DaxHeadCodec implements DaxCodec<DaxHead> {
 
-    @Override public String encode(DaxHead message) {
-        Map<Integer, String> map = new LinkedHashMap<>();
-
+    public String encode(DaxHead message,int blockCount) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(MSG_TYPE).append(EQUAL)
-                .append(message.getMsgType())
-                .append(PAIR_SEPARATOR);
+        DaxPairCodec.encode(sb,MSG_TYPE,message.getMsgType());
+        DaxPairCodec.encode(sb,MSG_BLOCK_COUNT,String.valueOf(blockCount));
 
+        return sb.toString();
+    }
 
+    @Override public String encode(DaxHead message) {
+
+        StringBuilder sb = new StringBuilder();
+        DaxPairCodec.encode(sb,MSG_TYPE,message.getMsgType());
         return sb.toString();
     }
 

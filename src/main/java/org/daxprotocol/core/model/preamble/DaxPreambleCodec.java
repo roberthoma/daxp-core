@@ -21,6 +21,7 @@ package org.daxprotocol.core.model.preamble;
 
 
 import org.daxprotocol.core.codec.DaxCodec;
+import org.daxprotocol.core.codec.DaxPairCodec;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,10 +43,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         }
 
         StringBuilder sb = new StringBuilder();
-        map.forEach((k, v) -> sb.append(k)
-                                             .append(EQUAL)
-                                             .append(v)
-                                             .append(PAIR_SEPARATOR));
+        map.forEach((k, v) -> DaxPairCodec.encode(sb,k,v));
         sb.append(PREAMBLE_SEPARATOR);
         return sb.toString();
     }

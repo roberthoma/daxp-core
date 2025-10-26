@@ -18,7 +18,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         StringBuilder sb = new StringBuilder();
 
         sb.append(preambleCodec.encode(message.getPreamble()))
-          .append(headCodec.encode(message.getHead()))
+          .append(headCodec.encode(message.getHead(), message.getBody().getBlockCount()))
           .append(bodyCodec.encode(message.getBody()))
           .append(trailerCodec.encode(message.getTrailer()));
 

@@ -9,16 +9,21 @@ import java.util.Map;
 public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
 
-    protected void encodeBodyBlock(StringBuilder sb,int blockIdx ,Map<Integer, String> blockMap){
-        DaxPairCodec.encode(sb, DaxTag.BLOCK_INDEX, String.valueOf(blockIdx));
+    protected void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
+                                      int blockIdx ,Map<Integer, String> blockMap)
+    {
+        if (isBlogIdx) {
+            DaxPairCodec.encode(sb, DaxTag.BLOCK_INDEX, String.valueOf(blockIdx+1));
+        }
+
         blockMap.forEach((fid, s) -> DaxPairCodec.encode(sb, fid, s));
     }
 
     @Override public String encode(DaxBody body) {
-        boolean isBlogPair = body.getBlocks()>1;
+        boolean isBlogPair = body.getBlockCount() > 1;
 
         StringBuilder sb = new StringBuilder();
-        body.blocksMap.forEach((idx, map) -> encodeBodyBlock(sb,idx, map));
+        body.blocksMap.forEach((idx, map) -> encodeBodyBlock(sb,isBlogPair,idx, map));
         return sb.toString();
     }
 
