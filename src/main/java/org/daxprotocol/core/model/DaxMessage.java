@@ -30,10 +30,36 @@ public final class DaxMessage {
     private final DaxBody body;
     private final DaxTrailer trailer;
 
-    public DaxMessage(DaxPreamble preamble, DaxHead head, DaxBody body, DaxTrailer trailer) {
-        this.preamble = preamble;
-        this.head = head;
-        this.body = body;
-        this.trailer = trailer;
+    public DaxPreamble getPreamble() {
+        return preamble;
+    }
+
+    public DaxHead getHead() {
+        return head;
+    }
+
+    public DaxBody getBody() {
+        return body;
+    }
+
+    public DaxTrailer getTrailer() {
+        return trailer;
+    }
+
+    public DaxMessage(String msgType) {
+        this.preamble = new DaxPreamble();
+        this.head = new DaxHead(msgType);
+        this.body = new DaxBody();
+        this.trailer = new DaxTrailer();
+    }
+//    public DaxMessage(DaxPreamble preamble, DaxHead head, DaxBody body, DaxTrailer trailer) {
+//        this.preamble = preamble;
+//        this.head = head;
+//        this.body = body;
+//        this.trailer = trailer;
+//    }
+
+    public String getType() {
+        return head.getMsgType();
     }
 }

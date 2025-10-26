@@ -17,27 +17,49 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.model.head;
+package org.daxprotocol.core.types;
 
-public enum DaxHeadTag {
-    MSG_TYPE(9),
-    TOKEN(15),
-    BLOCK_COUNT(6);
+public class DaxString extends DaxValue<String> {
+    int minLong = 0;
+    int maxLong = 0;
 
-    private final int tag;
-
-    DaxHeadTag(int tag) {
-        this.tag = tag;
+    public int getMinLong() {
+        return minLong;
     }
 
-    public int tag() {
-        return tag;
+    public void setMinLong(int minLong) {
+        this.minLong = minLong;
     }
 
-    public static DaxHeadTag fromTag(int tag) {
-        for (DaxHeadTag t : values()) {
-            if (t.tag == tag) return t;
-        }
-        return null;
+    public int getMaxLong() {
+        return maxLong;
     }
+
+    public void setMaxLong(int maxLong) {
+        this.maxLong = maxLong;
+    }
+
+    public DaxString(int fieldId ) {
+        super(fieldId,"");
+    }
+
+    public DaxString(int fieldId , String value) {
+        super(fieldId, value);
+    }
+
+    @Override
+    public DaxString copy() {
+        return new DaxString(this.fieldId,this.value);
+    }
+
+    @Override
+    public void setValue(String value) {
+        super.setValue(value);
+    }
+
+    @Override
+    public String toString(){
+        return value;
+    }
+
 }

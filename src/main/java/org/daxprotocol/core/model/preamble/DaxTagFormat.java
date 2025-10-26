@@ -1,4 +1,4 @@
-package org.daxprotocol.core.types;
+package org.daxprotocol.core.model.preamble;
 
 public enum DaxTagFormat {
     DEC("DEC"), HEX("HEX");

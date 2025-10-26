@@ -21,9 +21,6 @@
 
 package org.daxprotocol.core.model.preamble;
 
-import org.daxprotocol.core.types.DaxEncoding;
-import org.daxprotocol.core.types.DaxTagFormat;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -32,10 +29,17 @@ import java.util.Map;
  * how the rest of the message is encoded and parsed.
  */
 public class DaxPreamble {
-    private String protocolVersion;       // DAXP=1
+    private String protocolVersion = "1";       // DAXP=1
     private DaxTagFormat tagFormat;       // TF=DEC
     private DaxEncoding encoding;         // EN=UTF8
     private String context;               // CTX=RxModeler or GUI, optional
+
+    public DaxPreamble(){
+        this.tagFormat = DaxTagFormat.DEC;
+        encoding = DaxEncoding.UTF8;
+    }
+
+
 
     public String getProtocolVersion() { return protocolVersion; }
     public DaxTagFormat getTagFormat() { return tagFormat; }

@@ -23,7 +23,7 @@ public enum DaxPreambleTag {
     DAXP("DAXP"),   // protocol identifier and version
     TF("TF"),       // tag format: DEC | HEX
     EN("EN"),       // encoding: ASCII | UTF8 | UTF16
-    CTX("CTX");     // context: optional
+    CTX("CX");     // context: optional
 
     private final String tag;
 

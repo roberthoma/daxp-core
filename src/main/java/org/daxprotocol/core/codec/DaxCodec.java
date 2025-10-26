@@ -20,7 +20,7 @@
 package org.daxprotocol.core.codec;
 import org.daxprotocol.core.model.DaxMessage;
 
-public interface DaxCodec {
-    String encode(DaxMessage message);
-    DaxMessage decode(String wire);
+public interface DaxCodec<T> {
+    String encode(T object);
+    T decode(String wire);
 }

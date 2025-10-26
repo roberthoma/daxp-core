@@ -1,4 +1,4 @@
-package org.daxprotocol.core.types;
+package org.daxprotocol.core.model.preamble;
 
 public enum DaxEncoding {
     ASCII("ASCII"), UTF8("UTF8"), UTF16("UTF16");

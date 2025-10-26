@@ -20,6 +20,8 @@
 package org.daxprotocol.core.model.preamble;
 
 
+import org.daxprotocol.core.codec.DaxCodec;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import static org.daxprotocol.core.codec.DaxCodecSymbols.*;
@@ -28,7 +30,7 @@ import static org.daxprotocol.core.codec.DaxCodecSymbols.*;
  * Encodes and decodes the PREAMBLE section of a DAXP message.
  * Format example: DAXP=1|TF=DEC|E=UTF8\n
  */
-public class DaxPreambleCodec {
+public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     /** Encode Preamble object → wire format (string). */
     public String encode(DaxPreamble preamble) {
         Map<String, String> map = new LinkedHashMap<>();
@@ -40,7 +42,10 @@ public class DaxPreambleCodec {
         }
 
         StringBuilder sb = new StringBuilder();
-        map.forEach((k, v) -> sb.append(k).append(EQUAL).append(v).append(PAIR_SEPARATOR));
+        map.forEach((k, v) -> sb.append(k)
+                                             .append(EQUAL)
+                                             .append(v)
+                                             .append(PAIR_SEPARATOR));
         sb.append(PREAMBLE_SEPARATOR);
         return sb.toString();
     }

@@ -18,20 +18,37 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.model;
+package org.daxprotocol.core.types;
 
-public final class DaxMessageBuilder {
-/*
-    private final DaxPreamble preamble = new DaxPreambleBuilder().version(1).tagFormat(DaxTagFormat.DEC).encoding(DaxEncoding.UTF8).build();
-    private final DaxHeadBuilder head  = new DaxHeadBuilder();
-    private final DaxBodyBuilder body  = new DaxBodyBuilder();
-    private final DaxTrailerBuilder trailer = new DaxTrailerBuilder().algorithm(DaxChecksumAlg.SUM_MOD_256);
+import org.apache.commons.math3.util.Precision;
 
-    public DaxHeadBuilder head() { return head; }
-    public DaxBodyBuilder body() { return body; }
-    public DaxTrailerBuilder trailer() { return trailer; }
-*/
-  //  public DaxMessage build() { /* compute checksum if missing, validate */}
+public class DaxDouble extends DaxNumber<Double> {
 
+    public DaxDouble(int fieldId, Double value, int precision) {
+        super(fieldId, value);
+        this.precision = precision;
+    }
+    public DaxDouble(int fieldId, Double value) {
+        super(fieldId, value);
+        this.precision = 0;
+    }
+
+    @Override
+    public DaxDouble copy() {
+        return new DaxDouble(this.fieldId, this.getValue(), this.precision);
+    }
+
+    public Double getValue() {
+        return Precision.round(super.getValue(),precision);
+    }
+
+    public void setValueUp(){
+        this.value += this.stepSize;
+    }
+
+
+    public void setValueDown(){
+        this.value -= this.stepSize;
+    }
 
 }

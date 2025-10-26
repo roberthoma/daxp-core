@@ -17,34 +17,28 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.model.head;
+package org.daxprotocol.core.types;
 
-import org.daxprotocol.core.codec.DaxCodec;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
+public class DaxInteger extends DaxNumber<Integer> {
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static org.daxprotocol.core.codec.DaxCodecSymbols.EQUAL;
-import static org.daxprotocol.core.codec.DaxCodecSymbols.PAIR_SEPARATOR;
-import static org.daxprotocol.core.codec.DaxTag.*;
-
-public class DaxHeadCodec implements DaxCodec<DaxHead> {
-
-    @Override public String encode(DaxHead message) {
-        Map<Integer, String> map = new LinkedHashMap<>();
-
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(MSG_TYPE).append(EQUAL)
-                .append(message.getMsgType())
-                .append(PAIR_SEPARATOR);
-
-
-        return sb.toString();
+    public DaxInteger(int fieldId, Integer value) {
+        super(fieldId, value);
+        this.stepSize = 1;
     }
 
-    @Override public DaxHead decode(String wire) {
-        return null;
+    @Override
+    public DaxInteger copy() {
+        DaxInteger par = new DaxInteger(this.getFieldId(), this.getValue());
+        par.stepSize = this.stepSize;
+        return  par;
     }
+
+    public void setValueUp(){
+        this.value += this.stepSize;
+    }
+
+    public void setValueDown(){
+        this.value -= this.stepSize;
+    }
+
 }

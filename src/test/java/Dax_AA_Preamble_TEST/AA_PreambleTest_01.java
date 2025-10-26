@@ -1,22 +1,15 @@
-package DaxPreamble_TEST;
+package Dax_AA_Preamble_TEST;
 
 import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.model.preamble.DaxPreambleBuilder;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
-import org.daxprotocol.core.types.DaxEncoding;
-import org.daxprotocol.core.types.DaxTagFormat;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PreambleTest_01 {
+public class AA_PreambleTest_01 {
     @Test
     void shouldEncodeAndDecodePreamble() {
-        DaxPreamble pre = new DaxPreambleBuilder()
-                .version("1")
-                .tagFormat(DaxTagFormat.DEC)
-                .encoding(DaxEncoding.UTF8)
-                .build();
+        DaxPreamble pre = new DaxPreamble();
 
         DaxPreambleCodec codec = new DaxPreambleCodec();
 
