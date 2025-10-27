@@ -1,8 +1,16 @@
 package org.daxprotocol.core.attributes;
 
+import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxTag;
 
-public class DaxAtrDataType extends DaxAttribute<Character>{
+public class DaxAtrDataType extends DaxPair<Character> {
+    public static Character DATA_TYPE_INTEGER = 'I';
+    public static Character DATA_TYPE_STRING  = 'S';
+    public static Character DATA_TYPE_BOOLEAN  = 'B';
+    public static Character DATA_TYPE_CHAR  = 'C';
+
+
+
     public DaxAtrDataType(Character value) {
         super(DaxTag.FIELD_DATA_TYPE, value);
     }
@@ -15,16 +23,16 @@ public class DaxAtrDataType extends DaxAttribute<Character>{
 
         switch (key) {
             case "String":
-                return 'S';
+                return DATA_TYPE_STRING;
             case "Integer":
             case "int":
-                return 'I';
+                return DATA_TYPE_INTEGER;
             case "Character":
             case "char":
-                return 'C';
+                return DATA_TYPE_CHAR;
             case "Boolean":
             case "boolean":
-                return 'B';
+                return DATA_TYPE_BOOLEAN;
             default:
                 return '?';
         }

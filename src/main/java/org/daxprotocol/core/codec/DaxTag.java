@@ -21,6 +21,13 @@ package org.daxprotocol.core.codec;
 
 public class DaxTag {
 
+
+    public static final String DAXP = "DAXP"; // protocol identifier and version
+    public static final String TF   = "TF";   // tag format: DEC | HEX
+    public static final String EN   = "EN";   // encoding: ASCII | UTF8 | UTF16
+    public static final String CTX  = "CX";   // context: optional
+
+
     public static final int MSG_TYPE  = 9;
     public static final int MSG_TOKEN = 15;
     public static final int MSG_BLOCK_COUNT = 6;

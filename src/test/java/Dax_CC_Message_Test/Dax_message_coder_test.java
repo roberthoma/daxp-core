@@ -7,6 +7,11 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.DaxMessageFactory;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Dax_message_coder_test {
 
     @Test
@@ -21,19 +26,6 @@ public class Dax_message_coder_test {
 
     }
 
-    @Test
-    void testDicEncoder(){
-
-        DaxMessageFactory factory = new DaxMessageFactory();
-
-        DaxDictionary customerDic = new CustomerDaxDic();
-        DaxMessage msg = factory.createDictionaryMsg(customerDic);
-        DaxMessageCodec codec = new DaxMessageCodec();
-
-        System.out.println(codec.encode(msg));
-
-
-    }
 
 
 

@@ -2,7 +2,7 @@ package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.attributes.DaxAtrDataType;
 import org.daxprotocol.core.attributes.DaxAtrUiLabel;
-import org.daxprotocol.core.attributes.DaxAttribute;
+import org.daxprotocol.core.codec.DaxPair;
 
 import java.util.*;
 
@@ -12,12 +12,12 @@ public class DaxDictionary {
      * DescriptiveMap : it is main dic of describes fields / variables
      * Key : idField
      * */
-    Map<Integer, Map<Integer, DaxAttribute<?>>> fieldAttrMap = new HashMap<>();
+    Map<Integer, Map<Integer, DaxPair<?>>> fieldAttrMap = new HashMap<>();
 
-    public Map<Integer, DaxAttribute<?>> getFieldAttributeMap(int fieldId) {
+    public Map<Integer, DaxPair<?>> getFieldAttributeMap(int fieldId) {
         return fieldAttrMap.get(fieldId);
     }
-    public Map<Integer, Map<Integer, DaxAttribute<?>>> getAttrMap(){
+    public Map<Integer, Map<Integer, DaxPair<?>>> getAttrMap(){
       return   fieldAttrMap;
     }
 
@@ -35,7 +35,7 @@ public class DaxDictionary {
 
 
     public void put(int fieldId, int unitId, String uiLabel, String desc, Class<?> clazz, boolean isUiEditable){
-        Map<Integer, DaxAttribute<?>> attrMap = new HashMap<>();
+        Map<Integer, DaxPair<?>> attrMap = new HashMap<>();
         attrMap.put(ATR_UI_LABEL , new DaxAtrUiLabel(uiLabel));
         attrMap.put(FIELD_DATA_TYPE , new DaxAtrDataType(DaxAtrDataType.classToChar(clazz)));
         fieldAttrMap.put(fieldId,attrMap);

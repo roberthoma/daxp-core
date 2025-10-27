@@ -25,10 +25,10 @@ import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
 public final class DaxMessage {
-    private final DaxPreamble preamble;
-    private final DaxHead head;
-    private final DaxBody body;
-    private final DaxTrailer trailer;
+    private  DaxPreamble preamble;
+    private  DaxHead head;
+    private  DaxBody body;
+    private  DaxTrailer trailer;
 
     public DaxPreamble getPreamble() {
         return preamble;
@@ -46,20 +46,34 @@ public final class DaxMessage {
         return trailer;
     }
 
-    public DaxMessage(String msgType) {
+
+    public DaxMessage() {
+
+    }
+        public DaxMessage(String msgType) {
         this.preamble = new DaxPreamble();
         this.head = new DaxHead(msgType);
         this.body = new DaxBody();
         this.trailer = new DaxTrailer();
     }
-//    public DaxMessage(DaxPreamble preamble, DaxHead head, DaxBody body, DaxTrailer trailer) {
-//        this.preamble = preamble;
-//        this.head = head;
-//        this.body = body;
-//        this.trailer = trailer;
-//    }
+    public DaxMessage(DaxPreamble preamble, DaxHead head, DaxBody body, DaxTrailer trailer) {
+        this.preamble = preamble;
+        this.head = head;
+        this.body = body;
+        this.trailer = trailer;
+    }
+
+    public DaxMessage(DaxPreamble preamble, DaxHead head, DaxTrailer trailer) {
+        this.preamble = preamble;
+        this.head = head;
+        this.trailer = trailer;
+    }
 
     public String getType() {
         return head.getMsgType();
+    }
+
+    public int getBlockCount(){
+        return head.getBlockCount();
     }
 }

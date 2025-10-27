@@ -18,10 +18,8 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.model.head;
-import org.daxprotocol.core.types.DaxInteger;
-import org.daxprotocol.core.types.DaxString;
-import org.daxprotocol.core.types.DaxValue;
-import java.util.HashMap;
+import org.daxprotocol.core.codec.DaxPair;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,28 +27,28 @@ import static  org.daxprotocol.core.codec.DaxTag.*;
 
 public final class DaxHead {
 
-    Map<Integer, DaxValue<?>> map = new LinkedHashMap<>();
+    Map<Integer, DaxPair<?>> map = new LinkedHashMap<>();
 
     public String getMsgType() {
-        return (String) (map.get(MSG_TYPE).getValue());
+        return map.get(MSG_TYPE).getStrValue();
     }
 
     public String getToken() {
-        return map.containsKey(MSG_TOKEN) ? (String) (map.get(MSG_TOKEN).getValue()) : null;
+        return map.getOrDefault(MSG_TOKEN, null).getStrValue();
     }
 
     public String getTimestamp() {
-        return map.containsKey(MSG_TIMESTAMP) ? (String) (map.get(MSG_TIMESTAMP).getValue()) : null;
+        return map.containsKey(MSG_TIMESTAMP)?  map.get(MSG_TIMESTAMP).getStrValue() : null;
     }
 
     public DaxHead(String msgType, String token, String timestamp) {
-        map.put(MSG_TYPE,new DaxString(MSG_TYPE,msgType));
-        map.put(MSG_TOKEN,new DaxString(MSG_TOKEN,token));
-        map.put(MSG_TIMESTAMP,new DaxString(MSG_TIMESTAMP,timestamp));
-        map.put(MSG_BLOCK_COUNT,new DaxInteger(MSG_BLOCK_COUNT,0));
+        map.put(MSG_TYPE,new DaxMsgType(msgType));
+        map.put(MSG_TOKEN,new DaxMsgToken(token));
+        map.put(MSG_TIMESTAMP,new DaxMsgTimestamp(timestamp));
+        map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(0));
     }
     public DaxHead(String msgType) {
-        map.put(MSG_TYPE,new DaxString(MSG_TYPE,msgType));
+        map.put(MSG_TYPE,new DaxMsgType(msgType));
     }
 
     public int getBlockCount() {
@@ -58,15 +56,15 @@ public final class DaxHead {
     }
 
     public void setBlockCount(int blockCount) {
-        map.put(MSG_BLOCK_COUNT,new DaxInteger(MSG_BLOCK_COUNT,blockCount));
+        map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(blockCount));
     }
 
     public void setToken(String token) {
-        map.put(MSG_TOKEN,new DaxString(MSG_TOKEN,token));
+        map.put(MSG_TOKEN,new DaxMsgToken(token));
     }
 
     public void setTimestamp(String timestamp) {
-        map.put(MSG_TIMESTAMP,new DaxString(MSG_TIMESTAMP,timestamp));
+        map.put(MSG_TIMESTAMP,new DaxMsgTimestamp(timestamp));
     }
 
 

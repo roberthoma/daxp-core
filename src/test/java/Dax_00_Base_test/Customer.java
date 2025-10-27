@@ -7,8 +7,19 @@ public class Customer {
     @DaxpTag(tag = CustomerDaxDic.CUSTOMER_ID)
     int customerId;
 
-    @DaxpTag(tag = CustomerDaxDic.CUSTOMER_NAME)
+    @DaxpTag(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
     String name;
+
+    String town;
+
+    public Customer(){
+
+    }
+
+    public Customer(int customerId, String name) {
+        this.customerId = customerId;
+        this.name = name;
+    }
 
     public int getCustomerId() {
         return customerId;

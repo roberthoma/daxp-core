@@ -9,4 +9,6 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.TYPE, ElementType.METHOD })
 public @interface DaxpTag {
     int tag();
+    String uiLabel() default "";
 }
+

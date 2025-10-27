@@ -36,21 +36,24 @@ public class Daxp_Annotations_Test01 {
 
         @Test
         void customer_tag_info(){
-            Customer customer = new Customer();
             CustomerDaxDic dic = new CustomerDaxDic();
+            Customer customer = new Customer(123, "John");
            try {
                 for (Field field : Customer.class.getDeclaredFields()) {
+                    System.out.println("Field> "+field.getName());
                     if (field.isAnnotationPresent(DaxpTag.class)) {
                         DaxpTag daxp = field.getAnnotation(DaxpTag.class);
                         field.setAccessible(true);
 
                         System.out.println("\nTAG:   "+ daxp.tag());
+                        System.out.println("\nLABEL:   "+ daxp.uiLabel());
                         System.out.println("Field name: " + field.getName());
                         System.out.println("Type class: " + field.getType());
                         System.out.println("Type simple name: " + field.getType().getSimpleName());
                         System.out.println("Is primitive: " + field.getType().isPrimitive());
-                        var attMap =  dic.getFieldAttributeMap(daxp.tag());
+                        System.out.println("Pair: "+ daxp.tag()+"="+field.get(customer));
 
+                        var attMap =  dic.getFieldAttributeMap(daxp.tag());
                         System.out.println("Label: "+attMap.get(DaxTag.ATR_UI_LABEL).getValue() );
 //                        System.out.println("Label: "+dic.getAttributeMap().get(daxp.tag()).getUiLabel());
 
@@ -62,6 +65,7 @@ public class Daxp_Annotations_Test01 {
             }
 
         }
+
     @Test
     void customer_injection_val() {
     }
