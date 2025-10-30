@@ -21,8 +21,6 @@ package org.daxprotocol.core.model.head;
 
 import org.daxprotocol.core.codec.DaxCodec;
 import org.daxprotocol.core.codec.DaxPairCodec;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import static org.daxprotocol.core.codec.DaxTag.*;
 
 public class DaxHeadCodec implements DaxCodec<DaxHead> {

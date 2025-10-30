@@ -24,8 +24,7 @@ public class DaxMessageFactory {
     private void putBodyBlock(DaxBody body, int fieldId, Map<Integer, DaxPair<?>> map){
         body.nextBlock();
         body.putPair(FIELD_ID,String.valueOf( fieldId));
-        map.forEach((i, a) -> body.putPair(i,a.getValue().toString()));
-
+        map.forEach((i, pair) -> body.putPair(pair));
 
     }
 
