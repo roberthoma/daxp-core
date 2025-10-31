@@ -19,8 +19,7 @@
  */
 package org.daxprotocol.core.dictionary;
 
-import org.daxprotocol.core.attributes.DaxAtrDataType;
-import org.daxprotocol.core.attributes.DaxAtrUiLabel;
+import org.daxprotocol.core.attributes.*;
 import org.daxprotocol.core.codec.DaxPair;
 
 import java.util.*;
@@ -78,10 +77,26 @@ public class DaxDictionary {
    public void putAtrUiLabel(int fieldId,  String uiLabel){
        putAttribute(fieldId, new DaxAtrUiLabel(uiLabel));
    }
+
+    public void putAtrSizeMax(int fieldId,  Integer max){
+        putAttribute(fieldId, new DaxAtrSizeMax(max));
+    }
+
+    public void putAtrSizeMin(int fieldId,  Integer min){
+        putAttribute(fieldId, new DaxAtrSizeMin(min));
+    }
+
+
+    public void putAtrNullable(int fieldId,  Character able){
+        putAttribute(fieldId, new DaxAtrNullable(able));
+    }
+
+
+
    //isUiEditable
 
 
-
+    // ---------------------
     public void putValue(int idField, char charValue, String desc){
 
         if (!valueNamesMap.containsKey(idField)){

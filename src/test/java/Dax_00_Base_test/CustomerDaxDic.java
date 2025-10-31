@@ -21,19 +21,19 @@ public class CustomerDaxDic extends DaxDictionary {
         init();
     }
 
-    private void putCustAtr(int tag, String uiLabel, Class<?> clazz) {
-        put(tag, clazz);
-        putAtrUiLabel(tag, uiLabel);
+    private void putCustomerAtr(int tag, String uiLabel, Class<?> clazz) {
+        super.put(tag, clazz);
+        super.putAtrUiLabel(tag, uiLabel);
     }
 
 
     private void init() {
-        putCustAtr(CUSTOMER_ID,"Id customer",Integer.class);
-        putCustAtr(CUSTOMER_NAME,"First name",String.class);
-        putCustAtr(CUSTOMER_SURNAME,"Surname",String.class);
-        putCustAtr(CUSTOMER_YEAR_OF_BIRTH,"Year of birth",Integer.class);
-        putCustAtr(CUSTOMER_EMAIL,"Email",String.class);
-        putCustAtr(CUSTOMER_TELEPHONE,"Telephone",String.class);
-        putCustAtr(CUSTOMER_TOWN,"Town",String.class);
+        putCustomerAtr(CUSTOMER_ID,"Id customer",Integer.class);
+        putCustomerAtr(CUSTOMER_NAME,"First name",String.class);
+        putCustomerAtr(CUSTOMER_SURNAME,"Surname",String.class);
+        putCustomerAtr(CUSTOMER_YEAR_OF_BIRTH,"Year of birth",Integer.class);
+        putCustomerAtr(CUSTOMER_EMAIL,"Email",String.class);
+        putCustomerAtr(CUSTOMER_TELEPHONE,"Telephone",String.class);
+        putCustomerAtr(CUSTOMER_TOWN,"Town",String.class);
     }
 }

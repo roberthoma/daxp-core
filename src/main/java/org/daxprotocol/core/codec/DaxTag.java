@@ -43,15 +43,20 @@ public class DaxTag {
     public static final int FIELD_ID_LIST       = 106 ; //    FieldIdList     List<Integer>
     public static final int FIELD_DATA_TYPE           = 110 ; //        Character[1]
 
-    public static final int ATR_RANGE_MIN_VALUE = 201 ; //          <atr_data_type>     Minimum value
-    public static final int ATR_RANGE_MAX_VALUE = 202 ; //          <atr_data_type>     Maximum value
-    public static final int ATR_PRECISION       = 203 ; //        Integer     Double precision
-    public static final int ATR_STEP_SIZE       = 204 ; //        <atr_data_type>
-    public static final int ATR_UNIT_ID         = 206 ; //
+    public static final int ATR_RANGE_MIN_VALUE = 161 ; //          <atr_data_type>     Minimum value
+    public static final int ATR_RANGE_MAX_VALUE = 162 ; //          <atr_data_type>     Maximum value
+    public static final int ATR_PRECISION       = 163 ; //        Integer     Double precision
+    public static final int ATR_STEP_SIZE       = 164 ; //        <atr_data_type>
+    public static final int ATR_UNIT_ID         = 166 ; //
+    public static final int ATR_NULLABLE        = 165 ; //
+    public static final int ATR_SIZE_MAX        = 166;
+    public static final int ATR_SIZE_MIN        = 167;
+
     public static final int ATR_UI_ITEM_TYPE    = 208 ; //
     public static final int ATR_UI_LABEL        = 209 ; //     UiLabel     String
     public static final int ATR_UI_DESCRIPTION  = 210 ; //   UiDescription   String
     public static final int ATR_UI_IS_EDITABLE  = 220 ; //       Boolean
+
     public static final int ERR_FIELD_ID        = 224 ; //
     public static final int ERR_DESCRIPTION     = 225 ; //
 

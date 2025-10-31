@@ -3,6 +3,9 @@ package DAXP_Annotation_TEST;
 import Dax_00_Base_test.Customer;
 import Dax_00_Base_test.CustomerDaxDic;
 import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.factory.DaxMessageFactory;
+import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -13,57 +16,66 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Daxp_Annotations_Test01 {
 
 
-        @Test
-        void shouldSeeAnnotationOnField() throws Exception {
-            Field f = Customer.class.getDeclaredField("name");
-            assertTrue(f.isAnnotationPresent(DaxpTag.class));
-            DaxpTag ann = f.getAnnotation(DaxpTag.class);
-            System.out.println("Ann tag : "+ann.tag());
-            assertEquals(CustomerDaxDic.CUSTOMER_NAME, ann.tag());
+    @Test
+    void shouldSeeAnnotationOnField() throws Exception {
+        Field f = Customer.class.getDeclaredField("name");
+        assertTrue(f.isAnnotationPresent(DaxpTag.class));
+        DaxpTag ann = f.getAnnotation(DaxpTag.class);
+        System.out.println("Ann tag : "+ann.tag());
+        assertEquals(CustomerDaxDic.CUSTOMER_NAME, ann.tag());
 
-            Customer  customer = new Customer();
-            String value = "Robert";
+        Customer  customer = new Customer();
+        String value = "Robert";
 
 
-            // make field accessible
-            f.setAccessible(true);
-            f.set(customer,value);
+        // make field accessible
+        f.setAccessible(true);
+        f.set(customer,value);
 
-            System.out.println(customer.getName());
+        System.out.println(customer.getName());
 
-        }
+    }
 
-        @Test
-        void customer_tag_info(){
-            CustomerDaxDic dic = new CustomerDaxDic();
-            Customer customer = new Customer(123, "John");
-           try {
-                for (Field field : Customer.class.getDeclaredFields()) {
-                    System.out.println("Field> "+field.getName());
-                    if (field.isAnnotationPresent(DaxpTag.class)) {
-                        DaxpTag daxp = field.getAnnotation(DaxpTag.class);
-                        field.setAccessible(true);
+    @Test
+    void customer_tag_info(){
+        CustomerDaxDic dic = new CustomerDaxDic();
+        Customer customer = new Customer(123, "John");
+       try {
+            for (Field field : Customer.class.getDeclaredFields()) {
+                System.out.println("Field> "+field.getName());
+                if (field.isAnnotationPresent(DaxpTag.class)) {
+                    DaxpTag daxp = field.getAnnotation(DaxpTag.class);
+                    field.setAccessible(true);
 
-                        System.out.println("\nTAG:   "+ daxp.tag());
-                        System.out.println("\nLABEL:   "+ daxp.uiLabel());
-                        System.out.println("Field name: " + field.getName());
-                        System.out.println("Type class: " + field.getType());
-                        System.out.println("Type simple name: " + field.getType().getSimpleName());
-                        System.out.println("Is primitive: " + field.getType().isPrimitive());
-                        System.out.println("Pair: "+ daxp.tag()+"="+field.get(customer));
+                    System.out.println("\nTAG:   "+ daxp.tag());
+                    System.out.println("\nLABEL:   "+ daxp.uiLabel());
+                    System.out.println("Field name: " + field.getName());
+                    System.out.println("Type class: " + field.getType());
+                    System.out.println("Type simple name: " + field.getType().getSimpleName());
+                    System.out.println("Is primitive: " + field.getType().isPrimitive());
+                    System.out.println("Pair: "+ daxp.tag()+"="+field.get(customer));
 
-                        var attMap =  dic.getFieldAttributeMap(daxp.tag());
-                        System.out.println("Label: "+attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL).getValue() );
+                    var attMap =  dic.getFieldAttributeMap(daxp.tag());
+                    System.out.println("Label: "+attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL).getValue() );
 //                        System.out.println("Label: "+dic.getAttributeMap().get(daxp.tag()).getUiLabel());
 
-                        //field.set(customer, "Tag=" + daxp.tag()); // any logic you want
-                    }
+                    //field.set(customer, "Tag=" + daxp.tag()); // any logic you want
                 }
-            }catch (Exception e){
-                e.printStackTrace();
             }
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
+    }
+
+    @Test
+    void create_msg_from_customer() {
+        Customer customer = new Customer(123, "John");
+        DaxMessageFactory factory = new DaxMessageFactory();
+        DaxMessage message = factory.toDaxMessage("UCi", customer);
+        DaxMessageCodec codec = new DaxMessageCodec();
+        System.out.println(codec.encode(message));
+    }
 
     @Test
     void customer_injection_val() {

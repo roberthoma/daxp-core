@@ -15,7 +15,12 @@ public class DaxAtrDataType extends DaxPair<Character> {
         super(DaxTag.FIELD_DATA_TYPE, classToChar(clazz));
     }
 
-    public static Character classToChar(Class<?> clazz){
+//    public static Class<?> toClazz(Character cc){
+//
+//    }
+
+
+        public static Character classToChar(Class<?> clazz){
 
         if (clazz == null) return null;
 

@@ -1,11 +1,5 @@
 package Dax_DA_Dictionary_TEST;
 
-import Dax_00_Base_test.Customer;
-import Dax_00_Base_test.CustomerDaxDic;
-import org.daxprotocol.core.codec.DaxMessageCodec;
-import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.DaxMessageFactory;
 import org.junit.jupiter.api.Test;
 
 public class Dax_Customer_dic_test01 {

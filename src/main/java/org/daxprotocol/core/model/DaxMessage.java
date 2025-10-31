@@ -77,7 +77,7 @@ public final class DaxMessage {
         return head.getBlockCount();
     }
 
-    public String getChecksum() {
+    public Integer getChecksum() {
         return trailer.getChecksum();
     }
 }
