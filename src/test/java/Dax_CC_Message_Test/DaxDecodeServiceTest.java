@@ -2,10 +2,9 @@ package Dax_CC_Message_Test;
 
 import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxMessageCodec;
-import org.daxprotocol.core.codec.DaxParser;
+import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.codec.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.preamble.DaxPreamblePair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-class DaxParserTest {
+class DaxDecodeServiceTest {
     static String msg;
 
     @BeforeAll
@@ -32,7 +31,7 @@ class DaxParserTest {
 
     @Test
     void preamblePairs_TEST(){
-        Map<String,String> preamblePairs = DaxParser.parsePreamble(msg);
+        Map<String,String> preamblePairs = DaxDecodeService.parsePreamble(msg);
         Assertions.assertEquals("DEC",preamblePairs.get("TF"));
         Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
         Assertions.assertEquals("1",preamblePairs.get("DAXP"));
@@ -40,8 +39,8 @@ class DaxParserTest {
 
     @Test
     void parseNumberPairsToString_TEST(){
-        Map<String,String>   preamblePairs = DaxParser.parsePreamble(msg);
-        List<DaxStringPair>  pairsList     = DaxParser.parsePairs(msg);
+        Map<String,String>   preamblePairs = DaxDecodeService.parsePreamble(msg);
+        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg);
         long equalChar = msg.chars()
                             .filter(c -> c== DaxCodecSymbols.EQUAL)
                             .count()
@@ -52,10 +51,11 @@ class DaxParserTest {
 
     @Test
     void parseMSG_TEST(){
-        DaxMessage message = DaxParser.parse(msg);
         DaxMessageCodec codec = new DaxMessageCodec();
+        DaxMessage message = codec.decode(msg);
         String afterMsg = codec.encode(message);
         Assertions.assertEquals(msg,afterMsg );
+
 
     }
 

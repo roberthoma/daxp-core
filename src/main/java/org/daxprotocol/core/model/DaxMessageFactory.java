@@ -30,7 +30,7 @@ public class DaxMessageFactory {
 
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
-        dictionary.getAttrMap().forEach((fieldId, atrMap) ->
+        dictionary.getAttributMap().forEach((fieldId, atrMap) ->
                         putBodyBlock(message.getBody(),fieldId,  atrMap)
                 );
         return message;

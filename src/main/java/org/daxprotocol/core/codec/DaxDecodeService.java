@@ -23,11 +23,12 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DaxParser {
+public class DaxDecodeService {
     private static final
     Pattern FIELD = Pattern.compile("(\\w+)"+DaxCodecSymbols.EQUAL+"([^"+DaxCodecSymbols.PAIR_SEPARATOR+"]*)");
 
@@ -73,7 +74,7 @@ public class DaxParser {
 
     private static DaxBody createBody(int blockCount ,List<DaxStringPair> listOfPair){
         DaxBody body = new DaxBody();
-        boolean isBlock = false;
+        boolean isBody = false;
 
         for(DaxPair<?> pair : listOfPair){
             if(pair.tag == DaxTag.CHECKSUM){
@@ -84,16 +85,15 @@ public class DaxParser {
                     && Integer.valueOf((String) pair.value)>0
             )
             {
-                isBlock = true;
+                isBody = true;
             }
 
-            if (isBlock) {
+            if (isBody) {
                 if (pair.tag == DaxTag.BLOCK_INDEX) {
                     body.nextBlock();
                 }
                 body.putPair(pair);
             }
-
         }
 
         return body;

@@ -1,3 +1,22 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2025 Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
 package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.attributes.DaxAtrDataType;
@@ -12,13 +31,13 @@ public class DaxDictionary {
      * DescriptiveMap : it is main dic of describes fields / variables
      * Key : idField
      * */
-    Map<Integer, Map<Integer, DaxPair<?>>> fieldAttrMap = new HashMap<>();
+    Map<Integer, Map<Integer, DaxPair<?>>> attributMap = new HashMap<>();
 
     public Map<Integer, DaxPair<?>> getFieldAttributeMap(int fieldId) {
-        return fieldAttrMap.get(fieldId);
+        return attributMap.get(fieldId);
     }
-    public Map<Integer, Map<Integer, DaxPair<?>>> getAttrMap(){
-      return   fieldAttrMap;
+    public Map<Integer, Map<Integer, DaxPair<?>>> getAttributMap(){
+      return attributMap;
     }
 
 
@@ -27,50 +46,39 @@ public class DaxDictionary {
      * Key : idField
      * */
 
-
     Map<Integer, Map<Character,String>> valueNamesMap = new HashMap<>();
     public Map<Integer, Map<Character, String>> getCharacterValueNameMap() {
         return valueNamesMap;
     }
 
 
-    public void put(int fieldId, int unitId, String uiLabel, String desc, Class<?> clazz, boolean isUiEditable){
-        Map<Integer, DaxPair<?>> attrMap = new HashMap<>();
-        attrMap.put(ATR_UI_LABEL , new DaxAtrUiLabel(uiLabel));
-        attrMap.put(FIELD_DATA_TYPE , new DaxAtrDataType(DaxAtrDataType.classToChar(clazz)));
-        fieldAttrMap.put(fieldId,attrMap);
+    //TODO Message type
+
+    public void putAttribute(int fieldId, DaxPair<?> atrPair){
+       Map<Integer, DaxPair<?>> fieldAtrMap;
+       if (attributMap.containsKey(fieldId)){
+           fieldAtrMap = attributMap.get(fieldId);
+       }
+       else {
+           fieldAtrMap = new HashMap<>();
+           attributMap.put(fieldId,fieldAtrMap);
+       }
+        fieldAtrMap.put(atrPair.getTag(), atrPair) ;
+    }
+
+
+    public void put(int fieldId,  Class<?> clazz){
+        putAttribute(fieldId, new DaxAtrDataType(clazz));
     };
 
-    public void put(int fieldId, int unitId, String uiLabel, String desc, Class<?> clazz){
-        put(fieldId, unitId,  uiLabel,  desc, clazz,false);
+    public void putAtrDataType(int fieldId,  Class<?> clazz){
+        putAttribute(fieldId, new DaxAtrDataType(clazz));
     };
 
-    public void put(int fieldId, String uiLabel, String desc, Class<?> clazz){
-        put(fieldId, 0,  uiLabel,  desc, clazz,false);
-    };
-
-    public void put(int fieldId,  String uiLabel, String desc){
-        put(fieldId, 0,  uiLabel,  desc, Object.class,false);
-    };
-
-    public void put(int fieldId,  String uiLabel){
-        put(fieldId, 0,  uiLabel, null, Object.class,false);
-    };
-
-    public void put(int fieldId,  String uiLabel, Class<?> clazz){
-        put(fieldId, 0,  uiLabel,  null, clazz,false);
-//        put(fieldId, 0,  uiLabel,  "No description :(", clazz,false);
-    };
-
-//    public void put(int fieldId, Map<Integer, DaxAttribute<?>> map){
-//
-//        if (!fieldAttrMap.containsKey(fieldId)){
-//
-//        }
-//        fieldAttrMap.get()
-//    }
-
-
+   public void putAtrUiLabel(int fieldId,  String uiLabel){
+       putAttribute(fieldId, new DaxAtrUiLabel(uiLabel));
+   }
+   //isUiEditable
 
 
 

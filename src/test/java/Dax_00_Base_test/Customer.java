@@ -1,7 +1,9 @@
 package Dax_00_Base_test;
 
-import org.daxprotocol.core.annotations.DaxpTag;
+import org.daxprotocol.core.annotation.DaxpDic;
+import org.daxprotocol.core.annotation.DaxpTag;
 
+@DaxpDic(name = "Customer", version = "1.0", namespace = "crm")
 public class Customer {
 
     @DaxpTag(tag = CustomerDaxDic.CUSTOMER_ID)

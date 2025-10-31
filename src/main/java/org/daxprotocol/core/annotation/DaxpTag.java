@@ -17,31 +17,19 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.codec;
 
-public abstract class DaxPair<T>{
 
-    int tag;
-    protected T value;
-    Class<T> clazz;
+package org.daxprotocol.core.annotation;
 
-    public Class<?> getClazz(){
-        return clazz;
-    };
-    public int getTag(){
-        return tag;
-    }
-    public T getValue(){
-        return value;
-    }
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public DaxPair(int tag, T value){
-        this.tag = tag;
-        this.value = value;
-
-    }
-
-    public String getStrValue() {
-         return value.toString();
-    };
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.FIELD, ElementType.TYPE, ElementType.METHOD })
+public @interface DaxpTag {
+    int tag();
+    String uiLabel() default "";
 }
+

@@ -2,8 +2,7 @@ package DAXP_Annotation_TEST;
 
 import Dax_00_Base_test.Customer;
 import Dax_00_Base_test.CustomerDaxDic;
-import org.daxprotocol.core.annotations.DaxpTag;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.annotation.DaxpTag;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -54,7 +53,7 @@ public class Daxp_Annotations_Test01 {
                         System.out.println("Pair: "+ daxp.tag()+"="+field.get(customer));
 
                         var attMap =  dic.getFieldAttributeMap(daxp.tag());
-                        System.out.println("Label: "+attMap.get(DaxTag.ATR_UI_LABEL).getValue() );
+                        System.out.println("Label: "+attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL).getValue() );
 //                        System.out.println("Label: "+dic.getAttributeMap().get(daxp.tag()).getUiLabel());
 
                         //field.set(customer, "Tag=" + daxp.tag()); // any logic you want

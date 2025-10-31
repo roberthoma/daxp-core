@@ -6,13 +6,13 @@ import org.daxprotocol.core.codec.DaxTag;
 public class DaxAtrDataType extends DaxPair<Character> {
     public static Character DATA_TYPE_INTEGER = 'I';
     public static Character DATA_TYPE_STRING  = 'S';
-    public static Character DATA_TYPE_BOOLEAN  = 'B';
-    public static Character DATA_TYPE_CHAR  = 'C';
+    public static Character DATA_TYPE_BOOLEAN = 'B';
+    public static Character DATA_TYPE_CHAR    = 'C';
 
 
 
-    public DaxAtrDataType(Character value) {
-        super(DaxTag.FIELD_DATA_TYPE, value);
+    public DaxAtrDataType(Class<?> clazz) {
+        super(DaxTag.FIELD_DATA_TYPE, classToChar(clazz));
     }
 
     public static Character classToChar(Class<?> clazz){
