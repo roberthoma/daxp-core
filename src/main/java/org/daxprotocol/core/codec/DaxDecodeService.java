@@ -29,15 +29,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DaxDecodeService {
-    private static final
-    Pattern FIELD = Pattern.compile("(\\w+)"+DaxCodecSymbols.EQUAL+"([^"+DaxCodecSymbols.PAIR_SEPARATOR+"]*)");
 
-    public static Map<String, String> parsePreamble(String msg) {
+    public static Map<String, String> parsePreamble(String msg, Pattern pairPattern  ) {
         Map<String, String> map = new HashMap<>();
 
         // Everything before tag 9=
         String preamblePart = msg.split(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
-        Matcher m = FIELD.matcher(preamblePart);
+        Matcher m = pairPattern.matcher(preamblePart);
 
         while (m.find()) {
             map.put(m.group(1), m.group(2));
@@ -45,9 +43,9 @@ public class DaxDecodeService {
         return map;
     }
 
-    public static List<DaxStringPair> parsePairs(String msg) {
+    public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern) {
         List<DaxStringPair> list = new ArrayList<>();
-        Matcher m = FIELD.matcher(msg);
+        Matcher m = pairPattern.matcher(msg);
         while (m.find()) {
             String tagStr = m.group(1);
             if (tagStr.matches("\\d+")) {
@@ -99,17 +97,31 @@ public class DaxDecodeService {
         return body;
     }
 
+    public static Pattern getPairPattern(String msgStr){
+        int  pairSeparatorIdx = msgStr.indexOf("TF=")-1;
+        char pairSeparator = msgStr.charAt(pairSeparatorIdx);
+        return Pattern.compile("(\\w+)"+DaxCodecSymbols.EQUAL+"([^"+pairSeparator+"]*)");
+    }
 
-    public static DaxMessage parse(String msgStr){
+
+    public static DaxMessage parseAndDecode(String msgStr){
         DaxMessage message;
         DaxPreamble preamble;
         DaxHead head;
         DaxBody body ;
 
-        Map<String, String> preambleMap = parsePreamble(msgStr);
+        Pattern pairPattern = getPairPattern(msgStr);
+
+        int firstMsgIdx = msgStr.indexOf(pairPattern+"9=");
+
+        String preamblePart = (firstMsgIdx > 0) ? msgStr.substring(0, firstMsgIdx) : msgStr;
+        String messagePart  = (firstMsgIdx > 0) ? msgStr.substring(firstMsgIdx)   : "";
+
+
+        Map<String, String> preambleMap = parsePreamble(msgStr,pairPattern);
         preamble = DaxPreamble.fromMap(preambleMap);
 
-        List<DaxStringPair> listOfPair = parsePairs(msgStr);
+        List<DaxStringPair> listOfPair = parsePairs(msgStr,pairPattern);
 
         head = createHead(listOfPair);
 

@@ -21,12 +21,13 @@ public class Daxp_Annotations_Test01 {
     @Test
     void createMsgFromCustomer() {
         String expectMsg = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|6=1|2001=123|2002=Robert|99=123|";
-        expectMsg = expectMsg.replace('|', DaxCodecSymbols.PAIR_SEPARATOR);
+
         Customer customer = new Customer(123, "Robert");
         DaxMessageFactory factory = new DaxMessageFactory();
         DaxMessage message = factory.toDaxMessage("UCi", customer);
         DaxMessageCodec codec = new DaxMessageCodec();
         String ecMsg = codec.encode(message);
+        ecMsg= ecMsg.replace(DaxCodecSymbols.PAIR_SEPARATOR,'|');
         Assertions.assertEquals(expectMsg,ecMsg);
     }
 

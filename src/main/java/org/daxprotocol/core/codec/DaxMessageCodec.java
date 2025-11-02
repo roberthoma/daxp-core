@@ -45,6 +45,6 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
     }
 
     @Override public DaxMessage decode(String msg) {
-        return DaxDecodeService.parse(msg);
+        return DaxDecodeService.parseAndDecode(msg);
     }
 }

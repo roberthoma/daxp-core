@@ -27,22 +27,22 @@ class DaxDecodeServiceTest {
                 "7=6|209=Town|100=2074|110=S|" +
                 "7=7|209=Email|100=2011|110=S|" +
                 "99=123|";
-        msg = msg.replace('|',DaxCodecSymbols.PAIR_SEPARATOR);
     }
 
     @Test
     void preamblePairs_TEST(){
-        System.out.println(msg);
-        Map<String,String> preamblePairs = DaxDecodeService.parsePreamble(msg);
+
+        Map<String,String> preamblePairs = DaxDecodeService.parsePreamble(msg,DaxDecodeService.getPairPattern(msg) );
+
         Assertions.assertEquals("DEC",preamblePairs.get("TF"));
         Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
         Assertions.assertEquals("1",preamblePairs.get("DAXP"));
     }
 
     @Test
-    void parseNumberPairsToString_TEST(){
-        Map<String,String>   preamblePairs = DaxDecodeService.parsePreamble(msg);
-        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg);
+    void parseAndDecodeNumberPairsToString_TEST(){
+        Map<String,String>   preamblePairs = DaxDecodeService.parsePreamble(msg,DaxDecodeService.getPairPattern(msg));
+        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,DaxDecodeService.getPairPattern(msg));
         long equalChar = msg.chars()
                             .filter(c -> c== DaxCodecSymbols.EQUAL)
                             .count()
@@ -52,13 +52,12 @@ class DaxDecodeServiceTest {
     }
 
     @Test
-    void parseMSG_TEST(){
+    void parseAndDecodeMSG_TEST(){
         DaxMessageCodec codec = new DaxMessageCodec();
         DaxMessage message = codec.decode(msg);
         String afterMsg = codec.encode(message);
+        afterMsg = afterMsg.replace(DaxCodecSymbols.PAIR_SEPARATOR,'|');
         Assertions.assertEquals(msg,afterMsg );
-
-
     }
 
 }

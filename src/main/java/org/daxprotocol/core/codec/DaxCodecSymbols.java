@@ -30,8 +30,8 @@ public final class DaxCodecSymbols {
     public static final char PAIR_SEPARATOR = 0x0001; // SOH
 
 
-    /** Pair separator for logs/tests (printable). */
-    public static final char FIELD_SEP_DEBUG = '|';
+//    /** Pair separator for logs/tests (printable). */
+//    public static final char FIELD_SEP_DEBUG = '|';
 
 //    /** Separator between the preamble pairs. */
 //    public static final char PREAMBLE_PAR_SEPARATOR = ;
