@@ -33,8 +33,8 @@ public final class DaxCodecSymbols {
     /** Pair separator for logs/tests (printable). */
     public static final char FIELD_SEP_DEBUG = '|';
 
-//    /** Separator between the message preamble and the body section. */
-//    public static final char PREAMBLE_SEPARATOR = ;
+//    /** Separator between the preamble pairs. */
+//    public static final char PREAMBLE_PAR_SEPARATOR = ;
 
 //    /** End of message. */
 //    public static final String MSG_END = "\r\n";

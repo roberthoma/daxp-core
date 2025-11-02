@@ -52,10 +52,6 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     public DaxPreamble decode(String wire) {
         String line = wire.strip();
 
-        //TODO remove it
-//        if (line.endsWith(PREAMBLE_SEPARATOR)) {
-//            line = line.substring(0, line.length() - PREAMBLE_SEPARATOR.length());
-//        }
 
         Map<String, String> map = new LinkedHashMap<>();
         for (String pair : line.split(String.valueOf(PAIR_SEPARATOR))) {

@@ -22,7 +22,7 @@ package org.daxprotocol.core.codec;
 import static org.daxprotocol.core.codec.DaxCodecSymbols.EQUAL;
 import static org.daxprotocol.core.codec.DaxCodecSymbols.PAIR_SEPARATOR;
 
-public class DaxPairCodec implements DaxCodec<DaxPair<?>> { //implements DaxCodec<DaxPair> {
+public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
 
     public static String encode(StringBuilder sb,int tag, String value ) {
         sb.append(tag)
