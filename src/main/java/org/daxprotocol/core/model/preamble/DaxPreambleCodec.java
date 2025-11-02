@@ -44,16 +44,18 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 
         StringBuilder sb = new StringBuilder();
         map.forEach((k, v) -> DaxPairCodec.encode(sb,k,v));
-        sb.append(PREAMBLE_SEPARATOR);
+//        sb.append(PREAMBLE_SEPARATOR);
         return sb.toString();
     }
 
     /** Decode wire format → Preamble object. */
     public DaxPreamble decode(String wire) {
         String line = wire.strip();
-        if (line.endsWith(PREAMBLE_SEPARATOR)) {
-            line = line.substring(0, line.length() - PREAMBLE_SEPARATOR.length());
-        }
+
+        //TODO remove it
+//        if (line.endsWith(PREAMBLE_SEPARATOR)) {
+//            line = line.substring(0, line.length() - PREAMBLE_SEPARATOR.length());
+//        }
 
         Map<String, String> map = new LinkedHashMap<>();
         for (String pair : line.split(String.valueOf(PAIR_SEPARATOR))) {

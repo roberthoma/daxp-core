@@ -1,5 +1,6 @@
 package Dax_AA_Preamble_TEST;
 
+import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.junit.jupiter.api.Order;
@@ -15,9 +16,9 @@ public class AA_PreambleTest_01 {
         DaxPreambleCodec codec = new DaxPreambleCodec();
 
         String wireStr = codec.encode(pre);
-        wireStr = wireStr.replace((char)0x0001,'|');
+        wireStr = wireStr.replace(DaxCodecSymbols.PAIR_SEPARATOR,'|');
 
-        assertEquals("DAXP=1|TF=DEC|EN=UTF8|\n", wireStr);
+        assertEquals("DAXP=1|TF=DEC|EN=UTF8|", wireStr);
 
         String wire = codec.encode(pre);
         DaxPreamble copy = codec.decode(wire);

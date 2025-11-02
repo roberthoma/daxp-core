@@ -3,9 +3,12 @@ package DAXP_Annotation_TEST;
 import Dax_00_Base_test.Customer;
 import Dax_00_Base_test.CustomerDaxDic;
 import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.codec.DaxCodec;
+import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -15,26 +18,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Daxp_Annotations_Test01 {
 
-
     @Test
-    void shouldSeeAnnotationOnField() throws Exception {
-        Field f = Customer.class.getDeclaredField("name");
-        assertTrue(f.isAnnotationPresent(DaxpTag.class));
-        DaxpTag ann = f.getAnnotation(DaxpTag.class);
-        System.out.println("Ann tag : "+ann.tag());
-        assertEquals(CustomerDaxDic.CUSTOMER_NAME, ann.tag());
-
-        Customer  customer = new Customer();
-        String value = "Robert";
-
-
-        // make field accessible
-        f.setAccessible(true);
-        f.set(customer,value);
-
-        System.out.println(customer.getName());
-
+    void createMsgFromCustomer() {
+        String expectMsg = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|6=1|2001=123|2002=Robert|99=123|";
+        expectMsg = expectMsg.replace('|', DaxCodecSymbols.PAIR_SEPARATOR);
+        Customer customer = new Customer(123, "Robert");
+        DaxMessageFactory factory = new DaxMessageFactory();
+        DaxMessage message = factory.toDaxMessage("UCi", customer);
+        DaxMessageCodec codec = new DaxMessageCodec();
+        String ecMsg = codec.encode(message);
+        Assertions.assertEquals(expectMsg,ecMsg);
     }
+
+
 
     @Test
     void customer_tag_info(){
@@ -68,16 +64,5 @@ public class Daxp_Annotations_Test01 {
 
     }
 
-    @Test
-    void create_msg_from_customer() {
-        Customer customer = new Customer(123, "John");
-        DaxMessageFactory factory = new DaxMessageFactory();
-        DaxMessage message = factory.toDaxMessage("UCi", customer);
-        DaxMessageCodec codec = new DaxMessageCodec();
-        System.out.println(codec.encode(message));
-    }
 
-    @Test
-    void customer_injection_val() {
-    }
 }

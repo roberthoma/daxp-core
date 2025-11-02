@@ -17,20 +17,22 @@ class DaxDecodeServiceTest {
 
     @BeforeAll
     static void initTest() {
-        msg = "DAXP=1\u0001TF=DEC\u0001EN=UTF8\u0001\n" +
-                "9=DD\u00016=7\u0001" +
-                "7=1\u0001209=Id customer\u0001100=2001\u0001110=I\u0001" +
-                "7=2\u0001209=First name\u0001100=2002\u0001110=S\u0001" +
-                "7=3\u0001209=Surname\u0001100=2003\u0001110=S\u0001" +
-                "7=4\u0001209=Year of birth\u0001100=2005\u0001110=I\u0001" +
-                "7=5\u0001209=Telephone\u0001100=2073\u0001110=S\u0001" +
-                "7=6\u0001209=Town\u0001100=2074\u0001110=S\u0001" +
-                "7=7\u0001209=Email\u0001100=2011\u0001110=S\u0001" +
-                "99=123\u0001";
+        msg = "DAXP=1|TF=DEC|EN=UTF8|" +
+                "9=DD|6=7|" +
+                "7=1|209=Id customer|100=2001|110=I|" +
+                "7=2|209=First name|100=2002|110=S|" +
+                "7=3|209=Surname|100=2003|110=S|" +
+                "7=4|209=Year of birth|100=2005|110=I|" +
+                "7=5|209=Telephone|100=2073|110=S|" +
+                "7=6|209=Town|100=2074|110=S|" +
+                "7=7|209=Email|100=2011|110=S|" +
+                "99=123|";
+        msg = msg.replace('|',DaxCodecSymbols.PAIR_SEPARATOR);
     }
 
     @Test
     void preamblePairs_TEST(){
+        System.out.println(msg);
         Map<String,String> preamblePairs = DaxDecodeService.parsePreamble(msg);
         Assertions.assertEquals("DEC",preamblePairs.get("TF"));
         Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
