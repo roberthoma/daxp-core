@@ -19,11 +19,7 @@
  */
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.body.DaxBody;
-import org.daxprotocol.core.model.head.DaxHead;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
+
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -54,6 +50,7 @@ public class DaxDecodeService {
         Matcher m = pairPattern.matcher(msg);
         while (m.find()) {
             String tagStr = m.group(1);
+            System.out.println("TEST SPRIT > "+tagStr);
             if (tagStr.matches("\\d+")) {
                 int tag = Integer.parseInt(tagStr);
                 list.add(new DaxStringPair(tag, m.group(2)));

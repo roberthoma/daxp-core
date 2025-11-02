@@ -70,13 +70,17 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         DaxPreamble preamble;
         DaxHead head;
         DaxBody body ;
+
         Map<String, String> preambleMap = new HashMap<>();
 
         Pattern pairPattern = DaxPreambleCodec.getPairPattern(msgStr);
 
-        String preamblePart = msgStr.split(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
+        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL);
+        String preStr = msgStr.substring(0,fistMsgIdx);
+        String mStr = msgStr.substring(fistMsgIdx);
 
-        Matcher m = pairPattern.matcher(preamblePart);
+
+        Matcher m = pairPattern.matcher(preStr);
 
         while (m.find()) {
             preambleMap.put(m.group(1), m.group(2));
@@ -84,7 +88,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
         preamble = DaxPreambleCodec.fromMap(preambleMap);
 
-        List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(msgStr,pairPattern);
+        List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(mStr,pairPattern);
 
         head = DaxHeadCodec.createHead(listOfPair);
 
@@ -97,15 +101,11 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
     }
 
     @Override public DaxMessage decode(String msg) {
-
-
         return decodeAll(msg).get(0);
-
-//        return DaxDecodeService.parseAndDecode(msg).get(0);
     }
 
 
-    public int getMessageCount(String msg){
+    public static int getMessageCount(String msg){
       return 1; //TODO fix it
     }
 

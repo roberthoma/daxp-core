@@ -67,7 +67,9 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 
     public static Pattern getPairPattern(String msgStr){
         int  pairSeparatorIdx = msgStr.indexOf("TF=")-1;  // Example |TF= > |
+
         char pairSeparator = msgStr.charAt(pairSeparatorIdx);
+
         return Pattern.compile("(\\w+)"+ DaxCodecSymbols.EQUAL+"([^"+pairSeparator+"]*)");
     }
 
