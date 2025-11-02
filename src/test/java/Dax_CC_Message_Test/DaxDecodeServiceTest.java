@@ -5,6 +5,7 @@ import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.codec.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ class DaxDecodeServiceTest {
     @Test
     void preamblePairs_TEST(){
 
-        Map<String,String> preamblePairs = DaxDecodeService.parsePreamble(msg,DaxDecodeService.getPairPattern(msg) );
+        Map<String,String> preamblePairs = DaxPreambleCodec.parsePreamble(msg, DaxPreambleCodec.getPairPattern(msg) );
 
         Assertions.assertEquals("DEC",preamblePairs.get("TF"));
         Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
@@ -41,8 +42,8 @@ class DaxDecodeServiceTest {
 
     @Test
     void parseAndDecodeNumberPairsToString_TEST(){
-        Map<String,String>   preamblePairs = DaxDecodeService.parsePreamble(msg,DaxDecodeService.getPairPattern(msg));
-        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,DaxDecodeService.getPairPattern(msg));
+        Map<String,String>   preamblePairs = DaxPreambleCodec.parsePreamble(msg,DaxPreambleCodec.getPairPattern(msg));
+        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,DaxPreambleCodec.getPairPattern(msg));
         long equalChar = msg.chars()
                             .filter(c -> c== DaxCodecSymbols.EQUAL)
                             .count()

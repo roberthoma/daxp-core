@@ -17,12 +17,7 @@
  * limitations under the License.
  * ***********************************************************************
  */
-
-
 package org.daxprotocol.core.model.preamble;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Represents the preamble of a DAXP message — defines
@@ -30,6 +25,46 @@ import java.util.Map;
  */
 public class DaxPreamble {
     private String protocolVersion = "1";       // DAXP=1
+
+    private Character pairSeparator = 0x001;
+    private DaxTagFormat tagFormat;       // TF=DEC
+    private DaxEncoding encoding;         // EN=UTF8
+
+    public int getCnt() {
+        return cnt;
+    }
+
+    //    private String context;               // CTX=RxModeler or GUI, optional
+    private int cnt;                      //CNT  Number of item lines following preamble. Useful for validation.
+
+    public DaxPreamble(){
+        this.tagFormat = DaxTagFormat.DEC;
+        this.encoding = DaxEncoding.UTF8;
+    }
+
+
+
+
+    public void setProtocolVersion(String protocolVersion) {
+        this.protocolVersion = protocolVersion;
+    }
+
+    public void setTagFormat(DaxTagFormat tagFormat) {
+        this.tagFormat = tagFormat;
+    }
+
+    public void setEncoding(DaxEncoding encoding) {
+        this.encoding = encoding;
+    }
+
+    public void setCnt(int cnt) {
+        this.cnt = cnt;
+    }
+
+    public String getProtocolVersion() { return protocolVersion; }
+    public DaxTagFormat getTagFormat() { return tagFormat; }
+    public DaxEncoding getEncoding() { return encoding; }
+//    public String getContext() { return context; }
 
     public Character getPairSeparator() {
         return pairSeparator;
@@ -39,44 +74,4 @@ public class DaxPreamble {
         this.pairSeparator = pairSeparator;
     }
 
-    private Character pairSeparator = 0x001;
-    private DaxTagFormat tagFormat;       // TF=DEC
-    private DaxEncoding encoding;         // EN=UTF8
-    private String context;               // CTX=RxModeler or GUI, optional
-
-    public DaxPreamble(){
-        this.tagFormat = DaxTagFormat.DEC;
-        encoding = DaxEncoding.UTF8;
-    }
-
-
-
-    public String getProtocolVersion() { return protocolVersion; }
-    public DaxTagFormat getTagFormat() { return tagFormat; }
-    public DaxEncoding getEncoding() { return encoding; }
-    public String getContext() { return context; }
-
-
-    public Map<String,String> toMap() {
-        Map<String,String> map = new LinkedHashMap<>();
-        map.put(DaxPreambleTag.DAXP.tag(), protocolVersion);
-        map.put(DaxPreambleTag.TF.tag(), tagFormat.name());
-        map.put(DaxPreambleTag.EN.tag(), encoding.name());
-        if (context != null && !context.isEmpty())
-            map.put(DaxPreambleTag.CTX.tag(), context);
-
-        //TODO Optional timestamp nad token
-
-        return map;
-    }
-
-    public static DaxPreamble fromMap(Map<String,String> map) {
-        DaxPreamble p = new DaxPreamble();
-        p.protocolVersion = map.getOrDefault("DAXP", "1");
-        // Separator: PS (pair separator) or default SOH (0x01)
-        p.tagFormat = DaxTagFormat.valueOf(map.getOrDefault("TF", "DEC"));
-        p.encoding = DaxEncoding.valueOf(map.getOrDefault("EN", "UTF8"));
-        p.context = map.get("CTX");
-        return p;
-    }
 }

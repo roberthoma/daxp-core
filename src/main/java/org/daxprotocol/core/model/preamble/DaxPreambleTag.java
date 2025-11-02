@@ -19,26 +19,10 @@
  */
 package org.daxprotocol.core.model.preamble;
 
-public enum DaxPreambleTag {
-    DAXP("DAXP"),   // protocol identifier and version
-    TF("TF"),       // tag format: DEC | HEX
-    EN("EN"),       // encoding: ASCII | UTF8 | UTF16
-    CTX("CX");     // context: optional
-
-    private final String tag;
-
-    DaxPreambleTag(String tag) {
-        this.tag = tag;
-    }
-
-    public String tag() {
-        return tag;
-    }
-
-    public static DaxPreambleTag fromTag(String tag) {
-        for (DaxPreambleTag t : values()) {
-            if (t.tag.equalsIgnoreCase(tag)) return t;
-        }
-        return null;
-    }
+public class DaxPreambleTag {
+    public static final String  DAXP = "DAXP";   // protocol identifier and version
+    public static final String  TF = "TF";       // tag format: DEC | HEX
+    public static final String  EN = "EN";       // encoding: ASCII | UTF8 | UTF16
+    public static final String  CNT = "CNT";     //  Number of messages following preamble. Useful for validation.
+    public static final String  CTX = "CTX";     // context: optional
 }

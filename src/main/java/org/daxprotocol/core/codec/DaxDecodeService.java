@@ -23,6 +23,7 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
+import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -30,18 +31,23 @@ import java.util.regex.Pattern;
 
 public class DaxDecodeService {
 
-    public static Map<String, String> parsePreamble(String msg, Pattern pairPattern  ) {
-        Map<String, String> map = new HashMap<>();
+    /** Parses key=value pairs separated by the given delimiter. */
+    static Map<String, String> parseKv(String section, char sep) {
+        Map<String, String> map = new LinkedHashMap<>();
+        if (section == null || section.isEmpty()) return map;
 
-        // Everything before tag 9=
-        String preamblePart = msg.split(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
-        Matcher m = pairPattern.matcher(preamblePart);
-
-        while (m.find()) {
-            map.put(m.group(1), m.group(2));
+        String[] parts = section.split(Pattern.quote(String.valueOf(sep)));
+        for (String part : parts) {
+            if (part.isEmpty()) continue;
+            int eq = part.indexOf('=');
+            if (eq <= 0) continue; // no key=value
+            String key = part.substring(0, eq).trim();
+            String val = part.substring(eq + 1).trim();
+            if (!key.isEmpty()) map.put(key, val);
         }
         return map;
     }
+
 
     public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern) {
         List<DaxStringPair> list = new ArrayList<>();
@@ -55,83 +61,4 @@ public class DaxDecodeService {
         }
         return list;
     }
-
-    private static DaxHead createHead(List<DaxStringPair> listOfPair) {
-        String msgType = listOfPair.get(0).value;
-        DaxHead head = new DaxHead(msgType);
-
-        Optional<DaxStringPair> optBlockCount = listOfPair.stream()
-                                                 .filter(p -> p.tag == DaxTag.MSG_BLOCK_COUNT )
-                                                 .findFirst();
-
-        optBlockCount.ifPresent(pair -> head.setBlockCount(Integer.parseInt(pair.getValue())));
-
-        return head;
-    }
-
-
-    private static DaxBody createBody(int blockCount ,List<DaxStringPair> listOfPair){
-        DaxBody body = new DaxBody();
-        boolean isBody = false;
-
-        for(DaxPair<?> pair : listOfPair){
-            if(pair.tag == DaxTag.CHECKSUM){
-                break;
-            }
-
-            if(pair.tag == DaxTag.BLOCK_INDEX
-                    && Integer.valueOf((String) pair.value)>0
-            )
-            {
-                isBody = true;
-            }
-
-            if (isBody) {
-                if (pair.tag == DaxTag.BLOCK_INDEX) {
-                    body.nextBlock();
-                }
-                body.putPair(pair);
-            }
-        }
-
-        return body;
-    }
-
-    public static Pattern getPairPattern(String msgStr){
-        int  pairSeparatorIdx = msgStr.indexOf("TF=")-1;
-        char pairSeparator = msgStr.charAt(pairSeparatorIdx);
-        return Pattern.compile("(\\w+)"+DaxCodecSymbols.EQUAL+"([^"+pairSeparator+"]*)");
-    }
-
-
-    public static DaxMessage parseAndDecode(String msgStr){
-        DaxMessage message;
-        DaxPreamble preamble;
-        DaxHead head;
-        DaxBody body ;
-
-        Pattern pairPattern = getPairPattern(msgStr);
-
-        int firstMsgIdx = msgStr.indexOf(pairPattern+"9=");
-
-        String preamblePart = (firstMsgIdx > 0) ? msgStr.substring(0, firstMsgIdx) : msgStr;
-        String messagePart  = (firstMsgIdx > 0) ? msgStr.substring(firstMsgIdx)   : "";
-
-
-        Map<String, String> preambleMap = parsePreamble(msgStr,pairPattern);
-        preamble = DaxPreamble.fromMap(preambleMap);
-
-        List<DaxStringPair> listOfPair = parsePairs(msgStr,pairPattern);
-
-        head = createHead(listOfPair);
-
-        body = head.getBlockCount() > 0 ?
-             createBody(head.getBlockCount(), listOfPair) : null;
-
-        message = new DaxMessage(preamble,head,body,null);
-
-
-        return message;
-    }
-
 }

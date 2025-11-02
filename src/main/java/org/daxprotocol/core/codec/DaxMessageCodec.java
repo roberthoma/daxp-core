@@ -20,10 +20,20 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.body.DaxBodyCodec;
+import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.head.DaxHeadCodec;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DaxMessageCodec implements DaxCodec<DaxMessage>{
     DaxPreambleCodec preambleCodec = new DaxPreambleCodec();
@@ -44,7 +54,59 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         return sb.toString();
     }
 
-    @Override public DaxMessage decode(String msg) {
-        return DaxDecodeService.parseAndDecode(msg);
+    public static Map<String, String> parseMap(String msgPart, Pattern pairPattern  ) {
+        Map<String, String> map = new HashMap<>();
+
+        Matcher m = pairPattern.matcher(msgPart);
+
+        while (m.find()) {
+            map.put(m.group(1), m.group(2));
+        }
+        return map;
     }
+
+    public List<DaxMessage> decodeAll(String msgStr) {
+        List<DaxMessage> messageList = new ArrayList<>();
+        DaxPreamble preamble;
+        DaxHead head;
+        DaxBody body ;
+        Map<String, String> preambleMap = new HashMap<>();
+
+        Pattern pairPattern = DaxPreambleCodec.getPairPattern(msgStr);
+
+        String preamblePart = msgStr.split(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
+
+        Matcher m = pairPattern.matcher(preamblePart);
+
+        while (m.find()) {
+            preambleMap.put(m.group(1), m.group(2));
+        }
+
+        preamble = DaxPreambleCodec.fromMap(preambleMap);
+
+        List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(msgStr,pairPattern);
+
+        head = DaxHeadCodec.createHead(listOfPair);
+
+        body = head.getBlockCount() > 0 ?
+                DaxBodyCodec.createBody(head.getBlockCount(), listOfPair) : null;
+
+        messageList.add(new DaxMessage(preamble,head,body,null));
+
+        return messageList;
+    }
+
+    @Override public DaxMessage decode(String msg) {
+
+
+        return decodeAll(msg).get(0);
+
+//        return DaxDecodeService.parseAndDecode(msg).get(0);
+    }
+
+
+    public int getMessageCount(String msg){
+      return 1; //TODO fix it
+    }
+
 }

@@ -21,6 +21,12 @@ package org.daxprotocol.core.model.head;
 
 import org.daxprotocol.core.codec.DaxCodec;
 import org.daxprotocol.core.codec.DaxPairCodec;
+import org.daxprotocol.core.codec.DaxStringPair;
+import org.daxprotocol.core.codec.DaxTag;
+
+import java.util.List;
+import java.util.Optional;
+
 import static org.daxprotocol.core.codec.DaxTag.*;
 
 public class DaxHeadCodec implements DaxCodec<DaxHead> {
@@ -44,4 +50,18 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
     @Override public DaxHead decode(String wire) {
         return null;
     }
+
+    public static DaxHead createHead(List<DaxStringPair> listOfPair) {
+        String msgType = listOfPair.get(0).getValue();
+        DaxHead head = new DaxHead(msgType);
+
+        Optional<DaxStringPair> optBlockCount = listOfPair.stream()
+                .filter(p -> p.getTag() == DaxTag.MSG_BLOCK_COUNT )
+                .findFirst();
+
+        optBlockCount.ifPresent(pair -> head.setBlockCount(Integer.parseInt(pair.getValue())));
+
+        return head;
+    }
+
 }

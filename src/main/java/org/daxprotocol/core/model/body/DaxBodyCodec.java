@@ -19,11 +19,9 @@
  */
 package org.daxprotocol.core.model.body;
 
-import org.daxprotocol.core.codec.DaxCodec;
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxPairCodec;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.codec.*;
 
+import java.util.List;
 import java.util.Map;
 
 public class DaxBodyCodec implements DaxCodec<DaxBody> {
@@ -60,4 +58,36 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
     public DaxBody decode(String wire) {
         return null;
     }
+
+    public static DaxBody createBody(int blockCount , List<DaxStringPair> listOfPair){
+        DaxBody body = new DaxBody();
+        boolean isBody = false;
+
+        for(DaxPair<?> pair : listOfPair){
+            if(pair.getTag() == DaxTag.CHECKSUM){
+                break;
+            }
+
+            if(pair.getTag() == DaxTag.BLOCK_INDEX
+                    && Integer.valueOf((String) pair.getValue())>0
+            )
+            {
+                isBody = true;
+            }
+
+            if (isBody) {
+                if (pair.getTag() == DaxTag.BLOCK_INDEX) {
+                    body.nextBlock();
+                }
+                body.putPair(pair);
+            }
+        }
+
+        return body;
+    }
+
+
+
+
+
 }

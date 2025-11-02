@@ -21,7 +21,8 @@
 package org.daxprotocol.core.model.preamble;
 
 public enum DaxTagFormat {
-    DEC("DEC"), HEX("HEX");
+    DEC("DEC"),
+    HEX("HEX");
     private final String value;
 
     DaxTagFormat(String value) {
