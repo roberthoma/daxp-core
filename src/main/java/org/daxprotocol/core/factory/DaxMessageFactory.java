@@ -82,7 +82,8 @@ public class DaxMessageFactory {
             throw new RuntimeException(e);
         }
 
-        return new DaxMessage(preamble,head,body,trailer);
+        return new DaxMessage(head,body,trailer);
+//        return new DaxMessage(preamble,head,body,trailer);
 
     }
 

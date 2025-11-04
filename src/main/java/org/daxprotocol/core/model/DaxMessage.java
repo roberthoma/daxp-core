@@ -22,18 +22,12 @@ package org.daxprotocol.core.model;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
 public final class DaxMessage {
-    private  DaxPreamble preamble;
     private  DaxHead head;
     private  DaxBody body;
     private  DaxTrailer trailer;
-
-    public DaxPreamble getPreamble() {
-        return preamble;
-    }
 
     public DaxHead getHead() {
         return head;
@@ -51,21 +45,18 @@ public final class DaxMessage {
     public DaxMessage() {
 
     }
-        public DaxMessage(String msgType) {
-        this.preamble = new DaxPreamble();
+    public DaxMessage(String msgType) {
         this.head = new DaxHead(msgType);
         this.body = new DaxBody();
         this.trailer = new DaxTrailer();
     }
-    public DaxMessage(DaxPreamble preamble, DaxHead head, DaxBody body, DaxTrailer trailer) {
-        this.preamble = preamble;
+    public DaxMessage(DaxHead head, DaxBody body, DaxTrailer trailer) {
         this.head = head;
         this.body = body;
         this.trailer = trailer;
     }
 
-    public DaxMessage(DaxPreamble preamble, DaxHead head, DaxTrailer trailer) {
-        this.preamble = preamble;
+    public DaxMessage( DaxHead head, DaxTrailer trailer) {
         this.head = head;
         this.trailer = trailer;
     }

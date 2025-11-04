@@ -73,9 +73,9 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         return Pattern.compile("(\\w+)"+ DaxCodecSymbols.EQUAL+"([^"+pairSeparator+"]*)");
     }
 
-    public static Map<String, String> parsePreamble(String msg, Pattern pairPattern  ) {
+    public static Map<String, String> parsePreamble(String msg) {
         Map<String, String> map = new HashMap<>();
-
+        Pattern pairPattern = getPairPattern(msg);
         // Everything before tag 9=
         String preamblePart = msg.split(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
         Matcher m = pairPattern.matcher(preamblePart);
@@ -86,10 +86,10 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         return map;
     }
 
-    /** Decode wire format → Preamble object. */
+    /** Decode msgStr format → Preamble object. */
     public DaxPreamble decode(String msgStr) {
 
-        Map<String, String> preambleMap = parsePreamble(msgStr, getPairPattern(msgStr));
+        Map<String, String> preambleMap = parsePreamble(msgStr);
 
         return  fromMap(preambleMap);
     }

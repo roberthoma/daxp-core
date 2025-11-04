@@ -19,9 +19,9 @@ class DaxDecodeServiceTest {
     @BeforeAll
     static void initTest() {
         msg = "DAXP=1|TF=DEC|EN=UTF8| \n" +
-                "  9=DD|6=7|" +
-                "7=1|209=Id customer|100=2001|110=I|" +
-                "7=2|209=First name|100=2002|110=S|" +
+                "9=DD|6=7|"+
+                "7=1|209=Id customer|100=2001|110=I|\n" +
+                "7=2|209=First name|100=2002|110=S|\n" +
                 "7=3|209=Surname|100=2003|110=S|" +
                 "7=4|209=Year of birth|100=2005|110=I|" +
                 "7=5|209=Telephone|100=2073|110=S|" +
@@ -33,7 +33,7 @@ class DaxDecodeServiceTest {
     @Test
     void preamblePairs_TEST(){
 
-        Map<String,String> preamblePairs = DaxPreambleCodec.parsePreamble(msg, DaxPreambleCodec.getPairPattern(msg) );
+        Map<String,String> preamblePairs = DaxPreambleCodec.parsePreamble(msg );
 
         Assertions.assertEquals("DEC",preamblePairs.get("TF"));
         Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
@@ -42,7 +42,7 @@ class DaxDecodeServiceTest {
 
     @Test
     void parseAndDecodeNumberPairsToString_TEST(){
-        Map<String,String>   preamblePairs = DaxPreambleCodec.parsePreamble(msg,DaxPreambleCodec.getPairPattern(msg));
+        Map<String,String>   preamblePairs = DaxPreambleCodec.parsePreamble(msg);
         List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,DaxPreambleCodec.getPairPattern(msg));
         long equalChar = msg.chars()
                             .filter(c -> c== DaxCodecSymbols.EQUAL)
