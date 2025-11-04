@@ -74,47 +74,29 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
     public List<DaxMessage> decodeAll(String msgStr, DaxDictionary dic) {
         List<DaxMessage> messageList = new ArrayList<>();
 
+        DaxPreamble preamble = preambleCodec.decode(msgStr);
+
+
         DaxHead head;
         DaxBody body ;
 
 
-
-        Pattern pairPattern = DaxPreambleCodec.getPairPattern(msgStr);
-
         int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL);
 
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-        Map<String, String> preambleMap = new HashMap<>();
-
-        DaxPreamble preamble;
-        String preambleStr = msgStr.substring(0,fistMsgIdx);
-        preambleStr = preambleStr.trim().replaceAll(" ","");
-
-        Matcher m = pairPattern.matcher(preambleStr);
-
-        while (m.find()) {
-            preambleMap.put(m.group(1), m.group(2));
-        }
-
-        preamble = DaxPreambleCodec.fromMap(preambleMap);
-
-
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 
-
-
-        List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(msgPairsStr,pairPattern);
+        List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(msgPairsStr, preamble.getPairPattern());
 
         head = DaxHeadCodec.createHead(listOfPair);
 
         body =  DaxBodyCodec.createBody(head.getBlockCount(), listOfPair) ;
 
         messageList.add(new DaxMessage(head,body,null));
+
+
 
         return messageList;
     }

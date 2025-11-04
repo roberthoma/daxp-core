@@ -18,7 +18,7 @@ class DaxDecodeServiceTest {
 
     @BeforeAll
     static void initTest() {
-        msg = "DAXP=1|TF=DEC|EN=UTF8| \n" +
+        msg = "DAXP=1|TF=DEC|EN=UTF8|CNT=1|\n" +
                 "9=DD|6=7|"+
                 "7=1|209=Id customer|100=2001|110=I|\n" +
                 "7=2|209=First name|100=2002|110=S|\n" +
@@ -35,9 +35,10 @@ class DaxDecodeServiceTest {
 
         Map<String,String> preamblePairs = DaxPreambleCodec.parsePreamble(msg );
 
+        Assertions.assertEquals("1",preamblePairs.get("DAXP"));
         Assertions.assertEquals("DEC",preamblePairs.get("TF"));
         Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
-        Assertions.assertEquals("1",preamblePairs.get("DAXP"));
+        Assertions.assertEquals("1",preamblePairs.get("CNT"));
     }
 
     @Test

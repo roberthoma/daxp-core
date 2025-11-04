@@ -19,12 +19,21 @@
  */
 package org.daxprotocol.core.model.preamble;
 
+import org.daxprotocol.core.codec.DaxCodecSymbols;
+import org.daxprotocol.core.codec.DaxDecodeService;
+
+import java.util.regex.Pattern;
+
 /**
  * Represents the preamble of a DAXP message — defines
  * how the rest of the message is encoded and parsed.
  */
 public class DaxPreamble {
+    Pattern pairPattern;
     private String protocolVersion = "1";       // DAXP=1
+    //    private String context;               // CTX=RxModeler or GUI, optional
+    private int cnt;                      //CNT  Number of item lines following preamble. Useful for validation.
+
 
     private Character pairSeparator = 0x001;
     private DaxTagFormat tagFormat;       // TF=DEC
@@ -34,8 +43,6 @@ public class DaxPreamble {
         return cnt;
     }
 
-    //    private String context;               // CTX=RxModeler or GUI, optional
-    private int cnt;                      //CNT  Number of item lines following preamble. Useful for validation.
 
     public DaxPreamble(){
         this.tagFormat = DaxTagFormat.DEC;
@@ -72,6 +79,14 @@ public class DaxPreamble {
 
     public void setPairSeparator(Character pairSeparator) {
         this.pairSeparator = pairSeparator;
+        this.setPairPattern(DaxDecodeService.getPairPattern(pairSeparator));
     }
 
+    public Pattern getPairPattern() {
+        return pairPattern;
+    }
+
+    public void setPairPattern(Pattern pairPattern) {
+        this.pairPattern = pairPattern;
+    }
 }

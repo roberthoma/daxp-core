@@ -41,6 +41,11 @@ public class DaxDecodeService {
         // add more as needed (char, BigDecimal, enums, etc.)
     }
 
+    public static Pattern getPairPattern(char pairSeparator) {
+        return Pattern.compile("(\\w+)"+ DaxCodecSymbols.EQUAL+"([^"+pairSeparator+"]*)");
+    }
+
+
     public static Object convert(String raw, Class<?> type) {
         Function<String, Object> fn = CONVERTERS.get(type);
         if (fn == null) {

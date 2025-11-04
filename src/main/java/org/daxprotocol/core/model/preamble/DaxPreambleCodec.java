@@ -55,27 +55,23 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         return sb.toString();
     }
 
-    public static DaxPreamble fromMap(Map<String,String> map) {
-        DaxPreamble p = new DaxPreamble();
-        p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.DAXP, "1"));
-        p.setTagFormat(DaxTagFormat.valueOf(map.getOrDefault(DaxPreambleTag.TF, "DEC")));
-        p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.EN, "UTF8")));
-//        p.context = map.get(DaxPreambleTag.CTX.tag());
-        p.setCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.CNT,"1")));
-        return p;
+    private static char getPairSeparator(String msgStr){
+        int  pairSeparatorIdx = msgStr.indexOf("TF=")-1;  // Example |TF= > |
+        return msgStr.charAt(pairSeparatorIdx);
     }
 
+
     public static Pattern getPairPattern(String msgStr){
-        int  pairSeparatorIdx = msgStr.indexOf("TF=")-1;  // Example |TF= > |
 
-        char pairSeparator = msgStr.charAt(pairSeparatorIdx);
-
-        return Pattern.compile("(\\w+)"+ DaxCodecSymbols.EQUAL+"([^"+pairSeparator+"]*)");
+        return DaxDecodeService.getPairPattern(getPairSeparator(msgStr));
     }
 
     public static Map<String, String> parsePreamble(String msg) {
+        return parsePreamble(msg, getPairPattern(msg));
+    }
+
+    public static Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
         Map<String, String> map = new HashMap<>();
-        Pattern pairPattern = getPairPattern(msg);
         // Everything before tag 9=
         String preamblePart = msg.split(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
         Matcher m = pairPattern.matcher(preamblePart);
@@ -87,14 +83,26 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     }
 
     /** Decode msgStr format → Preamble object. */
+    @Override
     public DaxPreamble decode(String msgStr) {
+        DaxPreamble p = new DaxPreamble();
+        p.setPairSeparator(getPairSeparator(msgStr));
 
-        Map<String, String> preambleMap = parsePreamble(msgStr);
+        Pattern pairPattern = getPairPattern(msgStr);
 
-        return  fromMap(preambleMap);
+        Map<String, String> map = parsePreamble(msgStr, p.getPairPattern());
+
+        p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.DAXP, "1"));
+        p.setTagFormat(DaxTagFormat.valueOf(map.getOrDefault(DaxPreambleTag.TF, "DEC"))); //TODO is required : add exception
+        p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.EN, "UTF8")));
+//        p.context = map.get(DaxPreambleTag.CTX.tag());
+        p.setCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.CNT,"1")));
+
+
+        return p;
+
+
     }
-
-
 
 
 }
