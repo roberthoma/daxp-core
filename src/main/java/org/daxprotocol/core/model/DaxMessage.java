@@ -19,6 +19,7 @@
  */
 package org.daxprotocol.core.model;
 
+import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
@@ -69,7 +70,7 @@ public final class DaxMessage {
         this.trailer = trailer;
     }
 
-    public String getType() {
+    public String getMsgType() {
         return head.getMsgType();
     }
 
@@ -79,5 +80,9 @@ public final class DaxMessage {
 
     public Integer getChecksum() {
         return trailer.getChecksum();
+    }
+
+    public DaxPair<?> get(int tag) {
+       return body.getPair(0,tag);
     }
 }

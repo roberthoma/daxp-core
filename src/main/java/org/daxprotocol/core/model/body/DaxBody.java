@@ -50,4 +50,9 @@ public class DaxBody {
         blocksMap.put(blockIdx,new HashMap<>());
     }
 
+    public DaxPair<?> getPair(int blockIdx, int tag){
+
+        return blocksMap.get(blockIdx).get(tag);
+    }
+
 }

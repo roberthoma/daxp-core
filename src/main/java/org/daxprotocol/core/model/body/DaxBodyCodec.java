@@ -61,33 +61,20 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
     public static DaxBody createBody(int blockCount , List<DaxStringPair> listOfPair){
         DaxBody body = new DaxBody();
-        boolean isBody = false;
-
+        body.nextBlock();
         for(DaxPair<?> pair : listOfPair){
             if(pair.getTag() == DaxTag.CHECKSUM){
                 break;
             }
-
-            if(pair.getTag() == DaxTag.BLOCK_INDEX
-                    && Integer.valueOf((String) pair.getValue())>0
-            )
-            {
-                isBody = true;
+            if (DaxTag.isHeadTag(pair.getTag())){
+                continue;
             }
-
-            if (isBody) {
-                if (pair.getTag() == DaxTag.BLOCK_INDEX) {
-                    body.nextBlock();
-                }
-                body.putPair(pair);
+            if (pair.getTag() == DaxTag.BLOCK_INDEX) {
+                body.nextBlock();
             }
+            body.putPair(pair);
         }
-
         return body;
     }
-
-
-
-
 
 }

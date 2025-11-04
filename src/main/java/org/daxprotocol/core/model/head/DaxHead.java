@@ -43,12 +43,13 @@ public final class DaxHead {
 
     public DaxHead(String msgType, String token, String timestamp) {
         map.put(MSG_TYPE,new DaxMsgType(msgType));
-        map.put(MSG_TOKEN,new DaxMsgToken(token));
-        map.put(MSG_TIMESTAMP,new DaxMsgTimestamp(timestamp));
+        map.put(MSG_TOKEN,new DaxMsgToken(token)); //TODO move to preamble
+        map.put(MSG_TIMESTAMP,new DaxMsgTimestamp(timestamp)); //TODO move to preamble
         map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(0));
     }
     public DaxHead(String msgType) {
         map.put(MSG_TYPE,new DaxMsgType(msgType));
+        map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(0));
     }
 
     public int getBlockCount() {

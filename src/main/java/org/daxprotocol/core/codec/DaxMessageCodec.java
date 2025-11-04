@@ -92,8 +92,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
         head = DaxHeadCodec.createHead(listOfPair);
 
-        body = head.getBlockCount() > 0 ?
-                DaxBodyCodec.createBody(head.getBlockCount(), listOfPair) : null;
+        body =  DaxBodyCodec.createBody(head.getBlockCount(), listOfPair) ;
 
         messageList.add(new DaxMessage(preamble,head,body,null));
 

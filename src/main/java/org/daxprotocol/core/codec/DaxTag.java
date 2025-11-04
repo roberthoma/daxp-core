@@ -19,20 +19,39 @@
  */
 package org.daxprotocol.core.codec;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 public class DaxTag {
 
-
+    /**
+     * Preamble tags
+     * */
     public static final String DAXP = "DAXP"; // protocol identifier and version
     public static final String TF   = "TF";   // tag format: DEC | HEX
     public static final String EN   = "EN";   // encoding: ASCII | UTF8 | UTF16
     public static final String CTX  = "CX";   // context: optional
 
-
+    /**
+    * Head TAGS
+    * */
     public static final int MSG_TYPE  = 9;
-    public static final int MSG_TOKEN = 15;
+    public static final int MSG_TOKEN = 15; //TODO move to preamble
     public static final int MSG_BLOCK_COUNT = 6;
-    public static final int MSG_TIMESTAMP = 16;
+    public static final int MSG_TIMESTAMP = 16;  //TODO move to preamble
 
+    static Set<Integer> headSet = Set.of(MSG_TYPE,MSG_TOKEN, MSG_BLOCK_COUNT,MSG_TIMESTAMP );
+
+
+    public static boolean isHeadTag(int tag){
+        return headSet.contains(tag);
+    }
+
+    /**********************************
+     * Body tags
+     * */
     public static final int BLOCK_INDEX         = 7;
     public static final int CHECKSUM            = 99 ; //     Checksum    Integer
     public static final int FIELD_ID            = 100 ; //     FieldId     Integer

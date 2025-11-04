@@ -3,18 +3,14 @@ package DAXP_Annotation_TEST;
 import Dax_00_Base_test.Customer;
 import Dax_00_Base_test.CustomerDaxDic;
 import org.daxprotocol.core.annotation.DaxpTag;
-import org.daxprotocol.core.codec.DaxCodec;
 import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Field;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Daxp_Annotations_Test01 {
 
@@ -65,5 +61,14 @@ public class Daxp_Annotations_Test01 {
 
     }
 
+    @Test
+    void injection(){
+        String msgStr = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|2001=123|2002=Robert|99=123|";
+        DaxMessageCodec codec = new DaxMessageCodec();
+        DaxMessage message = codec.decode(msgStr);
+        Customer customer = DaxMessageConverter.fromMessage(message, Customer.class);
+        Assertions.assertEquals("Robert" , customer.getName());
+        Assertions.assertEquals(123 , customer.getCustomerId());
+    }
 
 }

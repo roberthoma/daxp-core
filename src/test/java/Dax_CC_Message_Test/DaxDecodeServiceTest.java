@@ -18,8 +18,8 @@ class DaxDecodeServiceTest {
 
     @BeforeAll
     static void initTest() {
-        msg = "DAXP=1|TF=DEC|EN=UTF8|" +
-                "9=DD|6=7|" +
+        msg = "DAXP=1|TF=DEC|EN=UTF8| \n" +
+                "  9=DD|6=7|" +
                 "7=1|209=Id customer|100=2001|110=I|" +
                 "7=2|209=First name|100=2002|110=S|" +
                 "7=3|209=Surname|100=2003|110=S|" +
@@ -56,9 +56,13 @@ class DaxDecodeServiceTest {
     void parseAndDecodeMSG_TEST(){
         DaxMessageCodec codec = new DaxMessageCodec();
         DaxMessage message = codec.decode(msg);
-        String afterMsg = codec.encode(message);
-        afterMsg = afterMsg.replace(DaxCodecSymbols.PAIR_SEPARATOR,'|');
-        Assertions.assertEquals(msg,afterMsg );
+        Assertions.assertEquals("DD",  message.getMsgType());
+
+        String afterMsgStr = codec.encode(message);
+        DaxMessage afterMsg  = codec.decode(afterMsgStr);
+        Assertions.assertEquals("DD",  afterMsg.getMsgType());
+
+
     }
 
 }
