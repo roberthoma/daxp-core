@@ -42,8 +42,6 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
     DaxBodyCodec bodyCodec = new DaxBodyCodec();
     DaxTrailerCodec trailerCodec = new DaxTrailerCodec();
 
-
-
     @Override public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
         DaxPreamble preamble = new DaxPreamble();
@@ -65,38 +63,72 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         }
         return map;
     }
+    //    public List<DaxMessage> decodeFisrt(String msgStr, int nfirs) {
+    //    }
+
+
     public List<DaxMessage> decodeAll(String msgStr) {
         return decodeAll(msgStr,null);
     }
 
+   private DaxMessage createMsg(List<DaxStringPair> listOfPair){
+       DaxHead head;
+       DaxBody body ;
+
+       head = DaxHeadCodec.createHead(listOfPair);
+       body = DaxBodyCodec.createBody(head.getBlockCount(), listOfPair) ;
+       //todo trailer with check
+
+       return new DaxMessage(head,body,null);
+   }
+
+   private List<List<DaxStringPair>> splitMessages(List<DaxStringPair> allPairs) {
+       List<List<DaxStringPair>> result = new ArrayList<>();
+       List<DaxStringPair> current = new ArrayList<>();
+
+       for (DaxStringPair pair : allPairs) {
+           if (pair.getTag() == DaxTag.MSG_TYPE) {
+               // start of a new message
+               if (!current.isEmpty()) {
+                   // if previous message wasn't closed correctly, save it anyway
+                   result.add(new ArrayList<>(current));
+                   current.clear();
+               }
+           }
+
+           current.add(pair);
+
+           if (pair.getTag() == DaxTag.CHECKSUM) {
+               // end of current message
+               result.add(new ArrayList<>(current));
+               current.clear();
+           }
+       }
+
+       // handle last incomplete message (optional)
+       if (!current.isEmpty()) {
+           result.add(current);
+       }
+
+       return result;
+   }
 
 
     public List<DaxMessage> decodeAll(String msgStr, DaxDictionary dic) {
         List<DaxMessage> messageList = new ArrayList<>();
-
         DaxPreamble preamble = preambleCodec.decode(msgStr);
 
-
-        DaxHead head;
-        DaxBody body ;
-
-
         int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL);
-
-
-
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 
         List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(msgPairsStr, preamble.getPairPattern());
 
-        head = DaxHeadCodec.createHead(listOfPair);
+        List<List<DaxStringPair>> msgPairList =  splitMessages(listOfPair);
 
-        body =  DaxBodyCodec.createBody(head.getBlockCount(), listOfPair) ;
-
-        messageList.add(new DaxMessage(head,body,null));
-
-
+        msgPairList.forEach(pairs ->
+            messageList.add(createMsg(pairs))
+        );
 
         return messageList;
     }
@@ -111,8 +143,9 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
     }
 
 
-    public static int getMessageCount(String msg){
-      return 1; //TODO fix it
+    public  int getMessageCount(String msgStr){
+        DaxPreamble preamble = preambleCodec.decode(msgStr);
+      return preamble.getMsgCnt() ;
     }
 
 }

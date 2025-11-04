@@ -32,7 +32,7 @@ public class Daxp_Annotations_Test01 {
     @Test
     void customer_tag_info(){
         CustomerDaxDic dic = new CustomerDaxDic();
-        Customer customer = new Customer(123, "John");
+        Customer customer = new Customer(123, "Robert");
        try {
             for (Field field : Customer.class.getDeclaredFields()) {
                 System.out.println("Field> "+field.getName());

@@ -19,7 +19,6 @@
  */
 package org.daxprotocol.core.model.preamble;
 
-import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxDecodeService;
 
 import java.util.regex.Pattern;
@@ -39,7 +38,7 @@ public class DaxPreamble {
     private DaxTagFormat tagFormat;       // TF=DEC
     private DaxEncoding encoding;         // EN=UTF8
 
-    public int getCnt() {
+    public int getMsgCnt() {
         return cnt;
     }
 

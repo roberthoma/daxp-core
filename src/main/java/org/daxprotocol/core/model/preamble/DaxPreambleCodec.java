@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.daxprotocol.core.codec.DaxCodecSymbols.*;
-
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.
  * Format example: DAXP=1|TF=DEC|E=UTF8\n
@@ -42,8 +40,8 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         map.put(DaxPreambleTag.TF,  preamble.getTagFormat().value());
         map.put(DaxPreambleTag.EN, preamble.getEncoding().value());
 
-        if (preamble.getCnt() > 1){
-            map.put(DaxPreambleTag.CNT, String.valueOf(preamble.getCnt()));
+        if (preamble.getMsgCnt() > 1){
+            map.put(DaxPreambleTag.CNT, String.valueOf(preamble.getMsgCnt()));
         }
 
 //        if (context != null && ! context.isEmpty())
