@@ -19,6 +19,7 @@
  */
 package org.daxprotocol.core.codec;
 
+import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.body.DaxBodyCodec;
@@ -64,10 +65,16 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         }
         return map;
     }
-
     public List<DaxMessage> decodeAll(String msgStr) {
+        return decodeAll(msgStr,null);
+    }
+
+
+
+    public List<DaxMessage> decodeAll(String msgStr, DaxDictionary dic) {
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble;
+
         DaxHead head;
         DaxBody body ;
 
@@ -88,6 +95,8 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
         preamble = DaxPreambleCodec.fromMap(preambleMap);
 
+        //------------------------
+
         List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(mStr,pairPattern);
 
         head = DaxHeadCodec.createHead(listOfPair);
@@ -99,7 +108,12 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         return messageList;
     }
 
-    @Override public DaxMessage decode(String msg) {
+    public DaxMessage decode(String msg, DaxDictionary dic) {
+        return decodeAll(msg,dic).get(0);
+    }
+
+    @Override
+    public DaxMessage decode(String msg) {
         return decodeAll(msg).get(0);
     }
 

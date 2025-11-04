@@ -1,26 +1,31 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2025 Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
+
 package org.daxprotocol.core.conventer;
 import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.model.DaxMessage;
-
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+
 public class DaxMessageConverter {
 
-    private static final Map<Class<?>, Function<String, Object>> CONVERTERS = new HashMap<>();
-    static {
-        CONVERTERS.put(String.class, s -> s);
-        CONVERTERS.put(int.class,    Integer::parseInt);
-        CONVERTERS.put(Integer.class,Integer::valueOf);
-        CONVERTERS.put(long.class,   Long::parseLong);
-        CONVERTERS.put(Long.class,   Long::valueOf);
-        CONVERTERS.put(boolean.class,s -> Boolean.parseBoolean(s));
-        CONVERTERS.put(Boolean.class,Boolean::valueOf);
-        CONVERTERS.put(double.class, Double::parseDouble);
-        CONVERTERS.put(Double.class, Double::valueOf);
-        // add more as needed (char, BigDecimal, enums, etc.)
-    }
 
     public static <T> T fromMessage(DaxMessage message, Class<T> targetClass) {
         try {
@@ -35,7 +40,7 @@ public class DaxMessageConverter {
                 if (maybeVal==null) continue; // gracefully ignore missing tags or empty
 
                 String raw = maybeVal.getStrValue();
-                Object converted = convert(raw, f.getType());  // if not ..convert from dictionary
+                Object converted = DaxDecodeService.convert(raw, f.getType());  // if not ..convert from dictionary
 
                 f.setAccessible(true);
                 f.set(instance, converted);
@@ -46,11 +51,8 @@ public class DaxMessageConverter {
         }
     }
 
-    private static Object convert(String raw, Class<?> type) {
-        Function<String, Object> fn = CONVERTERS.get(type);
-        if (fn == null) {
-            throw new IllegalArgumentException("No converter for type: " + type.getName());
-        }
-        return fn.apply(raw);
-    }
+
 }
+
+
+//TODO Dictionary conventer
