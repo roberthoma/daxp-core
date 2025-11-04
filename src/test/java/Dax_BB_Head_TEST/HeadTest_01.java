@@ -12,7 +12,6 @@ public class HeadTest_01 {
         head.setBlockCount(10);
         Assertions.assertEquals("AA",head.getMsgType());
         Assertions.assertEquals(10,head.getBlockCount());
-
     }
 
     @Test

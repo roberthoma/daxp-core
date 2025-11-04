@@ -32,10 +32,10 @@ public class DaxMessageConverter {
 
                 int tag = ann.tag();
                 var maybeVal = message.get(tag);
-             //???   if (maybeVal.isEmpty()) continue; // gracefully ignore missing tags
+                if (maybeVal==null) continue; // gracefully ignore missing tags or empty
 
                 String raw = maybeVal.getStrValue();
-                Object converted = convert(raw, f.getType());
+                Object converted = convert(raw, f.getType());  // if not ..convert from dictionary
 
                 f.setAccessible(true);
                 f.set(instance, converted);

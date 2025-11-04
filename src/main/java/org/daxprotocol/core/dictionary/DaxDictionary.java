@@ -35,6 +35,7 @@ public class DaxDictionary {
     public Map<Integer, DaxPair<?>> getFieldAttributeMap(int fieldId) {
         return attributMap.get(fieldId);
     }
+
     public Map<Integer, Map<Integer, DaxPair<?>>> getAttributMap(){
       return attributMap;
     }

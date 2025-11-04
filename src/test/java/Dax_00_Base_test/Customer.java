@@ -12,6 +12,7 @@ public class Customer {
     @DaxpTag(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
     String name;
 
+    @DaxpTag(tag = CustomerDaxDic.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
 
     public Customer(){
