@@ -31,6 +31,7 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
                                       int blockIdx ,Map<Integer, DaxPair<?>> blockMap)
     {
         if (isBlogIdx) {
+            sb.append("\n"); //TODO Debug mode or optional
             DaxPairCodec.encode(sb, DaxTag.BLOCK_INDEX, String.valueOf(blockIdx+1));
         }
 
