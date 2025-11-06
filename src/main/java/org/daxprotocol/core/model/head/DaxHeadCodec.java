@@ -35,7 +35,9 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
 
         StringBuilder sb = new StringBuilder();
         DaxPairCodec.encode(sb,MSG_TYPE,message.getMsgType());
-        DaxPairCodec.encode(sb,MSG_BLOCK_COUNT,String.valueOf(blockCount));
+        if (blockCount>1) {
+            DaxPairCodec.encode(sb, MSG_BLOCK_COUNT, String.valueOf(blockCount));
+        }
 
         return sb.toString();
     }

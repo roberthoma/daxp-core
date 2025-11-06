@@ -27,7 +27,7 @@ public final class DaxCodecSymbols {
     public static final char EQUAL = '=';
 
     /** Pair separator on the WIRE (binary, non-printable). */
-    public static final char PAIR_SEPARATOR = 0x0001; // SOH
+    public static char PAIR_SEPARATOR = 0x0001; // SOH  // Default // todo
 
 
 //    /** Pair separator for logs/tests (printable). */

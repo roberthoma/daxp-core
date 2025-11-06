@@ -84,7 +84,11 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     @Override
     public DaxPreamble decode(String msgStr) {
         DaxPreamble p = new DaxPreamble();
+        //TODO fix this as no IDEA how to set fof test mode
+        DaxCodecSymbols.PAIR_SEPARATOR = getPairSeparator(msgStr);
+
         p.setPairSeparator(getPairSeparator(msgStr));
+
 
         Pattern pairPattern = getPairPattern(msgStr);
 
