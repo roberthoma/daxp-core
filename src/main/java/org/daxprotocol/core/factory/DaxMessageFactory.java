@@ -20,8 +20,10 @@
 
 package org.daxprotocol.core.factory;
 
-import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxPair;
+import org.daxprotocol.core.codec.DaxStringPair;
+import org.daxprotocol.core.codec.DaxTag;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.head.DaxMsgType;
@@ -69,8 +71,8 @@ public class DaxMessageFactory {
         DaxTrailer trailer = new DaxTrailer();
         try {
             for (Field field : daxDataEntry.getClass().getDeclaredFields()) {
-                if (field.isAnnotationPresent(DaxpTag.class)) {
-                    DaxpTag daxp = field.getAnnotation(DaxpTag.class);
+                if (field.isAnnotationPresent(DaxpField.class)) {
+                    DaxpField daxp = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
                     if (field.get(daxDataEntry) != null) { //TODO For String check is empty
                         body.putPair(new DaxPair<>(daxp.tag(), field.get(daxDataEntry)));
@@ -83,8 +85,14 @@ public class DaxMessageFactory {
         }
 
         return new DaxMessage(head,body,trailer);
-//        return new DaxMessage(preamble,head,body,trailer);
+    }
 
+
+    public DaxMessage errorResourceNotFound() {
+        DaxMessage message = new DaxMessage(DaxMsgType.ERR_RES);
+        message.getBody().nextBlock();
+        message.getBody().putPair(new DaxStringPair(ERR_DESCRIPTION,"Resource not found"));
+        return message;
     }
 
 }

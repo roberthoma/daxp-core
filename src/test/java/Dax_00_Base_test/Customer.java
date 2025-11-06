@@ -1,18 +1,18 @@
 package Dax_00_Base_test;
 
 import org.daxprotocol.core.annotation.DaxpDic;
-import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.annotation.DaxpField;
 
 @DaxpDic(name = "Customer", version = "1.0", namespace = "crm")
 public class Customer {
 
-    @DaxpTag(tag = CustomerDaxDic.CUSTOMER_ID)
+    @DaxpField(tag = CustomerDaxDic.CUSTOMER_ID)
     int customerId;
 
-    @DaxpTag(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
+    @DaxpField(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
     String name;
 
-    @DaxpTag(tag = CustomerDaxDic.CUSTOMER_TOWN, uiLabel = "Town")
+    @DaxpField(tag = CustomerDaxDic.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
 
     public Customer(){

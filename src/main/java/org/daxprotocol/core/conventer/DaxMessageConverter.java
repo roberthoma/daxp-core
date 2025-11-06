@@ -19,7 +19,7 @@
  */
 
 package org.daxprotocol.core.conventer;
-import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.model.DaxMessage;
 import java.lang.reflect.Field;
@@ -32,7 +32,7 @@ public class DaxMessageConverter {
             T instance = targetClass.getDeclaredConstructor().newInstance();
 
             for (Field f : targetClass.getDeclaredFields()) {
-                DaxpTag ann = f.getAnnotation(DaxpTag.class);
+                DaxpField ann = f.getAnnotation(DaxpField.class);
                 if (ann == null) continue; // skip non-annotated fields (e.g., town)
 
                 int tag = ann.tag();
@@ -50,7 +50,6 @@ public class DaxMessageConverter {
             throw new RuntimeException("Failed to map DAXP to " + targetClass.getSimpleName(), e);
         }
     }
-
 
 }
 

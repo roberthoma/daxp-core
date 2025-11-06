@@ -2,7 +2,7 @@ package DAXP_Annotation_TEST;
 
 import Dax_00_Base_test.Customer;
 import Dax_00_Base_test.CustomerDaxDic;
-import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
@@ -36,8 +36,8 @@ public class Daxp_Annotations_Test01 {
        try {
             for (Field field : Customer.class.getDeclaredFields()) {
                 System.out.println("Field> "+field.getName());
-                if (field.isAnnotationPresent(DaxpTag.class)) {
-                    DaxpTag daxp = field.getAnnotation(DaxpTag.class);
+                if (field.isAnnotationPresent(DaxpField.class)) {
+                    DaxpField daxp = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
 
                     System.out.println("\nTAG:   "+ daxp.tag());

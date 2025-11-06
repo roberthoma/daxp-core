@@ -30,7 +30,24 @@ public class DaxMsgType extends DaxPair<String> {
     public static final String  ERR_RES     =  "ER";  // 	RES 	Error request
     public static final String  DIC_RELOAD  =  "RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
 
+    // new sys message .. daxp configuration  : set pairSeparator ..
+
     public DaxMsgType(String value) {
         super(DaxTag.MSG_TYPE, value);
     }
 }
+
+/*
+Description ,
+* */
+
+/*
+$DR
+#HB   – Heartbeat
+@LOG  – Log or trace message
+
+Use the hybrid format:
+SYS.DR, SYS.DD, SYS.ER, SYS.RA for predefined
+and
+CRM.DR, CNT.DD, ORD.ER for user messages.
+*/

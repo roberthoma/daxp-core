@@ -76,4 +76,8 @@ public final class DaxMessage {
     public DaxPair<?> get(int tag) {
        return body.getPair(0,tag);
     }
+
+    public String getStrValue(int tag){
+        return body.getPair(0,tag).getStrValue();
+    }
 }

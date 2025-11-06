@@ -72,8 +72,9 @@ public class DaxTag {
     public static final int ATR_UI_DESCRIPTION  = 210 ; //   UiDescription   String
     public static final int ATR_UI_IS_EDITABLE  = 220 ; //       Boolean
 
-    public static final int ERR_FIELD_ID        = 224 ; //
-    public static final int ERR_DESCRIPTION     = 225 ; //
+    public static final int ERR_FIELD_NR        = 224 ; //
+    public static final int ERR_FIELD_ID        = 225 ; //
+    public static final int ERR_DESCRIPTION     = 226 ; //
 
 
 

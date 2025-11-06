@@ -18,7 +18,6 @@
  * ***********************************************************************
  */
 
-
 package org.daxprotocol.core.annotation;
 
 import java.lang.annotation.ElementType;
@@ -27,9 +26,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.TYPE, ElementType.METHOD })
-public @interface DaxpTag {
+@Target({ ElementType.FIELD })
+public @interface DaxpReference {
     int tag();
-    String uiLabel() default "";
 }
 

@@ -17,24 +17,19 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.model.preamble;
 
-public class DaxPreambleTag {
-    public static final String  DAXP = "DAXP";   // protocol identifier and version
-    public static final String  TF = "TF";       // tag format: DEC | HEX
-    public static final String  EN = "EN";       // encoding: ASCII | UTF8 | UTF16
-    public static final String  CNT = "MC";     //  Number of messages following preamble. Useful for validation.
-    public static final String  CTX = "CX";     // context: optional
+
+package org.daxprotocol.core.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.FIELD })
+public @interface DaxpField {
+    int tag();
+    String uiLabel() default "";
 }
 
-
-/*
-TF 	Tag Format
-EN 	Encoding
-MC 	Message
-CX 	Context
-TS 	Timestamp
-SN 	Sender
-TG 	Target
-TK 	Token
- */

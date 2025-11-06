@@ -21,7 +21,7 @@ package org.daxprotocol.core.dictionary;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.attributes.DaxAtrNullable;
 
 import java.lang.reflect.Field;
@@ -30,8 +30,8 @@ public class DaxDictionaryManager {
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
         try {
             for (Field field : clazz.getDeclaredFields()) {
-                if (field.isAnnotationPresent(DaxpTag.class)) {
-                    DaxpTag daxp = field.getAnnotation(DaxpTag.class);
+                if (field.isAnnotationPresent(DaxpField.class)) {
+                    DaxpField daxp = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
 
                     //Class  change type to char
