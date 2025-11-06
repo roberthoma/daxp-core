@@ -1,7 +1,6 @@
 package DAXP_MulitiMessage_TEST;
 
 import Dax_00_Base_test.Customer;
-import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -9,9 +8,11 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MultiMessage_TEST {
+public class MultiMessage_Test {
+
     @Test
     void createMsgFromCustomer() {
         String msgStr = "DAXP=1|TF=DEC|EN=UTF8|CNT=4|\n" +
@@ -32,5 +33,19 @@ public class MultiMessage_TEST {
 
         Assertions.assertEquals("Robert4", customer.getName());
     }
+
+    @Test
+    void createMsgFromCustomerList() {
+        List<Customer> customerList = new ArrayList<>();
+
+        customerList.add(new Customer(123, "Robert"));
+        customerList.add(new Customer(124, "Ania"));
+        customerList.add(new Customer(125, "Zofia"));
+
+        DaxMessageFactory factory = new DaxMessageFactory();
+        DaxMessage message = factory.toDaxMessage("UCi", customerList);
+        Assertions.assertEquals(customerList.size(), message.getBlockCount() );
+    }
+
 
 }

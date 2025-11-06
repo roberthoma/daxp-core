@@ -23,7 +23,6 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxStringPair;
-import org.daxprotocol.core.codec.DaxTag;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.head.DaxMsgType;
@@ -33,6 +32,7 @@ import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 
 import static org.daxprotocol.core.codec.DaxTag.*;
@@ -62,27 +62,35 @@ public class DaxMessageFactory {
 
     }
 
+    @SuppressWarnings("unchecked")
+    public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {
+        return  daxDataEntry instanceof List<?> ?
+            toDaxMessageFromList( messageType, (List<Object>) daxDataEntry )
+          : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
+    }
 
-    public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ){
+    private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry ){
         DaxPreamble preamble = new DaxPreamble();
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
-        body.nextBlock();
         DaxTrailer trailer = new DaxTrailer();
-        try {
-            for (Field field : daxDataEntry.getClass().getDeclaredFields()) {
-                if (field.isAnnotationPresent(DaxpField.class)) {
-                    DaxpField daxp = field.getAnnotation(DaxpField.class);
-                    field.setAccessible(true);
-                    if (field.get(daxDataEntry) != null) { //TODO For String check is empty
-                        body.putPair(new DaxPair<>(daxp.tag(), field.get(daxDataEntry)));
+        daxDataEntry.forEach(entry -> {
+            body.nextBlock();
+            try {
+                for (Field field : entry.getClass().getDeclaredFields()) {
+                    if (field.isAnnotationPresent(DaxpField.class)) {
+                        DaxpField daxp = field.getAnnotation(DaxpField.class);
+                        field.setAccessible(true);
+                        if (field.get(entry) != null) { //TODO For String check is empty
+                            body.putPair(new DaxPair<>(daxp.tag(), field.get(entry)));
+                        }
                     }
                 }
-            }
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         return new DaxMessage(head,body,trailer);
     }
@@ -95,4 +103,10 @@ public class DaxMessageFactory {
         return message;
     }
 
+    public DaxMessage errorInvalidMessageType() {
+        DaxMessage message = new DaxMessage(DaxMsgType.ERR_RES);
+        message.getBody().nextBlock();
+        message.getBody().putPair(new DaxStringPair(ERR_DESCRIPTION,"Invalid Message Type"));
+        return message;
+    }
 }

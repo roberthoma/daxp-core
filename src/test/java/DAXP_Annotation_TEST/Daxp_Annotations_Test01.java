@@ -11,6 +11,7 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
+import java.util.List;
 
 public class Daxp_Annotations_Test01 {
 

@@ -54,6 +54,7 @@ public final class DaxMessage {
         this.head = head;
         this.body = body;
         this.trailer = trailer;
+        this.head.setBlockCount(body.getBlockCount());
     }
 
     public DaxMessage( DaxHead head, DaxTrailer trailer) {
@@ -79,5 +80,10 @@ public final class DaxMessage {
 
     public String getStrValue(int tag){
         return body.getPair(0,tag).getStrValue();
+    }
+
+    public boolean containsField(int tag){
+        return body.getBlock(0).containsKey(tag);
+
     }
 }
