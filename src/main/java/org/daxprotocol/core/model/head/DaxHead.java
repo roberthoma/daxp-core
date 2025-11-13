@@ -33,18 +33,8 @@ public final class DaxHead {
         return map.get(MSG_TYPE).getStrValue();
     }
 
-    public String getToken() {
-        return map.getOrDefault(MSG_TOKEN, null).getStrValue();
-    }
-
-    public String getTimestamp() {
-        return map.containsKey(MSG_TIMESTAMP)?  map.get(MSG_TIMESTAMP).getStrValue() : null;
-    }
-
     public DaxHead(String msgType, String token, String timestamp) {
         map.put(MSG_TYPE,new DaxMsgType(msgType));
-        map.put(MSG_TOKEN,new DaxMsgToken(token)); //TODO move to preamble
-        map.put(MSG_TIMESTAMP,new DaxMsgTimestamp(timestamp)); //TODO move to preamble
         map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(0));
     }
     public DaxHead(String msgType) {
@@ -57,17 +47,9 @@ public final class DaxHead {
     }
 
     public void setBlockCount(int blockCount) {
-        map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(blockCount));
+         map.merge(MSG_BLOCK_COUNT,new DaxMsgBlockCount(blockCount),
+                 (daxPair, daxPair2) -> daxPair2);
     }
-
-    public void setToken(String token) {
-        map.put(MSG_TOKEN,new DaxMsgToken(token));
-    }
-
-    public void setTimestamp(String timestamp) {
-        map.put(MSG_TIMESTAMP,new DaxMsgTimestamp(timestamp));
-    }
-
 
 
 }

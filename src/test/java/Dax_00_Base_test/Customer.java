@@ -15,6 +15,9 @@ public class Customer {
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
 
+    @DaxpField(tag = CustomerDaxDic.CUSTOMER_TYPE, uiLabel = "Type")
+    CustomerType type;
+
     public Customer(){
 
     }

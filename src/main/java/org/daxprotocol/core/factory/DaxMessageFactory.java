@@ -31,6 +31,7 @@ import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
+import javax.swing.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -53,11 +54,26 @@ public class DaxMessageFactory {
 
     }
 
+
+    private void putDicValueToBody(DaxBody body, int fieldId  ,String kValue, String vDesc){
+        body.nextBlock();
+        body.putPair(FIELD_ID,String.valueOf( fieldId));
+        body.putPair(FIELD_VALUE,kValue);
+        body.putPair(FIELD_VALUE_DESCRIPTION,vDesc);
+    }
+
+
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
+
         dictionary.getAttributMap().forEach((fieldId, atrMap) ->
                         putBodyBlock(message.getBody(),fieldId,  atrMap)
                 );
+
+        dictionary.getValueDicMap().forEach((fieldId, valeMap) ->
+                valeMap.forEach((v, vDesc) -> putDicValueToBody(message.getBody(), fieldId, v, vDesc ))
+                );
+        message.finish();
         return message;
 
     }

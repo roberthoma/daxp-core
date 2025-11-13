@@ -34,11 +34,10 @@ public class DaxTag {
     * Head TAGS
     * */
     public static final int MSG_TYPE  = 9;
-    public static final int MSG_TOKEN = 15; //TODO move to preamble
     public static final int MSG_BLOCK_COUNT = 6;
-    public static final int MSG_TIMESTAMP = 16;  //TODO move to preamble
+    public static final int MSG_ROLE = 18;
 
-    static Set<Integer> headSet = Set.of(MSG_TYPE,MSG_TOKEN, MSG_BLOCK_COUNT,MSG_TIMESTAMP );
+    static Set<Integer> headSet = Set.of(MSG_TYPE, MSG_BLOCK_COUNT );
 
 
     public static boolean isHeadTag(int tag){
@@ -47,16 +46,20 @@ public class DaxTag {
 
     /**********************************
      * Body tags
-     * */
-    public static final int BLOCK_INDEX         = 7;
-    public static final int CHECKSUM            = 99 ; //     Checksum    Integer
-    public static final int FIELD_ID            = 100 ; //     FieldId     Integer
-    public static final int FIELD_NAME          = 101 ; //   FieldName   String
-    public static final int FIELD_STATUS        = 102 ; //     FieldStatus     Char    Indicates the current life-cycle state of a field  in the DAXP dictionary.
-    public static final int FIELD_VALUE         = 103 ; //      FieldValue  <atr_data_type>
-    public static final int FIELD_VALUE_DEFAULT = 104 ; //      FieldDefaultValue   <atr_data_type>
-    public static final int FIELD_ID_LIST       = 106 ; //    FieldIdList     List<Integer>
-    public static final int FIELD_DATA_TYPE           = 110 ; //        Character[1]
+     */
+    public static final int BLOCK_INDEX             = 7;
+
+
+    public static final int FIELD_ID                = 100 ; //     FieldId     Integer
+    public static final int FIELD_NAME              = 101 ; //   FieldName   String
+    public static final int FIELD_STATUS            = 102 ; //     FieldStatus     Char    Indicates the current life-cycle state of a field  in the DAXP dictionary.
+    public static final int FIELD_VALUE             = 103 ; //      FieldValue  <atr_data_type>
+    public static final int FIELD_VALUE_DEFAULT     = 104 ; //      FieldDefaultValue   <atr_data_type>
+    public static final int FIELD_VALUE_DESCRIPTION = 105 ; //      Field Value Description use in Value list
+    public static final int FIELD_VALUE_SYMBOL      = 106 ; //      Field Value Symbol use in Value list
+    public static final int FIELD_ID_LIST           = 115 ; //    FieldIdList     List<Integer>
+
+    public static final int FIELD_DATA_TYPE         = 110 ; //        Character[1]
 
     public static final int ATR_RANGE_MIN_VALUE = 161 ; //          <atr_data_type>     Minimum value
     public static final int ATR_RANGE_MAX_VALUE = 162 ; //          <atr_data_type>     Maximum value
@@ -67,6 +70,9 @@ public class DaxTag {
     public static final int ATR_SIZE_MAX        = 166;
     public static final int ATR_SIZE_MIN        = 167;
 
+    /*****************************
+     * Attributes of UI
+     */
     public static final int ATR_UI_ITEM_TYPE    = 208 ; //
     public static final int ATR_UI_LABEL        = 209 ; //     UiLabel     String
     public static final int ATR_UI_DESCRIPTION  = 210 ; //   UiDescription   String
@@ -76,6 +82,10 @@ public class DaxTag {
     public static final int ERR_FIELD_ID        = 225 ; //
     public static final int ERR_DESCRIPTION     = 226 ; //
 
+    /******************************
+     * Trailer tag
+    * */
+    public static final int CHECKSUM                = 99 ; //     Checksum    Integer
 
 
 }

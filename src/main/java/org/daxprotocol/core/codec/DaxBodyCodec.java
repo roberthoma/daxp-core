@@ -17,9 +17,9 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.model.body;
+package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.codec.*;
+import org.daxprotocol.core.model.body.DaxBody;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ import java.util.Map;
 public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
 
-    protected void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
+    private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
                                       int blockIdx ,Map<Integer, DaxPair<?>> blockMap)
     {
         if (isBlogIdx) {
@@ -45,12 +45,12 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
     @Override
     public String encode(DaxBody body) {
-        boolean isBlogPair = body.getBlockCount() > 1;
+        boolean isBlockPair = body.getBlockCount() > 1;
 
         StringBuilder sb = new StringBuilder();
-        body.blocksMap
+        body.getBlockMap()
             .forEach((idx, map) ->
-                encodeBodyBlock(sb,isBlogPair,idx, map)
+                encodeBodyBlock(sb,isBlockPair,idx, map)
         );
         return sb.toString();
     }
@@ -62,7 +62,10 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
     public static DaxBody createBody(int blockCount , List<DaxStringPair> listOfPair){
         DaxBody body = new DaxBody();
-        body.nextBlock();
+
+        if (blockCount==0) {
+            body.nextBlock();
+        }
         for(DaxPair<?> pair : listOfPair){
             if(pair.getTag() == DaxTag.CHECKSUM){
                 break;

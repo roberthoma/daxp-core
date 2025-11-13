@@ -12,6 +12,8 @@ public class CustomerDaxDic extends DaxDictionary {
     public static final int CUSTOMER_EMAIL         = 2011;
     public static final int CUSTOMER_TELEPHONE     = 2073;
     public static final int CUSTOMER_TOWN          = 2074;
+    public static final int CUSTOMER_TYPE          = 2075;
+
 
 
 
@@ -35,5 +37,12 @@ public class CustomerDaxDic extends DaxDictionary {
         putCustomerAtr(CUSTOMER_EMAIL,"Email",String.class);
         putCustomerAtr(CUSTOMER_TELEPHONE,"Telephone",String.class);
         putCustomerAtr(CUSTOMER_TOWN,"Town",String.class);
+
+        putDicValue(CUSTOMER_TYPE,CustomerType.INDIVIDUAL.symbol, CustomerType.INDIVIDUAL.desc);
+        putDicValue(CUSTOMER_TYPE,CustomerType.ORGANIZATION.symbol, CustomerType.ORGANIZATION.desc);
+
     }
+
+
+
 }

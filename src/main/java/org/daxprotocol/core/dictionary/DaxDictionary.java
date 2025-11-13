@@ -24,13 +24,34 @@ import org.daxprotocol.core.codec.DaxPair;
 
 import java.util.*;
 
-import static org.daxprotocol.core.codec.DaxTag.*;
 public class DaxDictionary {
-    /**
-     * DescriptiveMap : it is main dic of describes fields / variables
+
+    private <K,V>  Map<K,V> putAndReturn(Map<K,V> map , K k,V v){
+        map.put(k,v);
+        return map;
+    }
+
+    /** Standard valueNamesMap
+     * Map of string values and description
      * Key : idField
      * */
+
+    Map<Integer, Map<String,String>> valueDicMap = new HashMap<>();
+
+
+    /**
+     * DescriptiveMap : it is main dic of field attributes
+     * Key : idField
+     * Value : map of attributes
+     * */
     Map<Integer, Map<Integer, DaxPair<?>>> attributMap = new HashMap<>();
+
+    public void putAttribute(int fieldId, DaxPair<?> atrPair){
+        attributMap.merge(fieldId, new HashMap<>(Map.of(atrPair.getTag(), atrPair)),
+        (eM, nM) -> putAndReturn(eM, atrPair.getTag(), atrPair));
+
+    }
+
 
     public Map<Integer, DaxPair<?>> getFieldAttributeMap(int fieldId) {
         return attributMap.get(fieldId);
@@ -41,31 +62,10 @@ public class DaxDictionary {
     }
 
 
-    /** Standard valueNamesMap
-     * Map of One char values
-     * Key : idField
-     * */
 
-    Map<Integer, Map<Character,String>> valueNamesMap = new HashMap<>();
-    public Map<Integer, Map<Character, String>> getCharacterValueNameMap() {
-        return valueNamesMap;
+    public Map<Integer, Map<String, String>> getValueDicMap() {
+        return valueDicMap;
     }
-
-
-    //TODO Message type
-
-    public void putAttribute(int fieldId, DaxPair<?> atrPair){
-       Map<Integer, DaxPair<?>> fieldAtrMap;
-       if (attributMap.containsKey(fieldId)){
-           fieldAtrMap = attributMap.get(fieldId);
-       }
-       else {
-           fieldAtrMap = new HashMap<>();
-           attributMap.put(fieldId,fieldAtrMap);
-       }
-        fieldAtrMap.put(atrPair.getTag(), atrPair) ;
-    }
-
 
     public void put(int fieldId,  Class<?> clazz){
         putAttribute(fieldId, new DaxAtrDataType(clazz));
@@ -92,30 +92,17 @@ public class DaxDictionary {
         putAttribute(fieldId, new DaxAtrNullable(able));
     }
 
-
-
-   //isUiEditable
-
-
-    // ---------------------
-    public void putValue(int idField, char charValue, String desc){
-
-        if (!valueNamesMap.containsKey(idField)){
-            Map<Character,String> valMap = new HashMap<>();
-            valMap.put(charValue,desc);
-            valueNamesMap.put(idField, valMap);
-            return;
-        }
-
-        valueNamesMap.get(idField).put(charValue, desc);
-
+    public void putDicValue(int idField, String value, String desc){
+        valueDicMap.merge(idField,new HashMap<>(Map.of(value,desc)),
+                (svMap, svMapN) ->  putAndReturn(svMap, value,desc));
     }
+
     //----------------------------------------------------
     public void join (DaxDictionary dic){
 //TODO walidacja czy istniejący już idField czasami się nie dubluje.
 
   //      attributeMap.putAll (dic.getAttributeMap());
-        valueNamesMap.putAll(dic.getCharacterValueNameMap());
+        valueDicMap.putAll(dic.getValueDicMap());
     }
 
 

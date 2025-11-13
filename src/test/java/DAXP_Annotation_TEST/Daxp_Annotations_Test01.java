@@ -17,7 +17,9 @@ public class Daxp_Annotations_Test01 {
 
     @Test
     void createMsgFromCustomer() {
-        String expectMsg = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|2001=123|2002=Robert|99=123|";
+        String expectMsg = "DAXP=1|TF=DEC|EN=UTF8|\n" +
+                "9=UCi|2001=123|2002=Robert|\n" +
+                "99=123|";
 
         Customer customer = new Customer(123, "Robert");
         DaxMessageFactory factory = new DaxMessageFactory();

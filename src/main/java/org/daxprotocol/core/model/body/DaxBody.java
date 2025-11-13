@@ -26,33 +26,44 @@ import java.util.Map;
 
 public class DaxBody {
 
-    Map<Integer,Map<Integer, DaxPair<?>>> blocksMap = new HashMap<>();
+    Map<Integer,Map<Integer, DaxPair<?>>> blockMap = new HashMap<>();
 
-    int blockIdx = 0;
+    int blockIdx = -1;
+
+    private void checkBlockCounterBeforePut(){
+        if (blockIdx == -1) {
+            throw new RuntimeException("No init block in message body !!! Please use nextBlock(). ");
+        }
+    }
 
     public int getBlockCount() {
-        return blockIdx + 1;
+//        return blockIdx > 0 ? blockMap.size() - 1 : 0 ;
+        return blockMap.size()  ;
     }
 
     public Map<Integer, DaxPair<?>> getBlock(int blockIdx){
-        return blocksMap.get(blockIdx);
+        return blockMap.get(blockIdx);
     }
 
     public void putPair(DaxPair<?> pair){
-        blocksMap.get(blockIdx).put(pair.getTag(),pair);
+        checkBlockCounterBeforePut();
+        blockMap.get(blockIdx).put(pair.getTag(),pair);
     }
     public void putPair(int tag, String value){
-        blocksMap.get(blockIdx).put(tag,new DaxStringPair(tag, value));
+        checkBlockCounterBeforePut();
+        blockMap.get(blockIdx).put(tag,new DaxStringPair(tag, value));
     }
 
     public void nextBlock(){
-        blockIdx = blocksMap.size();
-        blocksMap.put(blockIdx,new HashMap<>());
+        blockIdx = blockMap.size();
+        blockMap.put(blockIdx,new HashMap<>());
     }
 
     public DaxPair<?> getPair(int blockIdx, int tag){
-
-        return blocksMap.get(blockIdx).get(tag);
+        return blockMap.get(blockIdx).get(tag);
     }
 
+    public Map<Integer,Map<Integer, DaxPair<?>>> getBlockMap() {
+         return blockMap;
+    }
 }

@@ -27,6 +27,7 @@ import static org.daxprotocol.core.codec.DaxCodecSymbols.*;
 public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
     @Override public String encode(DaxTrailer message) {
         StringBuilder sb = new StringBuilder();
+        sb.append("\n"); //TODO only for test profile
         sb.append(CHECKSUM).append(EQUAL)
                 .append("123")
                 .append(PAIR_SEPARATOR);

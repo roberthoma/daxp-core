@@ -69,6 +69,9 @@ public final class DaxMessage {
     public int getBlockCount(){
         return head.getBlockCount();
     }
+    public void  setBlockCount(int blockCount){
+        head.setBlockCount(blockCount);
+    }
 
     public Integer getChecksum() {
         return trailer.getChecksum();
@@ -85,5 +88,9 @@ public final class DaxMessage {
     public boolean containsField(int tag){
         return body.getBlock(0).containsKey(tag);
 
+    }
+
+    public void finish() {
+        head.setBlockCount(body.getBlockCount());
     }
 }

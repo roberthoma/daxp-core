@@ -21,28 +21,32 @@ package org.daxprotocol.core.codec;
 
 //public abstract class DaxPair<T>{
 public  class DaxPair<T>{
-
-    int tag;
+    Integer tag;
     protected T value;
     Class<T> clazz;
 
     public Class<?> getClazz(){
         return clazz;
     };
-    public int getTag(){
+    public Integer getTag(){
         return tag;
     }
     public T getValue(){
         return value;
     }
 
-    public DaxPair(int tag, T value){
+    public DaxPair(Integer tag, T value){
         this.tag = tag;
         this.value = value;
-
+        //this.clazz = value.getClass(); //TODO fix init class type
     }
 
     public String getStrValue() {
          return value.toString();
     };
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
 }

@@ -1,5 +1,6 @@
 package Dax_CC_Message_Test;
 
+import com.sun.nio.sctp.Association;
 import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxDecodeService;
@@ -19,14 +20,14 @@ class DaxDecodeServiceTest {
     @BeforeAll
     static void initTest() {
         msg = "DAXP=1|TF=DEC|EN=UTF8|CNT=1|\n" +
-                "9=DD|6=7|"+
+                "9=DD|6=7|\n"+
                 "7=1|209=Id customer|100=2001|110=I|\n" +
                 "7=2|209=First name|100=2002|110=S|\n" +
-                "7=3|209=Surname|100=2003|110=S|" +
-                "7=4|209=Year of birth|100=2005|110=I|" +
-                "7=5|209=Telephone|100=2073|110=S|" +
-                "7=6|209=Town|100=2074|110=S|" +
-                "7=7|209=Email|100=2011|110=S|" +
+                "7=3|209=Surname|100=2003|110=S|\n" +
+                "7=4|209=Year of birth|100=2005|110=I|\n" +
+                "7=5|209=Telephone|100=2073|110=S|\n" +
+                "7=6|209=Town|100=2074|110=S|\n" +
+                "7=7|209=Email|100=2011|110=S|\n" +
                 "99=123|";
     }
 
@@ -54,16 +55,23 @@ class DaxDecodeServiceTest {
     }
 
     @Test
-    void parseAndDecodeMSG_TEST(){
+    void decodeMSG_TEST(){
         DaxMessageCodec codec = new DaxMessageCodec();
         DaxMessage message = codec.decode(msg);
         Assertions.assertEquals("DD",  message.getMsgType());
-
-        String afterMsgStr = codec.encode(message);
-        DaxMessage afterMsg  = codec.decode(afterMsgStr);
-        Assertions.assertEquals("DD",  afterMsg.getMsgType());
-
-
+        Assertions.assertEquals(7,  message.getBlockCount());
     }
 
+    @Test
+    void encodeMSG_TEST(){
+        DaxMessageCodec codec = new DaxMessageCodec();
+        DaxMessage message = codec.decode(msg);
+        String afterMsgStr = codec.encode(message);
+        if(afterMsgStr.contains("\n7=0|")){
+            Assertions.fail("ERROR . Message contains 7=0 !!!! MSG: \n"+afterMsgStr);
+        }
+        DaxMessage afterMsg  = codec.decode(afterMsgStr);
+        Assertions.assertEquals("DD",  afterMsg.getMsgType());
+        Assertions.assertEquals(7,  afterMsg.getBlockCount());
+    }
 }

@@ -23,6 +23,7 @@ package org.daxprotocol.core.attributes;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxTag;
 
+//TODO data type to has to be developed
 public class DaxAtrDataType extends DaxPair<Character> {
     public static Character DATA_TYPE_INTEGER = 'I';
     public static Character DATA_TYPE_STRING  = 'S';

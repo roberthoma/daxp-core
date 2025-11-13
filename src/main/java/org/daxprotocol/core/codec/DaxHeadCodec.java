@@ -17,12 +17,9 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.model.head;
+package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.codec.DaxCodec;
-import org.daxprotocol.core.codec.DaxPairCodec;
-import org.daxprotocol.core.codec.DaxStringPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.head.DaxHead;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +31,7 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
     public String encode(DaxHead message,int blockCount) {
 
         StringBuilder sb = new StringBuilder();
+        sb.append("\n");
         DaxPairCodec.encode(sb,MSG_TYPE,message.getMsgType());
         if (blockCount>1) {
             DaxPairCodec.encode(sb, MSG_BLOCK_COUNT, String.valueOf(blockCount));

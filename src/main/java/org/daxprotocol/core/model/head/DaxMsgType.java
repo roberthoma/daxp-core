@@ -25,10 +25,10 @@ import org.daxprotocol.core.codec.DaxTag;
 
 public class DaxMsgType extends DaxPair<String> {
 
-    public static final String  DIC_REQ     =  "DR"; // 	REQ 	Request for a dictionary
-    public static final String  DATA_DIC    =  "DD";  // 	RES 	Message containing a full dictionary of data types and their attributes
-    public static final String  ERR_RES     =  "ER";  // 	RES 	Error request
-    public static final String  DIC_RELOAD  =  "RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
+    public static final String  DIC_REQ     =  "$DR"; // 	REQ 	Request for a dictionary
+    public static final String  DATA_DIC    =  "$DD";  // 	RES 	Dictionary of data types and their attributes
+    public static final String  ERR_RES     =  "$ER";  // 	RES 	Error request
+    public static final String  DIC_RELOAD  =  "$RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
 
     // new sys message .. daxp configuration  : set pairSeparator ..
 
