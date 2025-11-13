@@ -17,13 +17,17 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.attributes;
+package org.daxprotocol.core.field;
 
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxTag;
 
-public class DaxAtrSizeMax extends DaxPair<Integer> {
-    public DaxAtrSizeMax(Integer value) {
-        super(DaxTag.ATR_SIZE_MAX, value);
+public class DaxAtrNullable extends DaxPair<Character> {
+
+    public static Character NULLABLE_TRUE = 'Y';
+    public static Character NULLABLE_FALSE  = 'N';
+
+    public DaxAtrNullable(Character value) {
+        super(DaxTag.ATR_NULLABLE, value);
     }
 }

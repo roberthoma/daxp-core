@@ -1,7 +1,6 @@
 package Dax_DA_Dictionary_TEST;
 
 import Dax_00_Base_test.CustomerDaxDic;
-import org.daxprotocol.core.attributes.DaxAtrUiLabel;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxTag;
@@ -80,15 +79,7 @@ public class Dax_Customer_dic_test01 {
 
      DaxMessageCodec codec = new DaxMessageCodec();
      DaxMessage message = codec.decode(msg);
-
-     int blocks =    message.getBody().getBlockCount();
-
-     Assertions.assertEquals(9,blocks);
-
-//        System.out.println(dic.getAttributeMap().get(CustomerDaxDic.CUSTOMER_SURNAME).getUiLabel());
-
-
-
+     Assertions.assertEquals(9,message.getBlockCount());
     }
 
 }

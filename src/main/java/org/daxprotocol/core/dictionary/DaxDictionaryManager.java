@@ -22,7 +22,7 @@ package org.daxprotocol.core.dictionary;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.attributes.DaxAtrNullable;
+import org.daxprotocol.core.field.DaxAtrNullable;
 
 import java.lang.reflect.Field;
 

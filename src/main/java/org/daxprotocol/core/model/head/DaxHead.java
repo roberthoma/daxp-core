@@ -19,6 +19,8 @@
  */
 package org.daxprotocol.core.model.head;
 import org.daxprotocol.core.codec.DaxPair;
+import org.daxprotocol.core.field.DaxMsgBlockCount;
+import org.daxprotocol.core.field.DaxMsgType;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,10 +35,6 @@ public final class DaxHead {
         return map.get(MSG_TYPE).getStrValue();
     }
 
-    public DaxHead(String msgType, String token, String timestamp) {
-        map.put(MSG_TYPE,new DaxMsgType(msgType));
-        map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(0));
-    }
     public DaxHead(String msgType) {
         map.put(MSG_TYPE,new DaxMsgType(msgType));
         map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(0));
@@ -50,6 +48,4 @@ public final class DaxHead {
          map.merge(MSG_BLOCK_COUNT,new DaxMsgBlockCount(blockCount),
                  (daxPair, daxPair2) -> daxPair2);
     }
-
-
 }

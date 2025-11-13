@@ -74,6 +74,9 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
                 continue;
             }
             if (pair.getTag() == DaxTag.BLOCK_INDEX) {
+                if (blockCount==0){
+                    throw new RuntimeException("Body creation Exception : block index and blockCount==0 !!!");
+                }
                 body.nextBlock();
             }
             body.putPair(pair);

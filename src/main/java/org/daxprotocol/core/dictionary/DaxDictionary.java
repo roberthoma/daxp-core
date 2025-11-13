@@ -19,17 +19,18 @@
  */
 package org.daxprotocol.core.dictionary;
 
-import org.daxprotocol.core.attributes.*;
+import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.codec.DaxPair;
 
 import java.util.*;
 
 public class DaxDictionary {
+    /****************************8
+     * Dictionary of messages type, roles
+     * Key: Message type
+     * */
+    Map<String, DaxMessageDicItem> msgMap = new HashMap<>();
 
-    private <K,V>  Map<K,V> putAndReturn(Map<K,V> map , K k,V v){
-        map.put(k,v);
-        return map;
-    }
 
     /** Standard valueNamesMap
      * Map of string values and description
@@ -46,6 +47,29 @@ public class DaxDictionary {
      * */
     Map<Integer, Map<Integer, DaxPair<?>>> attributMap = new HashMap<>();
 
+    public DaxDictionary(){
+//        ??? >>> Init dictiony from sys tags and messages
+//                and return item with spesial info in rrequest
+
+    }
+
+
+
+    private <K,V>  Map<K,V> putAndReturn(Map<K,V> map , K k,V v){
+        map.put(k,v);
+        return map;
+    }
+
+
+    public void putMsgItem(DaxMessageDicItem messageDicItem){
+        if (msgMap.containsKey(messageDicItem.getMsgType())){
+            throw new RuntimeException( "Message "+messageDicItem.getMsgType()
+                                       +" exists in DAXP dictionary !!!");
+        }
+        msgMap.put(messageDicItem.getMsgType(),messageDicItem);
+    }
+
+
     public void putAttribute(int fieldId, DaxPair<?> atrPair){
         attributMap.merge(fieldId, new HashMap<>(Map.of(atrPair.getTag(), atrPair)),
         (eM, nM) -> putAndReturn(eM, atrPair.getTag(), atrPair));
@@ -60,8 +84,6 @@ public class DaxDictionary {
     public Map<Integer, Map<Integer, DaxPair<?>>> getAttributMap(){
       return attributMap;
     }
-
-
 
     public Map<Integer, Map<String, String>> getValueDicMap() {
         return valueDicMap;
@@ -99,9 +121,8 @@ public class DaxDictionary {
 
     //----------------------------------------------------
     public void join (DaxDictionary dic){
-//TODO walidacja czy istniejący już idField czasami się nie dubluje.
 
-  //      attributeMap.putAll (dic.getAttributeMap());
+       //TODO Validation for double idField in joined dictionary
         valueDicMap.putAll(dic.getValueDicMap());
     }
 

@@ -25,13 +25,12 @@ import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
-import org.daxprotocol.core.model.head.DaxMsgType;
+import org.daxprotocol.core.field.DaxMsgType;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
-import javax.swing.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +62,7 @@ public class DaxMessageFactory {
     }
 
 
+    //TODO Create message with dictionary using context
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 

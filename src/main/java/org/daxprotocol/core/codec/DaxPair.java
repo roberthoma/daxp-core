@@ -19,7 +19,6 @@
  */
 package org.daxprotocol.core.codec;
 
-//public abstract class DaxPair<T>{
 public  class DaxPair<T>{
     Integer tag;
     protected T value;
