@@ -21,8 +21,11 @@ package org.daxprotocol.core.model.body;
 
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxStringPair;
+import org.daxprotocol.core.codec.DaxTag;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class DaxBody {
 
@@ -37,7 +40,6 @@ public class DaxBody {
     }
 
     public int getBlockCount() {
-//        return blockIdx > 0 ? blockMap.size() - 1 : 0 ;
         return blockMap.size()  ;
     }
 
@@ -56,7 +58,12 @@ public class DaxBody {
 
     public void nextBlock(){
         blockIdx = blockMap.size();
-        blockMap.put(blockIdx,new HashMap<>());
+        blockMap.put(blockIdx,new TreeMap<>());
+    }
+
+    public void nextBlock(String blockType){
+       nextBlock();
+       putPair(DaxTag.BLOCK_TYPE, blockType);
     }
 
     public DaxPair<?> getPair(int blockIdx, int tag){

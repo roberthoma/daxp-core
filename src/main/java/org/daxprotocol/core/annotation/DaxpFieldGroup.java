@@ -26,8 +26,11 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ TYPE })
 @Documented
-public @interface DaxpDic {
+public @interface DaxpFieldGroup {
+    int id();
+    int masterId()  default 0;
     String name();            // e.g. "Customer"
-    String version() default "1.0";
+    String description() default "";
     String namespace() default "default";
+
 }

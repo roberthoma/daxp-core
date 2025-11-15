@@ -19,37 +19,47 @@
  */
 package org.daxprotocol.core.dictionary;
 
+import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.codec.DaxPair;
+import org.daxprotocol.core.group.DaxpGroupItf;
 
 import java.util.*;
 
 public class DaxDictionary {
-    /****************************8
+    /*****************************************************
      * Dictionary of messages type, roles
      * Key: Message type
      * */
     Map<String, DaxMessageDicItem> msgMap = new HashMap<>();
 
 
-    /** Standard valueNamesMap
-     * Map of string values and description
+    /*****************************************************
+     *  Standard valueNamesMap
+     * Map of string values and description ; enums others dictionary
      * Key : idField
      * */
 
     Map<Integer, Map<String,String>> valueDicMap = new HashMap<>();
 
 
-    /**
+    /*****************************************************
      * DescriptiveMap : it is main dic of field attributes
      * Key : idField
      * Value : map of attributes
      * */
     Map<Integer, Map<Integer, DaxPair<?>>> attributMap = new HashMap<>();
 
-    public DaxDictionary(){
-//        ??? >>> Init dictiony from sys tags and messages
-//                and return item with spesial info in rrequest
+    /*****************************************************
+     *  Group Map
+     */
+     Map<Integer, DaxpFieldGroup> groupMap = new HashMap<>();
+
+
+
+ public DaxDictionary(){
+        //TMP
+        System.out.println("Init DaxDictionary...");
 
     }
 
@@ -119,12 +129,28 @@ public class DaxDictionary {
                 (svMap, svMapN) ->  putAndReturn(svMap, value,desc));
     }
 
+    public void addGroup(DaxpFieldGroup group){
+        groupMap.put(group.id(), group);
+    }
+
+
+    public Map<Integer, DaxpFieldGroup> getGroupMap() {
+       return groupMap;
+    }
+
+    public void putAtrGroupId(int fieldId, int groupId) {
+       if(groupId==0) {
+           return;
+       }
+       putAttribute(fieldId, new DaxAtrGroupId(groupId));
+    }
+
+
     //----------------------------------------------------
     public void join (DaxDictionary dic){
 
-       //TODO Validation for double idField in joined dictionary
+        //TODO Validation for double idField in joined dictionary
         valueDicMap.putAll(dic.getValueDicMap());
     }
-
 
 }

@@ -28,7 +28,7 @@ public class DaxTag {
     public static final String DAXP = "DAXP"; // protocol identifier and version
     public static final String TF   = "TF";   // tag format: DEC | HEX
     public static final String EN   = "EN";   // encoding: ASCII | UTF8 | UTF16
-    public static final String CTX  = "CX";   // context: optional
+    public static final String CTX  = "CX";   // context: optional  - list FIX, CRM
 
     /**
     * Head TAGS
@@ -48,18 +48,42 @@ public class DaxTag {
      * Body tags
      */
     public static final int BLOCK_INDEX             = 7;
+    public static final int BLOCK_TYPE              = 5;
 
 
-    public static final int FIELD_ID                = 100 ; //     FieldId     Integer
+    public static final int FIELD_ID                = 100 ; //  FieldId     Integer
     public static final int FIELD_NAME              = 101 ; //   FieldName   String
-    public static final int FIELD_STATUS            = 102 ; //     FieldStatus     Char    Indicates the current life-cycle state of a field  in the DAXP dictionary.
-    public static final int FIELD_VALUE             = 103 ; //      FieldValue  <atr_data_type>
-    public static final int FIELD_VALUE_DEFAULT     = 104 ; //      FieldDefaultValue   <atr_data_type>
-    public static final int FIELD_VALUE_DESCRIPTION = 105 ; //      Field Value Description use in Value list
-    public static final int FIELD_VALUE_SYMBOL      = 106 ; //      Field Value Symbol use in Value list
-    public static final int FIELD_ID_LIST           = 115 ; //    FieldIdList     List<Integer>
+    public static final int FIELD_STATUS            = 102 ; //  FieldStatus     Char    Indicates the current life-cycle state of a field  in the DAXP dictionary.
+    public static final int FIELD_VALUE             = 103 ; //  FieldValue  <atr_data_type>
+    public static final int FIELD_VALUE_DEFAULT     = 104 ; //  FieldDefaultValue   <atr_data_type>
+    public static final int FIELD_VALUE_DESCRIPTION = 105 ; //  Field Value Description use in Value list
+    public static final int FIELD_VALUE_SYMBOL      = 106 ; //  Field Value Symbol use in Value list
+    public static final int FIELD_ID_LIST           = 115 ; //  FieldIdList     List<Integer>
+    public static final int FIELD_DATA_TYPE         = 110 ; //
+//    public static final int FIELD_ENUM_NAME         = 111 ; //
+    public static final int FIELD_GROUP_ID          = 120 ; //
 
-    public static final int FIELD_DATA_TYPE         = 110 ; //        Character[1]
+    //------
+
+    public static final int ENUM_NAME               = 130 ; //
+    public static final int ENUM_DESCRIPTION        = 131 ; //
+    public static final int ENUM_VALUE              = 132 ; //
+    public static final int ENUM_VALUE_ID           = 133 ; //
+    public static final int ENUM_VALUE_SYMBOL       = 134 ; //
+    public static final int ENUM_VALUE_DESCRIPTION  = 135 ; //
+    //----
+    public static final int NAMESPACE          = 144 ; //
+    public static final int NAMESPACE_DESC     = 144 ; //
+
+
+    //----
+    public static final int GROUP_ID                = 141 ; //
+    public static final int GROUP_MASTER_ID         = 142 ; //
+    public static final int GROUP_NAME              = 143 ; //
+    public static final int GROUP_NAMESPACE         = 144 ; //
+    public static final int GROUP_DESCRIPTION       = 145 ; //
+
+    //    Character[1]
 
     public static final int ATR_RANGE_MIN_VALUE = 161 ; //          <atr_data_type>     Minimum value
     public static final int ATR_RANGE_MAX_VALUE = 162 ; //          <atr_data_type>     Maximum value

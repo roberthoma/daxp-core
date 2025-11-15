@@ -38,13 +38,14 @@ public class Daxp_Annotations_Test01 {
         Customer customer = new Customer(123, "Robert");
        try {
             for (Field field : Customer.class.getDeclaredFields()) {
+                System.out.println("------------------------");
                 System.out.println("Field> "+field.getName());
                 if (field.isAnnotationPresent(DaxpField.class)) {
                     DaxpField daxp = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
 
-                    System.out.println("\nTAG:   "+ daxp.tag());
-                    System.out.println("\nLABEL:   "+ daxp.uiLabel());
+                    System.out.println("TAG:   "+ daxp.tag());
+                    System.out.println("LABEL:   "+ daxp.uiLabel());
                     System.out.println("Field name: " + field.getName());
                     System.out.println("Type class: " + field.getType());
                     System.out.println("Type simple name: " + field.getType().getSimpleName());

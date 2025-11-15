@@ -29,6 +29,7 @@ public class DaxAtrDataType extends DaxPair<Character> {
     public static Character DATA_TYPE_STRING  = 'S';
     public static Character DATA_TYPE_BOOLEAN = 'B';
     public static Character DATA_TYPE_CHAR    = 'C';
+    public static Character DATA_TYPE_ENUM    = 'E';
 
 
 
@@ -40,12 +41,16 @@ public class DaxAtrDataType extends DaxPair<Character> {
 //
 //    }
 
-
+//TODO for refactoring
         public static Character classToChar(Class<?> clazz){
 
         if (clazz == null) return null;
 
         String key = clazz.isPrimitive() ? clazz.getName() : clazz.getSimpleName();
+
+        if(clazz.isEnum()){
+            return DATA_TYPE_ENUM;
+        }
 
         switch (key) {
             case "String":

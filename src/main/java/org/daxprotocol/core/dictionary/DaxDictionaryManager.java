@@ -22,14 +22,62 @@ package org.daxprotocol.core.dictionary;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.field.DaxAtrNullable;
 
 import java.lang.reflect.Field;
 
 public class DaxDictionaryManager {
+
+    //TODO dictionary validation method after populateFromAnnotations
+    // error  example :
+    // 1) if any group refer to no existed master group
+    // 2) enum field refer to no exiting enum ...
+
+
+
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
         try {
+            //TMP
+            System.out.println("====================================");
+            System.out.println("->  POP CLASS :"+clazz.getSimpleName());
+
+            int groupId = 0;
+
+            if (clazz.isAnnotationPresent(DaxpFieldGroup.class)){
+                System.out.println(" >> DaxpGroup ");
+                DaxpFieldGroup group =  clazz.getAnnotation(DaxpFieldGroup.class);
+
+                System.out.println("GRP name : " +group.name());
+                System.out.println("GRP id : " +group.id());
+                System.out.println("GRP master id : " +group.masterId());
+                System.out.println("GRP desc : " +group.description());
+                System.out.println("GRP namespace : " +group.namespace());
+
+                groupId = group.id();
+                daxDic.addGroup( group );
+
+            }
+
             for (Field field : clazz.getDeclaredFields()) {
+
+                //TMP
+                System.out.println("\n> POP FIELD Name : "+field.getName());
+                System.out.println("___> POP FIELD Type Name      : "+field.getType().getTypeName());
+                System.out.println("___> POP FIELD Component Type : "+field.getType().getComponentType());
+
+                if (field.getType().isEnum()){
+                   System.out.println("___> POP FIELD is ENUM");
+
+                   Object[] constants = field.getType().getEnumConstants();
+
+                    for (Object c : constants) {
+
+                        System.out.println(c);
+                    }
+
+                }
+
                 if (field.isAnnotationPresent(DaxpField.class)) {
                     DaxpField daxp = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
@@ -54,6 +102,8 @@ public class DaxDictionaryManager {
                     if (daxp.uiLabel()!=null) {
                         daxDic.putAtrUiLabel(daxp.tag(), daxp.uiLabel());
                     }
+
+                    daxDic.putAtrGroupId(daxp.tag(), groupId);
 
                 }
             }

@@ -21,8 +21,11 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxStringPair;
+import org.daxprotocol.core.field.DaxBlockType;
+import org.daxprotocol.core.group.DaxpGroupItf;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.field.DaxMsgType;
@@ -47,7 +50,7 @@ public class DaxMessageFactory {
 
 
     private void putBodyBlock(DaxBody body, int fieldId, Map<Integer, DaxPair<?>> map){
-        body.nextBlock();
+        body.nextBlock(DaxBlockType.BLOCK_FIELD);
         body.putPair(FIELD_ID,String.valueOf( fieldId));
         map.forEach((i, pair) -> body.putPair(pair));
 
@@ -55,14 +58,27 @@ public class DaxMessageFactory {
 
 
     private void putDicValueToBody(DaxBody body, int fieldId  ,String kValue, String vDesc){
-        body.nextBlock();
+        body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
         body.putPair(FIELD_ID,String.valueOf( fieldId));
         body.putPair(FIELD_VALUE,kValue);
         body.putPair(FIELD_VALUE_DESCRIPTION,vDesc);
     }
 
+    private void putGroupToBody(DaxBody body, DaxpFieldGroup group){
+        body.nextBlock(DaxBlockType.BLOCK_GROUP);
+        body.putPair(GROUP_ID, String.valueOf(group.id()));
+        body.putPair(GROUP_NAME, String.valueOf(group.name()));
+        if (group.masterId() != 0 ){
+            body.putPair(GROUP_MASTER_ID, String.valueOf(group.masterId()));
+        }
+        if (!group.description().isBlank() ){
+            body.putPair(GROUP_DESCRIPTION, group.description());
+        }
+
+    }
 
     //TODO Create message with dictionary using context
+   // TODO BLOCK_TYPE use
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
@@ -73,6 +89,10 @@ public class DaxMessageFactory {
         dictionary.getValueDicMap().forEach((fieldId, valeMap) ->
                 valeMap.forEach((v, vDesc) -> putDicValueToBody(message.getBody(), fieldId, v, vDesc ))
                 );
+
+        dictionary.getGroupMap().forEach((integer, group) ->
+                putGroupToBody(message.getBody(), group));
+
         message.finish();
         return message;
 

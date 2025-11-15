@@ -18,16 +18,19 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.annotation;
+package org.daxprotocol.core.field;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.daxprotocol.core.codec.DaxPair;
+import org.daxprotocol.core.codec.DaxTag;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD })
-public @interface DaxpReference {
-    int tag();
+public class DaxBlockType extends DaxPair<String> {
+
+    public static final String  BLOCK_FIELD       =  "F";
+    public static final String  BLOCK_GROUP       =  "G";
+    public static final String  BLOCK_ENUM        =  "E";
+    public static final String  BLOCK_ENUM_VALUE  =  "V";
+
+    public DaxBlockType(String value) {
+        super(DaxTag.BLOCK_TYPE, value);
+    }
 }
-

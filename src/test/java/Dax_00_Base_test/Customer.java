@@ -1,12 +1,15 @@
 package Dax_00_Base_test;
 
-import org.daxprotocol.core.annotation.DaxpDic;
+import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.annotation.DaxpField;
 
-@DaxpDic(name = "Customer", version = "1.0", namespace = "crm")
+@DaxpFieldGroup(id=GroupsTestList.GRP_CUSTOMER,
+                name = "Customer",
+                namespace = "crm",
+                masterId = GroupsTestList.GRP_CRM)
 public class Customer {
 
-    @DaxpField(tag = CustomerDaxDic.CUSTOMER_ID)
+    @DaxpField(tag = CustomerDaxDic.CUSTOMER_ID, uiLabel = "Id")
     int customerId;
 
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")

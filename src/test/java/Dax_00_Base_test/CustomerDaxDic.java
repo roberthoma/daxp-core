@@ -37,6 +37,7 @@ public class CustomerDaxDic extends DaxDictionary {
         putCustomerAtr(CUSTOMER_EMAIL,"Email",String.class);
         putCustomerAtr(CUSTOMER_TELEPHONE,"Telephone",String.class);
         putCustomerAtr(CUSTOMER_TOWN,"Town",String.class);
+        putCustomerAtr(CUSTOMER_TYPE,"Type",CustomerType.class);
 
         putDicValue(CUSTOMER_TYPE,CustomerType.INDIVIDUAL.symbol, CustomerType.INDIVIDUAL.desc);
         putDicValue(CUSTOMER_TYPE,CustomerType.ORGANIZATION.symbol, CustomerType.ORGANIZATION.desc);
