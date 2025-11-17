@@ -65,6 +65,8 @@ public class DaxTag {
 
     //------
 
+
+
     public static final int ENUM_NAME               = 130 ; //
     public static final int ENUM_DESCRIPTION        = 131 ; //
     public static final int ENUM_VALUE              = 132 ; //

@@ -20,27 +20,20 @@
 package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.dictionary.daxenum.DaxDictionaryEnum;
+import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
+import org.daxprotocol.core.dictionary.daxenum.DaxEnumValue;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.group.DaxpGroupItf;
 
 import java.util.*;
-
+//TODO create context dictionary
 public class DaxDictionary {
     /*****************************************************
      * Dictionary of messages type, roles
      * Key: Message type
      * */
     Map<String, DaxMessageDicItem> msgMap = new HashMap<>();
-
-
-    /*****************************************************
-     *  Standard valueNamesMap
-     * Map of string values and description ; enums others dictionary
-     * Key : idField
-     * */
-
-    Map<Integer, Map<String,String>> valueDicMap = new HashMap<>();
 
 
     /*****************************************************
@@ -56,8 +49,9 @@ public class DaxDictionary {
      Map<Integer, DaxpFieldGroup> groupMap = new HashMap<>();
 
 
+    DaxDictionaryEnum enumDictionary = new DaxDictionaryEnum();
 
- public DaxDictionary(){
+    public DaxDictionary(){
         //TMP
         System.out.println("Init DaxDictionary...");
 
@@ -86,7 +80,6 @@ public class DaxDictionary {
 
     }
 
-
     public Map<Integer, DaxPair<?>> getFieldAttributeMap(int fieldId) {
         return attributMap.get(fieldId);
     }
@@ -95,8 +88,13 @@ public class DaxDictionary {
       return attributMap;
     }
 
-    public Map<Integer, Map<String, String>> getValueDicMap() {
-        return valueDicMap;
+
+    public Map<String, Map<String, DaxEnumValue>> getEnumValueMap() {
+        return  enumDictionary.getValueMap();
+    }
+
+    public Map<String, DaxEnumName>  getEnumMap() {
+        return  enumDictionary.getEnumMap();
     }
 
     public void put(int fieldId,  Class<?> clazz){
@@ -124,9 +122,12 @@ public class DaxDictionary {
         putAttribute(fieldId, new DaxAtrNullable(able));
     }
 
-    public void putDicValue(int idField, String value, String desc){
-        valueDicMap.merge(idField,new HashMap<>(Map.of(value,desc)),
-                (svMap, svMapN) ->  putAndReturn(svMap, value,desc));
+    public void putEnumValue(String enumName, String value, String desc){
+        enumDictionary.putEnumValue(enumName, value, desc);
+    }
+
+    public void putEnum(String enumName, String desc){
+        enumDictionary.putEnum(enumName, desc);
     }
 
     public void addGroup(DaxpFieldGroup group){
@@ -146,11 +147,15 @@ public class DaxDictionary {
     }
 
 
+
+    public void putAtrEnumName(int fieldId, String enumName) {
+        putAttribute(fieldId, new DaxAtrEnumName(enumName));
+    }
+
     //----------------------------------------------------
     public void join (DaxDictionary dic){
-
         //TODO Validation for double idField in joined dictionary
-        valueDicMap.putAll(dic.getValueDicMap());
+//        enumValueMap.putAll(dic.getEnumValueMap());
     }
 
 }

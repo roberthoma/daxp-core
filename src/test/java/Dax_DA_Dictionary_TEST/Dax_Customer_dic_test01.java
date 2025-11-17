@@ -65,9 +65,9 @@ public class Dax_Customer_dic_test01 {
         DaxMessage msgAfter  = codec.decode(msgStr);
         System.out.println(msgStr);
 
-        Assertions.assertEquals(10,msg.getBlockCount());
+        Assertions.assertEquals(8,msg.getBlockCount());
 
-        Assertions.assertEquals(10,msgAfter.getBlockCount());
+        Assertions.assertEquals(8,msgAfter.getBlockCount());
 
 
 

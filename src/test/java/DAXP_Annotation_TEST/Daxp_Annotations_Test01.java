@@ -2,6 +2,7 @@ package DAXP_Annotation_TEST;
 
 import Dax_00_Base_test.Customer;
 import Dax_00_Base_test.CustomerDaxDic;
+import Dax_00_Base_test.CustomerRelation;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxMessageCodec;
@@ -18,10 +19,11 @@ public class Daxp_Annotations_Test01 {
     @Test
     void createMsgFromCustomer() {
         String expectMsg = "DAXP=1|TF=DEC|EN=UTF8|\n" +
-                "9=UCi|2001=123|2002=Robert|\n" +
+                "9=UCi|2001=123|2002=Robert|2076=WORKER|\n" +
                 "99=123|";
 
         Customer customer = new Customer(123, "Robert");
+        customer.setRelation(CustomerRelation.WORKER);
         DaxMessageFactory factory = new DaxMessageFactory();
         DaxMessage message = factory.toDaxMessage("UCi", customer);
         DaxMessageCodec codec = new DaxMessageCodec();
@@ -67,7 +69,8 @@ public class Daxp_Annotations_Test01 {
 
     @Test
     void injection(){
-        String msgStr = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|2001=123|2002=Robert|99=123|";
+        String msgStr = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
+//        String msgStr = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|2001=123|2002=Robert|99=123|";
         DaxMessageCodec codec = new DaxMessageCodec();
         DaxMessage message = codec.decode(msgStr);
         Customer customer = DaxMessageConverter.fromMessage(message, Customer.class);

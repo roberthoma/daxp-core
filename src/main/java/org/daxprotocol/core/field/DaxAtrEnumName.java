@@ -23,16 +23,8 @@ package org.daxprotocol.core.field;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxTag;
 
-//Type of block application
-public class DaxBlockType extends DaxPair<String> {
-
-    public static final String  BLOCK_FIELD       =  "F";
-    public static final String  BLOCK_GROUP       =  "G";
-    public static final String  BLOCK_ENUM        =  "E";
-    public static final String  BLOCK_ENUM_VALUE  =  "V";
-    public static final String  BLOCK_MESSAGE     =  "M";
-
-    public DaxBlockType(String value) {
-        super(DaxTag.BLOCK_TYPE, value);
+public class DaxAtrEnumName extends DaxPair<String> {
+    public DaxAtrEnumName(String value) {
+        super(DaxTag.ENUM_NAME, value);
     }
 }

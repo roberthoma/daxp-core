@@ -30,6 +30,7 @@ public class DaxAtrDataType extends DaxPair<Character> {
     public static Character DATA_TYPE_BOOLEAN = 'B';
     public static Character DATA_TYPE_CHAR    = 'C';
     public static Character DATA_TYPE_ENUM    = 'E';
+    public static Character DATA_TYPE_DATE    = 'D';
 
 
 
@@ -64,6 +65,8 @@ public class DaxAtrDataType extends DaxPair<Character> {
             case "Boolean":
             case "boolean":
                 return DATA_TYPE_BOOLEAN;
+            case "Date":
+                return DATA_TYPE_DATE;
             default:
                 return '?';
         }

@@ -13,10 +13,7 @@ public class CustomerDaxDic extends DaxDictionary {
     public static final int CUSTOMER_TELEPHONE     = 2073;
     public static final int CUSTOMER_TOWN          = 2074;
     public static final int CUSTOMER_TYPE          = 2075;
-
-
-
-
+    public static final int CUSTOMER_RELATION      = 2076   ;
 
 
     public CustomerDaxDic(){
@@ -39,9 +36,10 @@ public class CustomerDaxDic extends DaxDictionary {
         putCustomerAtr(CUSTOMER_TOWN,"Town",String.class);
         putCustomerAtr(CUSTOMER_TYPE,"Type",CustomerType.class);
 
-        putDicValue(CUSTOMER_TYPE,CustomerType.INDIVIDUAL.symbol, CustomerType.INDIVIDUAL.desc);
-        putDicValue(CUSTOMER_TYPE,CustomerType.ORGANIZATION.symbol, CustomerType.ORGANIZATION.desc);
-
+        /* Below is BAD definition !!!*/
+        //putDicValue(CUSTOMER_TYPE,CustomerType.INDIVIDUAL.symbol, CustomerType.INDIVIDUAL.desc);
+        //putDicValue(CUSTOMER_TYPE,CustomerType.ORGANIZATION.symbol, CustomerType.ORGANIZATION.desc);
+        //-----------------------------
     }
 
 

@@ -36,54 +36,47 @@ public class DaxDictionaryManager {
 
 
 
+
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
         try {
-            //TMP
-            System.out.println("====================================");
-            System.out.println("->  POP CLASS :"+clazz.getSimpleName());
-
             int groupId = 0;
 
             if (clazz.isAnnotationPresent(DaxpFieldGroup.class)){
-                System.out.println(" >> DaxpGroup ");
+                DaxDictionaryDecoratorService.printDaxScanClass(clazz);
                 DaxpFieldGroup group =  clazz.getAnnotation(DaxpFieldGroup.class);
 
-                System.out.println("GRP name : " +group.name());
-                System.out.println("GRP id : " +group.id());
-                System.out.println("GRP master id : " +group.masterId());
-                System.out.println("GRP desc : " +group.description());
-                System.out.println("GRP namespace : " +group.namespace());
-
+                DaxDictionaryDecoratorService.printDaxGroupInfo(group);
                 groupId = group.id();
                 daxDic.addGroup( group );
-
             }
 
             for (Field field : clazz.getDeclaredFields()) {
-
-                //TMP
-                System.out.println("\n> POP FIELD Name : "+field.getName());
-                System.out.println("___> POP FIELD Type Name      : "+field.getType().getTypeName());
-                System.out.println("___> POP FIELD Component Type : "+field.getType().getComponentType());
-
-                if (field.getType().isEnum()){
-                   System.out.println("___> POP FIELD is ENUM");
-
-                   Object[] constants = field.getType().getEnumConstants();
-
-                    for (Object c : constants) {
-
-                        System.out.println(c);
-                    }
-
-                }
-
+                DaxDictionaryDecoratorService.printDaxFieldInfo(field);
                 if (field.isAnnotationPresent(DaxpField.class)) {
                     DaxpField daxp = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
 
                     //Class  change type to char
                     daxDic.putAtrDataType(daxp.tag(),field.getType());
+
+                    if (field.getType().isEnum()){
+                        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
+
+                        String enumName = field.getType().getSimpleName();
+                        daxDic.putAtrEnumName(daxp.tag(), enumName);
+
+                        daxDic.putEnum(enumName,enumName);  // to improve
+
+                        //TODO Create external service for ENUM populate
+                        Object[] constants = field.getType().getEnumConstants();
+
+                        for (Object c : constants) {
+                            daxDic.putEnumValue(enumName, c.toString(),"");
+                       }
+
+
+                    }
+
 
                     if (field.isAnnotationPresent(NotNull.class)) {
                         daxDic.putAtrNullable(daxp.tag(), DaxAtrNullable.NULLABLE_FALSE);

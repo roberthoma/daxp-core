@@ -38,6 +38,7 @@ public class DaxDecodeService {
         CONVERTERS.put(Boolean.class,Boolean::valueOf);
         CONVERTERS.put(double.class, Double::parseDouble);
         CONVERTERS.put(Double.class, Double::valueOf);
+
         // add more as needed (char, BigDecimal, enums, etc.)
     }
 
@@ -46,12 +47,19 @@ public class DaxDecodeService {
     }
 
 
-    public static Object convert(String raw, Class<?> type) {
+    public static Object convert(String value, Class<?> type) {
         Function<String, Object> fn = CONVERTERS.get(type);
-        if (fn == null) {
-            throw new IllegalArgumentException("No converter for type: " + type.getName());
+        if (fn != null) {
+            return fn.apply(value);
         }
-        return fn.apply(raw);
+        //Enum support
+        if (type.isEnum()) {
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            Object enumValue = Enum.valueOf((Class<Enum>) type, value);
+            return enumValue;
+        }
+        throw new IllegalArgumentException("No converter for type: " + type.getName());
+
     }
 
     /** Parses key=value pairs separated by the given delimiter. */

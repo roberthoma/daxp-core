@@ -1,7 +1,11 @@
 package Dax_00_Base_test;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.annotation.DaxpField;
+
+import java.util.Date;
 
 @DaxpFieldGroup(id=GroupsTestList.GRP_CUSTOMER,
                 name = "Customer",
@@ -12,6 +16,7 @@ public class Customer {
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_ID, uiLabel = "Id")
     int customerId;
 
+    @Size(max = 120)
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
     String name;
 
@@ -21,6 +26,44 @@ public class Customer {
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_TYPE, uiLabel = "Type")
     CustomerType type;
 
+
+    @DaxpField(tag = CustomerDaxDic.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
+    Date birthDate;
+
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    public CustomerType getType() {
+        return type;
+    }
+
+    public void setType(CustomerType type) {
+        this.type = type;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public CustomerRelation getRelation() {
+        return relation;
+    }
+
+    public void setRelation(CustomerRelation relation) {
+        this.relation = relation;
+    }
+
+    @DaxpField(tag = CustomerDaxDic.CUSTOMER_RELATION , uiLabel = "Relation")
+    CustomerRelation relation;
 
     public Customer(){
 

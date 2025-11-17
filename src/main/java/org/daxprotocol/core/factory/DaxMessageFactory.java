@@ -24,8 +24,8 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxStringPair;
+import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
 import org.daxprotocol.core.field.DaxBlockType;
-import org.daxprotocol.core.group.DaxpGroupItf;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.field.DaxMsgType;
@@ -57,9 +57,9 @@ public class DaxMessageFactory {
     }
 
 
-    private void putDicValueToBody(DaxBody body, int fieldId  ,String kValue, String vDesc){
+    private void putDicValueToBody(DaxBody body, String enumName ,String kValue, String vDesc){
         body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
-        body.putPair(FIELD_ID,String.valueOf( fieldId));
+        body.putPair(ENUM_NAME,enumName);
         body.putPair(FIELD_VALUE,kValue);
         body.putPair(FIELD_VALUE_DESCRIPTION,vDesc);
     }
@@ -77,21 +77,37 @@ public class DaxMessageFactory {
 
     }
 
+    private void putEnumToBlock(DaxBody body, DaxEnumName enumName){
+        body.nextBlock(DaxBlockType.BLOCK_ENUM);
+        body.putPair(ENUM_NAME, enumName.getName());
+        body.putPair(ENUM_DESCRIPTION, enumName.getDesc());
+    }
+
+
     //TODO Create message with dictionary using context
    // TODO BLOCK_TYPE use
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
-        dictionary.getAttributMap().forEach((fieldId, atrMap) ->
-                        putBodyBlock(message.getBody(),fieldId,  atrMap)
+
+
+        dictionary.getEnumMap().forEach((s, enumName) ->
+                putEnumToBlock(message.getBody(), enumName)
                 );
 
-        dictionary.getValueDicMap().forEach((fieldId, valeMap) ->
-                valeMap.forEach((v, vDesc) -> putDicValueToBody(message.getBody(), fieldId, v, vDesc ))
+        dictionary.getEnumValueMap().forEach((enumName, valeMap) ->
+                valeMap.forEach((v, enumValue)
+                        -> putDicValueToBody(message.getBody(), enumName, v, enumValue.getDesc() ))
                 );
 
         dictionary.getGroupMap().forEach((integer, group) ->
                 putGroupToBody(message.getBody(), group));
+
+
+        dictionary.getAttributMap().forEach((fieldId, atrMap) ->
+                putBodyBlock(message.getBody(),fieldId,  atrMap)
+        );
+
 
         message.finish();
         return message;
