@@ -24,7 +24,10 @@ import static org.daxprotocol.core.codec.DaxCodecSymbols.PAIR_SEPARATOR;
 
 public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
 
-    public static String encode(StringBuilder sb,int tag, String value ) {
+    public static String encode(StringBuilder sb,String tag, String value ) {
+        if (value.isBlank()){
+            return sb.toString();
+        }
         sb.append(tag)
                 .append(EQUAL)
                 .append(value)
@@ -32,17 +35,24 @@ public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
         return sb.toString() ;
     }
 
-    public static String encode(StringBuilder sb,String tag, String value ) {
-        sb.append(tag)
-                .append(EQUAL)
-                .append(value)
-                .append(PAIR_SEPARATOR);
-        return sb.toString() ;
+    public static String encode(StringBuilder sb, int tag, String value ) {
+        return encode(sb,String.valueOf(tag), value );
+//              sb.append(tag)
+//                .append(EQUAL)
+//                .append(value)
+//                .append(PAIR_SEPARATOR);
+//        return sb.toString() ;
     }
+
 
     @Override
     public String encode(DaxPair<?> pair) {
         StringBuilder sb = new StringBuilder();
+
+        if (pair.getStrValue().isBlank()){
+            return "";
+        }
+
         sb.append(pair.tag)
                 .append(EQUAL)
                 .append(pair.getStrValue())

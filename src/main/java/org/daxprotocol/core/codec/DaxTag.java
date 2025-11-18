@@ -61,7 +61,7 @@ public class DaxTag {
     public static final int FIELD_ID_LIST           = 115 ; //  FieldIdList     List<Integer>
     public static final int FIELD_DATA_TYPE         = 110 ; //
 //    public static final int FIELD_ENUM_NAME         = 111 ; //
-    public static final int FIELD_GROUP_ID          = 120 ; //
+//    public static final int FIELD_GROUP_ID          = 120 ; //
 
     //------
 

@@ -23,24 +23,27 @@ package org.daxprotocol.core.field;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxTag;
 
+import java.util.Date;
+
 //TODO data type to has to be developed
 public class DaxAtrDataType extends DaxPair<Character> {
-    public static Character DATA_TYPE_INTEGER = 'I';
-    public static Character DATA_TYPE_STRING  = 'S';
-    public static Character DATA_TYPE_BOOLEAN = 'B';
-    public static Character DATA_TYPE_CHAR    = 'C';
-    public static Character DATA_TYPE_ENUM    = 'E';
-    public static Character DATA_TYPE_DATE    = 'D';
+    public final static Character DATA_TYPE_INTEGER = 'I';
+    public final static Character DATA_TYPE_STRING  = 'S';
+    public final static Character DATA_TYPE_BOOLEAN = 'B';
+    public final static Character DATA_TYPE_CHAR    = 'C';
+    public final static Character DATA_TYPE_ENUM    = 'E';
+    public final static Character DATA_TYPE_DATE    = 'D';
 
+
+    public DaxAtrDataType(Character c) {
+        super(DaxTag.FIELD_DATA_TYPE, c);
+    }
 
 
     public DaxAtrDataType(Class<?> clazz) {
         super(DaxTag.FIELD_DATA_TYPE, classToChar(clazz));
     }
 
-//    public static Class<?> toClazz(Character cc){
-//
-//    }
 
 //TODO for refactoring
         public static Character classToChar(Class<?> clazz){
@@ -53,24 +56,31 @@ public class DaxAtrDataType extends DaxPair<Character> {
             return DATA_TYPE_ENUM;
         }
 
-        switch (key) {
-            case "String":
-                return DATA_TYPE_STRING;
-            case "Integer":
-            case "int":
-                return DATA_TYPE_INTEGER;
-            case "Character":
-            case "char":
-                return DATA_TYPE_CHAR;
-            case "Boolean":
-            case "boolean":
-                return DATA_TYPE_BOOLEAN;
-            case "Date":
-                return DATA_TYPE_DATE;
-            default:
-                return '?';
-        }
+            return switch (key) {
+                case "String" -> DATA_TYPE_STRING;
+                case "Integer", "int" -> DATA_TYPE_INTEGER;
+                case "Character", "char" -> DATA_TYPE_CHAR;
+                case "Boolean", "boolean" -> DATA_TYPE_BOOLEAN;
+                case "Date" -> DATA_TYPE_DATE;
+                default -> '?';
+            };
 
     }
+    public static Class<?>  charToClass(Character c){
+
+        return switch (c) {
+            case 'S' -> String.class;
+            case 'I' -> Integer.class;
+            case 'C' -> Character.class;
+            case 'B' -> Boolean.class;
+            case 'D' -> Date.class;
+            case 'E' -> Enum.class;
+            default -> Object.class;
+        };
+
+
+    }
+
+
 
 }

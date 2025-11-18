@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Optional;
 
 public class Daxp_Annotations_Test01 {
 
@@ -55,7 +56,10 @@ public class Daxp_Annotations_Test01 {
                     System.out.println("Pair: "+ daxp.tag()+"="+field.get(customer));
 
                     var attMap =  dic.getFieldAttributeMap(daxp.tag());
-                    System.out.println("Label: "+attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL).getValue() );
+
+//                    System.out.println("Label: "+ Optional.of(attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL))
+//                                    .
+                            //.getValue() );
 //                        System.out.println("Label: "+dic.getAttributeMap().get(daxp.tag()).getUiLabel());
 
                     //field.set(customer, "Tag=" + daxp.tag()); // any logic you want

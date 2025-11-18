@@ -24,6 +24,6 @@ import org.daxprotocol.core.codec.DaxTag;
 
 public class DaxAtrGroupId extends DaxPair<Integer> {
     public DaxAtrGroupId(Integer value) {
-        super(DaxTag.FIELD_GROUP_ID, value);
+        super(DaxTag.GROUP_ID, value);
     }
 }

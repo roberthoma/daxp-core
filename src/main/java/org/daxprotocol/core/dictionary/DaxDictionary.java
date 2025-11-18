@@ -19,16 +19,18 @@
  */
 package org.daxprotocol.core.dictionary;
 
-import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.dictionary.daxenum.DaxDictionaryEnum;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumValue;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.codec.DaxPair;
+import org.daxprotocol.core.group.DaxGroup;
+import org.daxprotocol.core.group.DaxpGroupItf;
 
 import java.util.*;
 //TODO create context dictionary
 public class DaxDictionary {
+
     /*****************************************************
      * Dictionary of messages type, roles
      * Key: Message type
@@ -46,7 +48,8 @@ public class DaxDictionary {
     /*****************************************************
      *  Group Map
      */
-     Map<Integer, DaxpFieldGroup> groupMap = new HashMap<>();
+     Map<Integer, DaxpGroupItf> groupMap = new HashMap<>();
+//     Map<Integer, DaxpFieldGroup> groupMap = new HashMap<>();
 
 
     DaxDictionaryEnum enumDictionary = new DaxDictionaryEnum();
@@ -105,6 +108,11 @@ public class DaxDictionary {
         putAttribute(fieldId, new DaxAtrDataType(clazz));
     };
 
+    public void putAtrDataType(int fieldId,  Character c){
+        putAttribute(fieldId, new DaxAtrDataType(c));
+    };
+
+
    public void putAtrUiLabel(int fieldId,  String uiLabel){
        putAttribute(fieldId, new DaxAtrUiLabel(uiLabel));
    }
@@ -130,12 +138,20 @@ public class DaxDictionary {
         enumDictionary.putEnum(enumName, desc);
     }
 
-    public void addGroup(DaxpFieldGroup group){
-        groupMap.put(group.id(), group);
+    public void putEnum(DaxEnumName enumName){
+        enumDictionary.putEnum(enumName.getName(), enumName.getDesc());
     }
 
+    public void putGroup(int idGroup, String grpName){
 
-    public Map<Integer, DaxpFieldGroup> getGroupMap() {
+        DaxGroup grp =  new DaxGroup(idGroup,0,grpName);
+
+
+       groupMap.put(grp.getId(),grp);
+
+   }
+
+    public Map<Integer, DaxpGroupItf> getGroupMap() {
        return groupMap;
     }
 
@@ -150,6 +166,10 @@ public class DaxDictionary {
 
     public void putAtrEnumName(int fieldId, String enumName) {
         putAttribute(fieldId, new DaxAtrEnumName(enumName));
+    }
+
+    public Map<String, DaxMessageDicItem> getMsgMap() {
+        return msgMap;
     }
 
     //----------------------------------------------------

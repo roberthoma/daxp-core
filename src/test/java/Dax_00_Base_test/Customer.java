@@ -16,10 +16,11 @@ public class Customer {
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_ID, uiLabel = "Id")
     int customerId;
 
-    @Size(max = 120)
+    @Size(min = 2 ,max = 120)
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
     String name;
 
+    @Size(min=2)
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
 

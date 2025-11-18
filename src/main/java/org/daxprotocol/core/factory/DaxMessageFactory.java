@@ -24,8 +24,10 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxStringPair;
+import org.daxprotocol.core.dictionary.DaxMessageDicItem;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
 import org.daxprotocol.core.field.DaxBlockType;
+import org.daxprotocol.core.group.DaxpGroupItf;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.field.DaxMsgType;
@@ -64,15 +66,15 @@ public class DaxMessageFactory {
         body.putPair(FIELD_VALUE_DESCRIPTION,vDesc);
     }
 
-    private void putGroupToBody(DaxBody body, DaxpFieldGroup group){
+    private void putGroupToBody(DaxBody body, DaxpGroupItf group){
         body.nextBlock(DaxBlockType.BLOCK_GROUP);
-        body.putPair(GROUP_ID, String.valueOf(group.id()));
-        body.putPair(GROUP_NAME, String.valueOf(group.name()));
-        if (group.masterId() != 0 ){
-            body.putPair(GROUP_MASTER_ID, String.valueOf(group.masterId()));
+        body.putPair(GROUP_ID, String.valueOf(group.getId()));
+        body.putPair(GROUP_NAME, String.valueOf(group.getName()));
+        if (group.getMasterId() != 0 ){
+            body.putPair(GROUP_MASTER_ID, String.valueOf(group.getMasterId()));
         }
-        if (!group.description().isBlank() ){
-            body.putPair(GROUP_DESCRIPTION, group.description());
+        if (!group.getDescription().isBlank() ){
+            body.putPair(GROUP_DESCRIPTION, group.getDescription());
         }
 
     }
@@ -82,14 +84,23 @@ public class DaxMessageFactory {
         body.putPair(ENUM_NAME, enumName.getName());
         body.putPair(ENUM_DESCRIPTION, enumName.getDesc());
     }
+    private void putMsgItem(DaxBody body,  DaxMessageDicItem msgItem){
+        body.nextBlock(DaxBlockType.BLOCK_MESSAGE);
+        body.putPair(FIELD_VALUE, msgItem.getMsgType());
+        body.putPair(FIELD_VALUE_DESCRIPTION, msgItem.getMsgDesc());
+    }
 
 
-    //TODO Create message with dictionary using context
+
+    //TODO Create message with dictionary using context, or group, or field/(list of field)
    // TODO BLOCK_TYPE use
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
 
+        dictionary.getMsgMap().forEach((s, messageDicItem) ->
+                putMsgItem(message.getBody(),messageDicItem)
+                );
 
         dictionary.getEnumMap().forEach((s, enumName) ->
                 putEnumToBlock(message.getBody(), enumName)
