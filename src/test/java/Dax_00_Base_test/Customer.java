@@ -1,6 +1,7 @@
 package Dax_00_Base_test;
 
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.annotation.DaxpField;
@@ -16,6 +17,7 @@ public class Customer {
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_ID, uiLabel = "Id")
     int customerId;
 
+    @NotNull
     @Size(min = 2 ,max = 120)
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
     String name;

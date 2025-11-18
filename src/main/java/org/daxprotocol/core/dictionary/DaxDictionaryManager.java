@@ -32,7 +32,10 @@ import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class DaxDictionaryManager {
@@ -45,10 +48,6 @@ public class DaxDictionaryManager {
 
     //TODO create  service  DaxValidationAttributeManager
     private void populateValidationAttribute(DaxDictionary daxDic,Field field ,int tag){
-
-        if (field.isAnnotationPresent(NotNull.class)) {
-            daxDic.putAtrNullable(tag, DaxAtrNullable.NULLABLE_FALSE);
-        }
 
         if (field.isAnnotationPresent(NotNull.class)) {
             daxDic.putAtrNullable(tag, DaxAtrNullable.NULLABLE_FALSE);
@@ -147,46 +146,28 @@ public class DaxDictionaryManager {
                     blockPairMap.get(DaxTag.GROUP_NAME).getStrValue());
         }
 
+
         if(blockType.equals(DaxBlockType.BLOCK_FIELD)){
             int fieldId = Integer.parseInt (blockPairMap.get(DaxTag.FIELD_ID).getStrValue());
 
-
-            if (blockPairMap.containsKey(DaxTag.ATR_NULLABLE)) {
-                daxDic.putAtrNullable(fieldId,
-                        blockPairMap.get(DaxTag.ATR_NULLABLE).getStrValue().charAt(0));
-            }
-
-            if (blockPairMap.containsKey(DaxTag.ATR_SIZE_MIN)) {
-                daxDic.putAtrSizeMin(fieldId,
-                        Integer.parseInt( blockPairMap.get(DaxTag.ATR_SIZE_MIN).getStrValue()));
-            }
-
-            if (blockPairMap.containsKey(DaxTag.ATR_SIZE_MAX)) {
-                daxDic.putAtrSizeMax(fieldId,
-                        Integer.parseInt( blockPairMap.get(DaxTag.ATR_SIZE_MAX).getStrValue()));
-            }
-
-            if (blockPairMap.containsKey(DaxTag.ATR_UI_LABEL)) {
-                daxDic.putAtrUiLabel(fieldId,
-                        blockPairMap.get(DaxTag.ATR_UI_LABEL).getStrValue());
-            }
-
-            if (blockPairMap.containsKey(DaxTag.GROUP_ID)) {
-                daxDic.putAtrGroupId(fieldId,
-                        Integer.parseInt(blockPairMap.get(DaxTag.GROUP_ID).getStrValue()));
-            }
+            Set<Integer> setArt = new HashSet<>(Set.of(
+                    DaxTag.ATR_NULLABLE,
+                    DaxTag.ATR_SIZE_MIN,
+                    DaxTag.ATR_SIZE_MAX,
+                    DaxTag.ATR_UI_LABEL,
+                    DaxTag.GROUP_ID,
+                    DaxTag.ENUM_NAME,
+                    DaxTag.FIELD_DATA_TYPE
+            ));
 
 
-            if (blockPairMap.containsKey(DaxTag.FIELD_DATA_TYPE)) {
-                daxDic.putAtrDataType(fieldId, blockPairMap.get(DaxTag.FIELD_DATA_TYPE).getStrValue().charAt(0));
-            }
-
-
-            if (blockPairMap.containsKey(DaxTag.ENUM_NAME)) {
-                daxDic.putAtrEnumName(fieldId,
-                        blockPairMap.get(DaxTag.ENUM_NAME).getStrValue());
-            }
-
+            blockPairMap.entrySet()
+                        .stream()
+                        .filter(pairEntry ->
+                            setArt.contains(pairEntry.getKey()))
+                        .collect(Collectors.toList())
+                        .forEach(pair ->
+                                  daxDic.putAttribute(fieldId,pair.getValue()));
 
         }
 
@@ -197,7 +178,6 @@ public class DaxDictionaryManager {
 
         message.getBody().getBlockMap().forEach((integer, integerDaxPairMap) ->
                   populateFromBlock(daxDic, integerDaxPairMap)
-
                 );
     }
 
