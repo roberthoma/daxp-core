@@ -32,10 +32,8 @@ import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 public class DaxDictionaryManager {
@@ -47,7 +45,14 @@ public class DaxDictionaryManager {
     DaxEnumManager enumManager = new DaxEnumManager();
 
     //TODO create  service  DaxValidationAttributeManager
-    private void populateValidationAttribute(DaxDictionary daxDic,Field field ,int tag){
+    private void popJakartaValidationAttribute(DaxDictionary daxDic,Field field ,int tag){
+        boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
+                .anyMatch(a -> a.annotationType().getPackageName()
+                        .startsWith("jakarta.validation"));
+
+        if (!isJakartaValidation){
+            return;
+        }
 
         if (field.isAnnotationPresent(NotNull.class)) {
             daxDic.putAtrNullable(tag, DaxAtrNullable.NULLABLE_FALSE);
@@ -97,7 +102,7 @@ public class DaxDictionaryManager {
                     enumManager.populateEnumFromAnnotations(field,daxDic);
                 }
 
-                populateValidationAttribute(daxDic, field, daxp.tag() );
+                popJakartaValidationAttribute(daxDic, field, daxp.tag() );
 
                 if (daxp.uiLabel()!=null) {
                     daxDic.putAtrUiLabel(daxp.tag(), daxp.uiLabel());
@@ -150,24 +155,8 @@ public class DaxDictionaryManager {
         if(blockType.equals(DaxBlockType.BLOCK_FIELD)){
             int fieldId = Integer.parseInt (blockPairMap.get(DaxTag.FIELD_ID).getStrValue());
 
-            Set<Integer> setArt = new HashSet<>(Set.of(
-                    DaxTag.ATR_NULLABLE,
-                    DaxTag.ATR_SIZE_MIN,
-                    DaxTag.ATR_SIZE_MAX,
-                    DaxTag.ATR_UI_LABEL,
-                    DaxTag.GROUP_ID,
-                    DaxTag.ENUM_NAME,
-                    DaxTag.FIELD_DATA_TYPE
-            ));
-
-
-            blockPairMap.entrySet()
-                        .stream()
-                        .filter(pairEntry ->
-                            setArt.contains(pairEntry.getKey()))
-                        .collect(Collectors.toList())
-                        .forEach(pair ->
-                                  daxDic.putAttribute(fieldId,pair.getValue()));
+            blockPairMap.forEach((integer, daxPair) ->
+                    daxDic.putAttribute(fieldId,daxPair));
 
         }
 

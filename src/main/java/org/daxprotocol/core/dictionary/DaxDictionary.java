@@ -31,6 +31,14 @@ import java.util.*;
 //TODO create context dictionary
 public class DaxDictionary {
 
+
+    //TODO add group of values
+//            7=12|5=L|141=35|100=2001,2002,2005,2074|
+//            7=12|5=D|141=35|100=2001,2002,2005,2074
+
+    // TODo Dictionary od fields define without identification of group
+
+
     /*****************************************************
      * Dictionary of messages type, roles
      * Key: Message type

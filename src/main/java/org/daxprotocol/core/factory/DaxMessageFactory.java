@@ -166,10 +166,17 @@ public class DaxMessageFactory {
         return message;
     }
 
+    public DaxMessage okMessageType() {
+        DaxMessage message = new DaxMessage(DaxMsgType.OK_RES);
+        return message;
+    }
+
+
     public DaxMessage errorInvalidMessageType() {
         DaxMessage message = new DaxMessage(DaxMsgType.ERR_RES);
         message.getBody().nextBlock();
         message.getBody().putPair(new DaxStringPair(ERR_DESCRIPTION,"Invalid Message Type"));
         return message;
     }
+
 }

@@ -1,0 +1,5 @@
+New Attributes like
+
+defaultValue : null,
+
+stepSize : 1,

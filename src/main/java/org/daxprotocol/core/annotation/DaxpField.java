@@ -33,3 +33,7 @@ public @interface DaxpField {
     String uiLabel() default "";
 }
 
+//TODO if application does't use isJakartaValidation
+// then will be passible use NOTNYLL MAX MIN etc by DAXAnnotation
+
+// add default value

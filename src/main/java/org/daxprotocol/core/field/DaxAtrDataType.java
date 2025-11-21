@@ -28,6 +28,7 @@ import java.util.Date;
 //TODO data type to has to be developed
 public class DaxAtrDataType extends DaxPair<Character> {
     public final static Character DATA_TYPE_INTEGER = 'I';
+    public final static Character DATA_TYPE_LONG    = 'L';
     public final static Character DATA_TYPE_STRING  = 'S';
     public final static Character DATA_TYPE_BOOLEAN = 'B';
     public final static Character DATA_TYPE_CHAR    = 'C';
@@ -61,6 +62,7 @@ public class DaxAtrDataType extends DaxPair<Character> {
                 case "Integer", "int" -> DATA_TYPE_INTEGER;
                 case "Character", "char" -> DATA_TYPE_CHAR;
                 case "Boolean", "boolean" -> DATA_TYPE_BOOLEAN;
+                case "Long" -> DATA_TYPE_LONG;
                 case "Date" -> DATA_TYPE_DATE;
                 default -> '?';
             };
@@ -70,6 +72,7 @@ public class DaxAtrDataType extends DaxPair<Character> {
 
         return switch (c) {
             case 'S' -> String.class;
+            case 'L' -> Long.class;
             case 'I' -> Integer.class;
             case 'C' -> Character.class;
             case 'B' -> Boolean.class;

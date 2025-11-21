@@ -14,6 +14,7 @@ public class CustomerDaxDic extends DaxDictionary {
     public static final int CUSTOMER_TOWN          = 2074;
     public static final int CUSTOMER_TYPE          = 2075;
     public static final int CUSTOMER_RELATION      = 2076   ;
+    public static final int CUSTOMER_IS_CITIZEN    = 2077   ;
 
 
     public CustomerDaxDic(){

@@ -29,6 +29,16 @@ public class Customer {
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_TYPE, uiLabel = "Type")
     CustomerType type;
 
+    public Boolean getCitizen() {
+        return isCitizen;
+    }
+
+    public void setCitizen(Boolean citizen) {
+        isCitizen = citizen;
+    }
+
+    @DaxpField(tag = CustomerDaxDic.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
+    Boolean isCitizen;
 
     @DaxpField(tag = CustomerDaxDic.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;

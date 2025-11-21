@@ -29,7 +29,7 @@ public class MultiMessage_Test {
                                                   .getPair(0,2002).getStrValue()
         );
 
-        Customer customer = DaxMessageConverter.fromMessage(msgList.get(1),Customer.class);
+        Customer customer = DaxMessageConverter.createFromMessage(msgList.get(1),Customer.class);
 
         Assertions.assertEquals("Robert4", customer.getName());
     }

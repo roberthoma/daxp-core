@@ -22,10 +22,11 @@ package org.daxprotocol.core.codec;
 public  class DaxPair<T>{
     Integer tag;
     protected T value;
-    Class<T> clazz;
+   // Class<T> clazz;
 
     public Class<?> getClazz(){
-        return clazz;
+        //return clazz;
+        return value.getClass();
     };
     public Integer getTag(){
         return tag;
@@ -37,11 +38,14 @@ public  class DaxPair<T>{
     public DaxPair(Integer tag, T value){
         this.tag = tag;
         this.value = value;
-        //this.clazz = value.getClass(); //TODO fix init class type
+//        this.clazz = value.getClass(); //TODO fix init class type
     }
 
     public String getStrValue() {
-         return value.toString();
+        if (value instanceof Boolean){
+            return ((Boolean)value)? "Y":"N";
+        }
+        return value.toString();
     };
 
     public void setValue(T value) {

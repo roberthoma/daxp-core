@@ -28,7 +28,7 @@ public class DaxTag {
     public static final String DAXP = "DAXP"; // protocol identifier and version
     public static final String TF   = "TF";   // tag format: DEC | HEX
     public static final String EN   = "EN";   // encoding: ASCII | UTF8 | UTF16
-    public static final String CTX  = "CX";   // context: optional  - list FIX, CRM
+//    public static final String CTX  = "CX";   // context: optional  - list FIX, CRM
 
     /**
     * Head TAGS
@@ -36,6 +36,7 @@ public class DaxTag {
     public static final int MSG_TYPE  = 9;
     public static final int MSG_BLOCK_COUNT = 6;
     public static final int MSG_ROLE = 18;
+    public static final int MSG_CONTEXT = 20;
 
     static Set<Integer> headSet = Set.of(MSG_TYPE, MSG_BLOCK_COUNT );
 
@@ -49,6 +50,12 @@ public class DaxTag {
      */
     public static final int BLOCK_INDEX             = 7;
     public static final int BLOCK_TYPE              = 5;
+
+    // Set of universal tags
+//    F_NAME
+//    DESCRIPTION
+//    SYMBOL
+//    STATUS
 
 
     public static final int FIELD_ID                = 100 ; //  FieldId     Integer
@@ -64,6 +71,7 @@ public class DaxTag {
 //    public static final int FIELD_GROUP_ID          = 120 ; //
 
     //------
+    public static final int FIELD_ROLE         = 122 ; //
 
 
 

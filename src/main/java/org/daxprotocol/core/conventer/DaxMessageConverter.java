@@ -27,7 +27,7 @@ import java.lang.reflect.Field;
 public class DaxMessageConverter {
 
 
-    public static <T> T fromMessage(DaxMessage message, Class<T> targetClass) {
+    public static <T> T createFromMessage(DaxMessage message, Class<T> targetClass) {
         try {
             T instance = targetClass.getDeclaredConstructor().newInstance();
 
@@ -36,10 +36,10 @@ public class DaxMessageConverter {
                 if (ann == null) continue; // skip non-annotated fields (e.g., town)
 
                 int tag = ann.tag();
-                var maybeVal = message.get(tag);
-                if (maybeVal==null) continue; // gracefully ignore missing tags or empty
+                var pair = message.get(tag);
+                if (pair==null) continue; // gracefully ignore missing tags or empty
 
-                String raw = maybeVal.getStrValue();
+                String raw = pair.getStrValue();
                 Object converted = DaxDecodeService.convert(raw, f.getType());  // if not ..convert from dictionary
 
                 f.setAccessible(true);
@@ -51,7 +51,31 @@ public class DaxMessageConverter {
         }
     }
 
+
+
+public static  void setFromMessage(DaxMessage message, Object obj){
+      Class<?> clazz = obj.getClass();
+        try {
+
+        for (Field f : clazz.getDeclaredFields()) {
+            DaxpField ann = f.getAnnotation(DaxpField.class);
+            if (ann == null) continue; // skip non-annotated fields (e.g., town)
+
+            int tag = ann.tag();
+            if(! message.getBody().getBlock(0).containsKey(tag)) continue;
+
+            var pair = message.get(tag);
+
+            if (pair==null) continue; // gracefully ignore missing tags or empty
+
+            String raw = pair.getStrValue();
+            Object converted = DaxDecodeService.convert(raw, f.getType());  // if not ..convert from dictionary
+
+            f.setAccessible(true);
+            f.set(obj, converted);
+        }
+    } catch (Exception e) {
+        throw new RuntimeException("Failed to map DAXP to " + clazz.getSimpleName(), e);
+    }
+ }
 }
-
-
-//TODO Dictionary conventer

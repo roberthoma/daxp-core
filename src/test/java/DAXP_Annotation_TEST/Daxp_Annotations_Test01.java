@@ -12,19 +12,18 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Optional;
 
 public class Daxp_Annotations_Test01 {
 
     @Test
     void createMsgFromCustomer() {
         String expectMsg = "DAXP=1|TF=DEC|EN=UTF8|\n" +
-                "9=UCi|2001=123|2002=Robert|2076=WORKER|\n" +
+                "9=UCi|2001=123|2002=Robert|2076=WORKER|2077=Y|\n" +
                 "99=123|";
 
         Customer customer = new Customer(123, "Robert");
         customer.setRelation(CustomerRelation.WORKER);
+        customer.setCitizen(true);
         DaxMessageFactory factory = new DaxMessageFactory();
         DaxMessage message = factory.toDaxMessage("UCi", customer);
         DaxMessageCodec codec = new DaxMessageCodec();
@@ -74,12 +73,20 @@ public class Daxp_Annotations_Test01 {
     @Test
     void injection(){
         String msgStr = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
-//        String msgStr = "DAXP=1|TF=DEC|EN=UTF8|9=UCi|2001=123|2002=Robert|99=123|";
         DaxMessageCodec codec = new DaxMessageCodec();
+
         DaxMessage message = codec.decode(msgStr);
-        Customer customer = DaxMessageConverter.fromMessage(message, Customer.class);
+
+        Customer customer = DaxMessageConverter.createFromMessage(message, Customer.class);
         Assertions.assertEquals("Robert" , customer.getName());
         Assertions.assertEquals(123 , customer.getCustomerId());
+
+        DaxMessage updMsg = codec.decode("DAXP=1|TF=DEC|EN=UTF8|9=CU|2001=123|2002=Jan|2074=Toronto|99=123|\"");
+
+        DaxMessageConverter.setFromMessage(updMsg, customer );
+        Assertions.assertEquals("Jan",customer.getName());
+        Assertions.assertEquals("Toronto",customer.getTown());
+
     }
 
 }
