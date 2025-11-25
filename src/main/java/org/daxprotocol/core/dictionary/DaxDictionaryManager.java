@@ -45,7 +45,7 @@ public class DaxDictionaryManager {
     DaxEnumManager enumManager = new DaxEnumManager();
 
     //TODO create  service  DaxValidationAttributeManager
-    private void popJakartaValidationAttribute(DaxDictionary daxDic,Field field ,int tag){
+    private void popJakartaValidationAttribute(DaxContextDic daxDic,Field field ,int tag){
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName()
                         .startsWith("jakarta.validation"));
@@ -71,7 +71,7 @@ public class DaxDictionaryManager {
     }
 
 
-    public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
+    public void populateFromAnnotations(DaxContextDic daxDic, Class<?> clazz){
         try {
             int groupId = 0;
 
@@ -117,7 +117,7 @@ public class DaxDictionaryManager {
         }
     }
 
-    private void populateFromBlock(DaxDictionary daxDic, Map<Integer, DaxPair<?>> blockPairMap) {
+    private void populateFromBlock(DaxContextDic daxDic, Map<Integer, DaxPair<?>> blockPairMap) {
 
        String blockType =   blockPairMap.get(DaxTag.BLOCK_TYPE).getStrValue();
 
@@ -163,7 +163,7 @@ public class DaxDictionaryManager {
 
     }
 
-    public void populateFromMessage(DaxDictionary daxDic, DaxMessage message) {
+    public void populateFromMessage(DaxContextDic daxDic, DaxMessage message) {
 
         message.getBody().getBlockMap().forEach((integer, integerDaxPairMap) ->
                   populateFromBlock(daxDic, integerDaxPairMap)

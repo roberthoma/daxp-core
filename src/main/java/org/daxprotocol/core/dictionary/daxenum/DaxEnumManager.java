@@ -2,14 +2,14 @@ package org.daxprotocol.core.dictionary.daxenum;
 
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.dictionary.DaxContextDic;
 
 import java.lang.reflect.Field;
 
 public class DaxEnumManager {
 
 
-    public void populateEnumFromAnnotations(Field field , DaxDictionary daxDic){
+    public void populateEnumFromAnnotations(Field field , DaxContextDic daxDic){
         DaxDictionaryDecoratorService.printDaxEnumInfo(field);
 
         DaxpField daxp = field.getAnnotation(DaxpField.class);

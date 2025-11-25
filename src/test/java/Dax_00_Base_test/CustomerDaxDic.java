@@ -1,9 +1,9 @@
 package Dax_00_Base_test;
 
 
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.dictionary.DaxContextDic;
 
-public class CustomerDaxDic extends DaxDictionary {
+public class CustomerDaxDic extends DaxContextDic {
 
     public static final int CUSTOMER_ID            = 2001;
     public static final int CUSTOMER_NAME          = 2002;
@@ -13,8 +13,8 @@ public class CustomerDaxDic extends DaxDictionary {
     public static final int CUSTOMER_TELEPHONE     = 2073;
     public static final int CUSTOMER_TOWN          = 2074;
     public static final int CUSTOMER_TYPE          = 2075;
-    public static final int CUSTOMER_RELATION      = 2076   ;
-    public static final int CUSTOMER_IS_CITIZEN    = 2077   ;
+    public static final int CUSTOMER_RELATION      = 2076;
+    public static final int CUSTOMER_IS_CITIZEN    = 2077;
 
 
     public CustomerDaxDic(){

@@ -24,6 +24,7 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxStringPair;
+import org.daxprotocol.core.dictionary.DaxContextDic;
 import org.daxprotocol.core.dictionary.DaxMessageDicItem;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
 import org.daxprotocol.core.field.DaxBlockType;
@@ -94,7 +95,7 @@ public class DaxMessageFactory {
 
     //TODO Create message with dictionary using context, or group, or field/(list of field)
    // TODO BLOCK_TYPE use
-    public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
+    public DaxMessage createDictionaryMsg(DaxContextDic dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
 

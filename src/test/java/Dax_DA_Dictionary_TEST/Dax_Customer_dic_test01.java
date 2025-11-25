@@ -4,6 +4,7 @@ import Dax_00_Base_test.CustomerDaxDic;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPair;
 import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.dictionary.DaxContextDic;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
@@ -34,7 +35,7 @@ public class Dax_Customer_dic_test01 {
     @Test
     void testCustomerDicAttributes(){
 
-        DaxDictionary customerDic = new CustomerDaxDic();
+        DaxContextDic customerDic = new CustomerDaxDic();
 
         Map<Integer, DaxPair<?>> idAttrMap = customerDic.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_ID);
         Assertions.assertEquals("Id customer",idAttrMap.get(DaxTag.ATR_UI_LABEL).getStrValue());
@@ -55,7 +56,7 @@ public class Dax_Customer_dic_test01 {
     void testCustomerDicEncoder(){
 
         DaxMessageFactory factory = new DaxMessageFactory();
-        DaxDictionary customerDic = new CustomerDaxDic();
+        DaxContextDic customerDic = new CustomerDaxDic();
         DaxMessageCodec codec = new DaxMessageCodec();
 
         DaxMessage msg = factory.createDictionaryMsg(customerDic);
