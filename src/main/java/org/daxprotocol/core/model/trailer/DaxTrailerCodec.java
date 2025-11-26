@@ -21,7 +21,7 @@
 package org.daxprotocol.core.model.trailer;
 
 import org.daxprotocol.core.codec.DaxCodec;
-import static org.daxprotocol.core.codec.DaxTag.*;
+import static org.daxprotocol.core.codec.DaxTagConst.*;
 import static org.daxprotocol.core.codec.DaxCodecSymbols.*;
 
 public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {

@@ -17,22 +17,41 @@
  * limitations under the License.
  * ***********************************************************************
  */
+package org.daxprotocol.core.model.pair;
 
-package org.daxprotocol.core.field;
+import org.daxprotocol.core.model.tag.DaxTag;
 
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+public  class DaxPair<T>{
+    DaxTag tag;
+    protected T value;
+   // Class<T> clazz;
 
-//Type of block application
-public class DaxBlockType extends DaxPair<String> {
-
-    public static final String  BLOCK_FIELD       =  "F";
-    public static final String  BLOCK_GROUP       =  "G";
-    public static final String  BLOCK_ENUM        =  "E";
-    public static final String  BLOCK_ENUM_VALUE  =  "V";
-    public static final String  BLOCK_MESSAGE     =  "M";
-
-    public DaxBlockType(String value) {
-        super(DaxTagConst.BLOCK_TYPE, value);
+    public Class<?> getClazz(){
+        //return clazz;
+        return value.getClass();
+    };
+    public DaxTag getTag(){
+        return tag;
     }
+    public T getValue(){
+        return value;
+    }
+
+    public DaxPair(Integer tag, T value){
+        this.tag = new DaxTag(tag);
+        this.value = value;
+//        this.clazz = value.getClass(); //TODO fix init class type
+    }
+
+    public String getStrValue() {
+        if (value instanceof Boolean){
+            return ((Boolean)value)? "Y":"N";
+        }
+        return value.toString();
+    };
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
 }

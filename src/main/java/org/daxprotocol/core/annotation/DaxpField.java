@@ -29,7 +29,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface DaxpField {
-    int tag();
+    int contextId() default 0;
+    int tagId();
     String uiLabel() default "";
 }
 

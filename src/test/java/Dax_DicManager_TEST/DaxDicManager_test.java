@@ -3,7 +3,6 @@ package Dax_DicManager_TEST;
 import Dax_00_Base_test.AppMessage;
 import Dax_00_Base_test.Customer;
 import org.daxprotocol.core.codec.DaxMessageCodec;
-import org.daxprotocol.core.dictionary.DaxContextDic;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryManager;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -22,8 +21,8 @@ public class DaxDicManager_test {
         DaxMessageCodec codec = new DaxMessageCodec();
         AppMessage appMessage = new AppMessage();
 
-        DaxContextDic dictionary = new DaxContextDic();
-        DaxContextDic dicAfter = new DaxContextDic();
+        DaxDictionary dictionary = new DaxDictionary();
+        DaxDictionary dicAfter = new DaxDictionary();
 
         System.out.println("------------DOC populate --------");
         manager.populateFromAnnotations(dictionary, Customer.class);

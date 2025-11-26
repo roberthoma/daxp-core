@@ -18,9 +18,11 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.codec;
+import org.daxprotocol.core.model.tag.DaxTag;
+
 import java.util.Set;
 
-public class DaxTag {
+public class DaxTagConst {
 
     /**
      * Preamble tags
@@ -38,10 +40,12 @@ public class DaxTag {
     public static final int MSG_ROLE = 18;
     public static final int MSG_CONTEXT = 20;
 
-    static Set<Integer> headSet = Set.of(MSG_TYPE, MSG_BLOCK_COUNT );
+    static Set<DaxTag> headSet = Set.of(new DaxTag(MSG_TYPE),
+                                        new DaxTag(MSG_BLOCK_COUNT)
+                                       );
 
 
-    public static boolean isHeadTag(int tag){
+    public static boolean isHeadTag(DaxTag tag){
         return headSet.contains(tag);
     }
 

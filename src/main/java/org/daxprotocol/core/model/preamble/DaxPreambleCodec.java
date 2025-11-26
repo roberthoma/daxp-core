@@ -28,11 +28,28 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.daxprotocol.core.codec.DaxCodecSymbols.EQUAL;
+import static org.daxprotocol.core.codec.DaxCodecSymbols.PAIR_SEPARATOR;
+
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.
  * Format example: DAXP=1|TF=DEC|E=UTF8\n
  */
 public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
+
+//    private  static String encode(StringBuilder sb, String tag, String value ) {
+    private  static void encode(StringBuilder sb, String tag, String value ) {
+        if (value.isBlank()){
+            return ;
+//            return sb.toString();
+        }
+        sb.append(tag)
+                .append(EQUAL)
+                .append(value)
+                .append(PAIR_SEPARATOR);
+        //return sb.toString() ;
+    }
+
     /** Encode Preamble object → wire format (string). */
     public String encode(DaxPreamble preamble) {
         Map<String,String> map = new LinkedHashMap<>();
@@ -49,7 +66,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 
 
         StringBuilder sb = new StringBuilder();
-        map.forEach((k, v) -> DaxPairCodec.encode(sb,k,v));
+        map.forEach((k, v) -> encode(sb,k,v));
         return sb.toString();
     }
 
@@ -71,7 +88,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     public static Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
         Map<String, String> map = new HashMap<>();
         // Everything before tag 9=
-        String preamblePart = msg.split(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
+        String preamblePart = msg.split(String.valueOf(DaxTagConst.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
         Matcher m = pairPattern.matcher(preamblePart);
 
         while (m.find()) {

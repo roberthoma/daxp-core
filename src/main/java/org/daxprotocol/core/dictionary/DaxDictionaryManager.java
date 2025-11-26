@@ -23,13 +23,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumManager;
 import org.daxprotocol.core.field.DaxAtrNullable;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -45,7 +46,8 @@ public class DaxDictionaryManager {
     DaxEnumManager enumManager = new DaxEnumManager();
 
     //TODO create  service  DaxValidationAttributeManager
-    private void popJakartaValidationAttribute(DaxContextDic daxDic,Field field ,int tag){
+
+    private void popJakartaValidationAttribute(DaxDictionary daxDic,Field field ,int tag){
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName()
                         .startsWith("jakarta.validation"));
@@ -71,7 +73,7 @@ public class DaxDictionaryManager {
     }
 
 
-    public void populateFromAnnotations(DaxContextDic daxDic, Class<?> clazz){
+    public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
         try {
             int groupId = 0;
 
@@ -96,19 +98,19 @@ public class DaxDictionaryManager {
                 field.setAccessible(true);
 
                 //Class  change type to char
-                daxDic.putAtrDataType(daxp.tag(),field.getType());
+                daxDic.putAtrDataType(daxp.tagId(),field.getType());
 
                 if (field.getType().isEnum()){
                     enumManager.populateEnumFromAnnotations(field,daxDic);
                 }
 
-                popJakartaValidationAttribute(daxDic, field, daxp.tag() );
+                popJakartaValidationAttribute(daxDic, field, daxp.tagId() );
 
                 if (daxp.uiLabel()!=null) {
-                    daxDic.putAtrUiLabel(daxp.tag(), daxp.uiLabel());
+                    daxDic.putAtrUiLabel(daxp.tagId(), daxp.uiLabel());
                 }
 
-                daxDic.putAtrGroupId(daxp.tag(), groupId);
+                daxDic.putAtrGroupId(daxp.tagId(), groupId);
 
 
             }
@@ -117,43 +119,43 @@ public class DaxDictionaryManager {
         }
     }
 
-    private void populateFromBlock(DaxContextDic daxDic, Map<Integer, DaxPair<?>> blockPairMap) {
+    private void populateFromBlock(DaxDictionary daxDic, Map<DaxTag, DaxPair<?>> blockPairMap) {
 
-       String blockType =   blockPairMap.get(DaxTag.BLOCK_TYPE).getStrValue();
+       String blockType =   blockPairMap.get(new DaxTag(DaxTagConst.BLOCK_TYPE)).getStrValue();
 
         if(blockType.equals(DaxBlockType.BLOCK_MESSAGE)){
             DaxMessageDicItem item = new DaxMessageDicItem(
-                    blockPairMap.get(DaxTag.FIELD_VALUE).getStrValue(),
-                    blockPairMap.get(DaxTag.FIELD_VALUE_DESCRIPTION).getStrValue());
+                    blockPairMap.get(new DaxTag(DaxTagConst.FIELD_VALUE)).getStrValue(),
+                    blockPairMap.get(new DaxTag(DaxTagConst.FIELD_VALUE_DESCRIPTION)).getStrValue());
 
             daxDic.putMsgItem(item);
             return;
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM)){
-            String name = blockPairMap.get(DaxTag.ENUM_NAME).getStrValue();
+            String name = blockPairMap.get(new DaxTag(DaxTagConst.ENUM_NAME)).getStrValue();
             String desc = "";
-            if (blockPairMap.containsKey(DaxTag.ENUM_DESCRIPTION)){
-                desc = blockPairMap.get(DaxTag.ENUM_DESCRIPTION).getStrValue();
+            if (blockPairMap.containsKey(new DaxTag(DaxTagConst.ENUM_DESCRIPTION))){
+                desc = blockPairMap.get(new DaxTag(DaxTagConst.ENUM_DESCRIPTION)).getStrValue();
             }
             daxDic.putEnum(name, desc );
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM_VALUE)){
-            String name  = blockPairMap.get(DaxTag.ENUM_NAME).getStrValue();
-            String value = blockPairMap.get(DaxTag.FIELD_VALUE).getStrValue();
+            String name  = blockPairMap.get(new DaxTag(DaxTagConst.ENUM_NAME)).getStrValue();
+            String value = blockPairMap.get(new DaxTag(DaxTagConst.FIELD_VALUE)).getStrValue();
 
             daxDic.putEnumValue(name,value,"");
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
-            daxDic.putGroup( Integer.parseInt(blockPairMap.get(DaxTag.GROUP_ID).getStrValue()),
-                    blockPairMap.get(DaxTag.GROUP_NAME).getStrValue());
+            daxDic.putGroup( Integer.parseInt(blockPairMap.get(new DaxTag(DaxTagConst.GROUP_ID)).getStrValue()),
+                    blockPairMap.get(new DaxTag(DaxTagConst.GROUP_NAME)).getStrValue());
         }
 
 
         if(blockType.equals(DaxBlockType.BLOCK_FIELD)){
-            int fieldId = Integer.parseInt (blockPairMap.get(DaxTag.FIELD_ID).getStrValue());
+            int fieldId = Integer.parseInt (blockPairMap.get(new DaxTag(DaxTagConst.FIELD_ID)).getStrValue());
 
             blockPairMap.forEach((integer, daxPair) ->
                     daxDic.putAttribute(fieldId,daxPair));
@@ -163,7 +165,7 @@ public class DaxDictionaryManager {
 
     }
 
-    public void populateFromMessage(DaxContextDic daxDic, DaxMessage message) {
+    public void populateFromMessage(DaxDictionary daxDic, DaxMessage message) {
 
         message.getBody().getBlockMap().forEach((integer, integerDaxPairMap) ->
                   populateFromBlock(daxDic, integerDaxPairMap)

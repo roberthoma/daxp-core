@@ -20,8 +20,8 @@
 
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 
 public class DaxMsgType extends DaxPair<String> {
 
@@ -41,7 +41,7 @@ public class DaxMsgType extends DaxPair<String> {
     // new sys message .. daxp configuration  : set pairSeparator ..
 
     public DaxMsgType(String value) {
-        super(DaxTag.MSG_TYPE, value);
+        super(DaxTagConst.MSG_TYPE, value);
     }
 }
 

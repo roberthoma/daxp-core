@@ -20,11 +20,11 @@
 
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 
 public class DaxAtrUiLabel extends DaxPair<String> {
     public DaxAtrUiLabel(String value) {
-        super(DaxTag.ATR_UI_LABEL, value);
+        super(DaxTagConst.ATR_UI_LABEL, value);
     }
 }

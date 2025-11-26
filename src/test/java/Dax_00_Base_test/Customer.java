@@ -1,6 +1,5 @@
 package Dax_00_Base_test;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
@@ -14,19 +13,19 @@ import java.util.Date;
                 masterId = GroupsTestList.GRP_CRM)
 public class Customer {
 
-    @DaxpField(tag = CustomerDaxDic.CUSTOMER_ID, uiLabel = "Id")
+    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_ID, uiLabel = "Id")
     int customerId;
 
     @NotNull
     @Size(min = 2 ,max = 120)
-    @DaxpField(tag = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
+    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
     String name;
 
     @Size(min=2)
-    @DaxpField(tag = CustomerDaxDic.CUSTOMER_TOWN, uiLabel = "Town")
+    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
 
-    @DaxpField(tag = CustomerDaxDic.CUSTOMER_TYPE, uiLabel = "Type")
+    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_TYPE, uiLabel = "Type")
     CustomerType type;
 
     public Boolean getCitizen() {
@@ -37,11 +36,14 @@ public class Customer {
         isCitizen = citizen;
     }
 
-    @DaxpField(tag = CustomerDaxDic.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
+    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
     Boolean isCitizen;
 
-    @DaxpField(tag = CustomerDaxDic.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
+    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;
+
+//    @DaxpField(contextId = 1, tagId = 53 , uiLabel = "Fix Client Id")
+//    Integer fixClientId;
 
     public String getTown() {
         return town;
@@ -75,7 +77,7 @@ public class Customer {
         this.relation = relation;
     }
 
-    @DaxpField(tag = CustomerDaxDic.CUSTOMER_RELATION , uiLabel = "Relation")
+    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_RELATION , uiLabel = "Relation")
     CustomerRelation relation;
 
     public Customer(){

@@ -20,12 +20,12 @@
 package org.daxprotocol.core.field;
 
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 
 public class DaxArtFieldName extends DaxPair<String> {
     public DaxArtFieldName(String value) {
-        super(DaxTag.FIELD_NAME, value);
+        super(DaxTagConst.FIELD_NAME, value);
     }
 
 

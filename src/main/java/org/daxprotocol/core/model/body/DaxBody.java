@@ -19,17 +19,17 @@
  */
 package org.daxprotocol.core.model.body;
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxStringPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class DaxBody {
 
-    Map<Integer,Map<Integer, DaxPair<?>>> blockMap = new HashMap<>();
+    Map<Integer,Map<DaxTag, DaxPair<?>>> blockMap = new HashMap<>();
 
     int blockIdx = -1;
 
@@ -43,7 +43,7 @@ public class DaxBody {
         return blockMap.size()  ;
     }
 
-    public Map<Integer, DaxPair<?>> getBlock(int blockIdx){
+    public Map<DaxTag, DaxPair<?>> getBlock(int blockIdx){
         return blockMap.get(blockIdx);
     }
 
@@ -53,24 +53,30 @@ public class DaxBody {
     }
     public void putPair(int tag, String value){
         checkBlockCounterBeforePut();
-        blockMap.get(blockIdx).put(tag,new DaxStringPair(tag, value));
+        blockMap.get(blockIdx).put(new DaxTag(tag),new DaxStringPair(tag, value));
+    }
+
+    public void putPair(int contextId,int tag, String value){
+        checkBlockCounterBeforePut();
+        blockMap.get(blockIdx).put(new DaxTag(contextId,tag),new DaxStringPair(tag, value));
     }
 
     public void nextBlock(){
         blockIdx = blockMap.size();
-        blockMap.put(blockIdx,new TreeMap<>());
+        blockMap.put(blockIdx,new HashMap<>());
     }
 
     public void nextBlock(String blockType){
        nextBlock();
-       putPair(DaxTag.BLOCK_TYPE, blockType);
+       putPair(DaxTagConst.BLOCK_TYPE, blockType);
     }
 
     public DaxPair<?> getPair(int blockIdx, int tag){
-        return blockMap.get(blockIdx).get(tag);
+        return blockMap.get(blockIdx).get(new DaxTag(tag));
+//        return blockMap.get(blockIdx).get(tag);
     }
 
-    public Map<Integer,Map<Integer, DaxPair<?>>> getBlockMap() {
+    public Map<Integer,Map<DaxTag, DaxPair<?>>> getBlockMap() {
          return blockMap;
     }
 }

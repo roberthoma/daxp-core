@@ -21,10 +21,9 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpFieldGroup;
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxStringPair;
-import org.daxprotocol.core.dictionary.DaxContextDic;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageDicItem;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
 import org.daxprotocol.core.field.DaxBlockType;
@@ -32,7 +31,6 @@ import org.daxprotocol.core.group.DaxpGroupItf;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.field.DaxMsgType;
-import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
@@ -41,7 +39,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-import static org.daxprotocol.core.codec.DaxTag.*;
+import static org.daxprotocol.core.codec.DaxTagConst.*;
 
 public class DaxMessageFactory {
 
@@ -95,7 +93,7 @@ public class DaxMessageFactory {
 
     //TODO Create message with dictionary using context, or group, or field/(list of field)
    // TODO BLOCK_TYPE use
-    public DaxMessage createDictionaryMsg(DaxContextDic dictionary) {
+    public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
 
@@ -146,7 +144,7 @@ public class DaxMessageFactory {
                         DaxpField daxp = field.getAnnotation(DaxpField.class);
                         field.setAccessible(true);
                         if (field.get(entry) != null) { //TODO For String check is empty
-                            body.putPair(new DaxPair<>(daxp.tag(), field.get(entry)));
+                            body.putPair(new DaxPair<>(daxp.tagId(), field.get(entry)));
                         }
                     }
                 }

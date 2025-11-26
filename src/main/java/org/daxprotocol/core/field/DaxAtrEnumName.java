@@ -20,11 +20,11 @@
 
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 
 public class DaxAtrEnumName extends DaxPair<String> {
     public DaxAtrEnumName(String value) {
-        super(DaxTag.ENUM_NAME, value);
+        super(DaxTagConst.ENUM_NAME, value);
     }
 }

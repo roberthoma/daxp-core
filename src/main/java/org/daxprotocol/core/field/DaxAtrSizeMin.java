@@ -19,11 +19,11 @@
  */
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 
 public class DaxAtrSizeMin extends DaxPair<Integer> {
     public DaxAtrSizeMin(Integer value) {
-        super(DaxTag.ATR_SIZE_MIN, value);
+        super(DaxTagConst.ATR_SIZE_MIN, value);
     }
 }

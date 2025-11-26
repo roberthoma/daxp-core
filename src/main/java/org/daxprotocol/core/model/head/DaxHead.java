@@ -18,14 +18,14 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.model.head;
-import org.daxprotocol.core.codec.DaxPair;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.DaxMsgBlockCount;
 import org.daxprotocol.core.field.DaxMsgType;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static  org.daxprotocol.core.codec.DaxTag.*;
+import static org.daxprotocol.core.codec.DaxTagConst.*;
 
 public final class DaxHead {
 

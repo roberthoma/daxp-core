@@ -20,8 +20,8 @@
 
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 
 import java.util.Date;
 
@@ -37,12 +37,12 @@ public class DaxAtrDataType extends DaxPair<Character> {
 
 
     public DaxAtrDataType(Character c) {
-        super(DaxTag.FIELD_DATA_TYPE, c);
+        super(DaxTagConst.FIELD_DATA_TYPE, c);
     }
 
 
     public DaxAtrDataType(Class<?> clazz) {
-        super(DaxTag.FIELD_DATA_TYPE, classToChar(clazz));
+        super(DaxTagConst.FIELD_DATA_TYPE, classToChar(clazz));
     }
 
 

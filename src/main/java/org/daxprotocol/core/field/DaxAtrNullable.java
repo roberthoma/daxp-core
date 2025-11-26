@@ -19,8 +19,8 @@
  */
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 
 public class DaxAtrNullable extends DaxPair<Character> {
 
@@ -28,6 +28,6 @@ public class DaxAtrNullable extends DaxPair<Character> {
     public static Character NULLABLE_FALSE  = 'N';
 
     public DaxAtrNullable(Character value) {
-        super(DaxTag.ATR_NULLABLE, value);
+        super(DaxTagConst.ATR_NULLABLE, value);
     }
 }

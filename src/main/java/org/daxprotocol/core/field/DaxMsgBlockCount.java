@@ -19,12 +19,12 @@
  */
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 
 public class DaxMsgBlockCount extends DaxPair<Integer> {
     public DaxMsgBlockCount( Integer value) {
-        super(DaxTag.MSG_BLOCK_COUNT, value);
+        super(DaxTagConst.MSG_BLOCK_COUNT, value);
     }
     @Override
     public String getStrValue() {

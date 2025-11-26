@@ -17,7 +17,7 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.codec;
+package org.daxprotocol.core.model.pair;
 
 public class DaxStringPair extends DaxPair<String> {
     public DaxStringPair(int tag, String value) {

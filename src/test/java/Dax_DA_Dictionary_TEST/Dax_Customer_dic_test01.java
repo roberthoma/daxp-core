@@ -2,9 +2,8 @@ package Dax_DA_Dictionary_TEST;
 
 import Dax_00_Base_test.CustomerDaxDic;
 import org.daxprotocol.core.codec.DaxMessageCodec;
-import org.daxprotocol.core.codec.DaxPair;
-import org.daxprotocol.core.codec.DaxTag;
-import org.daxprotocol.core.dictionary.DaxContextDic;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
@@ -35,19 +34,19 @@ public class Dax_Customer_dic_test01 {
     @Test
     void testCustomerDicAttributes(){
 
-        DaxContextDic customerDic = new CustomerDaxDic();
+        DaxDictionary customerDic = new CustomerDaxDic();
 
         Map<Integer, DaxPair<?>> idAttrMap = customerDic.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_ID);
-        Assertions.assertEquals("Id customer",idAttrMap.get(DaxTag.ATR_UI_LABEL).getStrValue());
-        Assertions.assertEquals("I",idAttrMap.get(DaxTag.FIELD_DATA_TYPE).getStrValue());
+        Assertions.assertEquals("Id customer",idAttrMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
+        Assertions.assertEquals("I",idAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
         Map<Integer, DaxPair<?>> nameAttrMap = customerDic.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_NAME);
-        Assertions.assertEquals("First name",nameAttrMap.get(DaxTag.ATR_UI_LABEL).getStrValue());
-        Assertions.assertEquals("S",nameAttrMap.get(DaxTag.FIELD_DATA_TYPE).getStrValue());
+        Assertions.assertEquals("First name",nameAttrMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
+        Assertions.assertEquals("S",nameAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
         Map<Integer, DaxPair<?>> telAttrMap = customerDic.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_TELEPHONE);
-        Assertions.assertEquals("Telephone",telAttrMap.get(DaxTag.ATR_UI_LABEL).getStrValue());
-        Assertions.assertEquals("S",telAttrMap.get(DaxTag.FIELD_DATA_TYPE).getStrValue());
+        Assertions.assertEquals("Telephone",telAttrMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
+        Assertions.assertEquals("S",telAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
     }
 
@@ -56,7 +55,7 @@ public class Dax_Customer_dic_test01 {
     void testCustomerDicEncoder(){
 
         DaxMessageFactory factory = new DaxMessageFactory();
-        DaxContextDic customerDic = new CustomerDaxDic();
+        DaxDictionary customerDic = new CustomerDaxDic();
         DaxMessageCodec codec = new DaxMessageCodec();
 
         DaxMessage msg = factory.createDictionaryMsg(customerDic);

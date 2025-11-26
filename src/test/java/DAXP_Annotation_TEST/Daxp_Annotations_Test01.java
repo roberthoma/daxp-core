@@ -46,15 +46,15 @@ public class Daxp_Annotations_Test01 {
                     DaxpField daxp = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
 
-                    System.out.println("TAG:   "+ daxp.tag());
+                    System.out.println("TAG:   "+ daxp.tagId());
                     System.out.println("LABEL:   "+ daxp.uiLabel());
                     System.out.println("Field name: " + field.getName());
                     System.out.println("Type class: " + field.getType());
                     System.out.println("Type simple name: " + field.getType().getSimpleName());
                     System.out.println("Is primitive: " + field.getType().isPrimitive());
-                    System.out.println("Pair: "+ daxp.tag()+"="+field.get(customer));
+                    System.out.println("Pair: "+ daxp.tagId()+"="+field.get(customer));
 
-                    var attMap =  dic.getFieldAttributeMap(daxp.tag());
+                    var attMap =  dic.getFieldAttributeMap(daxp.tagId());
 
 //                    System.out.println("Label: "+ Optional.of(attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL))
 //                                    .

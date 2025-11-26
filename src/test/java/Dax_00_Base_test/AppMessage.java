@@ -1,7 +1,6 @@
 package Dax_00_Base_test;
 
 
-import org.daxprotocol.core.dictionary.DaxContextDic;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageDicItem;
 
@@ -18,7 +17,7 @@ public class AppMessage {
     public static final String  CNT_INSERT       =  "CNT.DI"; // 	RES 	Contract data
 
 
-    public void init (DaxContextDic dictionary){
+    public void init (DaxDictionary dictionary){
 
         dictionary.putMsgItem(new DaxMessageDicItem(CRM_DATA_REQ, "Request for Customer Data"));
         dictionary.putMsgItem(new DaxMessageDicItem(CRM_DATA, "Customer Data"));

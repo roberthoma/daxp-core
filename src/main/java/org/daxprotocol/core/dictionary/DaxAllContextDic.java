@@ -18,21 +18,32 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.dictionary;
 
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+import java.util.HashMap;
+import java.util.Map;
 
-//Type of block application
-public class DaxBlockType extends DaxPair<String> {
+public class DaxAllContextDic {
 
-    public static final String  BLOCK_FIELD       =  "F";
-    public static final String  BLOCK_GROUP       =  "G";
-    public static final String  BLOCK_ENUM        =  "E";
-    public static final String  BLOCK_ENUM_VALUE  =  "V";
-    public static final String  BLOCK_MESSAGE     =  "M";
+    int defaultContextId;
 
-    public DaxBlockType(String value) {
-        super(DaxTagConst.BLOCK_TYPE, value);
+
+    Map<Integer, DaxDictionary> dictionaryMap = new HashMap<>();
+
+
+
+    public DaxDictionary getDictionary(int contextId){
+        return dictionaryMap.get(contextId);
     }
+
+    public DaxDictionary getDefaultDictionary(){
+        return dictionaryMap.get(defaultContextId);
+    }
+
+
+    public void putDictionary(DaxDictionary dictionary){
+
+        dictionaryMap.put(dictionary.contextId,dictionary);
+    }
+
 }

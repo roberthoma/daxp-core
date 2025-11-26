@@ -23,6 +23,7 @@ import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
+import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
@@ -86,7 +87,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
        List<DaxStringPair> current = new ArrayList<>();
 
        for (DaxStringPair pair : allPairs) {
-           if (pair.getTag() == DaxTag.MSG_TYPE) {
+           if (pair.getTag().equals(DaxTagConst.MSG_TYPE)) {
                // start of a new message
                if (!current.isEmpty()) {
                    // if previous message wasn't closed correctly, save it anyway
@@ -97,7 +98,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
            current.add(pair);
 
-           if (pair.getTag() == DaxTag.CHECKSUM) {
+           if (pair.getTag().equals(DaxTagConst.CHECKSUM)) {
                // end of current message
                result.add(new ArrayList<>(current));
                current.clear();
@@ -117,7 +118,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);
 
-        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTag.MSG_TYPE)+DaxCodecSymbols.EQUAL);
+        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTagConst.MSG_TYPE)+DaxCodecSymbols.EQUAL);
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 

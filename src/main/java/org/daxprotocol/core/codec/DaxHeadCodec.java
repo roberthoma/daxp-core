@@ -20,11 +20,12 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.model.head.DaxHead;
+import org.daxprotocol.core.model.pair.DaxStringPair;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.daxprotocol.core.codec.DaxTag.*;
+import static org.daxprotocol.core.codec.DaxTagConst.*;
 
 public class DaxHeadCodec implements DaxCodec<DaxHead> {
 
@@ -56,7 +57,7 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
         DaxHead head = new DaxHead(msgType);
 
         Optional<DaxStringPair> optBlockCount = listOfPair.stream()
-                .filter(p -> p.getTag() == DaxTag.MSG_BLOCK_COUNT )
+                .filter(p -> p.getTag().equals(DaxTagConst.MSG_BLOCK_COUNT) )
                 .findFirst();
 
         optBlockCount.ifPresent(pair -> head.setBlockCount(Integer.parseInt(pair.getValue())));

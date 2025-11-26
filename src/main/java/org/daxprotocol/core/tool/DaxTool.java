@@ -17,39 +17,15 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.codec;
 
-public  class DaxPair<T>{
-    Integer tag;
-    protected T value;
-   // Class<T> clazz;
+package org.daxprotocol.core.tool;
 
-    public Class<?> getClazz(){
-        //return clazz;
-        return value.getClass();
-    };
-    public Integer getTag(){
-        return tag;
-    }
-    public T getValue(){
-        return value;
-    }
+import java.util.Map;
 
-    public DaxPair(Integer tag, T value){
-        this.tag = tag;
-        this.value = value;
-//        this.clazz = value.getClass(); //TODO fix init class type
-    }
-
-    public String getStrValue() {
-        if (value instanceof Boolean){
-            return ((Boolean)value)? "Y":"N";
-        }
-        return value.toString();
-    };
-
-    public void setValue(T value) {
-        this.value = value;
+public class DaxTool {
+    public static  <K,V> Map<K,V> putAndReturn(Map<K,V> map , K k,V v){
+        map.put(k,v);
+        return map;
     }
 
 }

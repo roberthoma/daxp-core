@@ -1,13 +1,11 @@
 package org.daxprotocol.core.dictionary.daxenum;
 
+import org.daxprotocol.core.tool.DaxTool;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class DaxDictionaryEnum {
-    private <K,V>  Map<K,V> putAndReturn(Map<K,V> map , K k,V v){
-        map.put(k,v);
-        return map;
-    }
 
     /*****************************************************
      *  Standard EnumMap
@@ -36,7 +34,7 @@ public class DaxDictionaryEnum {
     public void putEnumValue(String enumName, String value, String desc){
         enumValueMap.merge(enumName,new HashMap<>(Map.of(value, new DaxEnumValue(value , desc))),
                 (svMap, svMapN)
-                        ->  putAndReturn(svMap,value, svMapN.get(value)));
+                        ->  DaxTool.putAndReturn(svMap,value, svMapN.get(value)));
     }
 
     public Map<String, Map<String, DaxEnumValue>> getValueMap() {

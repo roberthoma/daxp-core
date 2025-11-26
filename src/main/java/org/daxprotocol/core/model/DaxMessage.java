@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.model;
 
-import org.daxprotocol.core.codec.DaxPair;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.trailer.DaxTrailer;

@@ -20,6 +20,9 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.model.body.DaxBody;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.List;
 import java.util.Map;
@@ -28,16 +31,16 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
-                                      int blockIdx ,Map<Integer, DaxPair<?>> blockMap)
+                                      int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap)
     {
         if (isBlogIdx) {
             sb.append("\n"); //TODO Debug mode or optional
-            DaxPairCodec.encode(sb, DaxTag.BLOCK_INDEX, String.valueOf(blockIdx+1));
+            DaxPairCodec.encode(sb, DaxTagConst.BLOCK_INDEX, String.valueOf(blockIdx+1));
         }
 
         blockMap.forEach((tag, s) ->
         {
-            if (tag != DaxTag.BLOCK_INDEX) {
+            if (!tag.equals(DaxTagConst.BLOCK_INDEX)) {
                 DaxPairCodec.encode(sb, tag, s.getStrValue());
             }
         });
@@ -67,13 +70,13 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
             body.nextBlock();
         }
         for(DaxPair<?> pair : listOfPair){
-            if(pair.getTag() == DaxTag.CHECKSUM){
+            if(pair.getTag().equals(DaxTagConst.CHECKSUM)){
                 break;
             }
-            if (DaxTag.isHeadTag(pair.getTag())){
+            if (DaxTagConst.isHeadTag(pair.getTag())){
                 continue;
             }
-            if (pair.getTag() == DaxTag.BLOCK_INDEX) {
+            if (pair.getTag().equals(DaxTagConst.BLOCK_INDEX)) {
                 if (blockCount==0){
                     throw new RuntimeException("Body creation Exception : block index and blockCount==0 !!!");
                 }

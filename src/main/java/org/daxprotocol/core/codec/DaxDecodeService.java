@@ -21,6 +21,8 @@ package org.daxprotocol.core.codec;
 
 
 
+import org.daxprotocol.core.model.pair.DaxStringPair;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;

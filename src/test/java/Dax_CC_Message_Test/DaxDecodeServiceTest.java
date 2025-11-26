@@ -1,10 +1,9 @@
 package Dax_CC_Message_Test;
 
-import com.sun.nio.sctp.Association;
 import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxDecodeService;
-import org.daxprotocol.core.codec.DaxStringPair;
+import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.junit.jupiter.api.Assertions;
