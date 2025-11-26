@@ -3,6 +3,7 @@ package Dax_DicManager_TEST;
 import Dax_00_Base_test.AppMessage;
 import Dax_00_Base_test.Customer;
 import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.dictionary.DaxAllContextDic;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryManager;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -15,6 +16,9 @@ public class DaxDicManager_test {
 
     @Test
     void test1(){
+        DaxAllContextDic  ctxDic = new DaxAllContextDic();
+
+        System.out.println("CTX default = "+ctxDic.getDefaultContextId());
 
         DaxDictionaryManager manager = new DaxDictionaryManager();
         DaxMessageFactory factory = new DaxMessageFactory();

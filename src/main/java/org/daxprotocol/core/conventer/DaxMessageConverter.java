@@ -64,8 +64,6 @@ public static  void setFromMessage(DaxMessage message, Object obj){
             DaxpField ann = f.getAnnotation(DaxpField.class);
             if (ann == null) continue; // skip non-annotated fields (e.g., town)
 
-//            int tagId = ann.tagId();
-//            int contextId = ann.contextId();
             DaxTag tag = new DaxTag(ann.contextId() , ann.tagId());
             if(! message.getBody().getBlock(0).containsKey(tag)) continue;
 

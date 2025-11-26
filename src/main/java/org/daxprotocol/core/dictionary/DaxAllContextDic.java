@@ -20,15 +20,32 @@
 
 package org.daxprotocol.core.dictionary;
 
+import org.daxprotocol.core.config.DaxpConfig;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class DaxAllContextDic {
-
-    int defaultContextId;
+    private final int defaultContextId;
 
 
     Map<Integer, DaxDictionary> dictionaryMap = new HashMap<>();
+
+
+    // Default constructor => uses properties file if available
+    public DaxAllContextDic() {
+        this(DaxpConfig.loadFromClasspath().getDefaultContextId());
+    }
+
+    // Explicit constructor => can override from outside (e.g. Spring)
+    public DaxAllContextDic(int defaultContextId) {
+        this.defaultContextId = defaultContextId;
+    }
+
+    public int getDefaultContextId() {
+        return defaultContextId;
+    }
+
 
 
 

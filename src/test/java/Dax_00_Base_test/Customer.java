@@ -7,7 +7,7 @@ import org.daxprotocol.core.annotation.DaxpField;
 
 import java.util.Date;
 
-@DaxpFieldGroup(id=GroupsTestList.GRP_CUSTOMER,
+@DaxpFieldGroup(groupId =GroupsTestList.GRP_CUSTOMER,
                 name = "Customer",
                 namespace = "crm",
                 masterId = GroupsTestList.GRP_CRM)

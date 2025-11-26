@@ -82,7 +82,7 @@ public class DaxDictionaryManager {
                 DaxpFieldGroup group =  clazz.getAnnotation(DaxpFieldGroup.class);
 
                 DaxDictionaryDecoratorService.printDaxGroupInfo(group);
-                groupId = group.id();
+                groupId = group.groupId();
                 group.masterId();
 
                 daxDic.putGroup(groupId, group.name() );
