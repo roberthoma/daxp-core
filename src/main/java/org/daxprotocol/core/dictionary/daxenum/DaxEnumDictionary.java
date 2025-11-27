@@ -25,7 +25,7 @@ import org.daxprotocol.core.tool.DaxTool;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaxDictionaryEnum {
+public class DaxEnumDictionary {
 
     /*****************************************************
      *  Standard EnumMap

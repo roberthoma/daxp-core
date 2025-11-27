@@ -22,10 +22,11 @@ package org.daxprotocol.core.dictionary.daxenum;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
 import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Field;
 
-public class DaxEnumManager {
+public class DaxEnumPopulator {
 
 
     public void populateEnumFromAnnotations(Field field , DaxDictionary daxDic){
@@ -33,9 +34,9 @@ public class DaxEnumManager {
 
         DaxpField daxp = field.getAnnotation(DaxpField.class);
         field.setAccessible(true);
-
+        DaxTag tag = new DaxTag(daxp.contextId(),daxp.tagId());
         String enumName = field.getType().getSimpleName();
-        daxDic.putAtrEnumName(daxp.tagId(), enumName);
+        daxDic.putAtrEnumName(tag, enumName);
 
         //TODO check exist
         daxDic.putEnum(enumName,enumName);  // to improve

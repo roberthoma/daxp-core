@@ -26,7 +26,7 @@ import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
-import org.daxprotocol.core.dictionary.daxenum.DaxEnumManager;
+import org.daxprotocol.core.dictionary.daxenum.DaxEnumPopulator;
 import org.daxprotocol.core.field.DaxAtrNullable;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
@@ -37,17 +37,17 @@ import java.util.Arrays;
 import java.util.Map;
 
 
-public class DaxDictionaryManager {
+public class DaxDictionaryPopulator {
 
     //TODO dictionary validation method after populateFromAnnotations
     // error  example :
     // 1) if any group refer to no existed master group
 
-    DaxEnumManager enumManager = new DaxEnumManager();
+    DaxEnumPopulator enumManager = new DaxEnumPopulator();
 
     //TODO create  service  DaxValidationAttributeManager
 
-    private void popJakartaValidationAttribute(DaxDictionary daxDic,Field field ,int tag){
+    private void popJakartaValidationAttribute(DaxDictionary daxDic,Field field ,DaxTag tag){
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName()
                         .startsWith("jakarta.validation"));
@@ -97,20 +97,22 @@ public class DaxDictionaryManager {
                 DaxpField daxp = field.getAnnotation(DaxpField.class);
                 field.setAccessible(true);
 
+                DaxTag tag = new DaxTag(daxp.contextId(),daxp.tagId());
+
                 //Class  change type to char
-                daxDic.putAtrDataType(daxp.tagId(),field.getType());
+                daxDic.putAtrDataType(tag,field.getType());
 
                 if (field.getType().isEnum()){
                     enumManager.populateEnumFromAnnotations(field,daxDic);
                 }
 
-                popJakartaValidationAttribute(daxDic, field, daxp.tagId() );
+                popJakartaValidationAttribute(daxDic, field, tag );
 
                 if (daxp.uiLabel()!=null) {
-                    daxDic.putAtrUiLabel(daxp.tagId(), daxp.uiLabel());
+                    daxDic.putAtrUiLabel(tag, daxp.uiLabel());
                 }
 
-                daxDic.putAtrGroupId(daxp.tagId(), groupId);
+                daxDic.putAtrGroupId(tag, groupId);
 
 
             }
@@ -119,7 +121,7 @@ public class DaxDictionaryManager {
         }
     }
 
-    private void populateFromBlock(DaxDictionary daxDic, Map<DaxTag, DaxPair<?>> blockPairMap) {
+    private void populateFromMsgBlock(DaxDictionary daxDic, Map<DaxTag, DaxPair<?>> blockPairMap) {
 
        String blockType =   blockPairMap.get(new DaxTag(DaxTagConst.BLOCK_TYPE)).getStrValue();
 
@@ -167,8 +169,12 @@ public class DaxDictionaryManager {
 
     public void populateFromMessage(DaxDictionary daxDic, DaxMessage message) {
 
+        //TODO get context from head , if not exist default ctx is obligatory
+
+        //message.getHead().
+
         message.getBody().getBlockMap().forEach((integer, integerDaxPairMap) ->
-                  populateFromBlock(daxDic, integerDaxPairMap)
+                  populateFromMsgBlock(daxDic, integerDaxPairMap)
                 );
     }
 

@@ -32,7 +32,8 @@ public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
             return sb.toString();
         }
         if(contextId!=0){ //TODO add sys context
-            sb.append(contextId).append(":"); //TODO add colon to const
+            sb.append(contextId)
+              .append(":"); //TODO add colon to const
         }
 
 

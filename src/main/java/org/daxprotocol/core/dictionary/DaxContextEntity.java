@@ -1,6 +1,6 @@
 package org.daxprotocol.core.dictionary;
 
-public class DaxContext {
+public class DaxContextEntity {
     int id;
     String tagPrefix;
     String symbol;

@@ -20,8 +20,8 @@
 
 package org.daxprotocol.core.dictionary;
 
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.dictionary.daxenum.DaxDictionaryEnum;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumValue;
 import org.daxprotocol.core.field.*;
@@ -33,163 +33,204 @@ import org.daxprotocol.core.tool.DaxTool;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class DaxDictionary {
 
-   int contextId;
+
+    Map<Integer, DaxContextDictionary> dictionaryMap = new HashMap<>();
 
 
-    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
-
-    //TODO add group of values
-//            7=12|5=L|141=35|100=2001,2002,2005,2074|
-//            7=12|5=D|141=35|100=2001,2002,2005,2074
-
-    // TODo Dictionary od fields define without identification of group
-
-
-    /*****************************************************
-     * Dictionary of messages type, roles
-     * Key: Message type
-     * */
-    Map<String, DaxMessageDicItem> msgMap = new HashMap<>();
-
-
-    /*****************************************************
-     * DescriptiveMap : it is main dic of field attributes
-     * Key : tagId
-     * Value : map of attributes
-     * */
-    Map<Integer, Map<Integer, DaxPair<?>>> attributMap = new HashMap<>();
-
-    /*****************************************************
-     *  Group Map
-     */
-    Map<Integer, DaxpGroupItf> groupMap = new HashMap<>();
-//     Map<Integer, DaxpFieldGroup> groupMap = new HashMap<>();
-
-
-    DaxDictionaryEnum enumDictionary = new DaxDictionaryEnum();
-
-    public DaxDictionary(){
-        //TMP
+    public DaxDictionary() {
         System.out.println("Init DaxDictionary...");
-
     }
+
+
+    public DaxContextDictionary getDictionary(int contextId){
+        if(!dictionaryMap.containsKey(contextId)){
+            dictionaryMap.put(contextId, new DaxContextDictionary(contextId));
+        }
+        return dictionaryMap.get(contextId);
+    }
+
+    public DaxContextDictionary getDefaultDictionary(){
+
+        return getDictionary(DaxpConfig.getDefaultContextId());
+    }
+
+
+    public void putDictionary(DaxContextDictionary dictionary){
+
+        dictionaryMap.put(dictionary.contextId,dictionary);
+    }
+
+
+
+    //**********************************************************************
+    // Messages
 
 
     public void putMsgItem(DaxMessageDicItem messageDicItem){
-        if (msgMap.containsKey(messageDicItem.getMsgType())){
-            throw new RuntimeException( "Message "+messageDicItem.getMsgType()
-                    +" exists in DAXP dictionary !!!");
-        }
-        msgMap.put(messageDicItem.getMsgType(),messageDicItem);
+        DaxContextDictionary dic =  getDefaultDictionary();
+        dic.messageDic.putMsgItem(messageDicItem);
+    }
+
+    public Map<String, DaxMessageDicItem> getMsgMap() {
+        DaxContextDictionary dic =  getDefaultDictionary();
+        return dic.messageDic.getMsgMap();
     }
 
 
-    public void putAttribute(int fieldId, DaxPair<?> atrPair){
-        attributMap.merge(fieldId, new HashMap<>(Map.of(atrPair.getTag().getTagId(), atrPair)),
+
+    //**********************************************************************
+    // Enums
+
+
+    public void putEnumValue(String enumName, String value, String desc){
+        DaxContextDictionary dic =  getDefaultDictionary();
+        dic.enumDictionary.putEnumValue(enumName, value, desc);
+    }
+
+    public void putEnum(String enumName, String desc){
+        DaxContextDictionary dic =  getDefaultDictionary();
+        dic.enumDictionary.putEnum(enumName, desc);
+    }
+
+    public void putEnum(DaxEnumName enumName){
+        DaxContextDictionary dic =  getDefaultDictionary();
+        dic.enumDictionary.putEnum(enumName.getName(), enumName.getDesc());
+    }
+
+
+    public Map<String, Map<String, DaxEnumValue>> getEnumValueMap() {
+        DaxContextDictionary dic =  getDefaultDictionary();
+        return  dic.enumDictionary.getValueMap();
+    }
+
+    public Map<String, DaxEnumName>  getEnumMap() {
+        DaxContextDictionary dic =  getDefaultDictionary();
+        return  dic.enumDictionary.getEnumMap();
+    }
+
+
+    //**********************************************************************
+    // Groups
+
+    public void putGroup(int idGroup, String grpName){
+        DaxContextDictionary dic =  getDefaultDictionary();
+
+        DaxGroup grp =  new DaxGroup(idGroup,0,grpName);
+        dic.groupMap.put(grp.getId(),grp);
+
+    }
+
+    public Map<Integer, DaxpGroupItf> getGroupMap() {
+        DaxContextDictionary dic =  getDefaultDictionary();
+        return dic.groupMap;
+    }
+
+    //**********************************************************************
+    // Attributes
+
+    private void putAttribute(int contextId, int tagId, DaxPair<?> atrPair){
+
+        DaxContextDictionary dic =  getDictionary(contextId);
+
+        dic.attributMap.merge(tagId, new HashMap<>(Map.of(atrPair.getTag().getTagId(), atrPair)),
                 (eM, nM) ->
                         DaxTool.putAndReturn(eM, atrPair.getTag().getTagId(), atrPair));
 
     }
 
-//    public Map<Integer, DaxPair<?>> getFieldAttributeMap(int context ,int fieldId) {
-    public Map<Integer, DaxPair<?>> getFieldAttributeMap(int fieldId) {
-        return attributMap.get(fieldId);
-//        return attributMap.get(new DaxTag(context,fieldId));
+    public void putAttribute(int tagId, DaxPair<?> atrPair){
+        putAttribute(DaxpConfig.getDefaultContextId(), tagId, atrPair);
+    }
+
+    public void putAttribute(DaxTag tag, DaxPair<?> atrPair){
+        putAttribute(tag.getContextId(), tag.getTagId(), atrPair);
+    }
+
+    //-----------------
+
+    public Map<Integer, DaxPair<?>> getFieldAttributeMap(int tagId) {
+        DaxContextDictionary dic =  getDefaultDictionary();
+        return dic.attributMap.get(tagId);
     }
 
     public Map<Integer, Map<Integer, DaxPair<?>>> getAttributMap(){
-        return attributMap;
+        DaxContextDictionary dic =  getDefaultDictionary();
+        return dic.attributMap;
     }
 
 
-    public Map<String, Map<String, DaxEnumValue>> getEnumValueMap() {
-        return  enumDictionary.getValueMap();
-    }
-
-    public Map<String, DaxEnumName>  getEnumMap() {
-        return  enumDictionary.getEnumMap();
-    }
-
-    public void put(int fieldId,  Class<?> clazz){
-        putAttribute(fieldId, new DaxAtrDataType(clazz));
+    public void put(int tagId,  Class<?> clazz){
+        putAttribute(tagId, new DaxAtrDataType(clazz));
     };
 
-    public void putAtrDataType(int fieldId,  Class<?> clazz){
-        putAttribute(fieldId, new DaxAtrDataType(clazz));
-    };
-
-    public void putAtrDataType(int fieldId,  Character c){
-        putAttribute(fieldId, new DaxAtrDataType(c));
+    public void putAtrDataType(int tagId,  Class<?> clazz){
+        putAttribute(tagId, new DaxAtrDataType(clazz));
     };
 
 
-    public void putAtrUiLabel(int fieldId,  String uiLabel){
-        putAttribute(fieldId, new DaxAtrUiLabel(uiLabel));
+    public void putAtrDataType(DaxTag tag,  Class<?> clazz){
+        putAttribute(tag, new DaxAtrDataType(clazz));
+    };
+
+
+    public void putAtrDataType(int tagId,  Character c){
+        putAttribute(tagId, new DaxAtrDataType(c));
+    };
+
+
+    public void putAtrUiLabel(int tagId,  String uiLabel){
+        putAttribute(tagId, new DaxAtrUiLabel(uiLabel));
+    }
+    public void putAtrUiLabel(DaxTag tag,  String uiLabel){
+        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrUiLabel(uiLabel));
     }
 
-    public void putAtrSizeMax(int fieldId,  Integer max){
-        putAttribute(fieldId, new DaxAtrSizeMax(max));
+    public void putAtrSizeMax(int tagId,  Integer max){
+        putAttribute(tagId, new DaxAtrSizeMax(max));
     }
 
-    public void putAtrSizeMin(int fieldId,  Integer min){
-        putAttribute(fieldId, new DaxAtrSizeMin(min));
+    public void putAtrSizeMax(DaxTag tag,  Integer max){
+        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMax(max));
+    }
+
+    public void putAtrSizeMin(int tagId,  Integer min){
+        putAttribute(tagId, new DaxAtrSizeMin(min));
+    }
+    public void putAtrSizeMin(DaxTag tag,  Integer min){
+        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMin(min));
     }
 
 
-    public void putAtrNullable(int fieldId,  Character able){
-        putAttribute(fieldId, new DaxAtrNullable(able));
+    public void putAtrNullable(int tadId,  Character able){
+        putAttribute(tadId, new DaxAtrNullable(able));
+    }
+    public void putAtrNullable(DaxTag tag,  Character able){
+        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrNullable(able));
     }
 
-    public void putEnumValue(String enumName, String value, String desc){
-        enumDictionary.putEnumValue(enumName, value, desc);
+
+    public void putAtrEnumName(int tagId, String enumName) {
+        putAttribute(tagId, new DaxAtrEnumName(enumName));
+    }
+    public void putAtrEnumName(DaxTag tag, String enumName) {
+        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrEnumName(enumName));
     }
 
-    public void putEnum(String enumName, String desc){
-        enumDictionary.putEnum(enumName, desc);
-    }
-
-    public void putEnum(DaxEnumName enumName){
-        enumDictionary.putEnum(enumName.getName(), enumName.getDesc());
-    }
-
-    public void putGroup(int idGroup, String grpName){
-
-        DaxGroup grp =  new DaxGroup(idGroup,0,grpName);
-
-
-        groupMap.put(grp.getId(),grp);
-
-    }
-
-    public Map<Integer, DaxpGroupItf> getGroupMap() {
-        return groupMap;
-    }
-
-    public void putAtrGroupId(int fieldId, int groupId) {
+    public void putAtrGroupId(DaxTag tag, int groupId) {
         if(groupId==0) {
             return;
         }
-        putAttribute(fieldId, new DaxAtrGroupId(groupId));
+        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrGroupId(groupId));
     }
-
-
-
-    public void putAtrEnumName(int fieldId, String enumName) {
-        putAttribute(fieldId, new DaxAtrEnumName(enumName));
+    public void putAtrGroupId(int tagId, int groupId) {
+        if(groupId==0) {
+            return;
+        }
+        putAttribute(tagId, new DaxAtrGroupId(groupId));
     }
-
-    public Map<String, DaxMessageDicItem> getMsgMap() {
-        return msgMap;
-    }
-
-    //----------------------------------------------------
-    public void join (DaxDictionary dic){
-        //TODO Validation for double idField in joined dictionary
-//        enumValueMap.putAll(dic.getEnumValueMap());
-    }
-
 
 
 }

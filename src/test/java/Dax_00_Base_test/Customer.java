@@ -42,8 +42,8 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxDic.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;
 
-//    @DaxpField(contextId = 1, tagId = 53 , uiLabel = "Fix Client Id")
-//    Integer fixClientId;
+    @DaxpField(contextId = 2, tagId = 53 , uiLabel = "Fix Client Id")
+    Integer fixClientId;
 
     public String getTown() {
         return town;
