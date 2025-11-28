@@ -18,7 +18,6 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.codec;
-
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
@@ -34,13 +33,32 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
                                       int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap)
     {
         if (isBlogIdx) {
+
             sb.append("\n"); //TODO Debug mode or optional
+
             DaxPairCodec.encode(sb, DaxTagConst.BLOCK_INDEX, String.valueOf(blockIdx+1));
+
+            //TODO Add external exception service
+            if (!blockMap.containsKey(new DaxTag(DaxTagConst.BLOCK_TYPE)) ){
+
+                StringBuilder blostr  = new StringBuilder();
+
+                blockMap.forEach((daxTag, daxPair) -> blostr.append(daxPair.toString()));
+
+                int excBlockIdx = blockIdx+1;
+                throw new RuntimeException("Block Exception : block without BLOCK_TYPE field !!!+ blockIdx"+excBlockIdx
+                +" block:"+blostr);
+            }
+
+            DaxPair<?> blockType =  blockMap.get(new DaxTag(DaxTagConst.BLOCK_TYPE));
+            DaxPairCodec.encode(sb, DaxTagConst.BLOCK_TYPE, blockType.getStrValue());
         }
+
 
         blockMap.forEach((tag, s) ->
         {
-            if (!tag.equals(DaxTagConst.BLOCK_INDEX)) {
+            if (!tag.equals(DaxTagConst.BLOCK_INDEX) &&
+                    !tag.equals(DaxTagConst.BLOCK_TYPE) ) {
                 DaxPairCodec.encode(sb, tag, s.getStrValue());
             }
         });

@@ -113,7 +113,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
        return result;
    }
 
-
+//TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPY !!!
     public List<DaxMessage> decodeAll(String msgStr, DaxDictionary dic) {
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);

@@ -19,6 +19,7 @@
  */
 package org.daxprotocol.core.model.pair;
 
+import org.daxprotocol.core.codec.DaxCodecSymbols;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public  class DaxPair<T>{
@@ -52,6 +53,10 @@ public  class DaxPair<T>{
 
     public void setValue(T value) {
         this.value = value;
+    }
+    @Override
+    public String toString(){
+        return tag.toString()+ DaxCodecSymbols.EQUAL +getStrValue()+DaxCodecSymbols.PAIR_SEPARATOR;
     }
 
 }

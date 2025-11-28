@@ -45,6 +45,10 @@ public class DaxTag {
         return Objects.hash(contextId, tagId);
     }
 
+    @Override
+    public String toString(){
+        return contextId > 0 ? contextId+":"+tagId : ""+tagId;
 
+    }
 
 }

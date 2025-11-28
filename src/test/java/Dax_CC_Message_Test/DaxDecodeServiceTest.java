@@ -20,13 +20,13 @@ class DaxDecodeServiceTest {
     static void initTest() {
         msg = "DAXP=1|TF=DEC|EN=UTF8|CNT=1|\n" +
                 "9=DD|6=7|\n"+
-                "7=1|209=Id customer|100=2001|110=I|\n" +
-                "7=2|209=First name|100=2002|110=S|\n" +
-                "7=3|209=Surname|100=2003|110=S|\n" +
-                "7=4|209=Year of birth|100=2005|110=I|\n" +
-                "7=5|209=Telephone|100=2073|110=S|\n" +
-                "7=6|209=Town|100=2074|110=S|\n" +
-                "7=7|209=Email|100=2011|110=S|\n" +
+                "7=1|5=F|209=Id customer|100=2001|110=I|\n" +
+                "7=2|5=F|209=First name|100=2002|110=S|\n" +
+                "7=3|5=F|209=Surname|100=2003|110=S|\n" +
+                "7=4|5=F|209=Year of birth|100=2005|110=I|\n" +
+                "7=5|5=F|209=Telephone|100=2073|110=S|\n" +
+                "7=6|5=F|209=Town|100=2074|110=S|\n" +
+                "7=7|5=F|209=Email|100=2011|110=S|\n" +
                 "99=123|";
     }
 
