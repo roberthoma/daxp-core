@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
@@ -97,8 +98,9 @@ public class DaxDictionaryPopulator {
                 DaxpField daxp = field.getAnnotation(DaxpField.class);
                 field.setAccessible(true);
 
-                DaxTag tag = new DaxTag(daxp.contextId(),daxp.tagId());
+                int contextId = daxp.contextId()==-1 ? DaxpConfig.getApplicationContextId(): daxp.contextId();
 
+                DaxTag tag = new DaxTag(contextId ,daxp.tagId());
                 //Class  change type to char
                 daxDic.putAtrDataType(tag,field.getType());
 

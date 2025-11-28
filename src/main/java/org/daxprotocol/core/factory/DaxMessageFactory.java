@@ -21,6 +21,7 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.model.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.dictionary.DaxDictionary;
@@ -89,13 +90,25 @@ public class DaxMessageFactory {
         body.putPair(FIELD_VALUE_DESCRIPTION, msgItem.getMsgDesc());
     }
 
+    private void putContextItem(DaxBody body, DaxContext daxContext) {
+        body.nextBlock(DaxBlockType.BLOCK_CONTEXT);
+        body.putPair(FIELD_ID, String.valueOf(daxContext.id));
+        body.putPair(FIELD_VALUE_SYMBOL, daxContext.symbol);
+        body.putPair(FIELD_VALUE_PREFIX, daxContext.tagPrefix);
+        body.putPair(FIELD_VALUE_DESCRIPTION, daxContext.description);
+
+    }
 
 
     //TODO Create message with dictionary using context, or group, or field/(list of field)
-   // TODO BLOCK_TYPE use
+    //,,,,,,
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
+
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
+        dictionary.getContextMap().forEach((integer, daxContext) ->
+                putContextItem(message.getBody(), daxContext)
+                );
 
         dictionary.getMsgMap().forEach((s, messageDicItem) ->
                 putMsgItem(message.getBody(),messageDicItem)
@@ -123,6 +136,7 @@ public class DaxMessageFactory {
         return message;
 
     }
+
 
     @SuppressWarnings("unchecked")
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {

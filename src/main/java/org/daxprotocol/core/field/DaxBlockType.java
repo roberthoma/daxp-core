@@ -33,6 +33,7 @@ public class DaxBlockType extends DaxPair<String> {
     public static final String  BLOCK_ENUM        =  "E";
     public static final String  BLOCK_ENUM_VALUE  =  "V";
     public static final String  BLOCK_MESSAGE     =  "M";
+    public static final String  BLOCK_CONTEXT     =  "C";
 
     public DaxBlockType(String value) {
         super(DaxTagConst.BLOCK_TYPE, value);

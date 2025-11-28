@@ -21,6 +21,7 @@
 package org.daxprotocol.core.conventer;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxDecodeService;
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -62,9 +63,11 @@ public static  void setFromMessage(DaxMessage message, Object obj){
 
         for (Field f : clazz.getDeclaredFields()) {
             DaxpField ann = f.getAnnotation(DaxpField.class);
-            if (ann == null) continue; // skip non-annotated fields (e.g., town)
+            if (ann == null) continue;
 
-            DaxTag tag = new DaxTag(ann.contextId() , ann.tagId());
+            int contextId = ann.contextId()==-1 ? DaxpConfig.getApplicationContextId(): ann.contextId();
+
+            DaxTag tag = new DaxTag(contextId , ann.tagId());
             if(! message.getBody().getBlock(0).containsKey(tag)) continue;
 
             var pair = message.get(tag.getTagId());

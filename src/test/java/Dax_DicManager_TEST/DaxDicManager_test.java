@@ -4,6 +4,7 @@ import Dax_00_Base_test.AppMessage;
 import Dax_00_Base_test.Customer;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxpPropertiesLoader;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -16,16 +17,21 @@ public class DaxDicManager_test {
 
     @Test
     void test1(){
-        DaxDictionary ctxDic = new DaxDictionary();
+        DaxDictionary dictionary = new DaxDictionary();
 
-        System.out.println("CTX default = "+ DaxpConfig.getDefaultContextId());
+        DaxpPropertiesLoader propertiesLoader = new DaxpPropertiesLoader("application.properties");
+        propertiesLoader.load();
+
+        DaxpConfig.setApplicationContextId(propertiesLoader.readApplicationContext());
+        System.out.println("CTX2 default = "+ DaxpConfig.getApplicationContextId());
+
+        dictionary.setContextMap(propertiesLoader.readContextMap());
 
         DaxDictionaryPopulator manager = new DaxDictionaryPopulator();
         DaxMessageFactory factory = new DaxMessageFactory();
         DaxMessageCodec codec = new DaxMessageCodec();
         AppMessage appMessage = new AppMessage();
 
-        DaxDictionary dictionary = new DaxDictionary();
         DaxDictionary dicAfter = new DaxDictionary();
 
         System.out.println("------------DOC populate --------");

@@ -40,6 +40,7 @@ public class DaxTagConst {
     public static final int MSG_ROLE = 18;
     public static final int MSG_CONTEXT = 20;
 
+
     static Set<DaxTag> headSet = Set.of(new DaxTag(MSG_TYPE),
                                         new DaxTag(MSG_BLOCK_COUNT)
                                        );
@@ -69,6 +70,8 @@ public class DaxTagConst {
     public static final int FIELD_VALUE_DEFAULT     = 104 ; //  FieldDefaultValue   <atr_data_type>
     public static final int FIELD_VALUE_DESCRIPTION = 105 ; //  Field Value Description use in Value list
     public static final int FIELD_VALUE_SYMBOL      = 106 ; //  Field Value Symbol use in Value list
+    public static final int FIELD_VALUE_PREFIX      = 107 ; //  Field Value Symbol use in Value list
+
     public static final int FIELD_ID_LIST           = 115 ; //  FieldIdList     List<Integer>
     public static final int FIELD_DATA_TYPE         = 110 ; //
 //    public static final int FIELD_ENUM_NAME         = 111 ; //

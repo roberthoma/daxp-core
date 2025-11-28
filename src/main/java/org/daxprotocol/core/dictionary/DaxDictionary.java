@@ -21,6 +21,7 @@
 package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.model.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumValue;
@@ -36,6 +37,9 @@ import java.util.Map;
 
 public class DaxDictionary {
 
+
+
+    Map<Integer, DaxContext> contextMap = new HashMap<>();
 
     Map<Integer, DaxContextDictionary> dictionaryMap = new HashMap<>();
 
@@ -54,7 +58,7 @@ public class DaxDictionary {
 
     public DaxContextDictionary getDefaultDictionary(){
 
-        return getDictionary(DaxpConfig.getDefaultContextId());
+        return getDictionary(DaxpConfig.getApplicationContextId());
     }
 
 
@@ -62,8 +66,16 @@ public class DaxDictionary {
 
         dictionaryMap.put(dictionary.contextId,dictionary);
     }
+    //**********************************************************************
+    // Context
 
+    public void setContextMap(Map<Integer, DaxContext> contextMap) {
+        this.contextMap = contextMap;
+    }
 
+    public Map<Integer, DaxContext> getContextMap() {
+        return contextMap;
+    }
 
     //**********************************************************************
     // Messages
@@ -142,7 +154,7 @@ public class DaxDictionary {
     }
 
     public void putAttribute(int tagId, DaxPair<?> atrPair){
-        putAttribute(DaxpConfig.getDefaultContextId(), tagId, atrPair);
+        putAttribute(DaxpConfig.getApplicationContextId(), tagId, atrPair);
     }
 
     public void putAttribute(DaxTag tag, DaxPair<?> atrPair){
