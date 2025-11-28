@@ -21,6 +21,7 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.model.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
@@ -101,10 +102,13 @@ public class DaxMessageFactory {
 
 
     //TODO Create message with dictionary using context, or group, or field/(list of field)
-    //,,,,,,
+    //create multi message with context dictionary values
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
 
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
+
+//        DaxStringPair ctxPair = new DaxStringPair(MSG_CONTEXT, dictionary.get);
+//        message.getHead().putPair()
 
         dictionary.getContextMap().forEach((integer, daxContext) ->
                 putContextItem(message.getBody(), daxContext)

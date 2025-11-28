@@ -21,6 +21,8 @@ package org.daxprotocol.core.model.head;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.DaxMsgBlockCount;
 import org.daxprotocol.core.field.DaxMsgType;
+import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,4 +50,14 @@ public final class DaxHead {
          map.merge(MSG_BLOCK_COUNT,new DaxMsgBlockCount(blockCount),
                  (daxPair, daxPair2) -> daxPair2);
     }
+
+    public void putPair(DaxPair<?> pair){
+        map.put(pair.getTag().getTagId(),pair);
+    }
+
+//    public void putPair(int tag, String value){
+//
+//        blockMap.get(blockIdx).put(new DaxTag(tag),new DaxStringPair(tag, value));
+//    }
+
 }
