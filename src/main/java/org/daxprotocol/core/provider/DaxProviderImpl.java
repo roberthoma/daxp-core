@@ -1,0 +1,98 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2025 DAXPARC Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
+
+package org.daxprotocol.core.provider;
+
+import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxpPropertiesLoader;
+import org.daxprotocol.core.conventer.DaxMessageConverter;
+import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.factory.DaxMessageFactory;
+import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
+
+public class DaxProviderImpl implements DaxProvider {
+
+    private DaxpConfig config;
+
+    private DaxPreambleCodec preambleCodec;
+
+    private DaxMessageCodec messageCodec;
+
+    private DaxMessageConverter messageConverter;
+
+    private DaxDictionary dictionary;
+
+    private DaxpPropertiesLoader propertiesLoader;
+
+    private DaxMessageFactory messageFactory;
+
+    public DaxProviderImpl(String propertiesFile){
+        propertiesLoader = new DaxpPropertiesLoader(propertiesFile);
+
+        propertiesLoader.load();
+
+    }
+
+
+    @Override public DaxpConfig getConfig() {
+        if (config == null) {
+            config = new DaxpConfig();
+            config.setApplicationContextId(propertiesLoader.getApplicationContext());
+            config.setTagFormat(propertiesLoader.getTagFormat());
+        }
+        return config;
+    }
+
+    @Override public DaxPreambleCodec getPreambleCodec() {
+        if(preambleCodec == null){
+            preambleCodec = new DaxPreambleCodec(getConfig());
+        }
+        return preambleCodec;
+    }
+
+    @Override public DaxMessageCodec getMessageCodec() {
+        if(messageCodec == null) {
+            messageCodec = new DaxMessageCodec(getConfig());
+        }
+        return messageCodec;
+    }
+
+    @Override public DaxMessageConverter getMessageConverter() {
+        if(messageConverter == null) {
+            messageConverter = new DaxMessageConverter(getConfig());
+        }
+        return messageConverter;
+    }
+
+    @Override public DaxDictionary getDictionary() {
+        if(dictionary == null){
+            dictionary = new DaxDictionary(getConfig());
+        }
+        return dictionary;
+    }
+
+    @Override public DaxMessageFactory getMessageFactory() {
+        if (messageFactory == null){
+            messageFactory = new DaxMessageFactory();
+        }
+        return messageFactory;
+    }
+}

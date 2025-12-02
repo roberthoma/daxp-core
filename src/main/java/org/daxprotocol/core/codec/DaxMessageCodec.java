@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 Robert Homa
+ * Copyright 2025 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -46,9 +46,9 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
     public DaxMessageCodec(DaxpConfig config) {
 
-      preambleCodec = new DaxPreambleCodec();
+      preambleCodec = new DaxPreambleCodec(config);
       headCodec = new DaxHeadCodec(config);
-      bodyCodec = new DaxBodyCodec();
+      bodyCodec = new DaxBodyCodec(config);
       trailerCodec = new DaxTrailerCodec();
 
     }
@@ -132,7 +132,8 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
        return result;
    }
 
-//TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPY !!!
+//TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPE !!!
+
     public List<DaxMessage> decodeAll(String msgStr, DaxDictionary dic) {
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);

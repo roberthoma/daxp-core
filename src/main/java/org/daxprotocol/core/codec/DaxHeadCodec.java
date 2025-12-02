@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 Robert Homa
+ * Copyright 2025 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -31,25 +31,27 @@ import static org.daxprotocol.core.codec.DaxTagConst.*;
 public class DaxHeadCodec implements DaxCodec<DaxHead> {
 
     DaxpConfig config;
+    DaxPairCodec pairCodec;
 
     public DaxHeadCodec(DaxpConfig config) {
         this.config = config;
+        this.pairCodec = new DaxPairCodec(config);
     }
 
     public String encode(DaxHead head,int blockCount) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-        DaxPairCodec.encode(sb,MSG_TYPE,head.getMsgType());
+
+        pairCodec.encode(sb,MSG_TYPE,head.getMsgType());
 
         if (head.getContextId() != config.getApplicationContextId()
             && head.getContextId() != 0 ) //TODO add to const
         {
-            DaxPairCodec.encode(sb, MSG_CONTEXT, String.valueOf(head.getContextId()));
+            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(head.getContextId()));
         }
 
         if (blockCount>1) {
-            DaxPairCodec.encode(sb, MSG_BLOCK_COUNT, String.valueOf(blockCount));
+            pairCodec.encode(sb, MSG_BLOCK_COUNT, String.valueOf(blockCount));
         }
 
         return sb.toString();
@@ -58,7 +60,7 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
     @Override public String encode(DaxHead message) {
 
         StringBuilder sb = new StringBuilder();
-        DaxPairCodec.encode(sb,MSG_TYPE,message.getMsgType());
+        pairCodec.encode(sb,MSG_TYPE,message.getMsgType());
         return sb.toString();
     }
 

@@ -16,33 +16,33 @@ import java.util.Date;
                 masterId = GroupsTestList.GRP_CRM)
 public class Customer {
 
-    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_ID, uiLabel = "Id")
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_ID, uiLabel = "Id")
     int customerId;
 
     @NotNull
     @Size(min = 2 ,max = 120)
-    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_NAME, uiLabel = "Name")
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_NAME, uiLabel = "Name")
     String name;
 
     @Size(min=2)
-    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_TOWN, uiLabel = "Town")
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
 
-    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_TYPE, uiLabel = "Type")
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TYPE, uiLabel = "Type")
     CustomerType type;
 
 
-    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
     Boolean isCitizen;
 
-    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;
 
     @DaxpFieldReference( contextId = ContextConst.CTX_FIX_PROTOCOL,
                              tagId = FixConstTag.FIX_CLIENT_ID)
     Integer fixClientId;
 
-    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_RELATION , uiLabel = "Relation")
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_RELATION , uiLabel = "Relation")
     CustomerRelation relation;
 
     //---------------------------------------------------------------------------

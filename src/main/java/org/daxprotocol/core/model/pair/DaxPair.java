@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 Robert Homa
+ * Copyright 2025 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -25,10 +25,8 @@ import org.daxprotocol.core.model.tag.DaxTag;
 public  class DaxPair<T>{
     DaxTag tag;
     protected T value;
-   // Class<T> clazz;
 
     public Class<?> getClazz(){
-        //return clazz;
         return value.getClass();
     };
     public DaxTag getTag(){
@@ -41,7 +39,6 @@ public  class DaxPair<T>{
     public DaxPair(Integer tag, T value){
         this.tag = new DaxTag(tag);
         this.value = value;
-//        this.clazz = value.getClass(); //TODO fix init class type
     }
 
     public String getStrValue() {
@@ -56,7 +53,7 @@ public  class DaxPair<T>{
     }
     @Override
     public String toString(){
-        return tag.toString()+ DaxCodecSymbol.EQUAL +getStrValue()+ DaxCodecSymbol.PAIR_SEPARATOR;
+        return tag.toString() + DaxCodecSymbol.EQUAL +getStrValue() ; //TODO  DaxCodecSymbol.PAIR_SEPARATOR;
     }
 
 }

@@ -107,21 +107,35 @@ public final class DaxpPropertiesLoader {
     }
 
     //-------------------------------------------------------------
+    private String getStringValue(String property) {
+        String valueStr = props.getProperty(property);
+        if (valueStr == null || valueStr.isBlank()) {
+            throw new IllegalStateException("Missing property: "+valueStr);
+        }
+        return valueStr;
+    }
+
+
+    //-------------------------------------------------------------
     // Read daxp.tag-format
     public String getTagFormat() {
-        String tagFormatStr = props.getProperty("daxp.tag-format");
-        if (tagFormatStr == null || tagFormatStr.isBlank()) {
-            throw new IllegalStateException("Missing property: daxp.tag-format");
-        }
-        return tagFormatStr;
+        return getStringValue("daxp.tag-format");
+    }
+
+    //-------------------------------------------------------------
+    // Read daxp.encoding
+    public String getEncoding() {
+        return getStringValue("daxp.encoding");
     }
     //-------------------------------------------------------------
-    // Read daxp.pair-separator
-    public char getPairSeparator() {
-        String value = props.getProperty("daxp.pair-separator");
+    // Read daxp.pair-separator,
+    //      daxp.context-tag-separator
+
+    private char getCharValue(String property) {
+        String value = props.getProperty(property);
 
         if (value == null || value.isBlank()) {
-            throw new IllegalStateException("Missing property: daxp.pair-separator");
+            throw new IllegalStateException("Missing property: "+property);
         }
 
         value = value.trim();
@@ -146,7 +160,13 @@ public final class DaxpPropertiesLoader {
             return value.charAt(0);
         }
 
-        throw new IllegalArgumentException("Invalid pair separator value: " + value);
+        throw new IllegalArgumentException("Invalid "+property+" value: " + value);
     }
+
+
+    public char getPairSeparator() {
+        return getCharValue("daxp.pair-separator");
+    }
+
 
 }

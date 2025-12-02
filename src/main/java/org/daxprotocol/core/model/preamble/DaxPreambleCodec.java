@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 Robert Homa
+ * Copyright 2025 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,6 +21,7 @@ package org.daxprotocol.core.model.preamble;
 
 
 import org.daxprotocol.core.codec.*;
+import org.daxprotocol.core.config.DaxpConfig;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,6 +31,7 @@ import java.util.regex.Pattern;
 
 import static org.daxprotocol.core.codec.DaxCodecSymbol.EQUAL;
 import static org.daxprotocol.core.codec.DaxCodecSymbol.PAIR_SEPARATOR;
+//import static org.daxprotocol.core.codec.DaxCodecSymbol.PAIR_SEPARATOR;
 
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.
@@ -37,17 +39,20 @@ import static org.daxprotocol.core.codec.DaxCodecSymbol.PAIR_SEPARATOR;
  */
 public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 
-//    private  static String encode(StringBuilder sb, String tag, String value ) {
-    private  static void encode(StringBuilder sb, String tag, String value ) {
+    DaxpConfig config;
+
+    public DaxPreambleCodec(DaxpConfig config) {
+        this.config = config;
+    }
+
+    private  void encode(StringBuilder sb, String tag, String value ) {
         if (value.isBlank()){
             return ;
-//            return sb.toString();
         }
         sb.append(tag)
                 .append(EQUAL)
                 .append(value)
                 .append(PAIR_SEPARATOR);
-        //return sb.toString() ;
     }
 
     /** Encode Preamble object → wire format (string). */
@@ -67,28 +72,33 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 
         StringBuilder sb = new StringBuilder();
         map.forEach((k, v) -> encode(sb,k,v));
+        sb.append("\n"); // TODO configuration
         return sb.toString();
     }
 
-    private static char getPairSeparator(String msgStr){
+//    private static char getPairSeparator(String msgStr){
+    private char getPairSeparator(String msgStr){
         int  pairSeparatorIdx = msgStr.indexOf("TF=")-1;  // Example |TF= > |
         return msgStr.charAt(pairSeparatorIdx);
     }
 
 
-    public static Pattern getPairPattern(String msgStr){
+//    public static Pattern getPairPattern(String msgStr){
+    public  Pattern getPairPattern(String msgStr){
 
         return DaxDecodeService.getPairPattern(getPairSeparator(msgStr));
     }
 
-    public static Map<String, String> parsePreamble(String msg) {
+//    public static Map<String, String> parsePreamble(String msg) {
+    public  Map<String, String> parsePreamble(String msg) {
         return parsePreamble(msg, getPairPattern(msg));
     }
 
-    public static Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
+//    public static Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
+    public  Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
         Map<String, String> map = new HashMap<>();
         // Everything before tag 9=
-        String preamblePart = msg.split(String.valueOf(DaxTagConst.MSG_TYPE)+ DaxCodecSymbol.EQUAL)[0];
+        String preamblePart = msg.split(String.valueOf(DaxTagConst.MSG_TYPE) + DaxCodecSymbol.EQUAL)[0];
         Matcher m = pairPattern.matcher(preamblePart);
 
         while (m.find()) {
@@ -101,6 +111,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     @Override
     public DaxPreamble decode(String msgStr) {
         DaxPreamble p = new DaxPreamble();
+
         //TODO fix this as no IDEA how to set fof test mode
         DaxCodecSymbol.PAIR_SEPARATOR = getPairSeparator(msgStr);
 
@@ -112,7 +123,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         Map<String, String> map = parsePreamble(msgStr, p.getPairPattern());
 
         p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.DAXP, "1"));
-        p.setTagFormat(DaxTagFormat.valueOf(map.getOrDefault(DaxPreambleTag.TF, "DEC"))); //TODO is required : add exception
+        p.setTagFormat(DaxTagFormat.valueOf(map.getOrDefault(DaxPreambleTag.TF, config.getTagFormat())));
         p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.EN, "UTF8")));
 //        p.context = map.get(DaxPreambleTag.CTX.tag());
         p.setCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.CNT,"1")));

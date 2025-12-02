@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 Robert Homa
+ * Copyright 2025 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -33,8 +33,6 @@ public class DaxPreamble {
     //    private String context;               // CTX=RxModeler or GUI, optional
     private int cnt;                      //CNT  Number of item lines following preamble. Useful for validation.
 
-
-    private Character pairSeparator = 0x001;
     private DaxTagFormat tagFormat;       // TF=DEC
     private DaxEncoding encoding;         // EN=UTF8
 
@@ -72,12 +70,12 @@ public class DaxPreamble {
     public DaxEncoding getEncoding() { return encoding; }
 //    public String getContext() { return context; }
 
-    public Character getPairSeparator() {
-        return pairSeparator;
-    }
+//    public Character getPairSeparator() {
+//        return pairSeparator;
+//    }
 
     public void setPairSeparator(Character pairSeparator) {
-        this.pairSeparator = pairSeparator;
+//        this.pairSeparator = pairSeparator;
         this.setPairPattern(DaxDecodeService.getPairPattern(pairSeparator));
     }
 

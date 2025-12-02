@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 Robert Homa
+ * Copyright 2025 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,10 +21,20 @@
 package org.daxprotocol.core.config;
 
 public final class DaxpConfig {
-    private char pairSeparator;
+//    private char pairSeparator;
+//    private char contextTagSeparator;
     private int applicationContextId;
     private String tagFormat;
-    private String encoding; //TODO
+    private String encoding;
+
+    public String getEncoding() {
+        return encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
     public void setApplicationContextId(int applicationContextId) {
         this.applicationContextId = applicationContextId;
     }
@@ -45,12 +55,19 @@ public final class DaxpConfig {
     public DaxpConfig() {
     }
 
-    public char getPairSeparator() {
-        return pairSeparator;
-    }
-
-    public void setPairSeparator(char pairSeparator) {
-        this.pairSeparator = pairSeparator;
-    }
+//    public char getPairSeparator() {
+//        return pairSeparator;
+//    }
+//
+//    public void setPairSeparator(char pairSeparator) {
+//        this.pairSeparator = pairSeparator;
+//    }
+//    public char getContextTagSeparator() {
+//        return contextTagSeparator;
+//    }
+//
+//    public void setContextTagSeparator(char contextTagSeparator) {
+//        this.contextTagSeparator = contextTagSeparator;
+//    }
 
 }

@@ -18,13 +18,27 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+package org.daxprotocol.core.provider;
 
-public class DaxAtrEnumName extends DaxPair<String> {
-    public DaxAtrEnumName(String value) {
-        super(DaxTagConst.ENUM_NAME, value);
-    }
+import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.conventer.DaxMessageConverter;
+import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.factory.DaxMessageFactory;
+import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
+
+public interface DaxProvider {
+     DaxpConfig getConfig();
+
+    DaxPreambleCodec getPreambleCodec();
+
+    DaxMessageCodec getMessageCodec();
+
+    DaxMessageConverter getMessageConverter();
+
+    DaxDictionary getDictionary();
+
+    DaxMessageFactory getMessageFactory();
+
 }

@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 Robert Homa
+ * Copyright 2025 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,8 +26,11 @@ public final class DaxCodecSymbol {
     /** key=value */
     public static final char EQUAL = '=';
 
-    /** Pair separator on the WIRE (binary, non-printable). */
-    public static char PAIR_SEPARATOR = 0x0001; // SOH  // Default // todo
+//    /** Pair separator on the WIRE (binary, non-printable). */
+    public static char PAIR_SEPARATOR = 0x0001;
+
+    public static char CONTEXT_TAG_SEPARATOR = ':';
+
 
 
 //    /** Pair separator for logs/tests (printable). */

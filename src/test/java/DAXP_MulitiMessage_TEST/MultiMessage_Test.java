@@ -23,13 +23,13 @@ public class MultiMessage_Test extends DaxTestConfig {
                 "9=UCi|2001=126|2002=Robert6|99=123|"
                 ;
 
-        List<DaxMessage> msgList = crmMessageCodec.decodeAll(msgStr);
+        List<DaxMessage> msgList = crmProvider.getMessageCodec().decodeAll(msgStr);
         Assertions.assertEquals("Robert5",msgList.get(2)
                                                   .getBody()
                                                   .getPair(0,2002).getStrValue()
         );
 
-        Customer customer = crmMessageConverter.createFromMessage(msgList.get(1),Customer.class);
+        Customer customer = crmProvider.getMessageConverter().createFromMessage(msgList.get(1),Customer.class);
 
         Assertions.assertEquals("Robert4", customer.getName());
     }

@@ -17,7 +17,7 @@ public class Dax_message_dic_req extends DaxTestConfig {
 
         DaxMessage message = factory.createDictionaryReq();
 
-        String msgStrAfter = crmMessageCodec.encode(message);
+        String msgStrAfter = crmProvider.getMessageCodec().encode(message);
         msgStrAfter = msgStrAfter.replace("\n","");
         char separator = 0x0001;
         msgStrAfter = msgStrAfter.replace(separator,'|') ;

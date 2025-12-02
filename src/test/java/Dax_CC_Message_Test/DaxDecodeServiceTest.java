@@ -8,6 +8,8 @@ import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,7 @@ import java.util.Map;
 class DaxDecodeServiceTest extends DaxTestConfig {
     static String msg;
 
-//    @BeforeAll
+    @BeforeAll
     static void initTest() {
         msg = "DAXP=1|TF=DEC|EN=UTF8|CNT=1|\n" +
                 "9=DD|6=7|\n"+
@@ -29,28 +31,28 @@ class DaxDecodeServiceTest extends DaxTestConfig {
                 "99=123|";
     }
 
-//    @Test
-//    void preamblePairs_TEST(){
-//
-//        Map<String,String> preamblePairs = DaxPreambleCodec.parsePreamble(msg );
-//
-//        Assertions.assertEquals("1",preamblePairs.get("DAXP"));
-//        Assertions.assertEquals("DEC",preamblePairs.get("TF"));
-//        Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
-//        Assertions.assertEquals("1",preamblePairs.get("CNT"));
-//    }
+    @Test
+    void preamblePairs_TEST(){
 
-//    @Test
-//    void parseAndDecodeNumberPairsToString_TEST(){
-//        Map<String,String>   preamblePairs = DaxPreambleCodec.parsePreamble(msg);
-//        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,DaxPreambleCodec.getPairPattern(msg));
-//        long equalChar = msg.chars()
-//                            .filter(c -> c== DaxCodecSymbol.EQUAL)
-//                            .count()
-//                       - preamblePairs.size();
-//
-//        Assertions.assertEquals(equalChar,pairsList.size());
-//    }
+        Map<String,String> preamblePairs = crmProvider.getPreambleCodec().parsePreamble(msg );
+
+        Assertions.assertEquals("1",preamblePairs.get("DAXP"));
+        Assertions.assertEquals("DEC",preamblePairs.get("TF"));
+        Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
+        Assertions.assertEquals("1",preamblePairs.get("CNT"));
+    }
+
+    @Test
+    void parseAndDecodeNumberPairsToString_TEST(){
+        Map<String,String>   preamblePairs = crmProvider.getPreambleCodec().parsePreamble(msg);
+        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,crmProvider.getPreambleCodec().getPairPattern(msg));
+        long equalChar = msg.chars()
+                            .filter(c -> c== DaxCodecSymbol.EQUAL)
+                            .count()
+                       - preamblePairs.size();
+
+        Assertions.assertEquals(equalChar,pairsList.size());
+    }
 
 //    @Test
 //    void decodeMSG_TEST(){

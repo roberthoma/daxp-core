@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 Robert Homa
+ * Copyright 2025 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -18,6 +18,7 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.codec;
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
@@ -28,6 +29,14 @@ import java.util.Map;
 
 public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
+    DaxpConfig config;
+    DaxPairCodec pairCodec;
+
+
+    public DaxBodyCodec(DaxpConfig config) {
+        this.config = config;
+        this.pairCodec = new DaxPairCodec(config);
+    }
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
                                       int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap)
@@ -36,7 +45,7 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
             sb.append("\n"); //TODO Debug mode or optional
 
-            DaxPairCodec.encode(sb, DaxTagConst.BLOCK_INDEX, String.valueOf(blockIdx+1));
+            pairCodec.encode(sb, DaxTagConst.BLOCK_INDEX, String.valueOf(blockIdx+1));
 
             //TODO Add external exception service
             if (!blockMap.containsKey(new DaxTag(DaxTagConst.BLOCK_TYPE)) ){
@@ -51,7 +60,7 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
             }
 
             DaxPair<?> blockType =  blockMap.get(new DaxTag(DaxTagConst.BLOCK_TYPE));
-            DaxPairCodec.encode(sb, DaxTagConst.BLOCK_TYPE, blockType.getStrValue());
+            pairCodec.encode(sb, DaxTagConst.BLOCK_TYPE, blockType.getStrValue());
         }
 
 
@@ -59,7 +68,7 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
         {
             if (!tag.equals(DaxTagConst.BLOCK_INDEX) &&
                     !tag.equals(DaxTagConst.BLOCK_TYPE) ) {
-                DaxPairCodec.encode(sb, tag, s.getStrValue());
+                pairCodec.encode(sb, tag, s.getStrValue());
             }
         });
     }
