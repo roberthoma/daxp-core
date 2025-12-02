@@ -22,8 +22,8 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
-import static org.daxprotocol.core.codec.DaxCodecSymbols.EQUAL;
-import static org.daxprotocol.core.codec.DaxCodecSymbols.PAIR_SEPARATOR;
+import static org.daxprotocol.core.codec.DaxCodecSymbol.EQUAL;
+import static org.daxprotocol.core.codec.DaxCodecSymbol.PAIR_SEPARATOR;
 
 public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
 

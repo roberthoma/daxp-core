@@ -20,24 +20,37 @@
 
 package org.daxprotocol.core.config;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 public final class DaxpConfig {
+    private char pairSeparator;
+    private int applicationContextId;
+    private String tagFormat;
+    private String encoding; //TODO
+    public void setApplicationContextId(int applicationContextId) {
+        this.applicationContextId = applicationContextId;
+    }
 
-    private static int applicationContextId;
+    public void setTagFormat(String tagFormat) {
+        this.tagFormat = tagFormat;
+    }
 
-    public static int getApplicationContextId() {
+    public  int getApplicationContextId() {
         return applicationContextId;
     }
 
-    public static void setApplicationContextId(int appContextId) {
-        applicationContextId = appContextId;
+    public String getTagFormat() {
+        return tagFormat;
     }
 
 
     public DaxpConfig() {
+    }
+
+    public char getPairSeparator() {
+        return pairSeparator;
+    }
+
+    public void setPairSeparator(char pairSeparator) {
+        this.pairSeparator = pairSeparator;
     }
 
 }

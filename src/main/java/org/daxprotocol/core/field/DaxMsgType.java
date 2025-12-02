@@ -52,6 +52,15 @@ POST	Create (new resource)	/orders
 PUT	Replace entire resource	/customers/123
 PATCH	Partially update	/customers/123 (only name)
 DELETE	Delete resource	/customers/123
+CALL - Remote Procedure Call
+   or
+
+CRUD
+- Create
+- Read
+- Update
+- Delete
+
 
 */
 

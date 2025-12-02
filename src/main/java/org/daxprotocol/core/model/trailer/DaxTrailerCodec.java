@@ -22,7 +22,7 @@ package org.daxprotocol.core.model.trailer;
 
 import org.daxprotocol.core.codec.DaxCodec;
 import static org.daxprotocol.core.codec.DaxTagConst.*;
-import static org.daxprotocol.core.codec.DaxCodecSymbols.*;
+import static org.daxprotocol.core.codec.DaxCodecSymbol.*;
 
 public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
     @Override public String encode(DaxTrailer message) {

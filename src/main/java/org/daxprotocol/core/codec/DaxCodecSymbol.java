@@ -20,8 +20,8 @@
 
 package org.daxprotocol.core.codec;
 
-public final class DaxCodecSymbols {
-    private DaxCodecSymbols() {}
+public final class DaxCodecSymbol {
+    private DaxCodecSymbol() {}
 
     /** key=value */
     public static final char EQUAL = '=';

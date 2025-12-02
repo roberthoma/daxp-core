@@ -38,7 +38,7 @@ public class DaxTagConst {
     public static final int MSG_TYPE  = 9;
     public static final int MSG_BLOCK_COUNT = 6;
     public static final int MSG_ROLE = 18;
-    public static final int MSG_CONTEXT = 20;
+    public static final int MSG_CONTEXT = 20; //Default context
 
 
     static Set<DaxTag> headSet = Set.of(new DaxTag(MSG_TYPE),

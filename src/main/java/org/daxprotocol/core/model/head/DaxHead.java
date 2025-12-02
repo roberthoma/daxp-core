@@ -21,8 +21,6 @@ package org.daxprotocol.core.model.head;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.DaxMsgBlockCount;
 import org.daxprotocol.core.field.DaxMsgType;
-import org.daxprotocol.core.model.pair.DaxStringPair;
-import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -36,6 +34,14 @@ public final class DaxHead {
     public String getMsgType() {
         return map.get(MSG_TYPE).getStrValue();
     }
+
+    public int getContextId() {
+        if (map.containsKey(MSG_CONTEXT)) {
+            return (int)map.get(MSG_CONTEXT).getValue();
+        }
+        return -1; //TODO to think about
+    }
+
 
     public DaxHead(String msgType) {
         map.put(MSG_TYPE,new DaxMsgType(msgType));

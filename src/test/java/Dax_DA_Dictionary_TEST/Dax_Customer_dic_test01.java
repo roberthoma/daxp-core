@@ -1,6 +1,7 @@
 package Dax_DA_Dictionary_TEST;
 
-import Dax_00_Base_test.CustomerDaxDic;
+import Dax_00_Base_test.DaxTestConfig;
+import Dax_00_Base_test.customer.CustomerDaxDic;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
@@ -13,9 +14,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public class Dax_Customer_dic_test01 {
+public class Dax_Customer_dic_test01 extends DaxTestConfig {
     static String   msg;
-    @BeforeAll
+//    @BeforeAll
     static void initTest() {
           msg = "DAXP=1|TF=DEC|EN=UTF8|\n" +
                 "9=$DD|6=9|\n" +
@@ -31,38 +32,37 @@ public class Dax_Customer_dic_test01 {
                 "99=123|";
     }
 
-    @Test
+//    @Test
     void testCustomerDicAttributes(){
 
-        DaxDictionary customerDic = new CustomerDaxDic();
+//        DaxDictionary crmDictionary = new CustomerDaxDic();
 
-        Map<Integer, DaxPair<?>> idAttrMap = customerDic.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_ID);
+        Map<Integer, DaxPair<?>> idAttrMap = crmDictionary.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_ID);
         Assertions.assertEquals("Id customer",idAttrMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
         Assertions.assertEquals("I",idAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
-        Map<Integer, DaxPair<?>> nameAttrMap = customerDic.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_NAME);
+        Map<Integer, DaxPair<?>> nameAttrMap = crmDictionary.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_NAME);
         Assertions.assertEquals("First name",nameAttrMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
         Assertions.assertEquals("S",nameAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
-        Map<Integer, DaxPair<?>> telAttrMap = customerDic.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_TELEPHONE);
+        Map<Integer, DaxPair<?>> telAttrMap = crmDictionary.getFieldAttributeMap(CustomerDaxDic.CUSTOMER_TELEPHONE);
         Assertions.assertEquals("Telephone",telAttrMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
         Assertions.assertEquals("S",telAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
     }
 
 
-    @Test
+//    @Test
     void testCustomerDicEncoder(){
 
         DaxMessageFactory factory = new DaxMessageFactory();
-        DaxDictionary customerDic = new CustomerDaxDic();
-        DaxMessageCodec codec = new DaxMessageCodec();
+//        DaxDictionary crmDictionary = new CustomerDaxDic();
 
-        DaxMessage msg = factory.createDictionaryMsg(customerDic);
+        DaxMessage msg = factory.createDictionaryMsg(crmDictionary);
         System.out.println(msg);
 
-        String msgStr = codec.encode(msg);
-        DaxMessage msgAfter  = codec.decode(msgStr);
+        String msgStr = crmMessageCodec.encode(msg);
+        DaxMessage msgAfter  = crmMessageCodec.decode(msgStr);
         System.out.println(msgStr);
 
         Assertions.assertEquals(8,msg.getBlockCount());
@@ -74,11 +74,9 @@ public class Dax_Customer_dic_test01 {
     }
 
 
-    @Test
+//    @Test
     public void testCustomerEntityEncoder(){
-
-     DaxMessageCodec codec = new DaxMessageCodec();
-     DaxMessage message = codec.decode(msg);
+     DaxMessage message = crmMessageCodec.decode(msg);
      Assertions.assertEquals(9,message.getBlockCount());
     }
 

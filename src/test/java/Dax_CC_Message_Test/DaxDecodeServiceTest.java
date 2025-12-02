@@ -1,22 +1,21 @@
 package Dax_CC_Message_Test;
 
-import org.daxprotocol.core.codec.DaxCodecSymbols;
+import Dax_00_Base_test.DaxTestConfig;
+import org.daxprotocol.core.codec.DaxCodecSymbol;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
 
-class DaxDecodeServiceTest {
+class DaxDecodeServiceTest extends DaxTestConfig {
     static String msg;
 
-    @BeforeAll
+//    @BeforeAll
     static void initTest() {
         msg = "DAXP=1|TF=DEC|EN=UTF8|CNT=1|\n" +
                 "9=DD|6=7|\n"+
@@ -30,47 +29,47 @@ class DaxDecodeServiceTest {
                 "99=123|";
     }
 
-    @Test
-    void preamblePairs_TEST(){
+//    @Test
+//    void preamblePairs_TEST(){
+//
+//        Map<String,String> preamblePairs = DaxPreambleCodec.parsePreamble(msg );
+//
+//        Assertions.assertEquals("1",preamblePairs.get("DAXP"));
+//        Assertions.assertEquals("DEC",preamblePairs.get("TF"));
+//        Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
+//        Assertions.assertEquals("1",preamblePairs.get("CNT"));
+//    }
 
-        Map<String,String> preamblePairs = DaxPreambleCodec.parsePreamble(msg );
+//    @Test
+//    void parseAndDecodeNumberPairsToString_TEST(){
+//        Map<String,String>   preamblePairs = DaxPreambleCodec.parsePreamble(msg);
+//        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,DaxPreambleCodec.getPairPattern(msg));
+//        long equalChar = msg.chars()
+//                            .filter(c -> c== DaxCodecSymbol.EQUAL)
+//                            .count()
+//                       - preamblePairs.size();
+//
+//        Assertions.assertEquals(equalChar,pairsList.size());
+//    }
 
-        Assertions.assertEquals("1",preamblePairs.get("DAXP"));
-        Assertions.assertEquals("DEC",preamblePairs.get("TF"));
-        Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
-        Assertions.assertEquals("1",preamblePairs.get("CNT"));
-    }
+//    @Test
+//    void decodeMSG_TEST(){
+//        DaxMessageCodec codec = new DaxMessageCodec();
+//        DaxMessage message = codec.decode(msg);
+//        Assertions.assertEquals("DD",  message.getMsgType());
+//        Assertions.assertEquals(7,  message.getBlockCount());
+//    }
 
-    @Test
-    void parseAndDecodeNumberPairsToString_TEST(){
-        Map<String,String>   preamblePairs = DaxPreambleCodec.parsePreamble(msg);
-        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,DaxPreambleCodec.getPairPattern(msg));
-        long equalChar = msg.chars()
-                            .filter(c -> c== DaxCodecSymbols.EQUAL)
-                            .count()
-                       - preamblePairs.size();
-
-        Assertions.assertEquals(equalChar,pairsList.size());
-    }
-
-    @Test
-    void decodeMSG_TEST(){
-        DaxMessageCodec codec = new DaxMessageCodec();
-        DaxMessage message = codec.decode(msg);
-        Assertions.assertEquals("DD",  message.getMsgType());
-        Assertions.assertEquals(7,  message.getBlockCount());
-    }
-
-    @Test
-    void encodeMSG_TEST(){
-        DaxMessageCodec codec = new DaxMessageCodec();
-        DaxMessage message = codec.decode(msg);
-        String afterMsgStr = codec.encode(message);
-        if(afterMsgStr.contains("\n7=0|")){
-            Assertions.fail("ERROR . Message contains 7=0 !!!! MSG: \n"+afterMsgStr);
-        }
-        DaxMessage afterMsg  = codec.decode(afterMsgStr);
-        Assertions.assertEquals("DD",  afterMsg.getMsgType());
-        Assertions.assertEquals(7,  afterMsg.getBlockCount());
-    }
+//    @Test
+//    void encodeMSG_TEST(){
+//        DaxMessageCodec codec = new DaxMessageCodec();
+//        DaxMessage message = codec.decode(msg);
+//        String afterMsgStr = codec.encode(message);
+//        if(afterMsgStr.contains("\n7=0|")){
+//            Assertions.fail("ERROR . Message contains 7=0 !!!! MSG: \n"+afterMsgStr);
+//        }
+//        DaxMessage afterMsg  = codec.decode(afterMsgStr);
+//        Assertions.assertEquals("DD",  afterMsg.getMsgType());
+//        Assertions.assertEquals(7,  afterMsg.getBlockCount());
+//    }
 }

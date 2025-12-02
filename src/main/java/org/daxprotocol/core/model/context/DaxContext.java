@@ -5,6 +5,7 @@ public class DaxContext {
     public String tagPrefix;
     public String symbol;
     public String description;
+    //URL address / IP / port
 
 
     @Override

@@ -29,8 +29,13 @@ import java.lang.reflect.Field;
 
 public class DaxMessageConverter {
 
+    DaxpConfig config;
 
-    public static <T> T createFromMessage(DaxMessage message, Class<T> targetClass) {
+    public DaxMessageConverter(DaxpConfig config) {
+        this.config = config;
+    }
+
+    public <T> T createFromMessage(DaxMessage message, Class<T> targetClass) {
         try {
             T instance = targetClass.getDeclaredConstructor().newInstance();
 
@@ -57,15 +62,15 @@ public class DaxMessageConverter {
 
 
 
-public static  void setFromMessage(DaxMessage message, Object obj){
-      Class<?> clazz = obj.getClass();
+      public  void setFromMessage(DaxMessage message, Object obj){
+        Class<?> clazz = obj.getClass();
         try {
 
         for (Field f : clazz.getDeclaredFields()) {
             DaxpField ann = f.getAnnotation(DaxpField.class);
             if (ann == null) continue;
 
-            int contextId = ann.contextId()==-1 ? DaxpConfig.getApplicationContextId(): ann.contextId();
+            int contextId = ann.contextId()!=-1 ? ann.contextId() : config.getApplicationContextId() ;
 
             DaxTag tag = new DaxTag(contextId , ann.tagId());
             if(! message.getBody().getBlock(0).containsKey(tag)) continue;

@@ -19,6 +19,7 @@
  */
 package org.daxprotocol.core.codec;
 
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 
@@ -29,11 +30,24 @@ import static org.daxprotocol.core.codec.DaxTagConst.*;
 
 public class DaxHeadCodec implements DaxCodec<DaxHead> {
 
-    public String encode(DaxHead message,int blockCount) {
+    DaxpConfig config;
+
+    public DaxHeadCodec(DaxpConfig config) {
+        this.config = config;
+    }
+
+    public String encode(DaxHead head,int blockCount) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
-        DaxPairCodec.encode(sb,MSG_TYPE,message.getMsgType());
+        DaxPairCodec.encode(sb,MSG_TYPE,head.getMsgType());
+
+        if (head.getContextId() != config.getApplicationContextId()
+            && head.getContextId() != 0 ) //TODO add to const
+        {
+            DaxPairCodec.encode(sb, MSG_CONTEXT, String.valueOf(head.getContextId()));
+        }
+
         if (blockCount>1) {
             DaxPairCodec.encode(sb, MSG_BLOCK_COUNT, String.valueOf(blockCount));
         }

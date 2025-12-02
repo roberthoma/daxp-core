@@ -37,15 +37,16 @@ import java.util.Map;
 
 public class DaxDictionary {
 
-
+    DaxpConfig config;
 
     Map<Integer, DaxContext> contextMap = new HashMap<>();
 
     Map<Integer, DaxContextDictionary> dictionaryMap = new HashMap<>();
 
 
-    public DaxDictionary() {
+    public DaxDictionary(DaxpConfig config) {
         System.out.println("Init DaxDictionary...");
+        this.config = config;
     }
 
 
@@ -58,7 +59,7 @@ public class DaxDictionary {
 
     public DaxContextDictionary getDefaultDictionary(){
 
-        return getDictionary(DaxpConfig.getApplicationContextId());
+        return getDictionary(config.getApplicationContextId());
     }
 
 
@@ -154,14 +155,15 @@ public class DaxDictionary {
     }
 
     public void putAttribute(int tagId, DaxPair<?> atrPair){
-        putAttribute(DaxpConfig.getApplicationContextId(), tagId, atrPair);
+        putAttribute(config.getApplicationContextId(), tagId, atrPair);
     }
 
     public void putAttribute(DaxTag tag, DaxPair<?> atrPair){
         putAttribute(tag.getContextId(), tag.getTagId(), atrPair);
     }
 
-    //-----------------
+    //**********************************************************************
+    // Dedicated attributes
 
     public Map<Integer, DaxPair<?>> getFieldAttributeMap(int tagId) {
         DaxContextDictionary dic =  getDefaultDictionary();

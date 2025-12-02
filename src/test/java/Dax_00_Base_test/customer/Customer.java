@@ -1,13 +1,16 @@
-package Dax_00_Base_test;
+package Dax_00_Base_test.customer;
 
+import Dax_00_Base_test.*;
+import Dax_00_Base_test.fix.FixConstTag;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpFieldReference;
 
 import java.util.Date;
 
-@DaxpFieldGroup(groupId =GroupsTestList.GRP_CUSTOMER,
+@DaxpFieldGroup(groupId = GroupsTestList.GRP_CUSTOMER,
                 name = "Customer",
                 namespace = "crm",
                 masterId = GroupsTestList.GRP_CRM)
@@ -28,13 +31,6 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxDic.CUSTOMER_TYPE, uiLabel = "Type")
     CustomerType type;
 
-    public Boolean getCitizen() {
-        return isCitizen;
-    }
-
-    public void setCitizen(Boolean citizen) {
-        isCitizen = citizen;
-    }
 
     @DaxpField(tagId = CustomerDaxDic.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
     Boolean isCitizen;
@@ -42,8 +38,14 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxDic.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;
 
-    @DaxpField(contextId = 2, tagId = 53 , uiLabel = "Fix Client Id")
+    @DaxpFieldReference( contextId = ContextConst.CTX_FIX_PROTOCOL,
+                             tagId = FixConstTag.FIX_CLIENT_ID)
     Integer fixClientId;
+
+    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_RELATION , uiLabel = "Relation")
+    CustomerRelation relation;
+
+    //---------------------------------------------------------------------------
 
     public String getTown() {
         return town;
@@ -77,8 +79,6 @@ public class Customer {
         this.relation = relation;
     }
 
-    @DaxpField(tagId = CustomerDaxDic.CUSTOMER_RELATION , uiLabel = "Relation")
-    CustomerRelation relation;
 
     public Customer(){
 
@@ -104,4 +104,13 @@ public class Customer {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Boolean getCitizen() {
+        return isCitizen;
+    }
+
+    public void setCitizen(Boolean citizen) {
+        isCitizen = citizen;
+    }
+
 }

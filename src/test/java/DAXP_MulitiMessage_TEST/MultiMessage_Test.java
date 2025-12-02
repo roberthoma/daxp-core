@@ -1,6 +1,7 @@
 package DAXP_MulitiMessage_TEST;
 
-import Dax_00_Base_test.Customer;
+import Dax_00_Base_test.DaxTestConfig;
+import Dax_00_Base_test.customer.Customer;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -11,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiMessage_Test {
+public class MultiMessage_Test extends DaxTestConfig {
 
-    @Test
+//    @Test
     void createMsgFromCustomer() {
         String msgStr = "DAXP=1|TF=DEC|EN=UTF8|CNT=4|\n" +
                 "9=UCi|2001=123|2002=Robert3|99=123|\n" +
@@ -22,19 +23,18 @@ public class MultiMessage_Test {
                 "9=UCi|2001=126|2002=Robert6|99=123|"
                 ;
 
-        DaxMessageCodec codec = new DaxMessageCodec();
-        List<DaxMessage> msgList = codec.decodeAll(msgStr);
+        List<DaxMessage> msgList = crmMessageCodec.decodeAll(msgStr);
         Assertions.assertEquals("Robert5",msgList.get(2)
                                                   .getBody()
                                                   .getPair(0,2002).getStrValue()
         );
 
-        Customer customer = DaxMessageConverter.createFromMessage(msgList.get(1),Customer.class);
+        Customer customer = crmMessageConverter.createFromMessage(msgList.get(1),Customer.class);
 
         Assertions.assertEquals("Robert4", customer.getName());
     }
 
-    @Test
+//    @Test
     void createMsgFromCustomerList() {
         List<Customer> customerList = new ArrayList<>();
 

@@ -1,6 +1,7 @@
-package Dax_00_Base_test;
+package Dax_00_Base_test.customer;
 
 
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 
 public class CustomerDaxDic extends DaxDictionary {
@@ -17,7 +18,8 @@ public class CustomerDaxDic extends DaxDictionary {
     public static final int CUSTOMER_IS_CITIZEN    = 2077;
 
 
-    public CustomerDaxDic(){
+    public CustomerDaxDic(DaxpConfig config){
+        super(config);
         init();
     }
 
@@ -35,12 +37,8 @@ public class CustomerDaxDic extends DaxDictionary {
         putCustomerAtr(CUSTOMER_EMAIL,"Email",String.class);
         putCustomerAtr(CUSTOMER_TELEPHONE,"Telephone",String.class);
         putCustomerAtr(CUSTOMER_TOWN,"Town",String.class);
-        putCustomerAtr(CUSTOMER_TYPE,"Type",CustomerType.class);
+        putCustomerAtr(CUSTOMER_TYPE,"Type", CustomerType.class);
 
-        /* Below is BAD definition !!!*/
-        //putDicValue(CUSTOMER_TYPE,CustomerType.INDIVIDUAL.symbol, CustomerType.INDIVIDUAL.desc);
-        //putDicValue(CUSTOMER_TYPE,CustomerType.ORGANIZATION.symbol, CustomerType.ORGANIZATION.desc);
-        //-----------------------------
     }
 
 

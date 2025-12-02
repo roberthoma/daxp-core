@@ -28,6 +28,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface DaxpFieldReference {
-    int tag();
+    int contextId();
+    int tagId();
 }
 

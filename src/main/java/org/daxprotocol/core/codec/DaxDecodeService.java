@@ -45,7 +45,7 @@ public class DaxDecodeService {
     }
 
     public static Pattern getPairPattern(char pairSeparator) {
-        return Pattern.compile("(\\w+)"+ DaxCodecSymbols.EQUAL+"([^"+pairSeparator+"]*)");
+        return Pattern.compile("(\\w+)"+ DaxCodecSymbol.EQUAL+"([^"+pairSeparator+"]*)");
     }
 
 
@@ -72,7 +72,7 @@ public class DaxDecodeService {
         String[] parts = section.split(Pattern.quote(String.valueOf(sep)));
         for (String part : parts) {
             if (part.isEmpty()) continue;
-            int eq = part.indexOf(DaxCodecSymbols.EQUAL);
+            int eq = part.indexOf(DaxCodecSymbol.EQUAL);
             if (eq <= 0) continue; // no key=value
             String key = part.substring(0, eq).trim();
             String val = part.substring(eq + 1).trim();

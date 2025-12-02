@@ -40,13 +40,18 @@ import java.util.Map;
 
 public class DaxDictionaryPopulator {
 
+    DaxpConfig config;
     //TODO dictionary validation method after populateFromAnnotations
     // error  example :
     // 1) if any group refer to no existed master group
 
-    DaxEnumPopulator enumManager = new DaxEnumPopulator();
 
     //TODO create  service  DaxValidationAttributeManager
+
+
+    public DaxDictionaryPopulator(DaxpConfig config){
+        this.config = config;
+    }
 
     private void popJakartaValidationAttribute(DaxDictionary daxDic,Field field ,DaxTag tag){
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
@@ -75,6 +80,8 @@ public class DaxDictionaryPopulator {
 
 
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
+        DaxEnumPopulator enumManager = new DaxEnumPopulator();
+
         try {
             int groupId = 0;
 
@@ -98,7 +105,8 @@ public class DaxDictionaryPopulator {
                 DaxpField daxp = field.getAnnotation(DaxpField.class);
                 field.setAccessible(true);
 
-                int contextId = daxp.contextId()==-1 ? DaxpConfig.getApplicationContextId(): daxp.contextId();
+                int contextId = daxp.contextId()!=-1 ? daxp.contextId() :
+                        config.getApplicationContextId() ;
 
                 DaxTag tag = new DaxTag(contextId ,daxp.tagId());
                 //Class  change type to char

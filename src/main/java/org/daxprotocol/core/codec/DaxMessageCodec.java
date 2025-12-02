@@ -19,6 +19,7 @@
  */
 package org.daxprotocol.core.codec;
 
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
@@ -36,10 +37,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DaxMessageCodec implements DaxCodec<DaxMessage>{
-    DaxPreambleCodec preambleCodec = new DaxPreambleCodec();
-    DaxHeadCodec headCodec = new DaxHeadCodec();
-    DaxBodyCodec bodyCodec = new DaxBodyCodec();
-    DaxTrailerCodec trailerCodec = new DaxTrailerCodec();
+
+    DaxPreambleCodec preambleCodec;
+    DaxHeadCodec headCodec;
+    DaxBodyCodec bodyCodec;
+    DaxTrailerCodec trailerCodec;
+
+
+    public DaxMessageCodec(DaxpConfig config) {
+
+      preambleCodec = new DaxPreambleCodec();
+      headCodec = new DaxHeadCodec(config);
+      bodyCodec = new DaxBodyCodec();
+      trailerCodec = new DaxTrailerCodec();
+
+    }
 
     @Override public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
@@ -51,6 +63,13 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
         return sb.toString();
     }
+
+    public String encodeList(List<DaxMessage> messageList) {
+    String msgListString;
+        return "";
+    }
+
+
 
     public static Map<String, String> parseMap(String msgPart, Pattern pairPattern  ) {
         Map<String, String> map = new HashMap<>();
@@ -118,7 +137,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);
 
-        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTagConst.MSG_TYPE)+DaxCodecSymbols.EQUAL);
+        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTagConst.MSG_TYPE)+ DaxCodecSymbol.EQUAL);
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 

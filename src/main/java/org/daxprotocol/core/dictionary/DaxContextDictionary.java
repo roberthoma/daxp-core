@@ -36,6 +36,10 @@ public class DaxContextDictionary {
 
     int contextId;
 
+    public int getContextId() {
+        return contextId;
+    }
+
 
     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
 
@@ -66,6 +70,10 @@ public class DaxContextDictionary {
     DaxMessageDic messageDic = new DaxMessageDic();
 
 
+    private DaxContextDictionary(){
+        System.out.println("Init DaxContextDictionary contextId="+contextId);
+
+    }
     public DaxContextDictionary(int contextId){
         System.out.println("Init DaxContextDictionary contextId="+contextId);
         this.contextId = contextId;

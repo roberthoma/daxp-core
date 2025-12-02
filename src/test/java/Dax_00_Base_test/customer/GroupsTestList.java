@@ -1,4 +1,4 @@
-package Dax_00_Base_test;
+package Dax_00_Base_test.customer;
 
 public class GroupsTestList {
 

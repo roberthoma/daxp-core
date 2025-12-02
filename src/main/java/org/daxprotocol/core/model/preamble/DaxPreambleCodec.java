@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.daxprotocol.core.codec.DaxCodecSymbols.EQUAL;
-import static org.daxprotocol.core.codec.DaxCodecSymbols.PAIR_SEPARATOR;
+import static org.daxprotocol.core.codec.DaxCodecSymbol.EQUAL;
+import static org.daxprotocol.core.codec.DaxCodecSymbol.PAIR_SEPARATOR;
 
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.
@@ -88,7 +88,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     public static Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
         Map<String, String> map = new HashMap<>();
         // Everything before tag 9=
-        String preamblePart = msg.split(String.valueOf(DaxTagConst.MSG_TYPE)+DaxCodecSymbols.EQUAL)[0];
+        String preamblePart = msg.split(String.valueOf(DaxTagConst.MSG_TYPE)+ DaxCodecSymbol.EQUAL)[0];
         Matcher m = pairPattern.matcher(preamblePart);
 
         while (m.find()) {
@@ -102,7 +102,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     public DaxPreamble decode(String msgStr) {
         DaxPreamble p = new DaxPreamble();
         //TODO fix this as no IDEA how to set fof test mode
-        DaxCodecSymbols.PAIR_SEPARATOR = getPairSeparator(msgStr);
+        DaxCodecSymbol.PAIR_SEPARATOR = getPairSeparator(msgStr);
 
         p.setPairSeparator(getPairSeparator(msgStr));
 
