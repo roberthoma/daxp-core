@@ -26,6 +26,15 @@ public  class DaxPair<T>{
     DaxTag tag;
     protected T value;
 
+    public DaxPair(Integer tagId, T value){
+        this.tag = new DaxTag(tagId);
+        this.value = value;
+    }
+    public DaxPair(DaxTag tag, T value){
+        this.tag = tag;
+        this.value = value;
+    }
+
     public Class<?> getClazz(){
         return value.getClass();
     };
@@ -36,10 +45,6 @@ public  class DaxPair<T>{
         return value;
     }
 
-    public DaxPair(Integer tag, T value){
-        this.tag = new DaxTag(tag);
-        this.value = value;
-    }
 
     public String getStrValue() {
         if (value instanceof Boolean){

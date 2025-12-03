@@ -90,7 +90,7 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
         return null;
     }
 
-    public static DaxBody createBody(int blockCount , List<DaxStringPair> listOfPair){
+    public  DaxBody createBody(int blockCount , List<DaxStringPair> listOfPair){
         DaxBody body = new DaxBody();
 
         if (blockCount==0) {

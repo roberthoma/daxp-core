@@ -18,6 +18,7 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.model.head;
+import org.daxprotocol.core.field.DaxMsgContextId;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.DaxMsgBlockCount;
 import org.daxprotocol.core.field.DaxMsgType;
@@ -57,13 +58,23 @@ public final class DaxHead {
                  (daxPair, daxPair2) -> daxPair2);
     }
 
+    public void setContextId(int contextId) {
+        map.merge(MSG_CONTEXT,new DaxMsgContextId(contextId),
+                (daxPair, daxPair2) -> daxPair2);
+    }
+
+    public Runnable setRunnableContextId(int contextId) {
+        return () -> map.merge(
+                MSG_CONTEXT,
+                new DaxMsgContextId(contextId),
+                (oldVal, newVal) -> newVal
+        );
+    }
+
     public void putPair(DaxPair<?> pair){
         map.put(pair.getTag().getTagId(),pair);
     }
 
-//    public void putPair(int tag, String value){
-//
-//        blockMap.get(blockIdx).put(new DaxTag(tag),new DaxStringPair(tag, value));
-//    }
+
 
 }

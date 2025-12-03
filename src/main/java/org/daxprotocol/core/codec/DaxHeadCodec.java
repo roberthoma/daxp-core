@@ -71,14 +71,22 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
         return null;
     }
 
-    public static DaxHead createHead(List<DaxStringPair> listOfPair) {
+    public  DaxHead createHead(List<DaxStringPair> listOfPair) {
         String msgType = listOfPair.get(0).getValue();
         DaxHead head = new DaxHead(msgType);
 
-        Optional<DaxStringPair> optBlockCount = listOfPair.stream()
-                .filter(p -> p.getTag().equals(DaxTagConst.MSG_BLOCK_COUNT) )
+
+        Optional<DaxStringPair> optContextId = listOfPair.stream()
+                .filter(p -> p.getTag().equals(MSG_CONTEXT) )
                 .findFirst();
 
+        optContextId.ifPresent(pair -> head.setContextId(Integer.parseInt(pair.getValue())));
+//        optContextId.ifPresentOrElse(pair ->  head.setContextId(Integer.parseInt(pair.getValue())),
+//                head.setContextId(config.getApplicationContextId()));
+
+        Optional<DaxStringPair> optBlockCount = listOfPair.stream()
+                .filter(p -> p.getTag().equals(MSG_BLOCK_COUNT) )
+                .findFirst();
         optBlockCount.ifPresent(pair -> head.setBlockCount(Integer.parseInt(pair.getValue())));
 
         return head;

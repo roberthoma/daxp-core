@@ -17,22 +17,17 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.model.pair;
+package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.model.pair.DaxPair;
 
-public class DaxStringPair extends DaxPair<String> {
-    public DaxStringPair(int tagId, String value) {
-        super(tagId, value);
+public class DaxMsgContextId extends DaxPair<Integer> {
+    public DaxMsgContextId( Integer value) {
+        super(DaxTagConst.MSG_CONTEXT, value);
     }
-
-    public DaxStringPair(DaxTag tag, String value) {
-        super(tag, value);
-    }
-
     @Override
-    public String toString(){
-        return tag+"="+value;
-    }
-
+    public String getStrValue() {
+        return String.valueOf(value);
+    };
 }

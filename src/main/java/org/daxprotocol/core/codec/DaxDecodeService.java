@@ -22,6 +22,7 @@ package org.daxprotocol.core.codec;
 
 
 import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.*;
 import java.util.function.Function;
@@ -86,9 +87,11 @@ public class DaxDecodeService {
         List<DaxStringPair> list = new ArrayList<>();
         Matcher m = pairPattern.matcher(msg);
         while (m.find()) {
+            String contextStr = m.group(0);
             String tagStr = m.group(1);
             if (tagStr.matches("\\d+")) {
                 int tag = Integer.parseInt(tagStr);
+
                 list.add(new DaxStringPair(tag, m.group(2)));
             }
         }
