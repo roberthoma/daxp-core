@@ -20,12 +20,17 @@
 
 package org.daxprotocol.core.config;
 
+
+//TODO Add builder
 public final class DaxpConfig {
 //    private char pairSeparator;
 //    private char contextTagSeparator;
     private int applicationContextId;
     private String tagFormat;
     private String encoding;
+
+
+    //TODO NewLine after block
 
     public String getEncoding() {
         return encoding;

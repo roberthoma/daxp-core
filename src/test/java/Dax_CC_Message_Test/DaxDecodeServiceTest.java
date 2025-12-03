@@ -54,24 +54,24 @@ class DaxDecodeServiceTest extends DaxTestConfig {
         Assertions.assertEquals(equalChar,pairsList.size());
     }
 
-//    @Test
-//    void decodeMSG_TEST(){
-//        DaxMessageCodec codec = new DaxMessageCodec();
-//        DaxMessage message = codec.decode(msg);
-//        Assertions.assertEquals("DD",  message.getMsgType());
-//        Assertions.assertEquals(7,  message.getBlockCount());
-//    }
+    @Test
+    void decodeMSG_TEST(){
+        DaxMessageCodec codec = new DaxMessageCodec(crmProvider.getConfig());
+        DaxMessage message = codec.decode(msg);
+        Assertions.assertEquals("DD",  message.getMsgType());
+        Assertions.assertEquals(7,  message.getBlockCount());
+    }
 
-//    @Test
-//    void encodeMSG_TEST(){
-//        DaxMessageCodec codec = new DaxMessageCodec();
-//        DaxMessage message = codec.decode(msg);
-//        String afterMsgStr = codec.encode(message);
-//        if(afterMsgStr.contains("\n7=0|")){
-//            Assertions.fail("ERROR . Message contains 7=0 !!!! MSG: \n"+afterMsgStr);
-//        }
-//        DaxMessage afterMsg  = codec.decode(afterMsgStr);
-//        Assertions.assertEquals("DD",  afterMsg.getMsgType());
-//        Assertions.assertEquals(7,  afterMsg.getBlockCount());
-//    }
+    @Test
+    void encodeMSG_TEST(){
+        DaxMessageCodec codec = crmProvider.getMessageCodec();
+        DaxMessage message = codec.decode(msg);
+        String afterMsgStr = codec.encode(message);
+        if(afterMsgStr.contains("\n7=0|")){
+            Assertions.fail("ERROR . Message contains 7=0 !!!! MSG: \n"+afterMsgStr);
+        }
+        DaxMessage afterMsg  = codec.decode(afterMsgStr);
+        Assertions.assertEquals("DD",  afterMsg.getMsgType());
+        Assertions.assertEquals(7,  afterMsg.getBlockCount());
+    }
 }

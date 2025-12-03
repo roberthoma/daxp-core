@@ -57,7 +57,7 @@ public class DaxDictionary {
         return dictionaryMap.get(contextId);
     }
 
-    public DaxContextDictionary getDefaultDictionary(){
+    public DaxContextDictionary getApplicationDictionary(){
 
         return getDictionary(config.getApplicationContextId());
     }
@@ -83,12 +83,12 @@ public class DaxDictionary {
 
 
     public void putMsgItem(DaxMessageDicItem messageDicItem){
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         dic.messageDic.putMsgItem(messageDicItem);
     }
 
     public Map<String, DaxMessageDicItem> getMsgMap() {
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         return dic.messageDic.getMsgMap();
     }
 
@@ -99,28 +99,28 @@ public class DaxDictionary {
 
 
     public void putEnumValue(String enumName, String value, String desc){
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         dic.enumDictionary.putEnumValue(enumName, value, desc);
     }
 
     public void putEnum(String enumName, String desc){
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         dic.enumDictionary.putEnum(enumName, desc);
     }
 
     public void putEnum(DaxEnumName enumName){
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         dic.enumDictionary.putEnum(enumName.getName(), enumName.getDesc());
     }
 
 
     public Map<String, Map<String, DaxEnumValue>> getEnumValueMap() {
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         return  dic.enumDictionary.getValueMap();
     }
 
     public Map<String, DaxEnumName>  getEnumMap() {
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         return  dic.enumDictionary.getEnumMap();
     }
 
@@ -129,7 +129,7 @@ public class DaxDictionary {
     // Groups
 
     public void putGroup(int idGroup, String grpName){
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
 
         DaxGroup grp =  new DaxGroup(idGroup,0,grpName);
         dic.groupMap.put(grp.getId(),grp);
@@ -137,7 +137,7 @@ public class DaxDictionary {
     }
 
     public Map<Integer, DaxpGroupItf> getGroupMap() {
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         return dic.groupMap;
     }
 
@@ -166,12 +166,12 @@ public class DaxDictionary {
     // Dedicated attributes
 
     public Map<Integer, DaxPair<?>> getFieldAttributeMap(int tagId) {
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         return dic.attributMap.get(tagId);
     }
 
     public Map<Integer, Map<Integer, DaxPair<?>>> getAttributMap(){
-        DaxContextDictionary dic =  getDefaultDictionary();
+        DaxContextDictionary dic =  getApplicationDictionary();
         return dic.attributMap;
     }
 

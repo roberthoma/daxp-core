@@ -42,7 +42,8 @@ public class DaxTagConst {
 
 
     static Set<DaxTag> headSet = Set.of(new DaxTag(MSG_TYPE),
-                                        new DaxTag(MSG_BLOCK_COUNT)
+                                        new DaxTag(MSG_BLOCK_COUNT),
+                                        new DaxTag(MSG_CONTEXT)
                                        );
 
 
@@ -119,6 +120,9 @@ public class DaxTagConst {
     public static final int ATR_UI_DESCRIPTION  = 210 ; //   UiDescription   String
     public static final int ATR_UI_IS_EDITABLE  = 220 ; //       Boolean
 
+    /*****************************
+     * Errors of UI
+     */
     public static final int ERR_FIELD_NR        = 224 ; //
     public static final int ERR_FIELD_ID        = 225 ; //
     public static final int ERR_DESCRIPTION     = 226 ; //

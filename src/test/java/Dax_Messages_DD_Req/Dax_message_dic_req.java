@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 public class Dax_message_dic_req extends DaxTestConfig {
 
 
- //   @Test
+       @Test
     public void base_message_request(){
-        String reqMsgStr = "DAXP=1|TF=DEC|EN=UTF8|9=SYS.DR|99=123|";
+        String reqMsgStr = "DAXP=1|TF=DEC|EN=UTF8|9=SYS.DR|20=1|99=123|";
         DaxMessageFactory factory = new DaxMessageFactory();
 
         DaxMessage message = factory.createDictionaryReq();

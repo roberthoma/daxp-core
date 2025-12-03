@@ -25,6 +25,7 @@ import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.config.DaxpPropertiesLoader;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 
@@ -43,6 +44,8 @@ public class DaxProviderImpl implements DaxProvider {
     private DaxpPropertiesLoader propertiesLoader;
 
     private DaxMessageFactory messageFactory;
+
+    private DaxDictionaryPopulator dictionaryPopulator;
 
     public DaxProviderImpl(String propertiesFile){
         propertiesLoader = new DaxpPropertiesLoader(propertiesFile);
@@ -95,4 +98,11 @@ public class DaxProviderImpl implements DaxProvider {
         }
         return messageFactory;
     }
+    @Override public DaxDictionaryPopulator getDictionaryPopulator (){
+        if(dictionaryPopulator == null){
+            dictionaryPopulator = new DaxDictionaryPopulator(getConfig());
+        }
+        return dictionaryPopulator;
+    }
+
 }

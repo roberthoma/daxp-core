@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.daxprotocol.core.codec.DaxTagConst.*;
-
+//TODO add logger
 public class DaxHeadCodec implements DaxCodec<DaxHead> {
 
     DaxpConfig config;
@@ -44,11 +44,14 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
 
         pairCodec.encode(sb,MSG_TYPE,head.getMsgType());
 
-        if (head.getContextId() != config.getApplicationContextId()
-            && head.getContextId() != 0 ) //TODO add to const
-        {
-            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(head.getContextId()));
-        }
+//        if (head.getContextId() != config.getApplicationContextId()
+//            && head.getContextId() != 0 ) //TODO add to const
+//        {
+        int msgContextId = head.getContextId()!= -1 ? head.getContextId():
+                config.getApplicationContextId();
+            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(msgContextId));
+//            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(head.getContextId()));
+//        }
 
         if (blockCount>1) {
             pairCodec.encode(sb, MSG_BLOCK_COUNT, String.valueOf(blockCount));

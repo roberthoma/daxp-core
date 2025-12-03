@@ -25,6 +25,7 @@ import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 
@@ -40,5 +41,7 @@ public interface DaxProvider {
     DaxDictionary getDictionary();
 
     DaxMessageFactory getMessageFactory();
+
+    DaxDictionaryPopulator getDictionaryPopulator();
 
 }

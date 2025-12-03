@@ -37,7 +37,7 @@ public final class DaxHead {
 
     public int getContextId() {
         if (map.containsKey(MSG_CONTEXT)) {
-            return (int)map.get(MSG_CONTEXT).getValue();
+            return Integer.parseInt(map.get(MSG_CONTEXT).getStrValue());
         }
         return -1; //TODO to think about
     }

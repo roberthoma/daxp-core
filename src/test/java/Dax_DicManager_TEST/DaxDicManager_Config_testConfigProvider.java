@@ -1,50 +1,48 @@
 package Dax_DicManager_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
+import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.conventer.DaxMessageConverter;
+import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
+import org.daxprotocol.core.factory.DaxMessageFactory;
+import org.daxprotocol.core.model.DaxMessage;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
 
 
- //   @Test
+    @Test
     void test1(){
-//        DaxpPropertiesLoader propertiesLoader = new DaxpPropertiesLoader("application_CNT.properties");
-//        DaxpPropertiesLoader propertiesLoader = propertiesLoader;
-//        propertiesLoader.load();
-//        DaxpConfig.setApplicationContextId(propertiesLoader.getApplicationContext());
-//
-//
-//
-//        System.out.println("CTX2 default = "+ DaxpConfig.getApplicationContextId());
-//
-//        DaxDictionary dictionary = new DaxDictionary();
-//        dictionary.setContextMap(propertiesLoader.getContextMap());
-//
-//        DaxDictionaryPopulator manager = new DaxDictionaryPopulator();
-//        DaxMessageFactory factory = new DaxMessageFactory();
-//        DaxMessageCodec codec = new DaxMessageCodec();
-//        ContractMessage contractMessage = new ContractMessage();
-//
-//        DaxDictionary dicAfter = new DaxDictionary();
-//
-//        System.out.println("------------DOC populate --------");
-//        manager.populateFromAnnotations(dictionary, Customer.class);
-//        contractMessage.init(dictionary);
-//
-//        DaxMessage message = factory.createDictionaryMsg(dictionary);
-//        String msgStr = codec.encode(message);
-//        System.out.println("- original -");
-//        System.out.println(msgStr);
-//
-//        manager.populateFromMessage(dicAfter, message);
-//
-//        DaxMessage messageAfter = factory.createDictionaryMsg(dicAfter);
-//        String msgDicAfter =  codec.encode(messageAfter);
-//        System.out.println(" -- AFTER -- ");
-//        System.out.println(msgDicAfter);
-//        Assertions.assertEquals(msgStr,msgDicAfter);
-//
-//
-//        System.out.println("------------End OF DOC populate --------");
+
+        DaxMessageCodec codec = crmProvider.getMessageCodec();
+        DaxDictionaryPopulator dictionaryPopulator = crmProvider.getDictionaryPopulator();
+        DaxMessageFactory factory = crmProvider.getMessageFactory();
+
+        DaxDictionary dicOrg = crmProvider.getDictionary();
+
+        DaxMessage messageOrg =  crmProvider.getMessageFactory().createDictionaryMsg(dicOrg);
+
+        String msgStrOrg =  codec.encode(messageOrg);
+        System.out.println("- original -");
+        System.out.println(msgStrOrg);
+
+        System.out.println(" -- AFTER -- ");
+        DaxDictionary dicAfter = new DaxDictionary(cntProvider.getConfig());
+
+        DaxMessage messageAfter = codec.decode(msgStrOrg);
+
+        dictionaryPopulator.populateFromMessage(dicAfter, messageAfter);
+
+        DaxMessage messageDicAfter = factory.createDictionaryMsg(dicAfter);
+
+        String msgDicAfter =  codec.encode(messageAfter);
+        System.out.println(msgDicAfter);
+        Assertions.assertEquals(msgStrOrg,msgDicAfter);
+
+
+        System.out.println("------------End OF DOC populate --------");
     }
 
 }

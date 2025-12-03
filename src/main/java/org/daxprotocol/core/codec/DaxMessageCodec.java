@@ -86,9 +86,9 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
     //    }
 
 
-    public List<DaxMessage> decodeAll(String msgStr) {
-        return decodeAll(msgStr,null);
-    }
+//    public List<DaxMessage> decodeAll(String msgStr) {
+//        return decodeAll(msgStr,null);
+//    }
 
    private DaxMessage createMsg(List<DaxStringPair> listOfPair){
        DaxHead head;
@@ -134,7 +134,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
 //TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPE !!!
 
-    public List<DaxMessage> decodeAll(String msgStr, DaxDictionary dic) {
+    public List<DaxMessage> decodeAll(String msgStr) {
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);
 
@@ -151,10 +151,6 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         );
 
         return messageList;
-    }
-
-    public DaxMessage decode(String msg, DaxDictionary dic) {
-        return decodeAll(msg,dic).get(0);
     }
 
     @Override

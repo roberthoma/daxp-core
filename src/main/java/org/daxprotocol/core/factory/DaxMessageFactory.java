@@ -140,17 +140,7 @@ public class DaxMessageFactory {
     }
 
     public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
-
-
-        return createDictionaryMsg(dictionary.getDefaultDictionary());
-//        return createDictionaryMsg(dictionary.getDictionary(3));
-
-//        dictionary.getContextMap().forEach((integer, daxContext) ->
-//                putContextItem(message.getBody(), daxContext)
-//                );
-
-
-
+        return createDictionaryMsg(dictionary.getApplicationDictionary());
     }
 
 
