@@ -19,8 +19,8 @@
  */
 package org.daxprotocol.core.codec;
 
-
-
+import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -45,8 +45,18 @@ public class DaxDecodeService {
         // add more as needed (char, BigDecimal, enums, etc.)
     }
 
-    public static Pattern getPairPattern(char pairSeparator) {
+    public static Pattern getPreamblePairPattern(char pairSeparator) {
         return Pattern.compile("(\\w+)"+ DaxCodecSymbol.EQUAL+"([^"+pairSeparator+"]*)");
+    }
+
+    public static Pattern getMessagePairPattern(char pairSeparator) {
+        String sep = Pattern.quote(String.valueOf(pairSeparator));
+        return Pattern.compile(
+                "(?:([A-Za-z0-3]{0,3}):)?(\\d+)"
+                        + DaxCodecSymbol.EQUAL +
+                        "([^" + sep + "]*)" +
+                        sep
+        );
     }
 
 
@@ -66,22 +76,28 @@ public class DaxDecodeService {
     }
 
 
-    public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern) {
+    public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, String dftContext) {
         List<DaxStringPair> list = new ArrayList<>();
         Matcher m = pairPattern.matcher(msg);
         while (m.find()) {
-            String contextStr = m.group(0);
-            String tagStr = m.group(1);
-            if (tagStr.matches("\\d+")) {
-                int tag = Integer.parseInt(tagStr);
-
-                list.add(new DaxStringPair(tag, m.group(2)));
+            String contextSymbol;
+            String contextStr = m.group(1);
+            int tagId = Integer.parseInt(m.group(2));
+            int contextId;
+            if (contextStr == null){
+               if ( tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
+                   contextSymbol = DaxpConfig.DAX_CONTEXT_SYMBOL;
+               }
+               else {
+                   contextSymbol = dftContext;
+               }
             }
+            else {
+                contextSymbol  = contextStr;
+            }
+            contextId = DaxContextMapper.getContextId(contextSymbol);
+            list.add(new DaxStringPair(new DaxTag( contextId,tagId), m.group(3)));
         }
         return list;
     }
-
-
-
-
 }

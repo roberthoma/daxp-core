@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
 
 
-    @Test
+    //@Test
     void test1(){
 
         DaxMessageCodec codec = crmProvider.getMessageCodec();

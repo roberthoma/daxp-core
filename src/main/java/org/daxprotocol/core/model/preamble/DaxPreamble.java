@@ -20,6 +20,7 @@
 package org.daxprotocol.core.model.preamble;
 
 import org.daxprotocol.core.codec.DaxDecodeService;
+import org.daxprotocol.core.config.DaxpConfig;
 
 import java.util.regex.Pattern;
 
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
  */
 public class DaxPreamble {
     Pattern pairPattern;
-    private String protocolVersion = "1";       // V=1
+    private String protocolVersion = DaxpConfig.PROTOCOL_VERSION;       // V=1
     private int cnt;                      //CNT  Number of item lines following preamble. Useful for validation.
 
     private DaxEncoding encoding;         // EN=UTF8
@@ -40,11 +41,8 @@ public class DaxPreamble {
 
 
     public DaxPreamble(){
-        this.encoding = DaxEncoding.UTF8;
+        this.encoding = DaxEncoding.UTF8;  //todo get from config
     }
-
-
-
 
     public void setProtocolVersion(String protocolVersion) {
         this.protocolVersion = protocolVersion;
@@ -59,17 +57,17 @@ public class DaxPreamble {
         this.cnt = cnt;
     }
 
-    public String getProtocolVersion() { return protocolVersion; }
-    public DaxEncoding getEncoding() { return encoding; }
-//    public String getContext() { return context; }
+    public String getProtocolVersion() {
+        return protocolVersion;
+    }
 
-//    public Character getPairSeparator() {
-//        return pairSeparator;
-//    }
+    public DaxEncoding getEncoding() {
+        return encoding;
+    }
 
     public void setPairSeparator(Character pairSeparator) {
 //        this.pairSeparator = pairSeparator;
-        this.setPairPattern(DaxDecodeService.getPairPattern(pairSeparator));
+        this.setPairPattern(DaxDecodeService.getPreamblePairPattern(pairSeparator));
     }
 
     public Pattern getPairPattern() {

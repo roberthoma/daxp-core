@@ -23,8 +23,13 @@ package org.daxprotocol.core.config;
 
 //TODO Add builder
 public final class DaxpConfig {
+    public static final String DAX_CONTEXT_SYMBOL = "SYS";
+    public static final int    DAX_CONTEXT_ID = 0;
 
-    public static final int SEPARATOR_IDX = 4;
+    public static final int    SEPARATOR_IDX    = 4;
+    public static final String PROTOCOL_VERSION = "1";
+    public static final String DEFAULT_ENCODING = "UTF8";
+    public static final int    MAX_DAXP_TAG_ID  = 255;
 
     private int applicationContextId;
     private String encoding;

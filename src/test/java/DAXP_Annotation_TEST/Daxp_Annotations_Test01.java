@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 
 public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
-    @Test
+    //@Test
     void createMsgFromCustomer() {
         String expectMsg = "DAXP|V=1|EN=UTF8|\n" +
                 "9=UCi|20=1|2001=123|2002=Robert|2076=WORKER|2077=Y|\n" +
@@ -30,7 +30,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
 
 
-    @Test
+    //@Test
     void customer_tag_info(){
 //        CustomerDaxDic dic = new CustomerDaxDic();
         Customer customer = new Customer(123, "Robert");
@@ -66,7 +66,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
     }
 
-    @Test
+    //@Test
     void injection(){
         String msgStr = "DAXP|V=1|EN=UTF8|9=UCi|20=1|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
 

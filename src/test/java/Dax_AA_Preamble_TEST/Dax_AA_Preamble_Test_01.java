@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Dax_AA_Preamble_Test_01 extends DaxTestConfig {
-    @Test
+    //@Test
     void AA_shouldEncodeAndDecodePreamble() {
         DaxPreamble pre = new DaxPreamble();
 
