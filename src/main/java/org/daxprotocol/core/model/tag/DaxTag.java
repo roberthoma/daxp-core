@@ -1,5 +1,7 @@
 package org.daxprotocol.core.model.tag;
 
+import org.daxprotocol.core.config.DaxpConfig;
+
 import java.util.Objects;
 
 public class DaxTag {
@@ -47,7 +49,8 @@ public class DaxTag {
 
     @Override
     public String toString(){
-        return contextId > 0 ? contextId+":"+tagId : ""+tagId;
+        return contextId != DaxpConfig.DAX_CONTEXT_ID ? contextId + ":" + tagId
+                                                      : ""+tagId;
 
     }
 

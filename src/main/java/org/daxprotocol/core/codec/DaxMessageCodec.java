@@ -143,7 +143,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 
-        List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(msgPairsStr, preamble.getPairPattern());
+        List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(msgPairsStr, preamble.getPairPattern(),"CRM");
 
         List<List<DaxStringPair>> msgPairList =  splitMessages(listOfPair);
 
