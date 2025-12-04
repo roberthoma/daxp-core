@@ -17,7 +17,7 @@ public class Dax_Customer_dic_test01 extends DaxTestConfig {
     static String   msg;
     @BeforeAll
     static void initTest() {
-          msg = "DAXP=1|TF=DEC|EN=UTF8|\n" +
+          msg = "DAXP|V=1|EN=UTF8|\n" +
                 "9=$DD|6=9|\n" +
                 "7=1|209=Id customer|100=2001|110=I|\n" +
                 "7=2|209=First name|100=2002|110=S|\n" +

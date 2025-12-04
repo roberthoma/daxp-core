@@ -59,7 +59,6 @@ public class DaxProviderImpl implements DaxProvider {
         if (config == null) {
             config = new DaxpConfig();
             config.setApplicationContextId(propertiesLoader.getApplicationContext());
-            config.setTagFormat(propertiesLoader.getTagFormat());
         }
         return config;
     }

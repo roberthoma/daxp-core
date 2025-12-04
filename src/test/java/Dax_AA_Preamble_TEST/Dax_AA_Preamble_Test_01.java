@@ -17,15 +17,14 @@ public class Dax_AA_Preamble_Test_01 extends DaxTestConfig {
 
 
         String preambleStr = codec.encode(pre);
-//        preambleStr = preambleStr.replace(crmConfig.getPairSeparator(),'|');
+
         preambleStr = preambleStr.replace(DaxCodecSymbol.PAIR_SEPARATOR,'|');
 
-        assertEquals("DAXP=1|TF=DEC|EN=UTF8|\n", preambleStr);
+        assertEquals("DAXP|V=1|EN=UTF8|\n", preambleStr);
 
         String wire = codec.encode(pre);
         DaxPreamble copy = codec.decode(wire);
         assertEquals(pre.getProtocolVersion(), copy.getProtocolVersion());
-        assertEquals(pre.getTagFormat(), copy.getTagFormat());
         assertEquals(pre.getEncoding(), copy.getEncoding());
     }
 

@@ -23,10 +23,10 @@ package org.daxprotocol.core.config;
 
 //TODO Add builder
 public final class DaxpConfig {
-//    private char pairSeparator;
-//    private char contextTagSeparator;
+
+    public static final int SEPARATOR_IDX = 4;
+
     private int applicationContextId;
-    private String tagFormat;
     private String encoding;
 
 
@@ -44,17 +44,11 @@ public final class DaxpConfig {
         this.applicationContextId = applicationContextId;
     }
 
-    public void setTagFormat(String tagFormat) {
-        this.tagFormat = tagFormat;
-    }
 
     public  int getApplicationContextId() {
         return applicationContextId;
     }
 
-    public String getTagFormat() {
-        return tagFormat;
-    }
 
 
     public DaxpConfig() {

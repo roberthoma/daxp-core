@@ -65,23 +65,6 @@ public class DaxDecodeService {
 
     }
 
-    /** Parses key=value pairs separated by the given delimiter. */
-    static Map<String, String> parseKv(String section, char sep) {
-        Map<String, String> map = new LinkedHashMap<>();
-        if (section == null || section.isEmpty()) return map;
-
-        String[] parts = section.split(Pattern.quote(String.valueOf(sep)));
-        for (String part : parts) {
-            if (part.isEmpty()) continue;
-            int eq = part.indexOf(DaxCodecSymbol.EQUAL);
-            if (eq <= 0) continue; // no key=value
-            String key = part.substring(0, eq).trim();
-            String val = part.substring(eq + 1).trim();
-            if (!key.isEmpty()) map.put(key, val);
-        }
-        return map;
-    }
-
 
     public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern) {
         List<DaxStringPair> list = new ArrayList<>();

@@ -117,19 +117,11 @@ public final class DaxpPropertiesLoader {
 
 
     //-------------------------------------------------------------
-    // Read daxp.tag-format
-    public String getTagFormat() {
-        return getStringValue("daxp.tag-format");
-    }
-
-    //-------------------------------------------------------------
     // Read daxp.encoding
     public String getEncoding() {
         return getStringValue("daxp.encoding");
     }
     //-------------------------------------------------------------
-    // Read daxp.pair-separator,
-    //      daxp.context-tag-separator
 
     private char getCharValue(String property) {
         String value = props.getProperty(property);
@@ -162,7 +154,9 @@ public final class DaxpPropertiesLoader {
 
         throw new IllegalArgumentException("Invalid "+property+" value: " + value);
     }
-
+    //-------------------------------------------------------------
+    // Read daxp.pair-separator,
+    //      daxp.context-tag-separator
 
     public char getPairSeparator() {
         return getCharValue("daxp.pair-separator");

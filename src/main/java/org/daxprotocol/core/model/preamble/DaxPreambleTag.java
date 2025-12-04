@@ -20,8 +20,8 @@
 package org.daxprotocol.core.model.preamble;
 
 public class DaxPreambleTag {
-    public static final String  DAXP = "DAXP";   // protocol identifier and version
-    public static final String  TF = "TF";       // tag format: DEC | HEX
+    public static final String  DAXP = "DAXP";   // protocol identifier
+    public static final String  VERSION = "V";   // protocol  version
     public static final String  EN = "EN";       // encoding: ASCII | UTF8 | UTF16
     public static final String  CNT = "MC";     //  Number of messages following preamble. Useful for validation.
     public static final String  CTX = "CX";     // context: optional

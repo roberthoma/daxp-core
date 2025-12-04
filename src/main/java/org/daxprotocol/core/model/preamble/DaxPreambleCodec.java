@@ -58,19 +58,16 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     /** Encode Preamble object → wire format (string). */
     public String encode(DaxPreamble preamble) {
         Map<String,String> map = new LinkedHashMap<>();
-        map.put(DaxPreambleTag.DAXP, preamble.getProtocolVersion());
-        map.put(DaxPreambleTag.TF,  preamble.getTagFormat().value());
+        map.put(DaxPreambleTag.VERSION, preamble.getProtocolVersion());
         map.put(DaxPreambleTag.EN, preamble.getEncoding().value());
 
         if (preamble.getMsgCnt() > 1){
             map.put(DaxPreambleTag.CNT, String.valueOf(preamble.getMsgCnt()));
         }
 
-//        if (context != null && ! context.isEmpty())
-//            map.put(DaxPreambleTag.CTX.tag(), context);
-
 
         StringBuilder sb = new StringBuilder();
+        sb.append(DaxPreambleTag.DAXP).append(PAIR_SEPARATOR);
         map.forEach((k, v) -> encode(sb,k,v));
         sb.append("\n"); // TODO configuration
         return sb.toString();
@@ -78,7 +75,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 
 //    private static char getPairSeparator(String msgStr){
     private char getPairSeparator(String msgStr){
-        int  pairSeparatorIdx = msgStr.indexOf("TF=") - 1;  // Example |TF= > |
+        int  pairSeparatorIdx = DaxpConfig.SEPARATOR_IDX;  // Example |TF= > |
         return msgStr.charAt(pairSeparatorIdx);
     }
 
@@ -94,11 +91,18 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         return parsePreamble(msg, getPairPattern(msg));
     }
 
-//    public static Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
     public  Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
         Map<String, String> map = new HashMap<>();
-        // Everything before tag 9=
-        String preamblePart = msg.split(String.valueOf(DaxTagConst.MSG_TYPE) + DaxCodecSymbol.EQUAL)[0];
+
+//TODO check message is a DAXP
+//        if(!msg.startsWith(DaxTagConst.DAXP)){
+//            throw new Exception(???)
+//        }
+
+        // Everything after "DAXP|" and  before tag "9="
+        String preamblePart = msg.split(String.valueOf(DaxTagConst.MSG_TYPE) + DaxCodecSymbol.EQUAL)[0]
+                                 .substring(DaxpConfig.SEPARATOR_IDX+1);
+
         Matcher m = pairPattern.matcher(preamblePart);
 
         while (m.find()) {
@@ -123,7 +127,6 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         Map<String, String> map = parsePreamble(msgStr, p.getPairPattern());
 
         p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.DAXP, "1"));
-        p.setTagFormat(DaxTagFormat.valueOf(map.getOrDefault(DaxPreambleTag.TF, config.getTagFormat())));
         p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.EN, "UTF8")));
 //        p.context = map.get(DaxPreambleTag.CTX.tag());
         p.setCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.CNT,"1")));

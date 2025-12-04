@@ -29,11 +29,9 @@ import java.util.regex.Pattern;
  */
 public class DaxPreamble {
     Pattern pairPattern;
-    private String protocolVersion = "1";       // DAXP=1
-    //    private String context;               // CTX=RxModeler or GUI, optional
+    private String protocolVersion = "1";       // V=1
     private int cnt;                      //CNT  Number of item lines following preamble. Useful for validation.
 
-    private DaxTagFormat tagFormat;       // TF=DEC
     private DaxEncoding encoding;         // EN=UTF8
 
     public int getMsgCnt() {
@@ -42,7 +40,6 @@ public class DaxPreamble {
 
 
     public DaxPreamble(){
-        this.tagFormat = DaxTagFormat.DEC;
         this.encoding = DaxEncoding.UTF8;
     }
 
@@ -53,9 +50,6 @@ public class DaxPreamble {
         this.protocolVersion = protocolVersion;
     }
 
-    public void setTagFormat(DaxTagFormat tagFormat) {
-        this.tagFormat = tagFormat;
-    }
 
     public void setEncoding(DaxEncoding encoding) {
         this.encoding = encoding;
@@ -66,7 +60,6 @@ public class DaxPreamble {
     }
 
     public String getProtocolVersion() { return protocolVersion; }
-    public DaxTagFormat getTagFormat() { return tagFormat; }
     public DaxEncoding getEncoding() { return encoding; }
 //    public String getContext() { return context; }
 

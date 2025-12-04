@@ -14,9 +14,9 @@ import java.util.List;
 
 public class MultiMessage_Test extends DaxTestConfig {
 
-//    @Test
+//@Test
     void createMsgFromCustomer() {
-        String msgStr = "DAXP=1|TF=DEC|EN=UTF8|CNT=4|\n" +
+        String msgStr = "DAXP|V=1|EN=UTF8|CNT=4|\n" +
                 "9=UCi|2001=123|2002=Robert3|99=123|\n" +
                 "9=UCi|2001=124|2002=Robert4|99=123|\n" +
                 "9=UCi|2001=125|2002=Robert5|99=123|\n" +
@@ -34,7 +34,7 @@ public class MultiMessage_Test extends DaxTestConfig {
         Assertions.assertEquals("Robert4", customer.getName());
     }
 
-//    @Test
+//    //@Test
     void createMsgFromCustomerList() {
         List<Customer> customerList = new ArrayList<>();
 

@@ -16,8 +16,6 @@ public class DaxConfigParametersTest extends DaxTestConfig {
         Assertions.assertEquals(1,crmConfig.getApplicationContextId());
         Assertions.assertEquals(3,cntConfig.getApplicationContextId());
 
-        Assertions.assertEquals("DEC",crmConfig.getTagFormat());
-        Assertions.assertEquals("HEX",cntConfig.getTagFormat());
 
 
 //        Assertions.assertEquals(0x0001,crmConfig.getPairSeparator());
