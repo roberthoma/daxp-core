@@ -22,6 +22,7 @@ package org.daxprotocol.core.model;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
 public final class DaxMessage {
@@ -42,9 +43,8 @@ public final class DaxMessage {
     }
 
 
-    public DaxMessage() {
+    private DaxMessage() { }
 
-    }
     public DaxMessage(String msgType) {
         this.head = new DaxHead(msgType);
         this.body = new DaxBody();
@@ -77,13 +77,16 @@ public final class DaxMessage {
         return trailer.getChecksum();
     }
 
-    public DaxPair<?> get(int tag) {
+    public DaxPair<?> get(DaxTag tag) {
        return body.getPair(0,tag);
     }
+//    public DaxPair<?> get(int tag) {
+//       return body.getPair(0,tag);
+//    }
 
-    public String getStrValue(int tag){
-        return body.getPair(0,tag).getStrValue();
-    }
+//    public String getStrValue(int tag){
+//        return body.getPair(0,tag).getStrValue();
+//    }
 
     public boolean containsField(int tag){
         return body.getBlock(0).containsKey(tag);

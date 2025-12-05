@@ -29,23 +29,25 @@ import java.lang.reflect.Field;
 public class DaxEnumPopulator {
 
 
+
+    //moved to DaxDictionaryPopulator
     public void populateEnumFromAnnotations(Field field , DaxDictionary daxDic){
-        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
-
-        DaxpField daxp = field.getAnnotation(DaxpField.class);
-        field.setAccessible(true);
-        DaxTag tag = new DaxTag(daxp.contextId(),daxp.tagId());
-        String enumName = field.getType().getSimpleName();
-        daxDic.putAtrEnumName(tag, enumName);
-
-        //TODO check exist
-        daxDic.putEnum(enumName,enumName);  // to improve
-
-        Object[] constants = field.getType().getEnumConstants();
-
-        for (Object c : constants) {
-            daxDic.putEnumValue(enumName, c.toString(),"");
-        }
+//        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
+//
+//        DaxpField daxp = field.getAnnotation(DaxpField.class);
+//        field.setAccessible(true);
+//        DaxTag tag = new DaxTag(daxp.contextId(),daxp.tagId());
+//        String enumName = field.getType().getSimpleName();
+//        daxDic.putAtrEnumName(tag, enumName);
+//
+//        //TODO check exist
+//        daxDic.putEnum(enumName,enumName);  // to improve
+//
+//        Object[] constants = field.getType().getEnumConstants();
+//
+//        for (Object c : constants) {
+//            daxDic.putEnumValue(enumName, c.toString(),"");
+//        }
 
     }
 }

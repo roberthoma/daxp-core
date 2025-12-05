@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface DaxpField {
-    int contextId() default -1; //default will change by daxp.application-context-id
+//    int contextId() default -1; //default will change by daxp.application-context-id
     int tagId();
     String uiLabel() default "";
 }

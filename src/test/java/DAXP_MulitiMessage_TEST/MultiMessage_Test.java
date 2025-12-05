@@ -6,6 +6,7 @@ import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,9 +25,10 @@ public class MultiMessage_Test extends DaxTestConfig {
                 ;
 
         List<DaxMessage> msgList = crmProvider.getMessageCodec().decodeAll(msgStr);
+        int appContextId = crmProvider.getConfig().getApplicationContextId();
         Assertions.assertEquals("Robert5",msgList.get(2)
                                                   .getBody()
-                                                  .getPair(0,2002).getStrValue()
+                                                  .getPair(0,new DaxTag(appContextId ,2002)).getStrValue()
         );
 
         Customer customer = crmProvider.getMessageConverter().createFromMessage(msgList.get(1),Customer.class);

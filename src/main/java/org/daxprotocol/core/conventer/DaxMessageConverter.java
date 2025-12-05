@@ -43,9 +43,7 @@ public class DaxMessageConverter {
                 DaxpField ann = f.getAnnotation(DaxpField.class);
                 if (ann == null) continue; // skip non-annotated fields (e.g., town)
 
-                int tagId = ann.tagId();
-                int contextId = ann.contextId();
-                var pair = message.get(tagId);
+                var pair = message.get(new DaxTag( config.getApplicationContextId(), ann.tagId()));
                 if (pair==null) continue; // gracefully ignore missing tags or empty
 
                 String raw = pair.getStrValue();
@@ -70,12 +68,12 @@ public class DaxMessageConverter {
             DaxpField ann = f.getAnnotation(DaxpField.class);
             if (ann == null) continue;
 
-            int contextId = ann.contextId()!=-1 ? ann.contextId() : config.getApplicationContextId() ;
+            int contextId = config.getApplicationContextId() ;
 
             DaxTag tag = new DaxTag(contextId , ann.tagId());
             if(! message.getBody().getBlock(0).containsKey(tag)) continue;
 
-            var pair = message.get(tag.getTagId());
+            var pair = message.get(tag);
 
             if (pair==null) continue; // gracefully ignore missing tags or empty
 

@@ -78,6 +78,25 @@ public class DaxDictionaryPopulator {
 
     }
 
+    public void populateEnumFromAnnotations(Field field , DaxDictionary daxDic){
+        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
+
+        DaxpField daxp = field.getAnnotation(DaxpField.class);
+        field.setAccessible(true);
+        DaxTag tag = new DaxTag(config.getApplicationContextId(),daxp.tagId());
+        String enumName = field.getType().getSimpleName();
+        daxDic.putAtrEnumName(tag, enumName);
+
+        //TODO check exist
+        daxDic.putEnum(enumName,enumName);  // to improve
+
+        Object[] constants = field.getType().getEnumConstants();
+
+        for (Object c : constants) {
+            daxDic.putEnumValue(enumName, c.toString(),"");
+        }
+
+    }
 
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
         DaxEnumPopulator enumManager = new DaxEnumPopulator();
@@ -105,15 +124,13 @@ public class DaxDictionaryPopulator {
                 DaxpField daxp = field.getAnnotation(DaxpField.class);
                 field.setAccessible(true);
 
-                int contextId = daxp.contextId()!=-1 ? daxp.contextId() :
-                        config.getApplicationContextId() ;
 
-                DaxTag tag = new DaxTag(contextId ,daxp.tagId());
+                DaxTag tag = new DaxTag(config.getApplicationContextId() ,daxp.tagId());
                 //Class  change type to char
                 daxDic.putAtrDataType(tag,field.getType());
 
                 if (field.getType().isEnum()){
-                    enumManager.populateEnumFromAnnotations(field,daxDic);
+                    populateEnumFromAnnotations(field,daxDic);
                 }
 
                 popJakartaValidationAttribute(daxDic, field, tag );
@@ -133,41 +150,41 @@ public class DaxDictionaryPopulator {
 
     private void populateFromMsgBlock(DaxDictionary daxDic, Map<DaxTag, DaxPair<?>> blockPairMap) {
 
-       String blockType =   blockPairMap.get(new DaxTag(DaxTagConst.BLOCK_TYPE)).getStrValue();
+       String blockType =   blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.BLOCK_TYPE)).getStrValue();
 
         if(blockType.equals(DaxBlockType.BLOCK_MESSAGE)){
             DaxMessageDicItem item = new DaxMessageDicItem(
-                    blockPairMap.get(new DaxTag(DaxTagConst.FIELD_VALUE)).getStrValue(),
-                    blockPairMap.get(new DaxTag(DaxTagConst.FIELD_VALUE_DESCRIPTION)).getStrValue());
+                    blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_VALUE)).getStrValue(),
+                    blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_VALUE_DESCRIPTION)).getStrValue());
 
             daxDic.putMsgItem(item);
             return;
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM)){
-            String name = blockPairMap.get(new DaxTag(DaxTagConst.ENUM_NAME)).getStrValue();
+            String name = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.ENUM_NAME)).getStrValue();
             String desc = "";
-            if (blockPairMap.containsKey(new DaxTag(DaxTagConst.ENUM_DESCRIPTION))){
-                desc = blockPairMap.get(new DaxTag(DaxTagConst.ENUM_DESCRIPTION)).getStrValue();
+            if (blockPairMap.containsKey(DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION))){
+                desc = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)).getStrValue();
             }
             daxDic.putEnum(name, desc );
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM_VALUE)){
-            String name  = blockPairMap.get(new DaxTag(DaxTagConst.ENUM_NAME)).getStrValue();
-            String value = blockPairMap.get(new DaxTag(DaxTagConst.FIELD_VALUE)).getStrValue();
+            String name  = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.ENUM_NAME)).getStrValue();
+            String value = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_VALUE)).getStrValue();
 
             daxDic.putEnumValue(name,value,"");
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
-            daxDic.putGroup( Integer.parseInt(blockPairMap.get(new DaxTag(DaxTagConst.GROUP_ID)).getStrValue()),
-                    blockPairMap.get(new DaxTag(DaxTagConst.GROUP_NAME)).getStrValue());
+            daxDic.putGroup( Integer.parseInt(blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.GROUP_ID)).getStrValue()),
+                    blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.GROUP_NAME)).getStrValue());
         }
 
 
         if(blockType.equals(DaxBlockType.BLOCK_FIELD)){
-            int fieldId = Integer.parseInt (blockPairMap.get(new DaxTag(DaxTagConst.FIELD_ID)).getStrValue());
+            int fieldId = Integer.parseInt (blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_ID)).getStrValue());
 
             blockPairMap.forEach((integer, daxPair) ->
                     daxDic.putAttribute(fieldId,daxPair));
