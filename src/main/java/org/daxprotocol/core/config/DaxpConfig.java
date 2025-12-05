@@ -21,12 +21,24 @@
 package org.daxprotocol.core.config;
 
 
+import org.daxprotocol.core.context.DaxContextMapper;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 //TODO Add builder
 public final class DaxpConfig {
     public static final String DAX_CONTEXT_SYMBOL = "SYS";
     public static final int    DAX_CONTEXT_ID = 0;
+    public static  String      APP_CONTEXT_SYMBOL ;
+    public static  int         APP_CONTEXT_ID ;
 
+
+    /** Generator used for assigning IDs to unknown contexts :   AtomicInteger nextContextId */
+    public static final int   CONTEXT_DYNAMIC_START_ID = 10;
+
+    /** DAXP| char after DAXP is default separator for current message*/
     public static final int    SEPARATOR_IDX    = 4;
+
     public static final String PROTOCOL_VERSION = "1";
     public static final String DEFAULT_ENCODING = "UTF8";
     public static final int    MAX_DAXP_TAG_ID  = 255;
@@ -52,6 +64,9 @@ public final class DaxpConfig {
 
     public  int getApplicationContextId() {
         return applicationContextId;
+    }
+    public  String getApplicationContext() {
+        return DaxContextMapper.getContextSymbol(applicationContextId);
     }
 
 

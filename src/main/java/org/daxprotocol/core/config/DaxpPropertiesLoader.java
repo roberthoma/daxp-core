@@ -46,66 +46,26 @@ public final class DaxpPropertiesLoader {
             throw new RuntimeException("Failed to load properties: " + propertiesFile, e);
         }
     }
-    //-------------------------------------------------------------
-    // 1) read application-context-id
-    public int getApplicationContext() {
-        String ctxIdStr = props.getProperty("daxp.application-context-id");
-        if (ctxIdStr == null || ctxIdStr.isBlank()) {
-            throw new IllegalStateException("Missing property: daxp.application-context-id");
-        }
-        try {
-            return Integer.parseInt(ctxIdStr.trim());
-        } catch (NumberFormatException e) {
-            throw new IllegalStateException("Invalid integer for daxp.application-context-id: " + ctxIdStr, e);
-        }
-        catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
    //-------------------------------------------------------------
-   // 2) read contexts[*]
-   public Map<Integer,DaxContext> getContextMap(){
-        Map<Integer, Map<String, String>> grouped = new TreeMap<>();
+   //  read application context
+   public DaxContext getApplicationContext() {
 
-        for (String key : props.stringPropertyNames()) {
-            Matcher m = CONTEXT_PATTERN.matcher(key);
-            if (m.matches()) {
-                int index = Integer.parseInt(m.group(1));
-                String field = m.group(2);
-                String value = props.getProperty(key);
+       String prefix      = props.getProperty("daxp.contexts.tagPrefix");
+       String symbol      = props.getProperty("daxp.contexts.symbol");
+       String description = props.getProperty("daxp.contexts.description");
 
-                grouped.computeIfAbsent(index, x -> new HashMap<>())
-                       .put(field, value);
-            }
-        }
+       // Optional: validate
+       if (prefix == null || symbol == null || description == null) {
+           throw new IllegalStateException("Missing daxp.contexts.* properties");
+       }
 
-        Map<Integer,DaxContext> contextsMap = new HashMap<>();
+       DaxContext context = new DaxContext();
+       context.tagPrefix = prefix;
+       context.symbol = symbol;
+       context.description = description;
 
-        for (Map.Entry<Integer, Map<String, String>> entry : grouped.entrySet()) {
-            Map<String, String> fields = entry.getValue();
-
-            DaxContext ctx = new DaxContext();
-
-            // id is required
-            String idStr = fields.get("id");
-            if (idStr == null) {
-                throw new IllegalStateException("Missing 'id' for daxp.contexts[" + entry.getKey() + "]");
-            }
-            try {
-                ctx.id = Integer.parseInt(idStr.trim());
-            } catch (NumberFormatException e) {
-                throw new IllegalStateException("Invalid 'id' for daxp.contexts[" + entry.getKey() + "]: " + idStr, e);
-            }
-
-            ctx.tagPrefix   = fields.getOrDefault("tagPrefix", "");
-            ctx.symbol      = fields.getOrDefault("symbol", "");
-            ctx.description = fields.getOrDefault("description", "");
-
-            contextsMap.put(ctx.id,ctx);
-        }
-        return contextsMap;
-    }
-
+       return context;
+   }
     //-------------------------------------------------------------
     private String getStringValue(String property) {
         String valueStr = props.getProperty(property);
@@ -161,6 +121,5 @@ public final class DaxpPropertiesLoader {
     public char getPairSeparator() {
         return getCharValue("daxp.pair-separator");
     }
-
 
 }

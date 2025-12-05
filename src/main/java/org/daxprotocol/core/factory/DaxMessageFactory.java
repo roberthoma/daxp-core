@@ -108,8 +108,8 @@ public class DaxMessageFactory {
 
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
-        DaxStringPair ctxPair = new DaxStringPair(MSG_CONTEXT, String.valueOf(dictionary.getContextId()));
-        message.getHead().putPair(ctxPair);
+//        DaxStringPair ctxPair = new DaxStringPair(MSG_CONTEXT, String.valueOf(dictionary.getContextId()));
+//        message.getHead().putPair(ctxPair);
 
 
         dictionary.getMsgMap().forEach((s, messageDicItem) ->

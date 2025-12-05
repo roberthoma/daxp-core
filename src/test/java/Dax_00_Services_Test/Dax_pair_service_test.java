@@ -27,7 +27,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
             Assertions.fail("NO_DAX| << it is not DAXP message");
         }
         catch (RuntimeException e){
-            System.out.println("IS OK");
+            System.out.println("IS OK.");
         }
 
     }

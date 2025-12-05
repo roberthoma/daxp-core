@@ -5,9 +5,15 @@ public class DaxContext {
     public String tagPrefix;
     public String symbol;
     public String description;
-    //URL address / IP / port
+    // String serviceSymbol ....
+    //URL address / IP / port for service  ...  List of alternative address
 
+    //IDEA  it passible define context and point service, for example
+    /*
+       <context_symbol>.<service_symbol>:<tag>=<value>
+CRM.S2:130=Jon
 
+     */
     @Override
     public String toString() {
         return "DaxContext{id=" + id +

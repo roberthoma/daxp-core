@@ -42,8 +42,8 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;
 
-    @DaxpFieldReference( contextId = ContextConst.CTX_FIX_PROTOCOL,
-                             tagId = FixConstTag.FIX_CLIENT_ID)
+    @DaxpFieldReference( contextSymbol = ContextConst.CTX_FIX_PROTOCOL,
+                                 tagId = FixConstTag.FIX_CLIENT_ID)
     Integer fixClientId;
 
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_RELATION , uiLabel = "Relation")

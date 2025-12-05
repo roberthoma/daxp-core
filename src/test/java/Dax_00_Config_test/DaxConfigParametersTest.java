@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 
 public class DaxConfigParametersTest extends DaxTestConfig {
 
-    //@Test
+    @Test
     public void test_reading_properties(){
 
         DaxpConfig crmConfig = crmProvider.getConfig();
         DaxpConfig cntConfig = cntProvider.getConfig();
 
-        Assertions.assertEquals(1,crmConfig.getApplicationContextId());
-        Assertions.assertEquals(3,cntConfig.getApplicationContextId());
+        Assertions.assertEquals(10,crmConfig.getApplicationContextId());
+        Assertions.assertEquals(11,cntConfig.getApplicationContextId());
 
 
     }

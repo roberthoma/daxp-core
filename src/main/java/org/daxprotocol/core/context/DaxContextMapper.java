@@ -1,3 +1,23 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2025 DAXPARC Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
+
 package org.daxprotocol.core.context;
 
 import org.daxprotocol.core.config.DaxpConfig;
@@ -27,17 +47,18 @@ public final class DaxContextMapper {
     private static final ConcurrentMap<Integer, String> idToSymbol = new ConcurrentHashMap<>();
 
     /** Generator used for assigning IDs to unknown contexts */
-    private static final AtomicInteger nextContextId = new AtomicInteger(100); // dynamic contexts start at 100
+    private static final AtomicInteger nextContextId = new AtomicInteger( DaxpConfig.CONTEXT_DYNAMIC_START_ID ); // dynamic contexts start at 100
 
     // ---------------------------------------
     // Static initialization (predefined contexts)
     // ---------------------------------------
 
     static {
-        registerPredefined(DaxpConfig.DAX_CONTEXT_SYMBOL, DaxpConfig.DAX_CONTEXT_ID);
+        registerPredefined(DaxpConfig.DAX_CONTEXT_SYMBOL,
+                           DaxpConfig.DAX_CONTEXT_ID);
     }
 
-    private static void registerPredefined(String symbol, int id) {
+    public static void registerPredefined(String symbol, int id) {
         symbolToId.put(symbol, id);
         idToSymbol.put(id, symbol);
     }

@@ -23,10 +23,12 @@ package org.daxprotocol.core.provider;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.config.DaxpPropertiesLoader;
+import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
+import org.daxprotocol.core.model.context.DaxContext;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 
 public class DaxProviderImpl implements DaxProvider {
@@ -49,16 +51,23 @@ public class DaxProviderImpl implements DaxProvider {
 
     public DaxProviderImpl(String propertiesFile){
         propertiesLoader = new DaxpPropertiesLoader(propertiesFile);
-
         propertiesLoader.load();
+
+        DaxContext appContext =  propertiesLoader.getApplicationContext();
+
+        config = new DaxpConfig();
+        dictionary = new DaxDictionary(config);
+        config.setApplicationContextId( DaxContextMapper
+                                       .getContextId( appContext.symbol ));
+
+        dictionary.putContext(appContext);
 
     }
 
 
     @Override public DaxpConfig getConfig() {
         if (config == null) {
-            config = new DaxpConfig();
-            config.setApplicationContextId(propertiesLoader.getApplicationContext());
+            throw new RuntimeException("Config is NOT READY !!!!");
         }
         return config;
     }
@@ -86,7 +95,7 @@ public class DaxProviderImpl implements DaxProvider {
 
     @Override public DaxDictionary getDictionary() {
         if(dictionary == null){
-            dictionary = new DaxDictionary(getConfig());
+            throw new RuntimeException("Dictionary is NOT READY !!!!");
         }
         return dictionary;
     }

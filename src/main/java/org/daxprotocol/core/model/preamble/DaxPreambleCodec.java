@@ -22,6 +22,7 @@ package org.daxprotocol.core.model.preamble;
 
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -58,10 +59,10 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     public String encode(DaxPreamble preamble) {
         Map<String,String> map = new LinkedHashMap<>();
         map.put(DaxPreambleTag.VERSION, preamble.getProtocolVersion());
-        map.put(DaxPreambleTag.EN, preamble.getEncoding().value());
+        map.put(DaxPreambleTag.ENCODING, preamble.getEncoding().value());
 
         if (preamble.getMsgCnt() > 1){
-            map.put(DaxPreambleTag.CNT, String.valueOf(preamble.getMsgCnt()));
+            map.put(DaxPreambleTag.MSG_COUNT, String.valueOf(preamble.getMsgCnt()));
         }
 
 
@@ -72,7 +73,6 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         return sb.toString();
     }
 
-//    private static char getPairSeparator(String msgStr){
     private char getPairSeparator(String msgStr){
         return msgStr.charAt(DaxpConfig.SEPARATOR_IDX); // Example After DAXP is "|" separator
     }
@@ -96,8 +96,8 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         }
 
         // Everything after "DAXP|" and  before tag "9="
-        String preamblePart = msg.split(String.valueOf(DaxTagConst.MSG_TYPE) + DaxCodecSymbol.EQUAL)[0]
-                                 .substring(DaxpConfig.SEPARATOR_IDX+1);
+        String preamblePart = msg.substring(DaxpConfig.SEPARATOR_IDX+1)
+                             .split(String.valueOf(DaxTagConst.MSG_TYPE) + DaxCodecSymbol.EQUAL)[0];
 
         Matcher m = pairPattern.matcher(preamblePart);
 
@@ -118,10 +118,16 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         p.setPairSeparator(getPairSeparator(msgStr));
 
         Map<String, String> map = parsePreamble(msgStr, p.getPairPattern());
-        p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.VERSION, DaxpConfig.PROTOCOL_VERSION));
-        p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.EN, DaxpConfig.DEFAULT_ENCODING)));
-        p.setCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.CNT,"1")));
 
+        p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.VERSION, DaxpConfig.PROTOCOL_VERSION));
+        p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.ENCODING, DaxpConfig.DEFAULT_ENCODING)));
+        p.setMsgCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.MSG_COUNT,"1")));
+
+        String context = map.getOrDefault(DaxPreambleTag.MSG_CONTEXT,
+                                          map.getOrDefault(DaxPreambleTag.MSG_SENDER,
+                                                           config.getApplicationContext()));
+
+        p.setMsgContextId(DaxContextMapper.getContextId(context));
         return p;
 
     }

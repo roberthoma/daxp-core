@@ -42,8 +42,8 @@ public class DaxTagConst {
 
 
     static Set<DaxTag> headSet = Set.of(new DaxTag(MSG_TYPE),
-                                        new DaxTag(MSG_BLOCK_COUNT),
-                                        new DaxTag(MSG_CONTEXT)
+                                        new DaxTag(MSG_BLOCK_COUNT)
+                                        //new DaxTag(MSG_CONTEXT)
                                        );
 
 

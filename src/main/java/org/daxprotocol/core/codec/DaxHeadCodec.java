@@ -47,9 +47,9 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
 //        if (head.getContextId() != config.getApplicationContextId()
 //            && head.getContextId() != 0 ) //TODO add to const
 //        {
-        int msgContextId = head.getContextId()!= -1 ? head.getContextId():
-                config.getApplicationContextId();
-            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(msgContextId));
+//        int msgContextId = head.getContextId()!= -1 ? head.getContextId():
+//                config.getApplicationContextId();
+//            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(msgContextId));
 //            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(head.getContextId()));
 //        }
 
@@ -76,11 +76,11 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
         DaxHead head = new DaxHead(msgType);
 
 
-        Optional<DaxStringPair> optContextId = listOfPair.stream()
-                .filter(p -> p.getTag().equals(MSG_CONTEXT) )
-                .findFirst();
+//        Optional<DaxStringPair> optContextId = listOfPair.stream()
+//                .filter(p -> p.getTag().equals(MSG_CONTEXT) )
+//                .findFirst();
 
-        optContextId.ifPresent(pair -> head.setContextId(Integer.parseInt(pair.getValue())));
+//        optContextId.ifPresent(pair -> head.setContextId(Integer.parseInt(pair.getValue())));
 //        optContextId.ifPresentOrElse(pair ->  head.setContextId(Integer.parseInt(pair.getValue())),
 //                head.setContextId(config.getApplicationContextId()));
 

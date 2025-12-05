@@ -21,6 +21,7 @@ package org.daxprotocol.core.model.preamble;
 
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 
 import java.util.regex.Pattern;
 
@@ -30,14 +31,12 @@ import java.util.regex.Pattern;
  */
 public class DaxPreamble {
     Pattern pairPattern;
+    public char MSG_PAIR_SEPARATOR;
     private String protocolVersion = DaxpConfig.PROTOCOL_VERSION;       // V=1
-    private int cnt;                      //CNT  Number of item lines following preamble. Useful for validation.
-
+    private int msgCnt;                      //CNT  Number of item lines following preamble. Useful for validation.
     private DaxEncoding encoding;         // EN=UTF8
+    private int msgContextId;
 
-    public int getMsgCnt() {
-        return cnt;
-    }
 
 
     public DaxPreamble(){
@@ -53,8 +52,12 @@ public class DaxPreamble {
         this.encoding = encoding;
     }
 
-    public void setCnt(int cnt) {
-        this.cnt = cnt;
+    public int getMsgCnt() {
+        return msgCnt;
+    }
+
+    public void setMsgCnt(int msgCnt) {
+        this.msgCnt = msgCnt;
     }
 
     public String getProtocolVersion() {
@@ -66,8 +69,8 @@ public class DaxPreamble {
     }
 
     public void setPairSeparator(Character pairSeparator) {
-//        this.pairSeparator = pairSeparator;
-        this.setPairPattern(DaxDecodeService.getPreamblePairPattern(pairSeparator));
+        this.MSG_PAIR_SEPARATOR = pairSeparator;
+        this.setPairPattern(DaxDecodeService.getPreamblePairPattern(this.MSG_PAIR_SEPARATOR));
     }
 
     public Pattern getPairPattern() {
@@ -76,5 +79,16 @@ public class DaxPreamble {
 
     public void setPairPattern(Pattern pairPattern) {
         this.pairPattern = pairPattern;
+    }
+    public int getMsgContextId(){
+        return msgContextId;
+    }
+
+    public void  setMsgContextId(int contextId){
+        this.msgContextId = contextId;
+    }
+
+    public String getMsgContext() {
+        return DaxContextMapper.getContextSymbol(msgContextId);
     }
 }

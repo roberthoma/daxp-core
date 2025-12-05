@@ -20,7 +20,6 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
@@ -143,7 +142,10 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 
-        List<DaxStringPair> listOfPair = DaxDecodeService.parsePairs(msgPairsStr, preamble.getPairPattern(),"CRM");
+        List<DaxStringPair> listOfPair = DaxDecodeService.
+                          parsePairs(msgPairsStr,
+                                     DaxDecodeService.getMessagePairPattern(preamble.MSG_PAIR_SEPARATOR ),
+                                     preamble.getMsgContext());
 
         List<List<DaxStringPair>> msgPairList =  splitMessages(listOfPair);
 

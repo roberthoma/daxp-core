@@ -21,6 +21,7 @@
 package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
@@ -41,7 +42,7 @@ public class DaxDictionary {
 
     Map<Integer, DaxContext> contextMap = new HashMap<>();
 
-    Map<Integer, DaxContextDictionary> dictionaryMap = new HashMap<>();
+    Map<Integer, DaxContextDictionary> contextDicMap = new HashMap<>();
 
 
     public DaxDictionary(DaxpConfig config) {
@@ -51,10 +52,10 @@ public class DaxDictionary {
 
 
     public DaxContextDictionary getDictionary(int contextId){
-        if(!dictionaryMap.containsKey(contextId)){
-            dictionaryMap.put(contextId, new DaxContextDictionary(contextId));
+        if(!contextDicMap.containsKey(contextId)){
+            contextDicMap.put(contextId, new DaxContextDictionary(contextId));
         }
-        return dictionaryMap.get(contextId);
+        return contextDicMap.get(contextId);
     }
 
     public DaxContextDictionary getApplicationDictionary(){
@@ -65,18 +66,21 @@ public class DaxDictionary {
 
     public void putDictionary(DaxContextDictionary dictionary){
 
-        dictionaryMap.put(dictionary.contextId,dictionary);
+        contextDicMap.put(dictionary.contextId,dictionary);
     }
     //**********************************************************************
     // Context
 
-    public void setContextMap(Map<Integer, DaxContext> contextMap) {
-        this.contextMap = contextMap;
-    }
 
     public Map<Integer, DaxContext> getContextMap() {
         return contextMap;
     }
+
+
+    public void putContext(DaxContext context){
+        contextMap.put(DaxContextMapper.getContextId(context.symbol),context);
+    }
+
 
     //**********************************************************************
     // Messages

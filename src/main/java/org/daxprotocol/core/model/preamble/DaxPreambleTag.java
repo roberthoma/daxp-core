@@ -22,9 +22,10 @@ package org.daxprotocol.core.model.preamble;
 public class DaxPreambleTag {
     public static final String  DAXP = "DAXP";   // protocol identifier
     public static final String  VERSION = "V";   // protocol  version
-    public static final String  EN = "EN";       // encoding: ASCII | UTF8 | UTF16
-    public static final String  CNT = "MC";     //  Number of messages following preamble. Useful for validation.
-    public static final String  CTX = "CX";     // context: optional
+    public static final String  ENCODING = "EN";       // encoding: ASCII | UTF8 | UTF16
+    public static final String  MSG_COUNT = "MC";     //  Number of messages following preamble. Useful for validation.
+    public static final String  MSG_CONTEXT = "CX";     // context: optional
+    public static final String  MSG_SENDER = "SN";     // context: optional
 }
 
 

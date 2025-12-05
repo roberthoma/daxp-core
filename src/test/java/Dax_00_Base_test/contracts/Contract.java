@@ -14,7 +14,7 @@ public class Contract {
     @DaxpField(tagId = ContractConst.CONTRACT_ID, uiLabel = "Id")
     Long id;
 
-    @DaxpFieldReference(contextId =  ContextConst.CTX_CUSTOMER , tagId = CustomerDaxTag.CUSTOMER_ID)
+    @DaxpFieldReference( contextSymbol =  ContextConst.CTX_CUSTOMER , tagId = CustomerDaxTag.CUSTOMER_ID)
     Long customerId;
 
     @NotNull

@@ -31,7 +31,7 @@ public class Dax_Customer_dic_test01 extends DaxTestConfig {
                 "99=123|";
     }
 
-    //@Test
+    @Test
     void testCustomerDicAttributes(){
 
         DaxDictionary dic = crmProvider.getDictionary();
@@ -50,7 +50,7 @@ public class Dax_Customer_dic_test01 extends DaxTestConfig {
     }
 
 
-   //@Test
+   @Test
     void testCustomerDicDecoder(){
 
         DaxMessage msg = crmProvider.getMessageFactory()
@@ -64,7 +64,7 @@ public class Dax_Customer_dic_test01 extends DaxTestConfig {
     }
 
 
-    //@Test
+    @Test
     public void testCustomerEntityEncoder(){
      DaxMessage message = crmProvider.getMessageCodec().decode(msg);
      Assertions.assertEquals(9,message.getBlockCount());
