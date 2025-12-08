@@ -21,6 +21,8 @@
 
 package org.daxprotocol.core.annotation;
 
+import org.daxprotocol.core.config.DaxpConfig;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -29,12 +31,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface DaxpField {
-//    int contextId() default -1; //default will change by daxp.application-context-id
+    String context() default ""; //>>>> empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
     int tagId();
     String uiLabel() default "";
 }
 
-//TODO if application does't use isJakartaValidation
-// then will be passible use NOTNYLL MAX MIN etc by DAXAnnotation
-
-// add default value
+// TODO Add references context Symbol and remove DaxpReference

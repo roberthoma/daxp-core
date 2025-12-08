@@ -29,11 +29,16 @@ public class DaxBlockType extends DaxPair<String> {
 
     public static final DaxTag  TAG = new DaxTag(DaxTagConst.BLOCK_TYPE);
     public static final String  BLOCK_FIELD       =  "F";
-    public static final String  BLOCK_GROUP       =  "G";
+    public static final String  BLOCK_GROUP_NAME  =  "G";
     public static final String  BLOCK_ENUM        =  "E";
     public static final String  BLOCK_ENUM_VALUE  =  "V";
     public static final String  BLOCK_MESSAGE     =  "M";
     public static final String  BLOCK_CONTEXT     =  "C";
+
+    //TODO add group of values
+//    public static final String  BLOCK_GROUP_OF_FIELDS  =  "GS";
+//            7=14|5=GF|141=35|100=2001,FIX.T3:67,2005,2074|
+//            7=15|5=GF|141=36|100=2001,2002,2005,2074,FIX:34|
 
     public DaxBlockType(String value) {
         super(DaxTagConst.BLOCK_TYPE, value);

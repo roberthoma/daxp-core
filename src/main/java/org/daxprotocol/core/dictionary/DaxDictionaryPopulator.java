@@ -24,6 +24,7 @@ import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
@@ -124,8 +125,11 @@ public class DaxDictionaryPopulator {
                 DaxpField daxp = field.getAnnotation(DaxpField.class);
                 field.setAccessible(true);
 
+                int contextId = daxp.context().isBlank() ? config.getApplicationContextId():
+                        DaxContextMapper.getContextId(daxp.context());
 
-                DaxTag tag = new DaxTag(config.getApplicationContextId() ,daxp.tagId());
+
+                DaxTag tag = new DaxTag(contextId ,daxp.tagId());
                 //Class  change type to char
                 daxDic.putAtrDataType(tag,field.getType());
 
@@ -177,13 +181,14 @@ public class DaxDictionaryPopulator {
             daxDic.putEnumValue(name,value,"");
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
+        if(blockType.equals(DaxBlockType.BLOCK_GROUP_NAME)){
             daxDic.putGroup( Integer.parseInt(blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.GROUP_ID)).getStrValue()),
                     blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.GROUP_NAME)).getStrValue());
         }
 
 
         if(blockType.equals(DaxBlockType.BLOCK_FIELD)){
+
             int fieldId = Integer.parseInt (blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_ID)).getStrValue());
 
             blockPairMap.forEach((integer, daxPair) ->

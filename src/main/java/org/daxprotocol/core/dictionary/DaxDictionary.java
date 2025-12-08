@@ -64,10 +64,18 @@ public class DaxDictionary {
     }
 
 
+    //**********************************************************************
+    // Context Dictionary
+
+    public  Map<Integer, DaxContextDictionary> getContextDicMap(){
+        return contextDicMap;
+    }
+
     public void putDictionary(DaxContextDictionary dictionary){
 
         contextDicMap.put(dictionary.contextId,dictionary);
     }
+
     //**********************************************************************
     // Context
 

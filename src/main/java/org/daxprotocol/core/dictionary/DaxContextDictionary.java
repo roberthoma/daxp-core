@@ -44,8 +44,8 @@ public class DaxContextDictionary {
     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
 
     //TODO add group of values
-//            7=14|5=L|141=35|100=2001,3:2002,2005,2074|
-//            7=15|5=D|141=35|100=2001,2002,2005,2074,3:34
+//            7=14|5=L|141=35|100=2001,FIX.T3:67,2005,2074|
+//            7=15|5=D|141=35|100=2001,2002,2005,2074,FIX:34
 
     // TODo Dictionary od fields define without identification of group
 

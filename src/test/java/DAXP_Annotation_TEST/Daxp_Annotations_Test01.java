@@ -7,7 +7,6 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxCodecSymbol;
 import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 
@@ -78,7 +77,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
         DaxMessage updMsg = crmProvider.getMessageCodec().decode("DAXP|V=1|EN=UTF8|9=CU|20=1|2001=123|2002=Jan|2074=Toronto|99=123|\"");
 
-        crmProvider.getMessageConverter().setFromMessage(updMsg, customer );
+        crmProvider.getMessageConverter().updateFromMessage(updMsg, customer );
         Assertions.assertEquals("Jan",customer.getName());
         Assertions.assertEquals("Toronto",customer.getTown());
 

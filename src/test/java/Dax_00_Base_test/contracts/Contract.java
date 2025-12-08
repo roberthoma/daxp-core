@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
-import org.daxprotocol.core.annotation.DaxpFieldReference;
 
 @DaxpFieldGroup(groupId = ContractConst.GROUP_CONTRACT , name = "Contract")
 public class Contract {
@@ -14,7 +13,7 @@ public class Contract {
     @DaxpField(tagId = ContractConst.CONTRACT_ID, uiLabel = "Id")
     Long id;
 
-    @DaxpFieldReference( contextSymbol =  ContextConst.CTX_CUSTOMER , tagId = CustomerDaxTag.CUSTOMER_ID)
+    @DaxpField( context =  ContextConst.CTX_CUSTOMER , tagId = CustomerDaxTag.CUSTOMER_ID)
     Long customerId;
 
     @NotNull

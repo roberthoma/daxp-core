@@ -5,7 +5,6 @@ import Dax_00_Base_test.customer.CustomerDaxTag;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -54,7 +53,7 @@ public class Dax_Customer_dic_test01 extends DaxTestConfig {
     void testCustomerDicDecoder(){
 
         DaxMessage msg = crmProvider.getMessageFactory()
-                                    .createDictionaryMsg(crmProvider.getDictionary());
+                                    .dictionaryToMsg(crmProvider.getDictionary());
 
         String     msgStr    = crmProvider.getMessageCodec().encode(msg);
         DaxMessage msgAfter  = crmProvider.getMessageCodec().decode(msgStr);

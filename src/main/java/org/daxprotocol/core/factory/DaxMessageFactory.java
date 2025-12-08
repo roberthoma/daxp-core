@@ -54,6 +54,8 @@ public class DaxMessageFactory {
 
     private void putBodyBlock(DaxBody body, int fieldId, Map<Integer, DaxPair<?>> map){
         body.nextBlock(DaxBlockType.BLOCK_FIELD);
+//        String tagStr = "X:"+String.valueOf( fieldId);
+//        body.putPair(FIELD_ID,tagStr);
         body.putPair(FIELD_ID,String.valueOf( fieldId));
         map.forEach((i, pair) -> body.putPair(pair));
 
@@ -68,7 +70,7 @@ public class DaxMessageFactory {
     }
 
     private void putGroupToBody(DaxBody body, DaxpGroupItf group){
-        body.nextBlock(DaxBlockType.BLOCK_GROUP);
+        body.nextBlock(DaxBlockType.BLOCK_GROUP_NAME);
         body.putPair(GROUP_ID, String.valueOf(group.getId()));
         body.putPair(GROUP_NAME, String.valueOf(group.getName()));
         if (group.getMasterId() != 0 ){
@@ -91,7 +93,7 @@ public class DaxMessageFactory {
         body.putPair(FIELD_VALUE_DESCRIPTION, msgItem.getMsgDesc());
     }
 
-    private void putContextItem(DaxBody body, DaxContext daxContext) {
+    private void putContextToBody(DaxBody body, DaxContext daxContext) {
         body.nextBlock(DaxBlockType.BLOCK_CONTEXT);
         body.putPair(FIELD_ID, String.valueOf(daxContext.id));
         body.putPair(FIELD_VALUE_SYMBOL, daxContext.symbol);
@@ -104,14 +106,9 @@ public class DaxMessageFactory {
     //TODO Create message with dictionary using context, or group, or field/(list of field)
     //create multi message with context dictionary values
 //    public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
-    private DaxMessage createDictionaryMsg(DaxContextDictionary dictionary) {
-
-        DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
-
-//        DaxStringPair ctxPair = new DaxStringPair(MSG_CONTEXT, String.valueOf(dictionary.getContextId()));
-//        message.getHead().putPair(ctxPair);
-
-
+    private void dictionaryToMsg(DaxMessage message,
+                                           DaxContextDictionary dictionary)
+    {
         dictionary.getMsgMap().forEach((s, messageDicItem) ->
                 putMsgItem(message.getBody(),messageDicItem)
                 );
@@ -132,18 +129,30 @@ public class DaxMessageFactory {
         dictionary.getAttributMap().forEach((fieldId, atrMap) ->
                 putBodyBlock(message.getBody(),fieldId,  atrMap)
         );
+    }
 
+
+    public DaxMessage dictionaryToMsg(DaxDictionary dictionary) {
+        DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
+
+//        DaxStringPair ctxPair = new DaxStringPair(MSG_CONTEXT, String.valueOf(dictionary.getContextId()));
+//        message.getHead().putPair(ctxPair);
+
+
+        dictionary.getContextMap().forEach((idCtx, context) ->
+                        putContextToBody(message.getBody(), context)
+                );
+
+
+        dictionary.getContextDicMap()
+                  .forEach((id, contextDic) ->
+                            dictionaryToMsg(message, contextDic)
+        //putDictionaryToBody(message, dictionary.getApplicationDictionary())
+        );
 
         message.finish();
         return message;
-
     }
-
-    public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
-        return createDictionaryMsg(dictionary.getApplicationDictionary());
-    }
-
-
 
 
     @SuppressWarnings("unchecked")

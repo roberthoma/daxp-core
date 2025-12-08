@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpFieldReference;
 
 import java.util.Date;
 
@@ -42,8 +41,11 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;
 
-    @DaxpFieldReference( contextSymbol = ContextConst.CTX_FIX_PROTOCOL,
-                                 tagId = FixConstTag.FIX_CLIENT_ID)
+//    @DaxpFieldReference( contextSymbol = ContextConst.CTX_FIX_PROTOCOL,
+//                                 tagId = FixConstTag.FIX_CLIENT_ID)
+    @DaxpField( context = ContextConst.CTX_FIX_PROTOCOL,
+                  tagId = FixConstTag.FIX_CLIENT_ID,
+    uiLabel = "FIX Customer Id ")
     Integer fixClientId;
 
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_RELATION , uiLabel = "Relation")

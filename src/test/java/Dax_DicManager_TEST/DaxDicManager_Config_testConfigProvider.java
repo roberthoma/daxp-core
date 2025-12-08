@@ -2,7 +2,6 @@ package Dax_DicManager_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxMessageCodec;
-import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -19,10 +18,9 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         DaxMessageCodec codec = crmProvider.getMessageCodec();
         DaxDictionaryPopulator dictionaryPopulator = crmProvider.getDictionaryPopulator();
         DaxMessageFactory factory = crmProvider.getMessageFactory();
-
         DaxDictionary dicOrg = crmProvider.getDictionary();
-
-        DaxMessage messageOrg =  crmProvider.getMessageFactory().createDictionaryMsg(dicOrg);
+        //--------------
+        DaxMessage messageOrg =  crmProvider.getMessageFactory().dictionaryToMsg(dicOrg);
 
         String msgStrOrg =  codec.encode(messageOrg);
         System.out.println("- original -");
@@ -35,7 +33,7 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
 
         dictionaryPopulator.populateFromMessage(dicAfter, messageAfter);
 
-        DaxMessage messageDicAfter = factory.createDictionaryMsg(dicAfter);
+        DaxMessage messageDicAfter = factory.dictionaryToMsg(dicAfter);
 
         String msgDicAfter =  codec.encode(messageAfter);
         System.out.println(msgDicAfter);

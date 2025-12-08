@@ -40,6 +40,8 @@ public class DaxTagConst {
     public static final int MSG_ROLE = 18;
     public static final int MSG_CONTEXT = 20; //Default context
 
+    //TODO Create predefine sys DaxTag
+    //DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)
 
     static Set<DaxTag> headSet = Set.of(new DaxTag(MSG_TYPE),
                                         new DaxTag(MSG_BLOCK_COUNT)

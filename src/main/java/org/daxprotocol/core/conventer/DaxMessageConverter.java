@@ -22,6 +22,7 @@ package org.daxprotocol.core.conventer;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -43,7 +44,10 @@ public class DaxMessageConverter {
                 DaxpField ann = f.getAnnotation(DaxpField.class);
                 if (ann == null) continue; // skip non-annotated fields (e.g., town)
 
-                var pair = message.get(new DaxTag( config.getApplicationContextId(), ann.tagId()));
+                int contextId = ann.context().isBlank() ? config.getApplicationContextId():
+                        DaxContextMapper.getContextId(ann.context());
+
+                var pair = message.get(new DaxTag( contextId, ann.tagId()));
                 if (pair==null) continue; // gracefully ignore missing tags or empty
 
                 String raw = pair.getStrValue();
@@ -60,7 +64,7 @@ public class DaxMessageConverter {
 
 
 
-      public  void setFromMessage(DaxMessage message, Object obj){
+      public  void updateFromMessage(DaxMessage message, Object obj){
         Class<?> clazz = obj.getClass();
         try {
 
