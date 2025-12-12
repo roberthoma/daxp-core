@@ -20,6 +20,7 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -36,8 +37,10 @@ public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
         if (value.isBlank()){
             return sb.toString();
         }
-        if(contextId!=0){ //TODO add sys context
-            sb.append(contextId)
+        if(contextId!= DaxpConfig.DAX_CONTEXT_ID &&
+           contextId!= config.getApplicationContextId() )
+        {
+            sb.append(DaxContextMapper.getContextSymbol(contextId))
               .append(CONTEXT_TAG_SEPARATOR);
         }
 

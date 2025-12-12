@@ -35,8 +35,10 @@ import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.field.DaxMsgType;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
+import javax.management.monitor.StringMonitor;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -157,6 +159,12 @@ public class DaxMessageFactory {
 
     @SuppressWarnings("unchecked")
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {
+
+//        if (daxDataEntry instanceof Map<DaxTag,DaxStringPair>) {
+//
+//            System.out.println("JEST Map<DaxTag,DaxPair<?>>");
+//        }
+
         return  daxDataEntry instanceof List<?> ?
             toDaxMessageFromList( messageType, (List<Object>) daxDataEntry )
           : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
@@ -187,6 +195,23 @@ public class DaxMessageFactory {
 
         return new DaxMessage(head,body,trailer);
     }
+
+    public DaxMessage toDaxMessageFromPairMap( String messageType, Map<DaxTag,DaxPair<?>> pairMap){
+        DaxHead head = new DaxHead(messageType);
+        DaxBody body = new DaxBody();
+        DaxTrailer trailer = new DaxTrailer();
+        body.nextBlock();
+
+        pairMap.forEach((daxTag, daxPair) -> body.putPair(daxPair));
+
+        return new DaxMessage(head,body,trailer);
+
+    }
+
+//    private DaxMessage toDaxMessageFromListOfPairMap( String messageType, List<Map<DaxTag,DaxPair<?>>> pairMap){
+//        ?????
+//
+//    }
 
 
     public DaxMessage errorResourceNotFound() {
