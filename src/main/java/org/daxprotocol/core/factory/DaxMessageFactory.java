@@ -39,7 +39,6 @@ import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
-import javax.management.monitor.StringMonitor;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -71,16 +70,12 @@ public class DaxMessageFactory {
         ){
 
             fieldId = DaxContextMapper.getContextSymbol(tag.getContextId())+":"+
-                    String.valueOf(tag.getTagId());
+                    tag.getTagId();
 
         }
         else {
             fieldId = String.valueOf(tag.getTagId());
-
         }
-
-
-
 
         body.putPair(FIELD_ID,fieldId);
 
@@ -186,7 +181,7 @@ public class DaxMessageFactory {
     @SuppressWarnings("unchecked")
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {
 
-//        if (daxDataEntry instanceof Map<DaxTag,DaxStringPair>) {
+//        if (daxDataEntry instanceof Map<?,?>) { ????
 //
 //            System.out.println("JEST Map<DaxTag,DaxPair<?>>");
 //        }
@@ -222,22 +217,30 @@ public class DaxMessageFactory {
         return new DaxMessage(head,body,trailer);
     }
 
-    public DaxMessage toDaxMessageFromPairMap( String messageType, Map<DaxTag,DaxPair<?>> pairMap){
+    @SuppressWarnings("unchecked")
+    public DaxMessage toDaxMessageFromPairMap( String messageType, Object pairMap)
+    {
+        return  pairMap instanceof List<?> ?
+                toDaxMessageFromListOfPairMap( messageType, (List<Map<DaxTag,DaxPair<?>>>) pairMap )
+                : toDaxMessageFromList( messageType, List.of(pairMap) );
+    }
+
+    private DaxMessage toDaxMessageFromListOfPairMap( String messageType,
+                                          List<Map<DaxTag,DaxPair<?>>> pairMapList){
+
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
         DaxTrailer trailer = new DaxTrailer();
-        body.nextBlock();
 
-        pairMap.forEach((daxTag, daxPair) -> body.putPair(daxPair));
+        pairMapList.forEach(pairMap ->{
+                    body.nextBlock();
+                    pairMap.forEach((daxTag, daxPair) -> body.putPair(daxPair));
+                }
+                );
+
 
         return new DaxMessage(head,body,trailer);
-
     }
-
-//    private DaxMessage toDaxMessageFromListOfPairMap( String messageType, List<Map<DaxTag,DaxPair<?>>> pairMap){
-//        ?????
-//
-//    }
 
 
     public DaxMessage errorResourceNotFound() {

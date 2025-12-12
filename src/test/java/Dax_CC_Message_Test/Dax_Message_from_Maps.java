@@ -22,16 +22,22 @@ public class Dax_Message_from_Maps extends DaxTestConfig {
     public void testFactoryMsgFromMap(){
         DaxMessageFactory factory = crmProvider.getMessageFactory();
         DaxMessageCodec codec = crmProvider.getMessageCodec();
+        int appContextId = crmProvider.getConfig().getApplicationContextId();
         Map<DaxTag,DaxPair<?>> pairMap = new HashMap<>();
         int fixContextId = DaxContextMapper.getContextId(ContextConst.CTX_FIX_PROTOCOL);
 
         DaxTag tag1 = new DaxTag(fixContextId, 123);
         DaxStringPair pai1 = new DaxStringPair(tag1,"value123");
+
         DaxTag tag2 = new DaxTag(fixContextId, 345);
-        DaxStringPair pai2 = new DaxStringPair(tag1,"value456");
+        DaxStringPair pai2 = new DaxStringPair(tag2,"value456");
+
+        DaxTag tag3 = new DaxTag(appContextId, 2456);
+        DaxStringPair pai3 = new DaxStringPair(tag3,"appValue222");
 
         pairMap.put(tag1,pai1);
         pairMap.put(tag2,pai2);
+        pairMap.put(tag3,pai3);
 
         DaxMessage msg = factory.toDaxMessageFromPairMap("FXM",pairMap);
 

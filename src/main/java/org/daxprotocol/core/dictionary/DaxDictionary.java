@@ -43,8 +43,7 @@ public class DaxDictionary {
 
     Map<Integer, DaxContext> contextMap = new HashMap<>();
 
-  //  Map<Integer, DaxContextDictionary> contextDicMap = new HashMap<>();
-  DaxEnumDictionary enumDictionary = new DaxEnumDictionary();
+    DaxEnumDictionary enumDictionary = new DaxEnumDictionary();
 
     /*****************************************************
      * DescriptiveMap : it is main dic of field attributes
