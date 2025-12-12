@@ -31,14 +31,15 @@ import java.util.regex.Pattern;
 
 public class DaxDecodeService {
     private static final Map<Class<?>, Function<String, Object>> CONVERTERS = new HashMap<>();
+
     static {
         CONVERTERS.put(String.class, s -> s);
-        CONVERTERS.put(int.class,    Integer::parseInt);
-        CONVERTERS.put(Integer.class,Integer::valueOf);
-        CONVERTERS.put(long.class,   Long::parseLong);
-        CONVERTERS.put(Long.class,   Long::valueOf);
-        CONVERTERS.put(boolean.class,s -> Boolean.parseBoolean(s));
-        CONVERTERS.put(Boolean.class,Boolean::valueOf);
+        CONVERTERS.put(int.class, Integer::parseInt);
+        CONVERTERS.put(Integer.class, Integer::valueOf);
+        CONVERTERS.put(long.class, Long::parseLong);
+        CONVERTERS.put(Long.class, Long::valueOf);
+        CONVERTERS.put(boolean.class, s -> Boolean.parseBoolean(s));
+        CONVERTERS.put(Boolean.class, Boolean::valueOf);
         CONVERTERS.put(double.class, Double::parseDouble);
         CONVERTERS.put(Double.class, Double::valueOf);
 
@@ -46,7 +47,7 @@ public class DaxDecodeService {
     }
 
     public static Pattern getPreamblePairPattern(char pairSeparator) {
-        return Pattern.compile("(\\w+)"+ DaxCodecSymbol.EQUAL+"([^"+pairSeparator+"]*)");
+        return Pattern.compile("(\\w+)" + DaxCodecSymbol.EQUAL + "([^" + pairSeparator + "]*)");
     }
 
     public static Pattern getMessagePairPattern(char pairSeparator) {
@@ -67,7 +68,7 @@ public class DaxDecodeService {
         }
         //Enum support
         if (type.isEnum()) {
-            @SuppressWarnings({ "unchecked", "rawtypes" })
+            @SuppressWarnings({"unchecked", "rawtypes"})
             Object enumValue = Enum.valueOf((Class<Enum>) type, value);
             return enumValue;
         }
@@ -84,20 +85,42 @@ public class DaxDecodeService {
             String contextStr = m.group(1);
             int tagId = Integer.parseInt(m.group(2));
             int contextId;
-            if (contextStr == null){
-               if ( tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
-                   contextSymbol = DaxpConfig.DAX_CONTEXT_SYMBOL;
-               }
-               else {
-                   contextSymbol = dftContext;
-               }
-            }
-            else {
-                contextSymbol  = contextStr;
+            if (contextStr == null) {
+                if (tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
+                    contextSymbol = DaxpConfig.DAX_CONTEXT_SYMBOL;
+                } else {
+                    contextSymbol = dftContext;
+                }
+            } else {
+                contextSymbol = contextStr;
             }
             contextId = DaxContextMapper.getContextId(contextSymbol);
-            list.add(new DaxStringPair(new DaxTag( contextId,tagId), m.group(3)));
+            list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));
         }
         return list;
+    }
+
+    public static DaxTag parseDaxTag(String tagStr) {
+        int tagId;
+        int contextId = 0;
+        Pattern pattern = Pattern.compile("^(?:([A-Za-z]+):)?([0-9]+)$");
+
+        Matcher m = pattern.matcher(tagStr);
+
+        if (m.matches()) {
+            String contextSymbol = m.group(1); // null if no context
+            tagId = Integer.parseInt(m.group(2));
+
+            if (contextSymbol == null){
+                if (tagId > DaxpConfig.MAX_DAXP_TAG_ID) {
+                    contextId = DaxpConfig.APP_CONTEXT_ID;
+                }
+            }
+            return new DaxTag(contextId, tagId);
+        }
+
+
+
+        throw new RuntimeException("NOT correct DaxTag "+tagStr);
     }
 }

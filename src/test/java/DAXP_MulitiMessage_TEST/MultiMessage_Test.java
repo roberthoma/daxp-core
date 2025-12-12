@@ -44,7 +44,7 @@ public class MultiMessage_Test extends DaxTestConfig {
         customerList.add(new Customer(124, "Ania"));
         customerList.add(new Customer(125, "Zofia"));
 
-        DaxMessageFactory factory = new DaxMessageFactory();
+        DaxMessageFactory factory = crmProvider.getMessageFactory();
         DaxMessage message = factory.toDaxMessage("UCi", customerList);
 //        Assertions.assertEquals(customerList.size(), message.getBlockCount() );  fix block.. for MessageCnt
     }

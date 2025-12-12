@@ -102,7 +102,7 @@ public class DaxProviderImpl implements DaxProvider {
 
     @Override public DaxMessageFactory getMessageFactory() {
         if (messageFactory == null){
-            messageFactory = new DaxMessageFactory();
+            messageFactory = new DaxMessageFactory(getConfig());
         }
         return messageFactory;
     }

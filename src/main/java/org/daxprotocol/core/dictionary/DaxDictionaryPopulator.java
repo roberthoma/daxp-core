@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -189,10 +190,13 @@ public class DaxDictionaryPopulator {
 
         if(blockType.equals(DaxBlockType.BLOCK_FIELD)){
 
-            int fieldId = Integer.parseInt (blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_ID)).getStrValue());
+            String fieldId = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_ID)).getStrValue();
+
+            DaxTag tag = DaxDecodeService.parseDaxTag(fieldId);
+
 
             blockPairMap.forEach((integer, daxPair) ->
-                    daxDic.putAttribute(fieldId,daxPair));
+                    daxDic.putAttribute(tag,daxPair));
 
         }
 

@@ -21,7 +21,8 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.dictionary.DaxContextDictionary;
+import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
@@ -47,18 +48,42 @@ import static org.daxprotocol.core.codec.DaxTagConst.*;
 
 public class DaxMessageFactory {
 
+    DaxpConfig config;
 
+    public DaxMessageFactory(DaxpConfig config) {
+        this.config = config;
+    }
 
     public DaxMessage createDictionaryReq() {
         return new DaxMessage(DaxMsgType.DIC_REQ);
     }
 
 
-    private void putBodyBlock(DaxBody body, int fieldId, Map<Integer, DaxPair<?>> map){
+    private void putBodyBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
+        String fieldId;
         body.nextBlock(DaxBlockType.BLOCK_FIELD);
+
 //        String tagStr = "X:"+String.valueOf( fieldId);
 //        body.putPair(FIELD_ID,tagStr);
-        body.putPair(FIELD_ID,String.valueOf( fieldId));
+
+        if (tag.getContextId() != config.getApplicationContextId()
+        && tag.getContextId() != DaxpConfig.DAX_CONTEXT_ID
+        ){
+
+            fieldId = DaxContextMapper.getContextSymbol(tag.getContextId())+":"+
+                    String.valueOf(tag.getTagId());
+
+        }
+        else {
+            fieldId = String.valueOf(tag.getTagId());
+
+        }
+
+
+
+
+        body.putPair(FIELD_ID,fieldId);
+
         map.forEach((i, pair) -> body.putPair(pair));
 
     }
@@ -109,7 +134,7 @@ public class DaxMessageFactory {
     //create multi message with context dictionary values
 //    public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
     private void dictionaryToMsg(DaxMessage message,
-                                           DaxContextDictionary dictionary)
+                                           DaxDictionary dictionary)
     {
         dictionary.getMsgMap().forEach((s, messageDicItem) ->
                 putMsgItem(message.getBody(),messageDicItem)
@@ -128,8 +153,8 @@ public class DaxMessageFactory {
                 putGroupToBody(message.getBody(), group));
 
 
-        dictionary.getAttributMap().forEach((fieldId, atrMap) ->
-                putBodyBlock(message.getBody(),fieldId,  atrMap)
+        dictionary.getAttributMap().forEach((tag, atrMap) ->
+                putBodyBlock(message.getBody(),tag,  atrMap)
         );
     }
 
@@ -145,12 +170,13 @@ public class DaxMessageFactory {
                         putContextToBody(message.getBody(), context)
                 );
 
+        dictionaryToMsg(message , dictionary);
 
-        dictionary.getContextDicMap()
-                  .forEach((id, contextDic) ->
-                            dictionaryToMsg(message, contextDic)
+//        dictionary.getContextDicMap()
+//                  .forEach((id, contextDic) ->
+//                            dictionaryToMsg(message, contextDic)
         //putDictionaryToBody(message, dictionary.getApplicationDictionary())
-        );
+ //       );
 
         message.finish();
         return message;

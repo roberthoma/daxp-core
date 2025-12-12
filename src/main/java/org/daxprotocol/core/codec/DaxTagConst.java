@@ -18,6 +18,7 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.codec;
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.Set;
@@ -77,6 +78,7 @@ public class DaxTagConst {
 
     public static final int FIELD_ID_LIST           = 115 ; //  FieldIdList     List<Integer>
     public static final int FIELD_DATA_TYPE         = 110 ; //
+    public static final DaxTag FIELD_DATA_TYPE_TAG         = new DaxTag(DaxpConfig.DAX_CONTEXT_ID, 110) ; //
 //    public static final int FIELD_ENUM_NAME         = 111 ; //
 //    public static final int FIELD_GROUP_ID          = 120 ; //
 
@@ -119,6 +121,7 @@ public class DaxTagConst {
      */
     public static final int ATR_UI_ITEM_TYPE    = 208 ; //
     public static final int ATR_UI_LABEL        = 209 ; //     UiLabel     String
+    public static final DaxTag ATR_UI_LABEL_TAG        = new DaxTag(DaxpConfig.DAX_CONTEXT_ID, 209) ; //     UiLabel     String
     public static final int ATR_UI_DESCRIPTION  = 210 ; //   UiDescription   String
     public static final int ATR_UI_IS_EDITABLE  = 220 ; //       Boolean
 

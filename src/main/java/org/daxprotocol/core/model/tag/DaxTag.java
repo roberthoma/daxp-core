@@ -1,6 +1,7 @@
 package org.daxprotocol.core.model.tag;
 
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 
 import java.util.Objects;
 
@@ -53,7 +54,12 @@ public class DaxTag {
     @Override
     public String toString(){
 //        return DaxContextMapper.getContextSymbol(contextId) + ":" + tagId;
-        return contextId != DaxpConfig.DAX_CONTEXT_ID ? contextId + ":" + tagId
+
+//        if ( contextId != DaxpConfig.DAX_CONTEXT_ID &&
+//
+//        DaxContextMapper.getContextSymbol()
+
+    return contextId != DaxpConfig.DAX_CONTEXT_ID ? contextId + ":" + tagId
                                                       : ""+tagId;
 
     }
