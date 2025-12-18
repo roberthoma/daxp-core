@@ -34,6 +34,7 @@ import org.daxprotocol.core.field.DaxAtrNullable;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -117,7 +118,7 @@ public class DaxDictionaryPopulator {
                 daxDic.putGroup(groupId, group.name() );
             }
 
-            for (Field field : clazz.getDeclaredFields()) {
+            for (Field field : DaxLangTool.allFields(clazz)) {
                 DaxDictionaryDecoratorService.printDaxFieldInfo(field);
                 if (!field.isAnnotationPresent(DaxpField.class)) {
                    continue;
@@ -182,7 +183,7 @@ public class DaxDictionaryPopulator {
             daxDic.putEnumValue(name,value,"");
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_GROUP_NAME)){
+        if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
             daxDic.putGroup( Integer.parseInt(blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.GROUP_ID)).getStrValue()),
                     blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.GROUP_NAME)).getStrValue());
         }

@@ -21,8 +21,10 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
+import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
 import org.daxprotocol.core.model.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
@@ -38,6 +40,7 @@ import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
+import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -92,7 +95,7 @@ public class DaxMessageFactory {
     }
 
     private void putGroupToBody(DaxBody body, DaxpGroupItf group){
-        body.nextBlock(DaxBlockType.BLOCK_GROUP_NAME);
+        body.nextBlock(DaxBlockType.BLOCK_GROUP);
         body.putPair(GROUP_ID, String.valueOf(group.getId()));
         body.putPair(GROUP_NAME, String.valueOf(group.getName()));
         if (group.getMasterId() != 0 ){
@@ -178,6 +181,7 @@ public class DaxMessageFactory {
     }
 
 
+
     @SuppressWarnings("unchecked")
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {
 
@@ -197,9 +201,22 @@ public class DaxMessageFactory {
         DaxBody body = new DaxBody();
         DaxTrailer trailer = new DaxTrailer();
         daxDataEntry.forEach(entry -> {
+            //todo REFACTORING
+            if (entry.getClass().isAnnotationPresent(DaxpFieldGroup.class)) {
+                DaxDictionaryDecoratorService.printDaxScanClass(entry.getClass());
+                DaxpFieldGroup group = entry.getClass().getAnnotation(DaxpFieldGroup.class);
+
             body.nextBlock();
+            body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
+            body.putPair(GROUP_ID, String.valueOf(group.groupId()));
+            }
+
+
+
+
             try {
-                for (Field field : entry.getClass().getDeclaredFields()) {
+//                for (Field field : entry.getClass().getDeclaredFields()) {
+                for (Field field : DaxLangTool.allFields(entry.getClass())) {
                     if (field.isAnnotationPresent(DaxpField.class)) {
                         DaxpField daxp = field.getAnnotation(DaxpField.class);
                         field.setAccessible(true);

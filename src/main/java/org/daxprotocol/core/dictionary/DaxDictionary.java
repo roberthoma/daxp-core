@@ -31,7 +31,7 @@ import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.group.DaxpGroupItf;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.tool.DaxTool;
+import org.daxprotocol.core.tool.DaxMapTool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -149,7 +149,7 @@ public class DaxDictionary {
 
       attributMap.merge(tag, new HashMap<>(Map.of(atrPair.getTag(), atrPair)),
                 (eM, nM) ->
-                        DaxTool.putAndReturn(eM, atrPair.getTag(), atrPair));
+                        DaxMapTool.putAndReturn(eM, atrPair.getTag(), atrPair));
 
     }
 

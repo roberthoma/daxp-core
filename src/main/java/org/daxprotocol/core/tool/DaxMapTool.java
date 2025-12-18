@@ -22,7 +22,7 @@ package org.daxprotocol.core.tool;
 
 import java.util.Map;
 
-public class DaxTool {
+public class DaxMapTool {
     public static  <K,V> Map<K,V> putAndReturn(Map<K,V> map , K k,V v){
         map.put(k,v);
         return map;

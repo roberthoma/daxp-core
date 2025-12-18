@@ -20,7 +20,7 @@
 
 package org.daxprotocol.core.dictionary.daxenum;
 
-import org.daxprotocol.core.tool.DaxTool;
+import org.daxprotocol.core.tool.DaxMapTool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +54,7 @@ public class DaxEnumDictionary {
     public void putEnumValue(String enumName, String value, String desc){
         enumValueMap.merge(enumName,new HashMap<>(Map.of(value, new DaxEnumValue(value , desc))),
                 (svMap, svMapN)
-                        ->  DaxTool.putAndReturn(svMap,value, svMapN.get(value)));
+                        ->  DaxMapTool.putAndReturn(svMap,value, svMapN.get(value)));
     }
 
     public Map<String, Map<String, DaxEnumValue>> getValueMap() {
