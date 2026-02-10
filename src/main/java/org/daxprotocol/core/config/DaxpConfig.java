@@ -30,7 +30,7 @@ public final class DaxpConfig {
     public static final String DAX_CONTEXT_SYMBOL = "SYS";
     public static final int    DAX_CONTEXT_ID = 0;
     public static  String      APP_CONTEXT_SYMBOL ;
-    public static  int         APP_CONTEXT_ID ;
+    public static  int         APP_CONTEXT_ID ; // >>> Resign from static
 
 
     /** Generator used for assigning IDs to unknown contexts :   AtomicInteger nextContextId */
@@ -59,14 +59,17 @@ public final class DaxpConfig {
 
     public void setApplicationContextId(int applicationContextId) {
         this.applicationContextId = applicationContextId;
+//        DaxpConfig.APP_CONTEXT_ID = applicationContextId;
     }
 
 
     public  int getApplicationContextId() {
         return applicationContextId;
+//        return DaxpConfig.APP_CONTEXT_ID;
     }
     public  String getApplicationContext() {
         return DaxContextMapper.getContextSymbol(applicationContextId);
+//        return DaxContextMapper.getContextSymbol(DaxpConfig.APP_CONTEXT_ID);
     }
 
 

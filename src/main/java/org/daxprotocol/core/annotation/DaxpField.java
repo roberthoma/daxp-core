@@ -28,11 +28,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
+/***************************************
+ *  Field is value of class
+ * */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface DaxpField {
     String context() default ""; //>>>> empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
-    int tagId();
+    int tagId(); // Define  by @DaxpTag
     String uiLabel() default "";
 }
 

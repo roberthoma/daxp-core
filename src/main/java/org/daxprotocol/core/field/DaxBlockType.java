@@ -30,11 +30,14 @@ public class DaxBlockType extends DaxPair<String> {
     public static final DaxTag  TAG = new DaxTag(DaxTagConst.BLOCK_TYPE);
     public static final String BLOCK_FIELD       = "F";
     public static final String BLOCK_GROUP       = "G";
+    public static final String BLOCK_LIST        = "L";   // List of tags
     public static final String BLOCK_ENUM        = "E";
     public static final String BLOCK_ENUM_VALUE  = "V";
     public static final String BLOCK_MESSAGE     = "M";
     public static final String BLOCK_CONTEXT     = "C";
-    public static final String BLOCK_INSTANCE    = "I";  //— Group Instance (one record/row of values matching a Group Definition)
+    public static final String BLOCK_INSTANCE    = "I";  // Group Instance (one record/row of values matching a Group Definition)
+    public static final String BLOCK_TAG         = "T";
+
 
 
     //TODO add group of values

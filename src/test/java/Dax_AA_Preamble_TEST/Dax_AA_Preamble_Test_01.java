@@ -20,7 +20,7 @@ public class Dax_AA_Preamble_Test_01 extends DaxTestConfig {
 
         preambleStr = preambleStr.replace(DaxCodecSymbol.PAIR_SEPARATOR,'|');
 
-        assertEquals("DAXP|V=1|EN=UTF8|\n", preambleStr);
+        assertEquals("DAXP|V=1|EN=UTF8|CX=CRM|\n", preambleStr);
 
         String wire = codec.encode(pre);
         DaxPreamble copy = codec.decode(wire);

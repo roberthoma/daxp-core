@@ -31,10 +31,12 @@ import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.group.DaxpGroupItf;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.tool.DaxMapTool;
+import org.daxprotocol.core.tool.DaxSetTool;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 public class DaxDictionary {
@@ -61,12 +63,15 @@ public class DaxDictionary {
 
 
     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
+    Map<Integer, Set<DaxTag>> fieldsGroupMap = new HashMap<>();
 
     //TODO add group of values
 //            7=14|5=L|141=35|100=2001,FIX.T3:67,2005,2074|
 //            7=15|5=D|141=35|100=2001,2002,2005,2074,FIX:34
 
     // TODo Dictionary od fields define without identification of group
+
+    Set<DaxTag> tagSet = new HashSet<>();
 
     DaxMessageDic messageDic = new DaxMessageDic();
 
@@ -140,6 +145,16 @@ public class DaxDictionary {
         return groupMap;
     }
 
+
+    public Map<Integer, Set<DaxTag>> getFieldsGroupMap(){
+        return fieldsGroupMap;
+    }
+
+
+    public Set<DaxTag> getTagSet(){
+        return tagSet;
+    }
+
     //**********************************************************************
     // Attributes
 
@@ -149,7 +164,7 @@ public class DaxDictionary {
 
       attributMap.merge(tag, new HashMap<>(Map.of(atrPair.getTag(), atrPair)),
                 (eM, nM) ->
-                        DaxMapTool.putAndReturn(eM, atrPair.getTag(), atrPair));
+                        DaxSetTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
 
     }
 
@@ -230,19 +245,39 @@ public class DaxDictionary {
     public void putAtrEnumName(DaxTag tag, String enumName) {
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrEnumName(enumName));
     }
+   /**
+    *
+    * */
+   //TODO chek exist of fields in group
+    public void putFieldIntoGroup(DaxTag tag, int groupId) {
+        fieldsGroupMap.merge(groupId,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
+                DaxSetTool.addAndReturnSet(daxTags, tag) );
+    }
 
-    public void putAtrGroupId(DaxTag tag, int groupId) {
-        if(groupId==0) {
-            return;
+
+    public void putTag(DaxTag tag){
+
+        if (tagSet.contains(tag)){
+            throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
         }
-        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrGroupId(groupId));
+        tagSet.add(tag);
+
     }
-    public void putAtrGroupId(int tagId, int groupId) {
-        if(groupId==0) {
-            return;
-        }
-        putAttribute(tagId, new DaxAtrGroupId(groupId));
-    }
+
+
+    //    public void putAtrGroupId(DaxTag tag, int groupId) {
+//        if(groupId==0) {
+//            return;
+//        }
+//        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrGroupId(groupId));
+//    }
+
+//    public void putAtrGroupId(int tagId, int groupId) {
+//        if(groupId==0) {
+//            return;
+//        }
+//        putAttribute(tagId, new DaxAtrGroupId(groupId));
+//    }
 
 
 }

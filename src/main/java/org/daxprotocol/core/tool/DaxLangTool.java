@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DaxLangTool {
-    public static List<Field> allFields(Class<?> type) {
+    public static List<Field> allFields(Class<?> clazz) {
         List<Field> fields = new ArrayList<>();
-        for (Class<?> c = type; c != null && c != Object.class; c = c.getSuperclass()) {
+        for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass()) {
             fields.addAll(Arrays.asList(c.getDeclaredFields()));
         }
         return fields;

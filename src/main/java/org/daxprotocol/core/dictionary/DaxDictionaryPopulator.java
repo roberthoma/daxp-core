@@ -21,8 +21,10 @@ package org.daxprotocol.core.dictionary;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.daxprotocol.core.annotation.DaxpDictionary;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
@@ -37,6 +39,7 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -47,8 +50,6 @@ public class DaxDictionaryPopulator {
     //TODO dictionary validation method after populateFromAnnotations
     // error  example :
     // 1) if any group refer to no existed master group
-
-
     //TODO create  service  DaxValidationAttributeManager
 
 
@@ -82,7 +83,7 @@ public class DaxDictionaryPopulator {
     }
 
     public void populateEnumFromAnnotations(Field field , DaxDictionary daxDic){
-        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
+//        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
 
         DaxpField daxp = field.getAnnotation(DaxpField.class);
         field.setAccessible(true);
@@ -101,55 +102,101 @@ public class DaxDictionaryPopulator {
 
     }
 
+    private void populateDaxpFieldGroup(DaxDictionary daxDic, Class<?> clazz){
+
+        int groupId = 0;
+
+//        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
+        DaxpFieldGroup group =  clazz.getAnnotation(DaxpFieldGroup.class);
+
+//        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
+        groupId = group.groupId();
+        group.masterId();
+
+        daxDic.putGroup(groupId, group.name() );
+
+
+        for (Field field : DaxLangTool.allFields(clazz)) {
+//            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
+            if (!field.isAnnotationPresent(DaxpField.class)) {
+                continue;
+            }
+
+            DaxpField daxField = field.getAnnotation(DaxpField.class);
+            field.setAccessible(true);
+
+            int contextId = daxField.context().isBlank() ?
+                    config.getApplicationContextId():
+                    DaxContextMapper.getContextId(daxField.context());
+
+
+            DaxTag tag = new DaxTag(contextId ,daxField.tagId());
+            //Class  change type to char
+            daxDic.putAtrDataType(tag,field.getType());
+
+            if (field.getType().isEnum()){
+                populateEnumFromAnnotations(field,daxDic);
+            }
+
+            popJakartaValidationAttribute(daxDic, field, tag );
+
+            if (daxField.uiLabel()!=null) {
+                daxDic.putAtrUiLabel(tag, daxField.uiLabel());
+            }
+
+            daxDic.putFieldIntoGroup(tag, groupId);
+
+
+        }
+
+    }
+
+    private void populateDaxpDictionary(DaxDictionary daxDic, Class<?> clazz){
+        for (Field field : DaxLangTool.allFields(clazz)) {
+//            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
+
+            if (!field.isAnnotationPresent(DaxpTag.class)) continue;
+
+            // (optional but recommended) only accept static int constants
+            if (!Modifier.isStatic(field.getModifiers())) continue;
+            if (!Modifier.isFinal(field.getModifiers())) continue;
+
+            int tagId = -1;
+            try {
+                tagId = field.getInt(null);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+            DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
+            field.setAccessible(true);
+
+            int contextId = daxTag.context().isBlank() ? config.getApplicationContextId():
+                    DaxContextMapper.getContextId(daxTag.context());
+
+            daxDic.putTag( new DaxTag(contextId ,tagId));
+
+        }
+
+    }
+
+
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
-        DaxEnumPopulator enumManager = new DaxEnumPopulator();
+       // DaxEnumPopulator enumManager = new DaxEnumPopulator();
 
         try {
-            int groupId = 0;
 
             if (clazz.isAnnotationPresent(DaxpFieldGroup.class)){
-                DaxDictionaryDecoratorService.printDaxScanClass(clazz);
-                DaxpFieldGroup group =  clazz.getAnnotation(DaxpFieldGroup.class);
-
-                DaxDictionaryDecoratorService.printDaxGroupInfo(group);
-                groupId = group.groupId();
-                group.masterId();
-
-                daxDic.putGroup(groupId, group.name() );
+                populateDaxpFieldGroup(daxDic,clazz);
             }
 
-            for (Field field : DaxLangTool.allFields(clazz)) {
-                DaxDictionaryDecoratorService.printDaxFieldInfo(field);
-                if (!field.isAnnotationPresent(DaxpField.class)) {
-                   continue;
-                }
-
-                DaxpField daxp = field.getAnnotation(DaxpField.class);
-                field.setAccessible(true);
-
-                int contextId = daxp.context().isBlank() ? config.getApplicationContextId():
-                        DaxContextMapper.getContextId(daxp.context());
-
-
-                DaxTag tag = new DaxTag(contextId ,daxp.tagId());
-                //Class  change type to char
-                daxDic.putAtrDataType(tag,field.getType());
-
-                if (field.getType().isEnum()){
-                    populateEnumFromAnnotations(field,daxDic);
-                }
-
-                popJakartaValidationAttribute(daxDic, field, tag );
-
-                if (daxp.uiLabel()!=null) {
-                    daxDic.putAtrUiLabel(tag, daxp.uiLabel());
-                }
-
-                daxDic.putAtrGroupId(tag, groupId);
-
-
+            if (clazz.isAnnotationPresent(DaxpDictionary.class)){
+                populateDaxpDictionary(daxDic,clazz);
             }
-        }catch (Exception e){
+
+    }catch (Exception e){
             throw new RuntimeException(e);
         }
     }

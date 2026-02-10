@@ -8,5 +8,15 @@ package org.daxprotocol.core.annotation;
  //public static final int  RX_INSTRUMENT_ID   = 4012;
 
 
-public class DaxpTag {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.FIELD })
+public @interface  DaxpTag {
+    String context() default ""; //>>>> empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
+    String uiLabel() default "";
 }
+

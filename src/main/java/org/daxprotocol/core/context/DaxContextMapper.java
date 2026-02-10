@@ -21,8 +21,6 @@
 package org.daxprotocol.core.context;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.model.context.DaxContext;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;

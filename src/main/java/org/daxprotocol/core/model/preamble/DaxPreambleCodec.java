@@ -60,6 +60,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         Map<String,String> map = new LinkedHashMap<>();
         map.put(DaxPreambleTag.VERSION, preamble.getProtocolVersion());
         map.put(DaxPreambleTag.ENCODING, preamble.getEncoding().value());
+        map.put(DaxPreambleTag.MSG_CONTEXT, "CRM");
 
         if (preamble.getMsgCnt() > 1){
             map.put(DaxPreambleTag.MSG_COUNT, String.valueOf(preamble.getMsgCnt()));

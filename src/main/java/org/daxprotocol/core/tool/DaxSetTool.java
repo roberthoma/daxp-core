@@ -21,11 +21,20 @@
 package org.daxprotocol.core.tool;
 
 import java.util.Map;
+import java.util.Set;
 
-public class DaxMapTool {
-    public static  <K,V> Map<K,V> putAndReturn(Map<K,V> map , K k,V v){
+public class DaxSetTool {
+    public static  <K,V> Map<K,V> putAndReturnMap(Map<K,V> map , K k,V v){
         map.put(k,v);
         return map;
+    }
+
+
+    public static <V> Set<V> addAndReturnSet(Set<V> set, V v){
+        if (!set.contains(v)){
+            set.add(v);
+        };
+        return  set;
     }
 
 }

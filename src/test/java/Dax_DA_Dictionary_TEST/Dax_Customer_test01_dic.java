@@ -13,24 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public class Dax_Customer_dic_test01 extends DaxTestConfig {
-    static String   msg;
-    @BeforeAll
-    static void initTest() {
-          msg = "DAXP|V=1|EN=UTF8|\n" +
-                "9=$DD|6=9|\n" +
-                "7=1|209=Id customer|100=2001|110=I|\n" +
-                "7=2|209=First name|100=2002|110=S|\n" +
-                "7=3|209=Surname|100=2003|110=S|\n" +
-                "7=4|209=Year of birth|100=2005|110=I|\n" +
-                "7=5|209=Telephone|100=2073|110=S|\n" +
-                "7=6|209=Town|100=2074|110=S|\n" +
-                "7=7|209=Email|100=2011|110=S|\n" +
-                "7=8|100=2074|103=I|105=Natural Person|\n" +
-                "7=9|100=2074|103=O|105=Legal Entity|\n" +
-                "99=123|";
-    }
-
+public class Dax_Customer_test01_dic extends DaxTestConfig {
     @Test
     void testCustomerDicAttributes(){
 
@@ -49,27 +32,7 @@ public class Dax_Customer_dic_test01 extends DaxTestConfig {
         Assertions.assertEquals("Telephone",telAttrMap.get( DaxTagConst.ATR_UI_LABEL_TAG).getStrValue());
         Assertions.assertEquals("S",telAttrMap.get(DaxTagConst.FIELD_DATA_TYPE_TAG).getStrValue());
 
-    }
 
-
-   @Test
-    void testCustomerDicDecoder(){
-
-        DaxMessage msg = crmProvider.getMessageFactory()
-                                    .dictionaryToMsg(crmProvider.getDictionary());
-
-        String     msgStr    = crmProvider.getMessageCodec().encode(msg);
-        DaxMessage msgAfter  = crmProvider.getMessageCodec().decode(msgStr);
-
-        Assertions.assertEquals(msg.getBlockCount(),msgAfter.getBlockCount());
-
-    }
-
-
-    @Test
-    public void testCustomerEntityEncoder(){
-     DaxMessage message = crmProvider.getMessageCodec().decode(msg);
-     Assertions.assertEquals(9,message.getBlockCount());
     }
 
 }

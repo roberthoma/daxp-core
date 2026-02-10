@@ -22,6 +22,7 @@ package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
@@ -45,6 +46,8 @@ import org.daxprotocol.core.tool.DaxLangTool;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.daxprotocol.core.codec.DaxTagConst.*;
 
@@ -120,13 +123,31 @@ public class DaxMessageFactory {
 
     private void putContextToBody(DaxBody body, DaxContext daxContext) {
         body.nextBlock(DaxBlockType.BLOCK_CONTEXT);
-        body.putPair(FIELD_ID, String.valueOf(daxContext.id));
+       // body.putPair(FIELD_ID, String.valueOf(daxContext.id));
         body.putPair(FIELD_VALUE_SYMBOL, daxContext.symbol);
         body.putPair(FIELD_VALUE_PREFIX, daxContext.tagPrefix);
         body.putPair(FIELD_VALUE_DESCRIPTION, daxContext.description);
 
     }
 
+
+    private void putFieldsGroup(DaxBody body, Integer groupId, Set<DaxTag> daxTags) {
+        body.nextBlock(DaxBlockType.BLOCK_LIST);
+        body.putPair(GROUP_ID, String.valueOf(groupId));
+
+        String tagListStr = daxTags.stream()
+                .map(DaxTag::toString)
+                .collect(Collectors.joining(","));
+
+        body.putPair(FIELD_ID, tagListStr);
+
+    }
+
+    private void putTagsBlock(DaxBody body,  DaxTag tag){
+        body.nextBlock(DaxBlockType.BLOCK_TAG);
+        body.putPair(FIELD_ID, tag.toString());
+
+    }
 
     //TODO Create message with dictionary using context, or group, or field/(list of field)
     //create multi message with context dictionary values
@@ -154,7 +175,16 @@ public class DaxMessageFactory {
         dictionary.getAttributMap().forEach((tag, atrMap) ->
                 putBodyBlock(message.getBody(),tag,  atrMap)
         );
+
+        dictionary.getFieldsGroupMap().forEach((groupId, daxFields) ->
+                putFieldsGroup(message.getBody(),groupId,daxFields)
+
+        );
+
+        dictionary.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
+
     }
+
 
 
     public DaxMessage dictionaryToMsg(DaxDictionary dictionary) {
