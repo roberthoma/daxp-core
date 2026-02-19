@@ -27,7 +27,7 @@ import org.daxprotocol.core.model.tag.DaxTag;
 //Type of block application
 public class DaxBlockType extends DaxPair<String> {
 
-    public static final DaxTag  TAG = new DaxTag(DaxTagConst.BLOCK_TYPE);
+//    public static final DaxTag  TAG = new DaxTag(DaxTagConst.BLOCK_TYPE);
     public static final String BLOCK_FIELD       = "F";
     public static final String BLOCK_GROUP       = "G";
     public static final String BLOCK_LIST        = "L";   // List of tags

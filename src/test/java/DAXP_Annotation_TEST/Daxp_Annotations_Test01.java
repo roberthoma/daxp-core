@@ -21,8 +21,8 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
         Customer customer = new Customer(123, "Robert");
         customer.setRelation(CustomerRelation.WORKER);
         customer.setCitizen(true);
-        DaxMessage message = crmProvider.getMessageFactory().toDaxMessage("UCi", customer);
-        String ecMsg = crmProvider.getMessageCodec().encode(message);
+        DaxMessage message = cmrProvider.getMessageFactory().toDaxMessage("UCi", customer);
+        String ecMsg = cmrProvider.getMessageCodec().encode(message);
         ecMsg= ecMsg.replace(DaxCodecSymbol.PAIR_SEPARATOR,'|');
         Assertions.assertEquals(expectMsg,ecMsg);
     }
@@ -49,7 +49,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
                     System.out.println("Is primitive: " + field.getType().isPrimitive());
                     System.out.println("Pair: "+ daxp.tagId()+"="+field.get(customer));
 
-                    var attMap =  crmProvider.getDictionary().getFieldAttributeMap(daxp.tagId());
+                    var attMap =  cmrProvider.getDictionary().getFieldAttributeMap(daxp.tagId());
 
 //                    System.out.println("Label: "+ Optional.of(attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL))
 //                                    .
@@ -69,15 +69,15 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
     void injection(){
         String msgStr = "DAXP|V=1|EN=UTF8|9=UCi|20=1|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
 
-        DaxMessage message = crmProvider.getMessageCodec().decode(msgStr);
+        DaxMessage message = cmrProvider.getMessageCodec().decode(msgStr);
 
-        Customer customer = crmProvider.getMessageConverter().createFromMessage(message, Customer.class);
+        Customer customer = cmrProvider.getMessageConverter().createFromMessage(message, Customer.class);
         Assertions.assertEquals("Robert" , customer.getName());
         Assertions.assertEquals(123 , customer.getCustomerId());
 
-        DaxMessage updMsg = crmProvider.getMessageCodec().decode("DAXP|V=1|EN=UTF8|9=CU|20=1|2001=123|2002=Jan|2074=Toronto|99=123|\"");
+        DaxMessage updMsg = cmrProvider.getMessageCodec().decode("DAXP|V=1|EN=UTF8|9=CU|20=1|2001=123|2002=Jan|2074=Toronto|99=123|\"");
 
-        crmProvider.getMessageConverter().updateFromMessage(updMsg, customer );
+        cmrProvider.getMessageConverter().updateFromMessage(updMsg, customer );
         Assertions.assertEquals("Jan",customer.getName());
         Assertions.assertEquals("Toronto",customer.getTown());
 

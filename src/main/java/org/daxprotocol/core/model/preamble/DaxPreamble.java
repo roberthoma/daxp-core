@@ -21,7 +21,6 @@ package org.daxprotocol.core.model.preamble;
 
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
 
 import java.util.regex.Pattern;
 
@@ -31,9 +30,12 @@ import java.util.regex.Pattern;
  */
 public class DaxPreamble {
     Pattern pairPattern;
-    public char MSG_PAIR_SEPARATOR;
+
+
+    //    public char MSG_PAIR_SEPARATOR;
+    private char msgPairSeparator;
     private String protocolVersion = DaxpConfig.PROTOCOL_VERSION;       // V=1
-    private int msgCnt;                      //CNT  Number of item lines following preamble. Useful for validation.
+    private int msgCnt;                      //CNT  Number of item messages following preamble.
     private DaxEncoding encoding;         // EN=UTF8
     private int msgContextId;
 
@@ -69,8 +71,8 @@ public class DaxPreamble {
     }
 
     public void setPairSeparator(Character pairSeparator) {
-        this.MSG_PAIR_SEPARATOR = pairSeparator;
-        this.setPairPattern(DaxDecodeService.getPreamblePairPattern(this.MSG_PAIR_SEPARATOR));
+        this.msgPairSeparator = pairSeparator;
+        this.setPairPattern(DaxDecodeService.getPreamblePairPattern(this.msgPairSeparator));
     }
 
     public Pattern getPairPattern() {
@@ -88,7 +90,8 @@ public class DaxPreamble {
         this.msgContextId = contextId;
     }
 
-    public String getMsgContext() {
-        return DaxContextMapper.getContextSymbol(msgContextId);
+    public char getMsgPairSeparator() {
+        return msgPairSeparator;
     }
+
 }

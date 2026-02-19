@@ -14,7 +14,7 @@ public class CustomerMessages {
 
 
 
-    public  static void init (DaxDictionary dictionary){
+    public  static void initDictionaryBeforeTest(DaxDictionary dictionary){
 
         dictionary.putMsgItem(new DaxMessageDicItem(CRM_DATA_REQ, "Request for Customer Data"));
         dictionary.putMsgItem(new DaxMessageDicItem(CRM_DATA, "Customer Data"));

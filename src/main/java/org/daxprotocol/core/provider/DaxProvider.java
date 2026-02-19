@@ -22,15 +22,18 @@
 package org.daxprotocol.core.provider;
 
 import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
+import org.daxprotocol.core.strategy.DaxCoreStrategy;
 
 public interface DaxProvider {
-     DaxpConfig getConfig();
+    DaxpConfig getConfig();
 
     DaxPreambleCodec getPreambleCodec();
 
@@ -43,5 +46,11 @@ public interface DaxProvider {
     DaxMessageFactory getMessageFactory();
 
     DaxDictionaryPopulator getDictionaryPopulator();
+
+    DaxCoreStrategy getCoreStrategy();
+
+    DaxContextMapper getContextMapper();
+
+    DaxPairCodec getPairCodec();
 
 }

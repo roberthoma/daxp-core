@@ -15,19 +15,19 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
     @Test
     void test1(){
 
-        DaxMessageCodec codec = crmProvider.getMessageCodec();
-        DaxDictionaryPopulator dictionaryPopulator = crmProvider.getDictionaryPopulator();
-        DaxMessageFactory factory = crmProvider.getMessageFactory();
-        DaxDictionary dicOrg = crmProvider.getDictionary();
+        DaxMessageCodec codec = cmrProvider.getMessageCodec();
+        DaxDictionaryPopulator dictionaryPopulator = cmrProvider.getDictionaryPopulator();
+        DaxMessageFactory factory = cmrProvider.getMessageFactory();
+        DaxDictionary dicOrg = cmrProvider.getDictionary();
         //--------------
-        DaxMessage messageOrg =  crmProvider.getMessageFactory().dictionaryToMsg(dicOrg);
+        DaxMessage messageOrg =  cmrProvider.getMessageFactory().dictionaryToMsg(dicOrg);
 
         String msgStrOrg =  codec.encode(messageOrg);
         System.out.println("- original -");
         System.out.println(msgStrOrg);
 
         System.out.println(" -- AFTER -- ");
-        DaxDictionary dicAfter = new DaxDictionary(cntProvider.getConfig());
+        DaxDictionary dicAfter = new DaxDictionary(cmrProvider.getConfig(), cmrProvider.getContextMapper());
 
         DaxMessage messageAfter = codec.decode(msgStrOrg);
 

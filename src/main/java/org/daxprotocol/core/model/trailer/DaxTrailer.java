@@ -22,13 +22,14 @@ package org.daxprotocol.core.model.trailer;
 
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DaxTrailer {
 
-    Map<Integer, DaxPair<?>> map = new LinkedHashMap<>();
+    Map<DaxTag, DaxPair<?>> map = new LinkedHashMap<>();
 
     public DaxTrailer(){
         map.put(DaxTagConst.CHECKSUM,new DaxPair<Integer>(DaxTagConst.CHECKSUM,321));

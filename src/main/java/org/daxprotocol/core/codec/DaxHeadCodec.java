@@ -30,12 +30,10 @@ import static org.daxprotocol.core.codec.DaxTagConst.*;
 //TODO add logger
 public class DaxHeadCodec implements DaxCodec<DaxHead> {
 
-    DaxpConfig config;
     DaxPairCodec pairCodec;
 
-    public DaxHeadCodec(DaxpConfig config) {
-        this.config = config;
-        this.pairCodec = new DaxPairCodec(config);
+    public DaxHeadCodec(DaxPairCodec pairCodec) {
+        this.pairCodec = pairCodec;
     }
 
     public String encode(DaxHead head,int blockCount) {

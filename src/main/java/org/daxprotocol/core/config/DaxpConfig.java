@@ -20,59 +20,61 @@
 
 package org.daxprotocol.core.config;
 
-
-import org.daxprotocol.core.context.DaxContextMapper;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
-//TODO Add builder
 public final class DaxpConfig {
-    public static final String DAX_CONTEXT_SYMBOL = "SYS";
-    public static final int    DAX_CONTEXT_ID = 0;
-    public static  String      APP_CONTEXT_SYMBOL ;
-    public static  int         APP_CONTEXT_ID ; // >>> Resign from static
-
-
-    /** Generator used for assigning IDs to unknown contexts :   AtomicInteger nextContextId */
-    public static final int   CONTEXT_DYNAMIC_START_ID = 10;
+    public static final String PROTOCOL_VERSION = "1";
 
     /** DAXP| char after DAXP is default separator for current message*/
-    public static final int    SEPARATOR_IDX    = 4;
+    public static final int SEPARATOR_IDX    = 4;
 
-    public static final String PROTOCOL_VERSION = "1";
-    public static final String DEFAULT_ENCODING = "UTF8";
-    public static final int    MAX_DAXP_TAG_ID  = 255;
-
-    private int applicationContextId;
-    private String encoding;
+    public static final int MAX_DAXP_TAG_ID  = 255;
+    public static final int DAXP_CONTEXT_ID = 0;
+    public static final String DAX_CONTEXT_SYMBOL = "SYS";
+    public static final String DAX_CONTEXT_DESCRIPTION = "Daxp Context";
 
 
-    //TODO NewLine after block
+    private   String  defaultEncoding  = "UTF8";
 
-    public String getEncoding() {
-        return encoding;
+    private String appContextSymbol;
+    private String appContextTagPrefix;
+    private String appContextDescription;
+
+
+
+
+    public String getAppContextTagPrefix() {
+        return appContextTagPrefix;
     }
 
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
+    public void setAppContextTagPrefix(String appContextTagPrefix) {
+        this.appContextTagPrefix = appContextTagPrefix;
     }
 
-    public void setApplicationContextId(int applicationContextId) {
-        this.applicationContextId = applicationContextId;
-//        DaxpConfig.APP_CONTEXT_ID = applicationContextId;
+    public void setAppContextSymbol(String appContextSymbol) {
+        this.appContextSymbol = appContextSymbol;
     }
 
-
-    public  int getApplicationContextId() {
-        return applicationContextId;
-//        return DaxpConfig.APP_CONTEXT_ID;
+    public String getAppContextSymbol() {
+        return appContextSymbol;
     }
-    public  String getApplicationContext() {
-        return DaxContextMapper.getContextSymbol(applicationContextId);
-//        return DaxContextMapper.getContextSymbol(DaxpConfig.APP_CONTEXT_ID);
+    public String getAppContextDescription() {
+        return appContextDescription;
     }
 
+    public void setAppContextDescription(String appContextDescription) {
+        this.appContextDescription = appContextDescription;
+    }
 
+    public int getAppContextId(){
+        return 1;  // todo put in config file
+    }
+
+    public String getDefaultEncoding() {
+        return defaultEncoding;
+    }
+
+    public void setDefaultEncoding(String defaultEncoding) {
+        this.defaultEncoding = defaultEncoding;
+    }
 
     public DaxpConfig() {
     }

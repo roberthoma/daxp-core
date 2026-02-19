@@ -20,11 +20,12 @@ public class Dax_Message_from_Maps extends DaxTestConfig {
 
     @Test
     public void testFactoryMsgFromMap(){
-        DaxMessageFactory factory = crmProvider.getMessageFactory();
-        DaxMessageCodec codec = crmProvider.getMessageCodec();
-        int appContextId = crmProvider.getConfig().getApplicationContextId();
+        DaxMessageFactory factory = cmrProvider.getMessageFactory();
+        DaxMessageCodec codec = cmrProvider.getMessageCodec();
+        DaxContextMapper contextMapper = cmrProvider.getContextMapper();
+        int appContextId = cmrProvider.getConfig().getAppContextId();
         Map<DaxTag,DaxPair<?>> pairMap = new HashMap<>();
-        int fixContextId = DaxContextMapper.getContextId(ContextConst.CTX_FIX_PROTOCOL);
+        int fixContextId = contextMapper.getContextId(ContextConst.CTX_FIX_PROTOCOL);
 
         DaxTag tag1 = new DaxTag(fixContextId, 123);
         DaxStringPair pai1 = new DaxStringPair(tag1,"value123");

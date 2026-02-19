@@ -1,17 +1,10 @@
 package Dax_DA_Dictionary_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
-import Dax_00_Base_test.customer.CustomerDaxTag;
-import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.tag.DaxTag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 public class Dax_Customer_test30_dic_from_msg extends DaxTestConfig {
     static String   msg;
@@ -34,7 +27,7 @@ public class Dax_Customer_test30_dic_from_msg extends DaxTestConfig {
 
     @Test
     public void testCustomerEntityEncoder(){
-        DaxMessage message = crmProvider.getMessageCodec().decode(msg);
+        DaxMessage message = cmrProvider.getMessageCodec().decode(msg);
         Assertions.assertEquals(9,message.getBlockCount());
     }
 

@@ -22,10 +22,6 @@ package org.daxprotocol.core.model.pair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxStringPair extends DaxPair<String> {
-    public DaxStringPair(int tagId, String value) {
-        super(tagId, value);
-    }
-
     public DaxStringPair(DaxTag tag, String value) {
         super(tag, value);
     }

@@ -10,14 +10,17 @@ public class Dax_00_ConfigParametersTest extends DaxTestConfig {
     @Test
     public void test_reading_properties(){
 
-        DaxpConfig crmConfig = crmProvider.getConfig();
+        DaxpConfig crmConfig = cmrProvider.getConfig();
         DaxpConfig cntConfig = cntProvider.getConfig();
 
-        Assertions.assertEquals(10,crmConfig.getApplicationContextId());
-        Assertions.assertEquals(11,cntConfig.getApplicationContextId());
 
-        Assertions.assertEquals("CRM",crmConfig.getApplicationContext());
-        Assertions.assertEquals("CNT",cntConfig.getApplicationContext());
+        Assertions.assertEquals(1,crmConfig.getAppContextId());
+        Assertions.assertEquals(1,cntConfig.getAppContextId());
+
+        Assertions.assertEquals("CUSTOMER",crmConfig.getAppContextSymbol());
+        Assertions.assertEquals("CONTRACTS",cntConfig.getAppContextSymbol());
+        Assertions.assertEquals("CMR",crmConfig.getAppContextTagPrefix());
+        Assertions.assertEquals("CNT",cntConfig.getAppContextTagPrefix());
 
 
     }

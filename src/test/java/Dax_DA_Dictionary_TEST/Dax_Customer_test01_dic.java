@@ -5,10 +5,8 @@ import Dax_00_Base_test.customer.CustomerDaxTag;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -17,7 +15,7 @@ public class Dax_Customer_test01_dic extends DaxTestConfig {
     @Test
     void testCustomerDicAttributes(){
 
-        DaxDictionary dic = crmProvider.getDictionary();
+        DaxDictionary dic = cmrProvider.getDictionary();
 
         Map<DaxTag, DaxPair<?>> idAttrMap =  dic.getFieldAttributeMap(CustomerDaxTag.CUSTOMER_ID);
 

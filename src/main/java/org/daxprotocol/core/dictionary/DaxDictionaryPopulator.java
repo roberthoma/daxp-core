@@ -30,8 +30,6 @@ import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
-import org.daxprotocol.core.dictionary.daxenum.DaxEnumPopulator;
 import org.daxprotocol.core.field.DaxAtrNullable;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
@@ -43,18 +41,20 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
 
+//TODO dictionary validation method after populateFromAnnotations
+// error  example :
+// 1) if any group refer to no existed master group
+//TODO create  service  DaxValidationAttributeManager
 
 public class DaxDictionaryPopulator {
 
     DaxpConfig config;
-    //TODO dictionary validation method after populateFromAnnotations
-    // error  example :
-    // 1) if any group refer to no existed master group
-    //TODO create  service  DaxValidationAttributeManager
+    DaxContextMapper contextMapper;
 
 
-    public DaxDictionaryPopulator(DaxpConfig config){
+    public DaxDictionaryPopulator(DaxpConfig config, DaxContextMapper contextMapper){
         this.config = config;
+        this.contextMapper = contextMapper;
     }
 
     private void popJakartaValidationAttribute(DaxDictionary daxDic,Field field ,DaxTag tag){
@@ -87,7 +87,7 @@ public class DaxDictionaryPopulator {
 
         DaxpField daxp = field.getAnnotation(DaxpField.class);
         field.setAccessible(true);
-        DaxTag tag = new DaxTag(config.getApplicationContextId(),daxp.tagId());
+        DaxTag tag = new DaxTag(config.getAppContextId(),daxp.tagId());
         String enumName = field.getType().getSimpleName();
         daxDic.putAtrEnumName(tag, enumName);
 
@@ -126,8 +126,8 @@ public class DaxDictionaryPopulator {
             field.setAccessible(true);
 
             int contextId = daxField.context().isBlank() ?
-                    config.getApplicationContextId():
-                    DaxContextMapper.getContextId(daxField.context());
+                    config.getAppContextId():
+                    contextMapper.getContextId(daxField.context());
 
 
             DaxTag tag = new DaxTag(contextId ,daxField.tagId());
@@ -173,8 +173,8 @@ public class DaxDictionaryPopulator {
             DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
             field.setAccessible(true);
 
-            int contextId = daxTag.context().isBlank() ? config.getApplicationContextId():
-                    DaxContextMapper.getContextId(daxTag.context());
+            int contextId = daxTag.context().isBlank() ? config.getAppContextId():
+                    contextMapper.getContextId(daxTag.context());
 
             daxDic.putTag( new DaxTag(contextId ,tagId));
 
@@ -184,7 +184,7 @@ public class DaxDictionaryPopulator {
 
 
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
-       // DaxEnumPopulator enumManager = new DaxEnumPopulator();
+        // DaxEnumPopulator enumManager = new DaxEnumPopulator();
 
         try {
 
@@ -196,51 +196,51 @@ public class DaxDictionaryPopulator {
                 populateDaxpDictionary(daxDic,clazz);
             }
 
-    }catch (Exception e){
+        }catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
     private void populateFromMsgBlock(DaxDictionary daxDic, Map<DaxTag, DaxPair<?>> blockPairMap) {
 
-       String blockType =   blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.BLOCK_TYPE)).getStrValue();
+        String blockType =   blockPairMap.get(DaxTagConst.BLOCK_TYPE).getStrValue();
 
         if(blockType.equals(DaxBlockType.BLOCK_MESSAGE)){
             DaxMessageDicItem item = new DaxMessageDicItem(
-                    blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_VALUE)).getStrValue(),
-                    blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_VALUE_DESCRIPTION)).getStrValue());
+                    blockPairMap.get(DaxTagConst.FIELD_VALUE).getStrValue(),
+                    blockPairMap.get(DaxTagConst.FIELD_VALUE_DESCRIPTION).getStrValue());
 
             daxDic.putMsgItem(item);
             return;
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM)){
-            String name = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.ENUM_NAME)).getStrValue();
+            String name = blockPairMap.get(DaxTagConst.ENUM_NAME).getStrValue();
             String desc = "";
-            if (blockPairMap.containsKey(DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION))){
-                desc = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)).getStrValue();
+            if (blockPairMap.containsKey(DaxTagConst.ENUM_DESCRIPTION)){
+                desc = blockPairMap.get(DaxTagConst.ENUM_DESCRIPTION).getStrValue();
             }
             daxDic.putEnum(name, desc );
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM_VALUE)){
-            String name  = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.ENUM_NAME)).getStrValue();
-            String value = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_VALUE)).getStrValue();
+            String name  = blockPairMap.get(DaxTagConst.ENUM_NAME).getStrValue();
+            String value = blockPairMap.get(DaxTagConst.FIELD_VALUE).getStrValue();
 
             daxDic.putEnumValue(name,value,"");
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
-            daxDic.putGroup( Integer.parseInt(blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.GROUP_ID)).getStrValue()),
-                    blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.GROUP_NAME)).getStrValue());
+            daxDic.putGroup( Integer.parseInt(blockPairMap.get(DaxTagConst.GROUP_ID).getStrValue()),
+                    blockPairMap.get(DaxTagConst.GROUP_NAME).getStrValue());
         }
 
 
         if(blockType.equals(DaxBlockType.BLOCK_FIELD)){
 
-            String fieldId = blockPairMap.get(DaxTag.newPredefineTag(DaxTagConst.FIELD_ID)).getStrValue();
+            String fieldId = blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue();
 
-            DaxTag tag = DaxDecodeService.parseDaxTag(fieldId);
+            DaxTag tag = DaxDecodeService.parseDaxTag(config.getAppContextId(), fieldId);
 
 
             blockPairMap.forEach((integer, daxPair) ->
@@ -258,8 +258,8 @@ public class DaxDictionaryPopulator {
         //message.getHead().
 
         message.getBody().getBlockMap().forEach((integer, integerDaxPairMap) ->
-                  populateFromMsgBlock(daxDic, integerDaxPairMap)
-                );
+                populateFromMsgBlock(daxDic, integerDaxPairMap)
+        );
     }
 
 

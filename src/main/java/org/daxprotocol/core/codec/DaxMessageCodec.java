@@ -19,7 +19,6 @@
  */
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
@@ -36,19 +35,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DaxMessageCodec implements DaxCodec<DaxMessage>{
-
+    DaxPairCodec pairCodec;
     DaxPreambleCodec preambleCodec;
     DaxHeadCodec headCodec;
     DaxBodyCodec bodyCodec;
     DaxTrailerCodec trailerCodec;
 
-
-    public DaxMessageCodec(DaxpConfig config) {
-
-      preambleCodec = new DaxPreambleCodec(config);
-      headCodec = new DaxHeadCodec(config);
-      bodyCodec = new DaxBodyCodec(config);
-      trailerCodec = new DaxTrailerCodec();
+    public DaxMessageCodec( DaxPairCodec pairCodec,
+            DaxPreambleCodec preambleCodec,
+            DaxHeadCodec headCodec,
+            DaxBodyCodec bodyCodec,
+            DaxTrailerCodec trailerCodec
+            ) {
+      this.pairCodec = pairCodec;
+      this.preambleCodec = preambleCodec;
+      this.headCodec = headCodec;
+      this.bodyCodec = bodyCodec;
+      this.trailerCodec = trailerCodec;
 
     }
 
@@ -142,10 +145,10 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 
-        List<DaxStringPair> listOfPair = DaxDecodeService.
+        List<DaxStringPair> listOfPair = pairCodec.
                           parsePairs(msgPairsStr,
-                                     DaxDecodeService.getMessagePairPattern(preamble.MSG_PAIR_SEPARATOR ),
-                                     preamble.getMsgContext());
+                                     DaxDecodeService.getMessagePairPattern(preamble.getMsgPairSeparator()),
+                                     preamble.getMsgContextId());
 
         List<List<DaxStringPair>> msgPairList =  splitMessages(listOfPair);
 

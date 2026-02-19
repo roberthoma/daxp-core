@@ -39,24 +39,29 @@ public final class DaxContextMapper {
     // ---------------------------------------
 
     /** Maps symbol -> contextId */
-    private static final ConcurrentMap<String, Integer> symbolToId = new ConcurrentHashMap<>();
+    private  final ConcurrentMap<String, Integer> symbolToId = new ConcurrentHashMap<>();
 
     /** Maps contextId -> symbol */
-    private static final ConcurrentMap<Integer, String> idToSymbol = new ConcurrentHashMap<>();
+    private  final ConcurrentMap<Integer, String> idToSymbol = new ConcurrentHashMap<>();
 
     /** Generator used for assigning IDs to unknown contexts */
-    private static final AtomicInteger nextContextId = new AtomicInteger( DaxpConfig.CONTEXT_DYNAMIC_START_ID ); // dynamic contexts start at 100
+    private  final AtomicInteger nextContextId;
+
 
     // ---------------------------------------
     // Static initialization (predefined contexts)
     // ---------------------------------------
+    DaxpConfig config;
+    public DaxContextMapper(DaxpConfig config){
+       this.config = config;
+       nextContextId = new AtomicInteger( config.getAppContextId() );
+    }
+    public  void registerPredefined(DaxContext context) {
+        registerPredefined(context.getSymbol(),context.getId()) ;
 
-    static {
-        registerPredefined(DaxpConfig.DAX_CONTEXT_SYMBOL,
-                           DaxpConfig.DAX_CONTEXT_ID);
     }
 
-    public static void registerPredefined(String symbol, int id) {
+    public  void registerPredefined(String symbol, int id) {
         symbolToId.put(symbol, id);
         idToSymbol.put(id, symbol);
     }
@@ -64,12 +69,13 @@ public final class DaxContextMapper {
     // ---------------------------------------
     // API
     // ---------------------------------------
+    /** Generator used for assigning IDs to unknown contexts :   AtomicInteger nextContextId */
 
     /**
      * Returns the numeric context ID for a symbol.
      * If the symbol does not exist yet, a new ID is created.
      */
-    public static int getContextId(String symbol) {
+    public  int getContextId(String symbol) {
         if (symbol == null) {
             throw new IllegalArgumentException("Context symbol cannot be null");
         }
@@ -85,14 +91,14 @@ public final class DaxContextMapper {
      * Returns the symbol for a given context ID.
      * Returns null if the ID is unknown.
      */
-    public static String getContextSymbol(int id) {
+    public  String getContextSymbol(int id) {
         return idToSymbol.get(id);
     }
 
     /**
      * Checks if symbol is already registered.
      */
-    public static boolean isKnownSymbol(String symbol) {
+    public  boolean isKnownSymbol(String symbol) {
         if (symbol == null) return false;
         return symbolToId.containsKey(symbol.toUpperCase());
     }
@@ -100,17 +106,15 @@ public final class DaxContextMapper {
     /**
      * Returns true if ID is already registered.
      */
-    public static boolean isKnownId(int id) {
+    public  boolean isKnownId(int id) {
         return idToSymbol.containsKey(id);
     }
 
     /**
      * Returns all known symbols (for debugging or UI)
      */
-    public static ConcurrentMap<String, Integer> getAllMappings() {
+    public  ConcurrentMap<String, Integer> getAllMappings() {
         return new ConcurrentHashMap<>(symbolToId);
     }
 
-    // Prevent instantiation
-    private DaxContextMapper() {}
 }

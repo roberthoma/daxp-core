@@ -20,47 +20,74 @@
 
 package org.daxprotocol.core.provider;
 
+import org.daxprotocol.core.codec.DaxBodyCodec;
+import org.daxprotocol.core.codec.DaxHeadCodec;
 import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.config.DaxpPropertiesLoader;
+import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
-import org.daxprotocol.core.model.context.DaxContext;
+import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
+import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
+import org.daxprotocol.core.strategy.DaxCoreStrategy;
+import org.daxprotocol.core.strategy.DaxCoreStrategyImpl;
 
 public class DaxProviderImpl implements DaxProvider {
 
-    private DaxpConfig config;
+    private final DaxpConfig config;
 
-    private DaxPreambleCodec preambleCodec;
+    private final DaxPreambleCodec preambleCodec;
 
-    private DaxMessageCodec messageCodec;
+    private final DaxMessageCodec messageCodec;
 
-    private DaxMessageConverter messageConverter;
+    private final DaxMessageConverter messageConverter;
 
-    private DaxDictionary dictionary;
+    private final DaxDictionary dictionary;
 
-    private DaxpPropertiesLoader propertiesLoader;
+    private final DaxMessageFactory messageFactory;
 
-    private DaxMessageFactory messageFactory;
+    private final DaxDictionaryPopulator dictionaryPopulator;
 
-    private DaxDictionaryPopulator dictionaryPopulator;
+    private final DaxCoreStrategy coreStrategy;
 
-    public DaxProviderImpl(String propertiesFile){
-        propertiesLoader = new DaxpPropertiesLoader(propertiesFile);
-        propertiesLoader.load();
+    private final DaxContextMapper contextMapper;
 
-        DaxContext appContext =  propertiesLoader.getApplicationContext();
+    private final DaxPairCodec pairCodec;
 
-        config = new DaxpConfig();
-        dictionary = new DaxDictionary(config);
-        config.setApplicationContextId( DaxContextMapper
-                                       .getContextId( appContext.symbol ));
+    public DaxProviderImpl(DaxpConfig config){
+        this.config = config;
 
+        DaxContext appContext = DaxContextFactory.createAppContext(config);
+        DaxContext sysContext = DaxContextFactory.createSysContext();
+
+        contextMapper = new DaxContextMapper(config);
+
+        contextMapper.registerPredefined(sysContext);
+        contextMapper.registerPredefined(appContext);
+
+        dictionary = new DaxDictionary(config, contextMapper);
         dictionary.putContext(appContext);
+
+        pairCodec = new DaxPairCodec(config,contextMapper);
+
+        preambleCodec = new DaxPreambleCodec(config, contextMapper);
+
+        DaxHeadCodec headCodec = new DaxHeadCodec(pairCodec);;
+        DaxBodyCodec bodyCodec = new DaxBodyCodec(pairCodec);
+        DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
+
+        messageCodec = new DaxMessageCodec(pairCodec, preambleCodec, headCodec, bodyCodec, trailerCodec);
+
+
+        messageConverter     = new DaxMessageConverter(config,contextMapper );
+        messageFactory       = new DaxMessageFactory(config, contextMapper);
+        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper);
+        coreStrategy         = new DaxCoreStrategyImpl(config, dictionary, dictionaryPopulator);
 
     }
 
@@ -73,23 +100,15 @@ public class DaxProviderImpl implements DaxProvider {
     }
 
     @Override public DaxPreambleCodec getPreambleCodec() {
-        if(preambleCodec == null){
-            preambleCodec = new DaxPreambleCodec(getConfig());
-        }
+
         return preambleCodec;
     }
 
     @Override public DaxMessageCodec getMessageCodec() {
-        if(messageCodec == null) {
-            messageCodec = new DaxMessageCodec(getConfig());
-        }
         return messageCodec;
     }
 
     @Override public DaxMessageConverter getMessageConverter() {
-        if(messageConverter == null) {
-            messageConverter = new DaxMessageConverter(getConfig());
-        }
         return messageConverter;
     }
 
@@ -101,16 +120,23 @@ public class DaxProviderImpl implements DaxProvider {
     }
 
     @Override public DaxMessageFactory getMessageFactory() {
-        if (messageFactory == null){
-            messageFactory = new DaxMessageFactory(getConfig());
-        }
         return messageFactory;
     }
     @Override public DaxDictionaryPopulator getDictionaryPopulator (){
-        if(dictionaryPopulator == null){
-            dictionaryPopulator = new DaxDictionaryPopulator(getConfig());
-        }
         return dictionaryPopulator;
     }
+
+    @Override public DaxCoreStrategy getCoreStrategy() {
+        return coreStrategy;
+    }
+
+    @Override public DaxContextMapper getContextMapper() {
+        return contextMapper;
+    }
+
+    @Override public DaxPairCodec getPairCodec() {
+        return pairCodec;
+    }
+
 
 }

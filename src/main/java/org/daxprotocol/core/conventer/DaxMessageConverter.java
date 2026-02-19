@@ -31,9 +31,11 @@ import java.lang.reflect.Field;
 public class DaxMessageConverter {
 
     DaxpConfig config;
+    DaxContextMapper contextMapper;
 
-    public DaxMessageConverter(DaxpConfig config) {
+    public DaxMessageConverter(DaxpConfig config, DaxContextMapper contextMapper) {
         this.config = config;
+        this.contextMapper = contextMapper;
     }
 
     public <T> T createFromMessage(DaxMessage message, Class<T> targetClass) {
@@ -44,8 +46,8 @@ public class DaxMessageConverter {
                 DaxpField ann = f.getAnnotation(DaxpField.class);
                 if (ann == null) continue; // skip non-annotated fields (e.g., town)
 
-                int contextId = ann.context().isBlank() ? config.getApplicationContextId():
-                        DaxContextMapper.getContextId(ann.context());
+                int contextId = ann.context().isBlank() ? config.getAppContextId():
+                        contextMapper.getContextId(ann.context());
 
                 var pair = message.get(new DaxTag( contextId, ann.tagId()));
                 if (pair==null) continue; // gracefully ignore missing tags or empty
@@ -72,7 +74,7 @@ public class DaxMessageConverter {
             DaxpField ann = f.getAnnotation(DaxpField.class);
             if (ann == null) continue;
 
-            int contextId = config.getApplicationContextId() ;
+            int contextId = config.getAppContextId() ;
 
             DaxTag tag = new DaxTag(contextId , ann.tagId());
             if(! message.getBody().getBlock(0).containsKey(tag)) continue;

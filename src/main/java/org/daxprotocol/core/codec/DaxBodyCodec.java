@@ -18,7 +18,6 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.codec;
-import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
@@ -29,13 +28,11 @@ import java.util.Map;
 
 public class DaxBodyCodec implements DaxCodec<DaxBody> {
 
-    DaxpConfig config;
     DaxPairCodec pairCodec;
 
 
-    public DaxBodyCodec(DaxpConfig config) {
-        this.config = config;
-        this.pairCodec = new DaxPairCodec(config);
+    public DaxBodyCodec(DaxPairCodec pairCodec) {
+        this.pairCodec = pairCodec;
     }
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
@@ -48,7 +45,7 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
             pairCodec.encode(sb, DaxTagConst.BLOCK_INDEX, String.valueOf(blockIdx+1));
 
             //TODO Add external exception service
-            if (!blockMap.containsKey(new DaxTag(DaxTagConst.BLOCK_TYPE)) ){
+            if (!blockMap.containsKey(DaxTagConst.BLOCK_TYPE) ){
 
                 StringBuilder blostr  = new StringBuilder();
 
@@ -59,7 +56,7 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
                 +" block:"+blostr);
             }
 
-            DaxPair<?> blockType =  blockMap.get(new DaxTag(DaxTagConst.BLOCK_TYPE));
+            DaxPair<?> blockType =  blockMap.get(DaxTagConst.BLOCK_TYPE);
             pairCodec.encode(sb, DaxTagConst.BLOCK_TYPE, blockType.getStrValue());
         }
 

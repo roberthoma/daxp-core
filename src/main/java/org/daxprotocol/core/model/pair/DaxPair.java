@@ -27,7 +27,8 @@ public  class DaxPair<T>{
     protected T value;
 
     public DaxPair(Integer tagId, T value){
-        this.tag = new DaxTag(tagId);
+//        this.tag = new DaxTag(tagId);
+        this.tag =  DaxTag.newPredefineTag(tagId);
         this.value = value;
     }
     public DaxPair(DaxTag tag, T value){

@@ -52,15 +52,20 @@ public class DaxBody {
         blockMap.get(blockIdx).put(pair.getTag(),pair);
     }
 
-    public void putPair(int tag, String value){
+//    public void putPair(int tagId, String value){
+//        checkBlockCounterBeforePut();
+//        blockMap.get(blockIdx).put(new DaxTag(tagId),new DaxStringPair(tagId, value));
+//    }
+
+    public void putPair(DaxTag tag, String value){
         checkBlockCounterBeforePut();
-        blockMap.get(blockIdx).put(new DaxTag(tag),new DaxStringPair(tag, value));
+        blockMap.get(blockIdx).put(tag,new DaxStringPair(tag, value));
     }
 
-    public void putPair(int contextId,int tag, String value){
-        checkBlockCounterBeforePut();
-        blockMap.get(blockIdx).put(new DaxTag(contextId,tag),new DaxStringPair(tag, value));
-    }
+//    public void putPair(int contextId,int tag, String value){
+//        checkBlockCounterBeforePut();
+//        blockMap.get(blockIdx).put(new DaxTag(contextId,tag),new DaxStringPair(tag, value));
+//    }
 
     public void nextBlock(){
         blockIdx = blockMap.size();

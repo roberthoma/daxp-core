@@ -13,14 +13,14 @@ public class Dax_AA_Preamble_Test_01 extends DaxTestConfig {
     void AA_shouldEncodeAndDecodePreamble() {
         DaxPreamble pre = new DaxPreamble();
 
-        DaxPreambleCodec codec = crmProvider.getPreambleCodec();
+        DaxPreambleCodec codec = cmrProvider.getPreambleCodec();
 
 
         String preambleStr = codec.encode(pre);
 
         preambleStr = preambleStr.replace(DaxCodecSymbol.PAIR_SEPARATOR,'|');
 
-        assertEquals("DAXP|V=1|EN=UTF8|CX=CRM|\n", preambleStr);
+        assertEquals("DAXP|V=1|EN=UTF8|CX=CMR|\n", preambleStr);
 
         String wire = codec.encode(pre);
         DaxPreamble copy = codec.decode(wire);

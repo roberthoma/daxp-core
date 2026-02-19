@@ -40,9 +40,11 @@ import static org.daxprotocol.core.codec.DaxCodecSymbol.PAIR_SEPARATOR;
 public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 
     DaxpConfig config;
+    DaxContextMapper contextMapper;
 
-    public DaxPreambleCodec(DaxpConfig config) {
+    public DaxPreambleCodec(DaxpConfig config, DaxContextMapper contextMapper) {
         this.config = config;
+        this.contextMapper = contextMapper;
     }
 
     private  void encode(StringBuilder sb, String tag, String value ) {
@@ -60,7 +62,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         Map<String,String> map = new LinkedHashMap<>();
         map.put(DaxPreambleTag.VERSION, preamble.getProtocolVersion());
         map.put(DaxPreambleTag.ENCODING, preamble.getEncoding().value());
-        map.put(DaxPreambleTag.MSG_CONTEXT, "CRM");
+        map.put(DaxPreambleTag.MSG_CONTEXT,contextMapper.getContextSymbol(preamble.getMsgContextId()));
 
         if (preamble.getMsgCnt() > 1){
             map.put(DaxPreambleTag.MSG_COUNT, String.valueOf(preamble.getMsgCnt()));
@@ -121,14 +123,16 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         Map<String, String> map = parsePreamble(msgStr, p.getPairPattern());
 
         p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.VERSION, DaxpConfig.PROTOCOL_VERSION));
-        p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.ENCODING, DaxpConfig.DEFAULT_ENCODING)));
+        p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.ENCODING, config.getDefaultEncoding())));
         p.setMsgCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.MSG_COUNT,"1")));
 
         String context = map.getOrDefault(DaxPreambleTag.MSG_CONTEXT,
                                           map.getOrDefault(DaxPreambleTag.MSG_SENDER,
-                                                           config.getApplicationContext()));
+                                                  contextMapper.getContextSymbol(config.getAppContextId())
+                                          )
+        );
 
-        p.setMsgContextId(DaxContextMapper.getContextId(context));
+        p.setMsgContextId(contextMapper.getContextId(context));
         return p;
 
     }

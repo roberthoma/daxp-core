@@ -4,9 +4,9 @@ import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxCodecSymbol;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxDecodeService;
+import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
     @Test
     void preamblePairs_TEST(){
 
-        Map<String,String> preamblePairs = crmProvider.getPreambleCodec().parsePreamble(msg );
+        Map<String,String> preamblePairs = cmrProvider.getPreambleCodec().parsePreamble(msg );
 
         Assertions.assertEquals("1",preamblePairs.get("V"));
         Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
@@ -42,8 +42,11 @@ class DaxDecodeServiceTest extends DaxTestConfig {
 
     @Test
     void parseAndDecodeNumberPairsToString_TEST(){
-        Map<String,String>   preamblePairs = crmProvider.getPreambleCodec().parsePreamble(msg);
-        List<DaxStringPair>  pairsList     = DaxDecodeService.parsePairs(msg,DaxDecodeService.getMessagePairPattern('|') ,"CRM");
+        Map<String,String>   preamblePairs = cmrProvider.getPreambleCodec().parsePreamble(msg);
+        DaxPairCodec pairCodec = cmrProvider.getPairCodec();
+        cmrProvider.getConfig().getAppContextId();
+        List<DaxStringPair>  pairsList     = pairCodec.parsePairs(msg,DaxDecodeService.getMessagePairPattern('|') ,
+                cmrProvider.getConfig().getAppContextId());
         long equalChar = msg.chars()
                             .filter(c -> c== DaxCodecSymbol.EQUAL)
                             .count()
@@ -54,7 +57,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
 
     @Test
     void decodeMSG_TEST(){
-        DaxMessageCodec codec =  crmProvider.getMessageCodec();
+        DaxMessageCodec codec =  cmrProvider.getMessageCodec();
         DaxMessage message = codec.decode(msg);
         Assertions.assertEquals("DD",  message.getMsgType());
         Assertions.assertEquals(7,  message.getBlockCount());
@@ -62,7 +65,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
 
     @Test
     void encodeMSG_TEST(){
-        DaxMessageCodec codec = crmProvider.getMessageCodec();
+        DaxMessageCodec codec = cmrProvider.getMessageCodec();
         DaxMessage message = codec.decode(msg);
         String afterMsgStr = codec.encode(message);
         if(afterMsgStr.contains("\n7=0|")){

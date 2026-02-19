@@ -1,7 +1,6 @@
 package org.daxprotocol.core.model.tag;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
 
 import java.util.Objects;
 
@@ -26,15 +25,16 @@ public class DaxTag {
     }
 
     public DaxTag(Integer tag) {
-        this.contextId = DaxpConfig.APP_CONTEXT_ID;
+        this.contextId = DaxpConfig.DAXP_CONTEXT_ID;
         this.tagId = tag;
     }
+
     public DaxTag(int contextId, int tagId) {
         this.contextId = contextId;
         this.tagId = tagId;
     }
     public static DaxTag newPredefineTag(Integer tag) {
-        return new DaxTag(DaxpConfig.DAX_CONTEXT_ID ,tag);
+        return new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,tag);
     }
 
     @Override public boolean equals(Object o) {
@@ -59,7 +59,7 @@ public class DaxTag {
 //
 //        DaxContextMapper.getContextSymbol()
 
-    return contextId != DaxpConfig.DAX_CONTEXT_ID ? contextId + ":" + tagId //???????
+    return contextId != DaxpConfig.DAXP_CONTEXT_ID ? contextId + ":" + tagId //???????
                                                                  : ""+tagId;
 
     }

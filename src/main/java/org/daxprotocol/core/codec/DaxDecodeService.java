@@ -77,30 +77,30 @@ public class DaxDecodeService {
     }
 
 
-    public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, String dftContext) {
-        List<DaxStringPair> list = new ArrayList<>();
-        Matcher m = pairPattern.matcher(msg);
-        while (m.find()) {
-            String contextSymbol;
-            String contextStr = m.group(1);
-            int tagId = Integer.parseInt(m.group(2));
-            int contextId;
-            if (contextStr == null) {
-                if (tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
-                    contextSymbol = DaxpConfig.DAX_CONTEXT_SYMBOL;
-                } else {
-                    contextSymbol = dftContext;
-                }
-            } else {
-                contextSymbol = contextStr;
-            }
-            contextId = DaxContextMapper.getContextId(contextSymbol);
-            list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));
-        }
-        return list;
-    }
+//    public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, String dftContext) {
+//        List<DaxStringPair> list = new ArrayList<>();
+//        Matcher m = pairPattern.matcher(msg);
+//        while (m.find()) {
+//            String contextSymbol;
+//            String contextStr = m.group(1);
+//            int tagId = Integer.parseInt(m.group(2));
+//            int contextId;
+//            if (contextStr == null) {
+//                if (tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
+//                    contextSymbol = DaxpConfig.DAX_CONTEXT_SYMBOL;
+//                } else {
+//                    contextSymbol = dftContext;
+//                }
+//            } else {
+//                contextSymbol = contextStr;
+//            }
+//            contextId = DaxContextMapper.getContextId(contextSymbol);
+//            list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));
+//        }
+//        return list;
+//    }
 
-    public static DaxTag parseDaxTag(String tagStr) {
+    public static DaxTag parseDaxTag(int appContextId, String tagStr) {
         int tagId;
         int contextId = 0;
         Pattern pattern = Pattern.compile("^(?:([A-Za-z]+):)?([0-9]+)$");
@@ -112,9 +112,9 @@ public class DaxDecodeService {
             tagId = Integer.parseInt(m.group(2));
 
             if (contextSymbol == null){
-                if (tagId > DaxpConfig.MAX_DAXP_TAG_ID) {
-                    contextId = DaxpConfig.APP_CONTEXT_ID;
-                }
+//             if (tagId > DaxpConfig.MAX_DAXP_TAG_ID) {
+                    contextId = appContextId;
+  //           }
             }
             return new DaxTag(contextId, tagId);
         }

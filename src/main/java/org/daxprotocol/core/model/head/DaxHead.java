@@ -22,6 +22,7 @@ import org.daxprotocol.core.field.DaxMsgContextId;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.DaxMsgBlockCount;
 import org.daxprotocol.core.field.DaxMsgType;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ import static org.daxprotocol.core.codec.DaxTagConst.*;
 
 public final class DaxHead {
 
-    Map<Integer, DaxPair<?>> map = new LinkedHashMap<>();
+    Map<DaxTag, DaxPair<?>> map = new LinkedHashMap<>();
 
     public String getMsgType() {
         return map.get(MSG_TYPE).getStrValue();
@@ -72,7 +73,7 @@ public final class DaxHead {
 //    }
 
     public void putPair(DaxPair<?> pair){
-        map.put(pair.getTag().getTagId(),pair);
+        map.put(pair.getTag(),pair);
     }
 
 

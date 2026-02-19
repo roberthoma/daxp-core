@@ -22,25 +22,32 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.tag.DaxTag;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.daxprotocol.core.codec.DaxCodecSymbol.*;
 
 public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
     DaxpConfig config;
-
-    public DaxPairCodec(DaxpConfig config) {
+    DaxContextMapper contextMapper;
+    public DaxPairCodec(DaxpConfig config, DaxContextMapper contextMapper) {
         this.config = config;
+        this.contextMapper = contextMapper;
     }
 
     private  String encode(StringBuilder sb, int contextId ,int tagId, String value ) {
         if (value.isBlank()){
             return sb.toString();
         }
-        if(contextId!= DaxpConfig.DAX_CONTEXT_ID &&
-           contextId!= config.getApplicationContextId() )
+        if(contextId!= DaxpConfig.DAXP_CONTEXT_ID &&
+           contextId!= config.getAppContextId() )
         {
-            sb.append(DaxContextMapper.getContextSymbol(contextId))
+            sb.append(contextMapper.getContextSymbol(contextId))
               .append(CONTEXT_TAG_SEPARATOR);
         }
 
@@ -50,6 +57,29 @@ public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
                 .append(value)
                 .append(PAIR_SEPARATOR);
         return sb.toString() ;
+    }
+
+    public List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, int  msgContextId) {
+        List<DaxStringPair> list = new ArrayList<>();
+        Matcher m = pairPattern.matcher(msg);
+        while (m.find()) {
+            String contextSymbol;
+            String contextStr = m.group(1);
+            int tagId = Integer.parseInt(m.group(2));
+            int contextId;
+            if (contextStr == null) {
+                if (tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
+                    contextId = DaxpConfig.DAXP_CONTEXT_ID;
+                } else {
+                    contextId = msgContextId;
+                }
+            } else {
+                contextId = contextMapper.getContextId(contextStr);
+            }
+
+            list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));
+        }
+        return list;
     }
 
     public  String encode(StringBuilder sb, DaxTag tag, String value ) {

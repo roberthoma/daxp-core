@@ -21,10 +21,18 @@
 package org.daxprotocol.core.model.trailer;
 
 import org.daxprotocol.core.codec.DaxCodec;
+import org.daxprotocol.core.codec.DaxPairCodec;
+
 import static org.daxprotocol.core.codec.DaxTagConst.*;
 import static org.daxprotocol.core.codec.DaxCodecSymbol.*;
 
 public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
+    DaxPairCodec pairCodec;
+
+    public DaxTrailerCodec (DaxPairCodec pairCodec) {
+        this.pairCodec = pairCodec;
+    }
+
     @Override public String encode(DaxTrailer message) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n"); //TODO only for test profile

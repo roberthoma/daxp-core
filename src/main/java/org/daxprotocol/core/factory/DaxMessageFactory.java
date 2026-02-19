@@ -22,11 +22,10 @@ package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
-import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
-import org.daxprotocol.core.model.context.DaxContext;
+import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.dictionary.DaxDictionary;
@@ -54,9 +53,11 @@ import static org.daxprotocol.core.codec.DaxTagConst.*;
 public class DaxMessageFactory {
 
     DaxpConfig config;
+    DaxContextMapper contextMapper;
 
-    public DaxMessageFactory(DaxpConfig config) {
+    public DaxMessageFactory(DaxpConfig config, DaxContextMapper contextMapper) {
         this.config = config;
+        this.contextMapper = contextMapper;
     }
 
     public DaxMessage createDictionaryReq() {
@@ -68,16 +69,11 @@ public class DaxMessageFactory {
         String fieldId;
         body.nextBlock(DaxBlockType.BLOCK_FIELD);
 
-//        String tagStr = "X:"+String.valueOf( fieldId);
-//        body.putPair(FIELD_ID,tagStr);
-
-        if (tag.getContextId() != config.getApplicationContextId()
-        && tag.getContextId() != DaxpConfig.DAX_CONTEXT_ID
+        if ( tag.getContextId() != config.getAppContextId()
+          && tag.getContextId() != DaxpConfig.DAXP_CONTEXT_ID
         ){
-
-            fieldId = DaxContextMapper.getContextSymbol(tag.getContextId())+":"+
+            fieldId = contextMapper.getContextSymbol(tag.getContextId())+":"+
                     tag.getTagId();
-
         }
         else {
             fieldId = String.valueOf(tag.getTagId());
@@ -124,9 +120,9 @@ public class DaxMessageFactory {
     private void putContextToBody(DaxBody body, DaxContext daxContext) {
         body.nextBlock(DaxBlockType.BLOCK_CONTEXT);
        // body.putPair(FIELD_ID, String.valueOf(daxContext.id));
-        body.putPair(FIELD_VALUE_SYMBOL, daxContext.symbol);
-        body.putPair(FIELD_VALUE_PREFIX, daxContext.tagPrefix);
-        body.putPair(FIELD_VALUE_DESCRIPTION, daxContext.description);
+        body.putPair(FIELD_VALUE_SYMBOL, daxContext.getSymbol());
+        body.putPair(FIELD_VALUE_PREFIX, daxContext.getTagPrefix());
+        body.putPair(FIELD_VALUE_DESCRIPTION, daxContext.getDescription());
 
     }
 
