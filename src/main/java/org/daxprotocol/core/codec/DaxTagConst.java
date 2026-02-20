@@ -25,13 +25,13 @@ import java.util.Set;
 
 public class DaxTagConst {
 
-    /**
-     * Preamble tags
-     * */
-    public static final String DAXP = "DAXP"; // protocol identifier and version
-    public static final String TF   = "TF";   // tag format: DEC | HEX
-    public static final String EN   = "EN";   // encoding: ASCII | UTF8 | UTF16
-    public static final String CTX  = "CX";   // context: optional  - list FIX, CRM
+//    /**
+//     * Preamble tags
+//     * */
+//    public static final String DAXP = "DAXP"; // protocol identifier and version
+//    public static final String TF   = "TF";   // tag format: DEC | HEX
+//    public static final String EN   = "EN";   // encoding: ASCII | UTF8 | UTF16
+//    public static final String CTX  = "CX";   // context: optional  - list FIX, CRM
 
     /**
      * Head TAGS

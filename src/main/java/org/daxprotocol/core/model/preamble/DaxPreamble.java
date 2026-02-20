@@ -21,6 +21,7 @@ package org.daxprotocol.core.model.preamble;
 
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
 import java.util.regex.Pattern;
 
@@ -30,19 +31,13 @@ import java.util.regex.Pattern;
  */
 public class DaxPreamble {
     Pattern pairPattern;
-
-
-    //    public char MSG_PAIR_SEPARATOR;
     private char msgPairSeparator;
     private String protocolVersion = DaxpConfig.PROTOCOL_VERSION;       // V=1
-    private int msgCnt;                      //CNT  Number of item messages following preamble.
-    private DaxEncoding encoding;         // EN=UTF8
+    private int msgCnt;                   //CNT  Number of item messages following preamble. Default 1
+    private DaxCharacterEncoding encoding;
     private int msgContextId;
 
-
-
     public DaxPreamble(){
-        this.encoding = DaxEncoding.UTF8;  //todo get from config
     }
 
     public void setProtocolVersion(String protocolVersion) {
@@ -50,7 +45,7 @@ public class DaxPreamble {
     }
 
 
-    public void setEncoding(DaxEncoding encoding) {
+    public void setEncoding(DaxCharacterEncoding encoding) {
         this.encoding = encoding;
     }
 
@@ -66,7 +61,7 @@ public class DaxPreamble {
         return protocolVersion;
     }
 
-    public DaxEncoding getEncoding() {
+    public DaxCharacterEncoding getEncoding() {
         return encoding;
     }
 

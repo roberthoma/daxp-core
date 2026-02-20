@@ -19,7 +19,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
 
     @BeforeAll
     static void initTest() {
-        msg = "DAXP|V=1|EN=UTF8|\n" +  //CNT=1|\n" +
+        msg = "DAXP|V=1|EN=UTF-8|\n" +  //CNT=1|\n" +
                 "9=DD|6=7|\n"+
                 "7=1|5=F|209=Id customer|100=2001|110=I|\n" +
                 "7=2|5=F|209=First name|100=2002|110=S|\n" +
@@ -37,7 +37,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
         Map<String,String> preamblePairs = cmrProvider.getPreambleCodec().parsePreamble(msg );
 
         Assertions.assertEquals("1",preamblePairs.get("V"));
-        Assertions.assertEquals("UTF8",preamblePairs.get("EN"));
+        Assertions.assertEquals("UTF-8",preamblePairs.get("EN"));
     }
 
     @Test
@@ -58,7 +58,9 @@ class DaxDecodeServiceTest extends DaxTestConfig {
     @Test
     void decodeMSG_TEST(){
         DaxMessageCodec codec =  cmrProvider.getMessageCodec();
+
         DaxMessage message = codec.decode(msg);
+
         Assertions.assertEquals("DD",  message.getMsgType());
         Assertions.assertEquals(7,  message.getBlockCount());
     }

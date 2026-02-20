@@ -22,11 +22,8 @@ package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
-import org.daxprotocol.core.dictionary.daxenum.DaxEnumDictionary;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
-import org.daxprotocol.core.dictionary.daxenum.DaxEnumValue;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.group.DaxpGroupItf;

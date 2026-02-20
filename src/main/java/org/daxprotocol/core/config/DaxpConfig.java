@@ -20,6 +20,8 @@
 
 package org.daxprotocol.core.config;
 
+import org.daxprotocol.core.encoding.DaxCharacterEncoding;
+
 public final class DaxpConfig {
     public static final String PROTOCOL_VERSION = "1";
 
@@ -28,12 +30,19 @@ public final class DaxpConfig {
 
     public static final int MAX_DAXP_TAG_ID  = 255;
     public static final int DAXP_CONTEXT_ID = 0;
-    public static final String DAX_CONTEXT_SYMBOL = "SYS";
-    public static final String DAX_CONTEXT_DESCRIPTION = "Daxp Context";
+    public static final String DAXP_PREAMBLE_PREFIX = "DAXP";
+    public static final String DAX_CONTEXT_SYMBOL = "DAXP";
+    public static final String DAX_CONTEXT_DESCRIPTION = "DAXP Context";
 
+    private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
-    private   String  defaultEncoding  = "UTF8";
+    private int    appContextId = 1;
 
+    public int getNextContextId() {
+        return appContextId + 1;
+    }
+
+//    private int   nextContextId = 2;
     private String appContextSymbol;
     private String appContextTagPrefix;
     private String appContextDescription;
@@ -65,14 +74,18 @@ public final class DaxpConfig {
     }
 
     public int getAppContextId(){
-        return 1;  // todo put in config file
+        return appContextId;  // todo put in config file
+    }
+    public void setAppContextId(int appContextId) {
+        this.appContextId = appContextId;
     }
 
-    public String getDefaultEncoding() {
+    public DaxCharacterEncoding getDefaultEncoding() {
         return defaultEncoding;
     }
 
-    public void setDefaultEncoding(String defaultEncoding) {
+    public void setDefaultEncoding(DaxCharacterEncoding defaultEncoding)
+    {
         this.defaultEncoding = defaultEncoding;
     }
 

@@ -19,6 +19,7 @@
  */
 package org.daxprotocol.core.codec;
 
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
@@ -35,13 +36,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DaxMessageCodec implements DaxCodec<DaxMessage>{
-    DaxPairCodec pairCodec;
+    DaxpConfig       config;
+    DaxPairCodec     pairCodec;
     DaxPreambleCodec preambleCodec;
-    DaxHeadCodec headCodec;
-    DaxBodyCodec bodyCodec;
-    DaxTrailerCodec trailerCodec;
+    DaxHeadCodec     headCodec;
+    DaxBodyCodec     bodyCodec;
+    DaxTrailerCodec  trailerCodec;
 
-    public DaxMessageCodec( DaxPairCodec pairCodec,
+    public DaxMessageCodec(
+            DaxpConfig config,
+            DaxPairCodec pairCodec,
             DaxPreambleCodec preambleCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
@@ -52,12 +56,15 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
       this.headCodec = headCodec;
       this.bodyCodec = bodyCodec;
       this.trailerCodec = trailerCodec;
+      this.config = config;
 
     }
 
     @Override public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
         DaxPreamble preamble = new DaxPreamble();
+        preamble.setEncoding(config.getDefaultEncoding());
+        preamble.setMsgContextId(config.getAppContextId());
         sb.append(preambleCodec.encode(preamble))
           .append(headCodec.encode(message.getHead(), message.getBody().getBlockCount()))
           .append(bodyCodec.encode(message.getBody()))

@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 public class Dax_pair_service_test extends DaxTestConfig {
 
 
-    static String prbPairsStr1 = "NO_DAX|V=1|EN=UTF8|";
-    static String prbPairsStr2 = "DAXP|V=1|EN=UTF8|";
+    static String prbPairsStr1 = "NO_DAX|V=1|EN=UTF-8|";
+    static String prbPairsStr2 = "DAXP|V=1|EN=UTF-8|";
     static String msgPairsStr1 = "123=ValueSYS|ABC:123=ValueABC|CBA:234=ValueCBA|SYS:128=ValueSYS|";
     static String msgPairsStr2 = "123=Value1|234=Value3|";
 
@@ -48,7 +48,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
     public void pair_parse_test(){
         Pattern pattern = DaxDecodeService.getMessagePairPattern('|');
         DaxPairCodec pairCodec = cmrProvider.getPairCodec();
-        DaxpConfig crmConfig = cmrProvider.getConfig();
+        DaxpConfig   crmConfig = cmrProvider.getConfig();
         List<DaxStringPair> pairList = pairCodec.parsePairs(msgPairsStr1,pattern,crmConfig.getAppContextId());
 
         pairList.forEach(System.out::println);

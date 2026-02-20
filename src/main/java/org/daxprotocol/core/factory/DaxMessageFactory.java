@@ -30,7 +30,7 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageDicItem;
-import org.daxprotocol.core.dictionary.daxenum.DaxEnumName;
+import org.daxprotocol.core.dictionary.DaxEnumName;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.group.DaxpGroupItf;
 import org.daxprotocol.core.model.DaxMessage;
@@ -222,7 +222,7 @@ public class DaxMessageFactory {
     }
 
     private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry ){
-        DaxPreamble preamble = new DaxPreamble();
+      //  DaxPreamble preamble = new DaxPreamble();
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
         DaxTrailer trailer = new DaxTrailer();

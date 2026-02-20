@@ -23,10 +23,12 @@ package org.daxprotocol.core.model.preamble;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
+import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,7 +37,7 @@ import static org.daxprotocol.core.codec.DaxCodecSymbol.PAIR_SEPARATOR;
 
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.
- * Format example: DAXP|E=UTF8\n
+ * Format example: DAXP|E=UTF-8\n
  */
 public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 
@@ -57,11 +59,13 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
                 .append(PAIR_SEPARATOR);
     }
 
+
+
     /** Encode Preamble object → wire format (string). */
     public String encode(DaxPreamble preamble) {
         Map<String,String> map = new LinkedHashMap<>();
         map.put(DaxPreambleTag.VERSION, preamble.getProtocolVersion());
-        map.put(DaxPreambleTag.ENCODING, preamble.getEncoding().value());
+        map.put(DaxPreambleTag.ENCODING, preamble.getEncoding().getCanonicalName());
         map.put(DaxPreambleTag.MSG_CONTEXT,contextMapper.getContextSymbol(preamble.getMsgContextId()));
 
         if (preamble.getMsgCnt() > 1){
@@ -94,7 +98,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         Map<String, String> map = new HashMap<>();
 
         //Check message is a DAXP
-        if(!msg.startsWith(DaxTagConst.DAXP)){
+        if(!msg.startsWith(DaxpConfig.DAXP_PREAMBLE_PREFIX)){
             throw new RuntimeException("It is NOT DAXP message !!!");
         }
 
@@ -123,7 +127,14 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         Map<String, String> map = parsePreamble(msgStr, p.getPairPattern());
 
         p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.VERSION, DaxpConfig.PROTOCOL_VERSION));
-        p.setEncoding(DaxEncoding.valueOf(map.getOrDefault(DaxPreambleTag.ENCODING, config.getDefaultEncoding())));
+//>> -------------------------
+        Optional<DaxCharacterEncoding>  encodingOpt = DaxCharacterEncoding.fromName(
+                map.getOrDefault(DaxPreambleTag.ENCODING,config.getDefaultEncoding().getCanonicalName()));
+
+        encodingOpt.ifPresent(p::setEncoding);
+
+//<<<  -------------------------
+
         p.setMsgCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.MSG_COUNT,"1")));
 
         String context = map.getOrDefault(DaxPreambleTag.MSG_CONTEXT,

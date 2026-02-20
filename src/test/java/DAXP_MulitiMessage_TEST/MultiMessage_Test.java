@@ -14,7 +14,7 @@ public class MultiMessage_Test extends DaxTestConfig {
 
 //@Test
     void createMsgFromCustomer() {
-        String msgStr = "DAXP|V=1|EN=UTF8|CNT=4|\n" +
+        String msgStr = "DAXP|V=1|EN=UTF-8|CNT=4|\n" +
                 "9=UCi|2001=123|2002=Robert3|99=123|\n" +
                 "9=UCi|2001=124|2002=Robert4|99=123|\n" +
                 "9=UCi|2001=125|2002=Robert5|99=123|\n" +

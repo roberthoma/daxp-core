@@ -71,7 +71,7 @@ public class DaxpConfigFactory {
 
 /***
  *
- org.daxprotocol.core.config.defaultEncoding="UTF8"
+ org.daxprotocol.core.config.defaultEncoding="UTF-8"
  org.daxprotocol.core.config.tagPrefix=CRN
  org.daxprotocol.core.config.context.symbol=CUSTOMER
  org.daxprotocol.core.config.context.description=Customer data

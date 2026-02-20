@@ -54,16 +54,16 @@ public final class DaxContextMapper {
     DaxpConfig config;
     public DaxContextMapper(DaxpConfig config){
        this.config = config;
-       nextContextId = new AtomicInteger( config.getAppContextId() );
+       nextContextId = new AtomicInteger( config.getNextContextId() );
     }
     public  void registerPredefined(DaxContext context) {
-        registerPredefined(context.getSymbol(),context.getId()) ;
+        registerPredefined(context.getTagPrefix(),context.getId()) ;
 
     }
 
-    public  void registerPredefined(String symbol, int id) {
-        symbolToId.put(symbol, id);
-        idToSymbol.put(id, symbol);
+    public  void registerPredefined(String tagPrefix, int id) {
+        symbolToId.put(tagPrefix, id);
+        idToSymbol.put(id, tagPrefix);
     }
 
     // ---------------------------------------

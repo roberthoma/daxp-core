@@ -14,7 +14,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
     //@Test
     void createMsgFromCustomer() {
-        String expectMsg = "DAXP|V=1|EN=UTF8|\n" +
+        String expectMsg = "DAXP|V=1|EN=UTF-8|\n" +
                 "9=UCi|20=1|2001=123|2002=Robert|2076=WORKER|2077=Y|\n" +
                 "99=123|";
 
@@ -67,7 +67,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
     //@Test
     void injection(){
-        String msgStr = "DAXP|V=1|EN=UTF8|9=UCi|20=1|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
+        String msgStr = "DAXP|V=1|EN=UTF-8|9=UCi|20=1|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
 
         DaxMessage message = cmrProvider.getMessageCodec().decode(msgStr);
 
@@ -75,7 +75,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
         Assertions.assertEquals("Robert" , customer.getName());
         Assertions.assertEquals(123 , customer.getCustomerId());
 
-        DaxMessage updMsg = cmrProvider.getMessageCodec().decode("DAXP|V=1|EN=UTF8|9=CU|20=1|2001=123|2002=Jan|2074=Toronto|99=123|\"");
+        DaxMessage updMsg = cmrProvider.getMessageCodec().decode("DAXP|V=1|EN=UTF-8|9=CU|20=1|2001=123|2002=Jan|2074=Toronto|99=123|\"");
 
         cmrProvider.getMessageConverter().updateFromMessage(updMsg, customer );
         Assertions.assertEquals("Jan",customer.getName());

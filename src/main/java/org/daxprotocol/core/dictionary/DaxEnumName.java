@@ -17,7 +17,7 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.dictionary.daxenum;
+package org.daxprotocol.core.dictionary;
 
 public class DaxEnumName {
     String name;

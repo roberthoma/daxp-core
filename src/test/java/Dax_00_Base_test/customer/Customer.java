@@ -45,7 +45,7 @@ public class Customer {
 //                                 tagId = FixConstTag.FIX_CLIENT_ID)
     @DaxpField( context = ContextConst.CTX_FIX_PROTOCOL,
                   tagId = FixConstTag.FIX_CLIENT_ID,
-    uiLabel = "FIX Customer Id ")
+                uiLabel = "FIX Customer Id ")
     Integer fixClientId;
 
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_RELATION , uiLabel = "Relation")

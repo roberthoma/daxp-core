@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.dictionary.daxenum;
+package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.tool.DaxSetTool;
 

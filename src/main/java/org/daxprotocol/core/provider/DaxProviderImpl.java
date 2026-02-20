@@ -66,22 +66,21 @@ public class DaxProviderImpl implements DaxProvider {
         DaxContext sysContext = DaxContextFactory.createSysContext();
 
         contextMapper = new DaxContextMapper(config);
-
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
 
         dictionary = new DaxDictionary(config, contextMapper);
+        dictionary.putContext(sysContext);
         dictionary.putContext(appContext);
 
-        pairCodec = new DaxPairCodec(config,contextMapper);
-
+        pairCodec     = new DaxPairCodec(config, contextMapper);
         preambleCodec = new DaxPreambleCodec(config, contextMapper);
 
         DaxHeadCodec headCodec = new DaxHeadCodec(pairCodec);;
         DaxBodyCodec bodyCodec = new DaxBodyCodec(pairCodec);
         DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
 
-        messageCodec = new DaxMessageCodec(pairCodec, preambleCodec, headCodec, bodyCodec, trailerCodec);
+        messageCodec = new DaxMessageCodec(config, pairCodec, preambleCodec, headCodec, bodyCodec, trailerCodec);
 
 
         messageConverter     = new DaxMessageConverter(config,contextMapper );

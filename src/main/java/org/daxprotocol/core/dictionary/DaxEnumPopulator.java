@@ -17,12 +17,7 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.dictionary.daxenum;
-
-import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
-import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.model.tag.DaxTag;
+package org.daxprotocol.core.dictionary;
 
 import java.lang.reflect.Field;
 
