@@ -4,7 +4,7 @@ import Dax_00_Base_test.DaxTestConfig;
 import Dax_00_Base_test.customer.Customer;
 import Dax_00_Base_test.customer.CustomerRelation;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.codec.DaxCodecSymbol;
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
 
@@ -23,7 +23,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
         customer.setCitizen(true);
         DaxMessage message = cmrProvider.getMessageFactory().toDaxMessage("UCi", customer);
         String ecMsg = cmrProvider.getMessageCodec().encode(message);
-        ecMsg= ecMsg.replace(DaxCodecSymbol.PAIR_SEPARATOR,'|');
+        ecMsg= ecMsg.replace(DaxpConfig.PAIR_SEPARATOR,'|');
         Assertions.assertEquals(expectMsg,ecMsg);
     }
 

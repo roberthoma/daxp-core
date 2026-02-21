@@ -20,8 +20,6 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
-import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.*;
@@ -47,14 +45,14 @@ public class DaxDecodeService {
     }
 
     public static Pattern getPreamblePairPattern(char pairSeparator) {
-        return Pattern.compile("(\\w+)" + DaxCodecSymbol.EQUAL + "([^" + pairSeparator + "]*)");
+        return Pattern.compile("(\\w+)" + DaxpConfig.EQUAL + "([^" + pairSeparator + "]*)");
     }
 
     public static Pattern getMessagePairPattern(char pairSeparator) {
         String sep = Pattern.quote(String.valueOf(pairSeparator));
         return Pattern.compile(
                 "(?:([A-Za-z0-3]{0,3}):)?(\\d+)"
-                        + DaxCodecSymbol.EQUAL +
+                        + DaxpConfig.EQUAL +
                         "([^" + sep + "]*)" +
                         sep
         );
@@ -103,7 +101,9 @@ public class DaxDecodeService {
     public static DaxTag parseDaxTag(int appContextId, String tagStr) {
         int tagId;
         int contextId = 0;
-        Pattern pattern = Pattern.compile("^(?:([A-Za-z]+):)?([0-9]+)$");
+
+        //todo move to consts paterns
+        Pattern pattern = Pattern.compile("^(?:([A-Za-z]+)"+DaxpConfig.CONTEXT_TAG_SEPARATOR+")?([0-9]+)$");
 
         Matcher m = pattern.matcher(tagStr);
 

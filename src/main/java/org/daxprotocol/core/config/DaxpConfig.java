@@ -23,16 +23,42 @@ package org.daxprotocol.core.config;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
 public final class DaxpConfig {
-    public static final String PROTOCOL_VERSION = "1";
+    /*****************************************************
+     *   DAXP Version
+     */
+    public static final String PROTOCOL_VERSION = "v0.1.0";
 
-    /** DAXP| char after DAXP is default separator for current message*/
-    public static final int SEPARATOR_IDX    = 4;
 
-    public static final int MAX_DAXP_TAG_ID  = 255;
-    public static final int DAXP_CONTEXT_ID = 0;
+     /*****************************************************
+     *  Preamble DAXP|V=v0.1.0|...
+     *  DAXP| char after DAXP is default separator for current message
+     */
     public static final String DAXP_PREAMBLE_PREFIX = "DAXP";
-    public static final String DAX_CONTEXT_SYMBOL = "DAXP";
-    public static final String DAX_CONTEXT_DESCRIPTION = "DAXP Context";
+    public static final int    CHAR_SEPARATOR_IDX  = 4;
+
+    public static final int    DAXP_MAX_TAG_ID = 255;
+
+    /*****************************************************
+     *  DAXP Context
+     */
+    public static final int    DAXP_CONTEXT_ID = 0;
+    public static final String DAXP_CONTEXT_SYMBOL = "DAXP";
+    public static final String DAXP_CONTEXT_DESCRIPTION = "DAXP Context";
+
+
+    /*****************************************************
+     * Separators
+     */
+    public static final CharSequence TAG_LIST_SEPARATOR = ",";
+    public static final CharSequence CONTEXT_TAG_SEPARATOR =":";
+
+    /** key=value */
+    public static final char EQUAL = '=';
+
+    /**  Pair separator on the WIRE (binary, non-printable). */
+    //public static char PAIR_SEPARATOR = 0x0001; <<<< target
+    public static char PAIR_SEPARATOR = '|';   // << TMP for test
+
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
@@ -99,12 +125,4 @@ public final class DaxpConfig {
 //    public void setPairSeparator(char pairSeparator) {
 //        this.pairSeparator = pairSeparator;
 //    }
-//    public char getContextTagSeparator() {
-//        return contextTagSeparator;
-//    }
-//
-//    public void setContextTagSeparator(char contextTagSeparator) {
-//        this.contextTagSeparator = contextTagSeparator;
-//    }
-
 }

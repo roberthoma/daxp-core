@@ -37,14 +37,6 @@ public final class DaxHead {
         return map.get(MSG_TYPE).getStrValue();
     }
 
-//    public int getContextId() {
-//        if (map.containsKey(MSG_CONTEXT)) {
-//            return Integer.parseInt(map.get(MSG_CONTEXT).getStrValue());
-//        }
-//        return -1; //TODO to think about
-//    }
-
-
     public DaxHead(String msgType) {
         map.put(MSG_TYPE,new DaxMsgType(msgType));
         map.put(MSG_BLOCK_COUNT,new DaxMsgBlockCount(0));
@@ -59,23 +51,8 @@ public final class DaxHead {
                  (daxPair, daxPair2) -> daxPair2);
     }
 
-//    public void setContextId(int contextId) {
-//        map.merge(MSG_CONTEXT,new DaxMsgContextId(contextId),
-//                (daxPair, daxPair2) -> daxPair2);
-//    }
-
-//    public Runnable setRunnableContextId(int contextId) {
-//        return () -> map.merge(
-//                MSG_CONTEXT,
-//                new DaxMsgContextId(contextId),
-//                (oldVal, newVal) -> newVal
-//        );
-//    }
-
     public void putPair(DaxPair<?> pair){
         map.put(pair.getTag(),pair);
     }
-
-
 
 }

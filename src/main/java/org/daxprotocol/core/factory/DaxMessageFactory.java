@@ -37,7 +37,6 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.field.DaxMsgType;
 import org.daxprotocol.core.model.body.DaxBody;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.tool.DaxLangTool;
@@ -67,12 +66,12 @@ public class DaxMessageFactory {
 
     private void putBodyBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
         String fieldId;
-        body.nextBlock(DaxBlockType.BLOCK_FIELD);
+        body.nextBlock(DaxBlockType.BLOCK_TAG);
 
         if ( tag.getContextId() != config.getAppContextId()
           && tag.getContextId() != DaxpConfig.DAXP_CONTEXT_ID
         ){
-            fieldId = contextMapper.getContextSymbol(tag.getContextId())+":"+
+            fieldId = contextMapper.getContextSymbol(tag.getContextId())+DaxpConfig.CONTEXT_TAG_SEPARATOR+
                     tag.getTagId();
         }
         else {
@@ -127,27 +126,29 @@ public class DaxMessageFactory {
     }
 
 
+    private String tagEncode(DaxTag tag){
+        if (tag.getContextId() == config.getAppContextId()){
+            return String.valueOf(tag.getTagId());
+        }
+        return contextMapper.getContextSymbol(tag.getContextId())+
+               DaxpConfig.CONTEXT_TAG_SEPARATOR+
+               tag.getTagId();
+
+    }
+
     private void putFieldsGroup(DaxBody body, Integer groupId, Set<DaxTag> daxTags) {
-        body.nextBlock(DaxBlockType.BLOCK_LIST);
+        body.nextBlock(DaxBlockType.BLOCK_FIELD_LIST);
         body.putPair(GROUP_ID, String.valueOf(groupId));
-
         String tagListStr = daxTags.stream()
-                .map(DaxTag::toString)
-                .collect(Collectors.joining(","));
-
-        body.putPair(FIELD_ID, tagListStr);
-
+                .map(this::tagEncode)
+                .collect(Collectors.joining(DaxpConfig.TAG_LIST_SEPARATOR));
+        body.putPair(FIELD_ID_LIST, tagListStr);
     }
 
-    private void putTagsBlock(DaxBody body,  DaxTag tag){
-        body.nextBlock(DaxBlockType.BLOCK_TAG);
-        body.putPair(FIELD_ID, tag.toString());
-
-    }
 
     //TODO Create message with dictionary using context, or group, or field/(list of field)
-    //create multi message with context dictionary values
-//    public DaxMessage createDictionaryMsg(DaxDictionary dictionary) {
+    //TODO  create multi message with context dictionary values
+
     private void dictionaryToMsg(DaxMessage message,
                                            DaxDictionary dictionary)
     {
@@ -177,7 +178,7 @@ public class DaxMessageFactory {
 
         );
 
-        dictionary.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
+   //     dictionary.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
 
     }
 

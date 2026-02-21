@@ -28,7 +28,6 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
 
         System.out.println(" -- AFTER -- ");
         DaxDictionary dicAfter = new DaxDictionary(cmrProvider.getConfig(), cmrProvider.getContextMapper());
-
         DaxMessage messageAfter = codec.decode(msgStrOrg);
 
         dictionaryPopulator.populateFromMessage(dicAfter, messageAfter);
@@ -39,6 +38,7 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         System.out.println(msgDicAfter);
         Assertions.assertEquals(msgStrOrg,msgDicAfter);
 
+        Assertions.fail("Test jest do BANI");
 
         System.out.println("------------End OF DOC populate --------");
     }

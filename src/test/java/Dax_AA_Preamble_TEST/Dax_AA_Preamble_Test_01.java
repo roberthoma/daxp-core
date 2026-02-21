@@ -1,7 +1,6 @@
 package Dax_AA_Preamble_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
-import org.daxprotocol.core.codec.DaxCodecSymbol;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
@@ -22,9 +21,9 @@ public class Dax_AA_Preamble_Test_01 extends DaxTestConfig {
 
         String preambleStr = codec.encode(pre);
 
-        preambleStr = preambleStr.replace(DaxCodecSymbol.PAIR_SEPARATOR,'|');
+        preambleStr = preambleStr.replace(DaxpConfig.PAIR_SEPARATOR,'|');
 
-        assertEquals("DAXP|V=1|EN=UTF-8|CX=CMR|\n", preambleStr);
+        assertEquals("DAXP|V="+ DaxpConfig.PROTOCOL_VERSION +"|EN=UTF-8|CX=CMR|\n", preambleStr);
 
         String wire = codec.encode(pre);
         DaxPreamble copy = codec.decode(wire);

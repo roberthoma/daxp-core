@@ -32,8 +32,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.daxprotocol.core.codec.DaxCodecSymbol.EQUAL;
-import static org.daxprotocol.core.codec.DaxCodecSymbol.PAIR_SEPARATOR;
+import static org.daxprotocol.core.config.DaxpConfig.EQUAL;
+import static org.daxprotocol.core.config.DaxpConfig.PAIR_SEPARATOR;
 
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.
@@ -81,7 +81,7 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     }
 
     private char getPairSeparator(String msgStr){
-        return msgStr.charAt(DaxpConfig.SEPARATOR_IDX); // Example After DAXP is "|" separator
+        return msgStr.charAt(DaxpConfig.CHAR_SEPARATOR_IDX); // Example After DAXP is "|" separator
     }
 
 
@@ -103,8 +103,8 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         }
 
         // Everything after "DAXP|" and  before tag "9="
-        String preamblePart = msg.substring(DaxpConfig.SEPARATOR_IDX+1)
-                             .split(String.valueOf(DaxTagConst.MSG_TYPE) + DaxCodecSymbol.EQUAL)[0];
+        String preamblePart = msg.substring(DaxpConfig.CHAR_SEPARATOR_IDX +1)
+                             .split(String.valueOf(DaxTagConst.MSG_TYPE) + DaxpConfig.EQUAL)[0];
 
         Matcher m = pairPattern.matcher(preamblePart);
 
@@ -120,20 +120,18 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         DaxPreamble p = new DaxPreamble();
 
         //TODO fix this as no IDEA how to set fof test mode
-        DaxCodecSymbol.PAIR_SEPARATOR = getPairSeparator(msgStr);
+        DaxpConfig.PAIR_SEPARATOR = getPairSeparator(msgStr);
 
         p.setPairSeparator(getPairSeparator(msgStr));
 
         Map<String, String> map = parsePreamble(msgStr, p.getPairPattern());
 
         p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.VERSION, DaxpConfig.PROTOCOL_VERSION));
-//>> -------------------------
+
         Optional<DaxCharacterEncoding>  encodingOpt = DaxCharacterEncoding.fromName(
                 map.getOrDefault(DaxPreambleTag.ENCODING,config.getDefaultEncoding().getCanonicalName()));
 
         encodingOpt.ifPresent(p::setEncoding);
-
-//<<<  -------------------------
 
         p.setMsgCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.MSG_COUNT,"1")));
 

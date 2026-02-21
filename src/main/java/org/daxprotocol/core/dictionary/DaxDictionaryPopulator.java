@@ -235,11 +235,15 @@ public class DaxDictionaryPopulator {
                     blockPairMap.get(DaxTagConst.GROUP_NAME).getStrValue());
         }
 
+/*
+        if(blockType.equals(DaxBlockType.BLOCK_FIELD_LIST)){
 
-        if(blockType.equals(DaxBlockType.BLOCK_FIELD)){
+            String fieldIdStrList = blockPairMap.get(DaxTagConst.FIELD_ID_LIST).getStrValue();
 
-            String fieldId = blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue();
 
+
+          //TODO  Create parser service
+         //TODO   Create DaxPatterns provider
             DaxTag tag = DaxDecodeService.parseDaxTag(config.getAppContextId(), fieldId);
 
 
@@ -247,7 +251,7 @@ public class DaxDictionaryPopulator {
                     daxDic.putAttribute(tag,daxPair));
 
         }
-
+*/
 
     }
 

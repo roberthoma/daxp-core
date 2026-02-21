@@ -68,7 +68,7 @@ public class DaxTagConst {
 
 
     public static final DaxTag FIELD_ID                = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,100); ; //  FieldId     Integer
-    public static final DaxTag FIELD_NAME              = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,101); ; //   FieldName   String
+    public static final DaxTag FIELD_NAME              = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,101); ; //  FieldName   String
     public static final DaxTag FIELD_STATUS            = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,102); ; //  FieldStatus     Char    Indicates the current life-cycle state of a field  in the DAXP dictionary.
     public static final DaxTag FIELD_VALUE             = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,103); ; //  FieldValue  <atr_data_type>
     public static final DaxTag FIELD_VALUE_DEFAULT     = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,104); ; //  FieldDefaultValue   <atr_data_type>

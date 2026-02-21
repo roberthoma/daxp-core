@@ -148,7 +148,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);
 
-        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTagConst.MSG_TYPE)+ DaxCodecSymbol.EQUAL);
+        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTagConst.MSG_TYPE)+ DaxpConfig.EQUAL);
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 

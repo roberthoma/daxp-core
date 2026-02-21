@@ -22,9 +22,9 @@ package org.daxprotocol.core.model.trailer;
 
 import org.daxprotocol.core.codec.DaxCodec;
 import org.daxprotocol.core.codec.DaxPairCodec;
+import org.daxprotocol.core.config.DaxpConfig;
 
 import static org.daxprotocol.core.codec.DaxTagConst.*;
-import static org.daxprotocol.core.codec.DaxCodecSymbol.*;
 
 public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
     DaxPairCodec pairCodec;
@@ -36,9 +36,9 @@ public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
     @Override public String encode(DaxTrailer message) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n"); //TODO only for test profile
-        sb.append(CHECKSUM).append(EQUAL)
+        sb.append(CHECKSUM).append(DaxpConfig.EQUAL)
                 .append("123")
-                .append(PAIR_SEPARATOR);
+                .append(DaxpConfig.PAIR_SEPARATOR);
 
         return sb.toString();
     }

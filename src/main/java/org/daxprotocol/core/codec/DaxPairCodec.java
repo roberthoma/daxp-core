@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.daxprotocol.core.codec.DaxCodecSymbol.*;
-
 public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
     DaxpConfig config;
     DaxContextMapper contextMapper;
@@ -48,14 +46,14 @@ public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
            contextId!= config.getAppContextId() )
         {
             sb.append(contextMapper.getContextSymbol(contextId))
-              .append(CONTEXT_TAG_SEPARATOR);
+              .append(DaxpConfig.CONTEXT_TAG_SEPARATOR);
         }
 
 
         sb.append(tagId)
-                .append(EQUAL)
+                .append(DaxpConfig.EQUAL)
                 .append(value)
-                .append(PAIR_SEPARATOR);
+                .append(DaxpConfig.PAIR_SEPARATOR);
         return sb.toString() ;
     }
 
@@ -68,7 +66,7 @@ public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
             int tagId = Integer.parseInt(m.group(2));
             int contextId;
             if (contextStr == null) {
-                if (tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
+                if (tagId < DaxpConfig.DAXP_MAX_TAG_ID) {
                     contextId = DaxpConfig.DAXP_CONTEXT_ID;
                 } else {
                     contextId = msgContextId;

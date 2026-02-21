@@ -22,15 +22,14 @@ package org.daxprotocol.core.field;
 
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.model.tag.DaxTag;
 
 //Type of block application
 public class DaxBlockType extends DaxPair<String> {
 
 //    public static final DaxTag  TAG = new DaxTag(DaxTagConst.BLOCK_TYPE);
-    public static final String BLOCK_FIELD       = "F";
+    public static final String BLOCK_FIELD_LIST  = "F";
     public static final String BLOCK_GROUP       = "G";
-    public static final String BLOCK_LIST        = "L";   // List of tags
+ //   public static final String BLOCK_LIST        = "L";   // List of tags
     public static final String BLOCK_ENUM        = "E";
     public static final String BLOCK_ENUM_VALUE  = "V";
     public static final String BLOCK_MESSAGE     = "M";
