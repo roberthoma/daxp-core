@@ -98,29 +98,5 @@ public class DaxDecodeService {
 //        return list;
 //    }
 
-    public static DaxTag parseDaxTag(int appContextId, String tagStr) {
-        int tagId;
-        int contextId = 0;
 
-        //todo move to consts paterns
-        Pattern pattern = Pattern.compile("^(?:([A-Za-z]+)"+DaxpConfig.CONTEXT_TAG_SEPARATOR+")?([0-9]+)$");
-
-        Matcher m = pattern.matcher(tagStr);
-
-        if (m.matches()) {
-            String contextSymbol = m.group(1); // null if no context
-            tagId = Integer.parseInt(m.group(2));
-
-            if (contextSymbol == null){
-//             if (tagId > DaxpConfig.MAX_DAXP_TAG_ID) {
-                    contextId = appContextId;
-  //           }
-            }
-            return new DaxTag(contextId, tagId);
-        }
-
-
-
-        throw new RuntimeException("NOT correct DaxTag "+tagStr);
-    }
 }

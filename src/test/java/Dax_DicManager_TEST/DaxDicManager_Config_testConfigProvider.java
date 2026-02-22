@@ -6,6 +6,8 @@ import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.provider.DaxProvider;
+import org.daxprotocol.core.provider.DaxProviderImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,32 +17,34 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
     @Test
     void test1(){
 
-        DaxMessageCodec codec = cmrProvider.getMessageCodec();
-        DaxDictionaryPopulator dictionaryPopulator = cmrProvider.getDictionaryPopulator();
-        DaxMessageFactory factory = cmrProvider.getMessageFactory();
-        DaxDictionary dicOrg = cmrProvider.getDictionary();
-        //--------------
-        DaxMessage messageOrg =  cmrProvider.getMessageFactory().dictionaryToMsg(dicOrg);
+        DaxMessageCodec cmrMsgCodec = cmrProvider.getMessageCodec();
+//        DaxDictionaryPopulator dictionaryPopulator = cmrProvider.getDictionaryPopulator();
+//        DaxMessageFactory factoryOrg = cmrProvider.getMessageFactory();
+        DaxDictionary cmrDictionary = cmrProvider.getDictionary();
+        DaxMessage messageOrg =  cmrProvider.getMessageFactory().dictionaryToMsg(cmrDictionary);
+        String msgStrOrg =  cmrMsgCodec.encode(messageOrg);
 
-        String msgStrOrg =  codec.encode(messageOrg);
-        System.out.println("- original -");
+        System.out.println("- Cmr Original -");
         System.out.println(msgStrOrg);
 
-        System.out.println(" -- AFTER -- ");
-        DaxDictionary dicAfter = new DaxDictionary(cmrProvider.getConfig(), cmrProvider.getContextMapper());
-        DaxMessage messageAfter = codec.decode(msgStrOrg);
+        System.out.println(" -- after -- ");
+        DaxProvider providerAfter             =  new DaxProviderImpl(cmrProvider.getConfig());
+        DaxDictionary dicAfter                = providerAfter.getDictionary();
+        DaxMessageCodec messageCodecAfter     = providerAfter.getMessageCodec();
+        DaxDictionaryPopulator populatorAfter = providerAfter.getDictionaryPopulator();
+        DaxMessageFactory messageFactoryAfter = providerAfter.getMessageFactory();
 
-        dictionaryPopulator.populateFromMessage(dicAfter, messageAfter);
+        DaxMessage messageAfter  = messageCodecAfter.decode(msgStrOrg);
+        populatorAfter.populateFromMessage(dicAfter, messageAfter);
 
-        DaxMessage messageDicAfter = factory.dictionaryToMsg(dicAfter);
+        DaxMessage messageDicAfter = messageFactoryAfter.dictionaryToMsg(dicAfter);
 
-        String msgDicAfter =  codec.encode(messageAfter);
+        String msgDicAfter =  messageCodecAfter.encode(messageDicAfter);
         System.out.println(msgDicAfter);
+
         Assertions.assertEquals(msgStrOrg,msgDicAfter);
 
-        Assertions.fail("Test jest do BANI");
-
-        System.out.println("------------End OF DOC populate --------");
+        System.out.println("------------    End OF DOC populate -------- ");
     }
 
 }

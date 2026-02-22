@@ -28,12 +28,14 @@ import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
+import org.daxprotocol.core.field.DaxAtrDataType;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.field.DaxAtrNullable;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.parser.DaxParserService;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
@@ -50,11 +52,16 @@ public class DaxDictionaryPopulator {
 
     DaxpConfig config;
     DaxContextMapper contextMapper;
+    DaxParserService parserService;
 
 
-    public DaxDictionaryPopulator(DaxpConfig config, DaxContextMapper contextMapper){
+    public DaxDictionaryPopulator(DaxpConfig config,
+                                  DaxContextMapper contextMapper,
+                                  DaxParserService parserService
+    ){
         this.config = config;
         this.contextMapper = contextMapper;
+        this.parserService = parserService;
     }
 
     private void popJakartaValidationAttribute(DaxDictionary daxDic,Field field ,DaxTag tag){
@@ -221,6 +228,7 @@ public class DaxDictionaryPopulator {
                 desc = blockPairMap.get(DaxTagConst.ENUM_DESCRIPTION).getStrValue();
             }
             daxDic.putEnum(name, desc );
+            return;
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM_VALUE)){
@@ -228,12 +236,75 @@ public class DaxDictionaryPopulator {
             String value = blockPairMap.get(DaxTagConst.FIELD_VALUE).getStrValue();
 
             daxDic.putEnumValue(name,value,"");
+            return;
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
             daxDic.putGroup( Integer.parseInt(blockPairMap.get(DaxTagConst.GROUP_ID).getStrValue()),
                     blockPairMap.get(DaxTagConst.GROUP_NAME).getStrValue());
         }
+
+
+        if(blockType.equals(DaxBlockType.BLOCK_TAG)){
+
+            DaxTag tag = parserService.parseDaxTag(config.getAppContextId(),
+                              blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue()
+                         ) ;
+
+            //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
+            Class<?> clazz = DaxAtrDataType.charToClass(
+                    blockPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getCharValue()
+            );
+            daxDic.putAtrDataType(tag, clazz);
+
+
+            if(blockPairMap.containsKey(DaxTagConst.ATR_UI_LABEL_TAG)) {
+                daxDic.putAtrUiLabel(tag, blockPairMap.get(DaxTagConst.ATR_UI_LABEL_TAG).getStrValue());
+
+            }
+
+            if(blockPairMap.containsKey(DaxTagConst.ATR_NULLABLE)) {
+                daxDic.putAtrNullable(tag,
+                        blockPairMap.get(DaxTagConst.ATR_NULLABLE).getCharValue()
+                        );
+            }
+
+
+            if(blockPairMap.containsKey(DaxTagConst.ATR_SIZE_MAX)) {
+                daxDic.putAtrSizeMax(tag,
+                        blockPairMap.get(DaxTagConst.ATR_SIZE_MAX).getIntegerValue()
+                );
+            }
+
+            if(blockPairMap.containsKey(DaxTagConst.ATR_SIZE_MIN)) {
+                daxDic.putAtrSizeMin(tag,
+                        blockPairMap.get(DaxTagConst.ATR_SIZE_MIN).getIntegerValue()
+                );
+            }
+
+            if(blockPairMap.containsKey(DaxTagConst.ENUM_NAME)) {
+
+                daxDic.putAtrEnumName(tag,blockPairMap.get(DaxTagConst.ENUM_NAME).getStrValue() );
+
+            }
+
+
+
+
+//
+//            DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
+//            field.setAccessible(true);
+//
+//            int contextId = daxTag.context().isBlank() ? config.getAppContextId():
+//                    contextMapper.getContextId(daxTag.context());
+//
+//            daxDic.putTag( new DaxTag(contextId ,tagId));
+
+            return;
+        }
+
+
+
 
 /*
         if(blockType.equals(DaxBlockType.BLOCK_FIELD_LIST)){

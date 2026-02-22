@@ -54,6 +54,13 @@ public  class DaxPair<T>{
         return value.toString();
     };
 
+    public char getCharValue() {
+        return value.toString().charAt(0);
+    };
+
+
+
+
     public void setValue(T value) {
         this.value = value;
     }
@@ -62,4 +69,7 @@ public  class DaxPair<T>{
         return tag.toString() + DaxpConfig.EQUAL +getStrValue() ; //TODO  DaxCodecSymbol.PAIR_SEPARATOR;
     }
 
+    public Integer getIntegerValue() {
+        return Integer.valueOf((String) value);
+    }
 }

@@ -34,6 +34,7 @@ import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
+import org.daxprotocol.core.parser.DaxParserService;
 import org.daxprotocol.core.strategy.DaxCoreStrategy;
 import org.daxprotocol.core.strategy.DaxCoreStrategyImpl;
 
@@ -59,6 +60,8 @@ public class DaxProviderImpl implements DaxProvider {
 
     private final DaxPairCodec pairCodec;
 
+    private final DaxParserService parserService;
+
     public DaxProviderImpl(DaxpConfig config){
         this.config = config;
 
@@ -68,6 +71,8 @@ public class DaxProviderImpl implements DaxProvider {
         contextMapper = new DaxContextMapper(config);
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
+
+        parserService = new DaxParserService(config, contextMapper);
 
         dictionary = new DaxDictionary(config, contextMapper);
         dictionary.putContext(sysContext);
@@ -85,7 +90,7 @@ public class DaxProviderImpl implements DaxProvider {
 
         messageConverter     = new DaxMessageConverter(config,contextMapper );
         messageFactory       = new DaxMessageFactory(config, contextMapper);
-        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper);
+        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper, parserService);
         coreStrategy         = new DaxCoreStrategyImpl(config, dictionary, dictionaryPopulator);
 
     }

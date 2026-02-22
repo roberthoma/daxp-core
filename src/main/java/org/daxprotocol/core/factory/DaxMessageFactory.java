@@ -64,7 +64,7 @@ public class DaxMessageFactory {
     }
 
 
-    private void putBodyBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
+    private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
         String fieldId;
         body.nextBlock(DaxBlockType.BLOCK_TAG);
 
@@ -85,7 +85,7 @@ public class DaxMessageFactory {
     }
 
 
-    private void putDicValueToBody(DaxBody body, String enumName ,String kValue, String vDesc){
+    private void putEnumDicToEnumBody(DaxBody body, String enumName ,String kValue, String vDesc){
         body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
         body.putPair(ENUM_NAME,enumName);
         body.putPair(FIELD_VALUE,kValue);
@@ -162,7 +162,7 @@ public class DaxMessageFactory {
 
         dictionary.getEnumValueMap().forEach((enumName, valeMap) ->
                 valeMap.forEach((v, enumValue)
-                        -> putDicValueToBody(message.getBody(), enumName, v, enumValue.getDesc() ))
+                        -> putEnumDicToEnumBody(message.getBody(), enumName, v, enumValue.getDesc() ))
                 );
 
         dictionary.getGroupMap().forEach((integer, group) ->
@@ -170,7 +170,7 @@ public class DaxMessageFactory {
 
 
         dictionary.getAttributMap().forEach((tag, atrMap) ->
-                putBodyBlock(message.getBody(),tag,  atrMap)
+                putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );
 
         dictionary.getFieldsGroupMap().forEach((groupId, daxFields) ->
