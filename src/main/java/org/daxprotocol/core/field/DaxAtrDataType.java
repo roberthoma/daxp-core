@@ -49,7 +49,9 @@ public class DaxAtrDataType extends DaxPair<Character> {
 //TODO for refactoring
         public static Character classToChar(Class<?> clazz){
 
-        if (clazz == null) return null;
+        if (clazz == null) {
+            return null;
+        }
 
         String key = clazz.isPrimitive() ? clazz.getName() : clazz.getSimpleName();
 
@@ -64,6 +66,7 @@ public class DaxAtrDataType extends DaxPair<Character> {
                 case "Boolean", "boolean" -> DATA_TYPE_BOOLEAN;
                 case "Long" -> DATA_TYPE_LONG;
                 case "Date" -> DATA_TYPE_DATE;
+                case "Enum" -> DATA_TYPE_ENUM;
                 default -> '?';
             };
 

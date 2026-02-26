@@ -27,6 +27,7 @@ import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
+import org.daxprotocol.core.parser.DaxPatternService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DaxMessageCodec implements DaxCodec<DaxMessage>{
+//public class DaxMessageCodec implements DaxCodec<DaxMessage>{
+public class DaxMessageCodec {
     DaxpConfig       config;
     DaxPairCodec     pairCodec;
     DaxPreambleCodec preambleCodec;
@@ -60,7 +62,8 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
     }
 
-    @Override public String encode(DaxMessage message) {
+    //@Override
+    public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
         DaxPreamble preamble = new DaxPreamble();
         preamble.setEncoding(config.getDefaultEncoding());
@@ -154,7 +157,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 
         List<DaxStringPair> listOfPair = pairCodec.
                           parsePairs(msgPairsStr,
-                                     DaxDecodeService.getMessagePairPattern(preamble.getMsgPairSeparator()),
+                                     DaxPatternService.getMessagePairPattern(preamble.getMsgPairSeparator()),
                                      preamble.getMsgContextId());
 
         List<List<DaxStringPair>> msgPairList =  splitMessages(listOfPair);
@@ -166,7 +169,7 @@ public class DaxMessageCodec implements DaxCodec<DaxMessage>{
         return messageList;
     }
 
-    @Override
+   // @Override
     public DaxMessage decode(String msg) {
         return decodeAll(msg).get(0);
     }

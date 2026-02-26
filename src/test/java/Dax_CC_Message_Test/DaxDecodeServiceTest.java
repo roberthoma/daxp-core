@@ -2,11 +2,11 @@ package Dax_CC_Message_Test;
 
 import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxMessageCodec;
-import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.parser.DaxPatternService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -36,6 +36,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
 
         Map<String,String> preamblePairs = cmrProvider.getPreambleCodec().parsePreamble(msg );
 
+
         Assertions.assertEquals("1",preamblePairs.get("V"));
         Assertions.assertEquals("UTF-8",preamblePairs.get("EN"));
     }
@@ -45,7 +46,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
         Map<String,String>   preamblePairs = cmrProvider.getPreambleCodec().parsePreamble(msg);
         DaxPairCodec pairCodec = cmrProvider.getPairCodec();
         cmrProvider.getConfig().getAppContextId();
-        List<DaxStringPair>  pairsList     = pairCodec.parsePairs(msg,DaxDecodeService.getMessagePairPattern('|') ,
+        List<DaxStringPair>  pairsList     = pairCodec.parsePairs(msg, DaxPatternService.getMessagePairPattern('|') ,
                 cmrProvider.getConfig().getAppContextId());
         long equalChar = msg.chars()
                             .filter(c -> c== DaxpConfig.EQUAL)

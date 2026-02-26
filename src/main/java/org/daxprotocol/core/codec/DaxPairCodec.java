@@ -30,7 +30,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
+//public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
+public class DaxPairCodec {
     DaxpConfig config;
     DaxContextMapper contextMapper;
     public DaxPairCodec(DaxpConfig config, DaxContextMapper contextMapper) {
@@ -61,7 +62,6 @@ public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
         List<DaxStringPair> list = new ArrayList<>();
         Matcher m = pairPattern.matcher(msg);
         while (m.find()) {
-            String contextSymbol;
             String contextStr = m.group(1);
             int tagId = Integer.parseInt(m.group(2));
             int contextId;
@@ -89,12 +89,12 @@ public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
 
     }
 
-    @Override public String encode(DaxPair<?> object) {
-        return "";
-    }
-
-    @Override
-    public DaxPair<?> decode(String wire) {
-        return null;
-    }
+//    @Override public String encode(DaxPair<?> object) {
+//        return "";
+//    }
+//
+//    @Override
+//    public DaxPair<?> decode(String wire) {
+//        return null;
+//    }
 }

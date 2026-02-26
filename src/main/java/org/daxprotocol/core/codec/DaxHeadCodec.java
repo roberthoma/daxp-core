@@ -28,7 +28,8 @@ import java.util.Optional;
 
 import static org.daxprotocol.core.codec.DaxTagConst.*;
 //TODO add logger
-public class DaxHeadCodec implements DaxCodec<DaxHead> {
+//public class DaxHeadCodec implements DaxCodec<DaxHead> {
+public class DaxHeadCodec{
 
     DaxPairCodec pairCodec;
 
@@ -58,16 +59,17 @@ public class DaxHeadCodec implements DaxCodec<DaxHead> {
         return sb.toString();
     }
 
-    @Override public String encode(DaxHead message) {
+//    @Override
+    public String encode(DaxHead message) {
 
         StringBuilder sb = new StringBuilder();
         pairCodec.encode(sb,MSG_TYPE,message.getMsgType());
         return sb.toString();
     }
 
-    @Override public DaxHead decode(String wire) {
-        return null;
-    }
+//    @Override public DaxHead decode(String wire) {
+//        return null;
+//    }
 
     public  DaxHead createHead(List<DaxStringPair> listOfPair) {
         String msgType = listOfPair.get(0).getValue();

@@ -42,15 +42,18 @@ public final class DaxpConfig {
      *  DAXP Context
      */
     public static final int    DAXP_CONTEXT_ID = 0;
-    public static final String DAXP_CONTEXT_SYMBOL = "DAXP";
+    public static final String DAXP_CONTEXT_SYMBOL      = "DAXP";
     public static final String DAXP_CONTEXT_DESCRIPTION = "DAXP Context";
 
 
     /*****************************************************
      * Separators
      */
-    public static final CharSequence TAG_LIST_SEPARATOR = ",";
-    public static final CharSequence CONTEXT_TAG_SEPARATOR =":";
+//    public static final char TAG_LIST_SEPARATOR    = ',';
+//    public static final char CONTEXT_TAG_SEPARATOR = ',';
+
+    public static final CharSequence TAG_LIST_SEPARATOR    = ",";
+    public static final CharSequence CONTEXT_TAG_SEPARATOR = ":";
 
     /** key=value */
     public static final char EQUAL = '=';

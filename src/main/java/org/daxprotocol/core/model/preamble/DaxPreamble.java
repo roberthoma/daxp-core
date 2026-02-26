@@ -19,18 +19,14 @@
  */
 package org.daxprotocol.core.model.preamble;
 
-import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
-
-import java.util.regex.Pattern;
 
 /**
  * Represents the preamble of a DAXP message — defines
  * how the rest of the message is encoded and parsed.
  */
 public class DaxPreamble {
-    Pattern pairPattern;
     private char msgPairSeparator;
     private String protocolVersion = DaxpConfig.PROTOCOL_VERSION;       // V=1
     private int msgCnt;                   //CNT  Number of item messages following preamble. Default 1
@@ -67,16 +63,8 @@ public class DaxPreamble {
 
     public void setPairSeparator(Character pairSeparator) {
         this.msgPairSeparator = pairSeparator;
-        this.setPairPattern(DaxDecodeService.getPreamblePairPattern(this.msgPairSeparator));
     }
 
-    public Pattern getPairPattern() {
-        return pairPattern;
-    }
-
-    public void setPairPattern(Pattern pairPattern) {
-        this.pairPattern = pairPattern;
-    }
     public int getMsgContextId(){
         return msgContextId;
     }

@@ -39,11 +39,9 @@ public class DaxBlockType extends DaxPair<String> {
 
 
 
-    //TODO add group of values
-//    public static final String  BLOCK_GROUP_OF_FIELDS  =  "GS";
-//            7=14|5=GF|141=35|100=2001,FIX.T3:67,2005,2074|
-//            7=15|5=GF|141=36|100=2001,2002,2005,2074,FIX:34|
-
+    //TODO join !!!
+    // 7=13|5=G|143=Customer|141=35|  and >>>
+    //  7=23|5=F|115=2001,2002,FIX:53,2005,2073,2074,2075,2076,2077|141=35|
     public DaxBlockType(String value) {
         super(DaxTagConst.BLOCK_TYPE, value);
     }

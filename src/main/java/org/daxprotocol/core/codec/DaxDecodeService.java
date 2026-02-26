@@ -19,14 +19,10 @@
  */
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.model.tag.DaxTag;
-
 import java.util.*;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+//TODO join with DaxAtrDataType
 public class DaxDecodeService {
     private static final Map<Class<?>, Function<String, Object>> CONVERTERS = new HashMap<>();
 
@@ -42,20 +38,6 @@ public class DaxDecodeService {
         CONVERTERS.put(Double.class, Double::valueOf);
 
         // add more as needed (char, BigDecimal, enums, etc.)
-    }
-
-    public static Pattern getPreamblePairPattern(char pairSeparator) {
-        return Pattern.compile("(\\w+)" + DaxpConfig.EQUAL + "([^" + pairSeparator + "]*)");
-    }
-
-    public static Pattern getMessagePairPattern(char pairSeparator) {
-        String sep = Pattern.quote(String.valueOf(pairSeparator));
-        return Pattern.compile(
-                "(?:([A-Za-z0-3]{0,3}):)?(\\d+)"
-                        + DaxpConfig.EQUAL +
-                        "([^" + sep + "]*)" +
-                        sep
-        );
     }
 
 
@@ -74,29 +56,6 @@ public class DaxDecodeService {
 
     }
 
-
-//    public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, String dftContext) {
-//        List<DaxStringPair> list = new ArrayList<>();
-//        Matcher m = pairPattern.matcher(msg);
-//        while (m.find()) {
-//            String contextSymbol;
-//            String contextStr = m.group(1);
-//            int tagId = Integer.parseInt(m.group(2));
-//            int contextId;
-//            if (contextStr == null) {
-//                if (tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
-//                    contextSymbol = DaxpConfig.DAX_CONTEXT_SYMBOL;
-//                } else {
-//                    contextSymbol = dftContext;
-//                }
-//            } else {
-//                contextSymbol = contextStr;
-//            }
-//            contextId = DaxContextMapper.getContextId(contextSymbol);
-//            list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));
-//        }
-//        return list;
-//    }
 
 
 }

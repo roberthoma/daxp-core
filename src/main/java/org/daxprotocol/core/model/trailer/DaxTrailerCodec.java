@@ -20,20 +20,21 @@
 
 package org.daxprotocol.core.model.trailer;
 
-import org.daxprotocol.core.codec.DaxCodec;
 import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 
 import static org.daxprotocol.core.codec.DaxTagConst.*;
 
-public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
+//public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
+public class DaxTrailerCodec {
     DaxPairCodec pairCodec;
 
     public DaxTrailerCodec (DaxPairCodec pairCodec) {
         this.pairCodec = pairCodec;
     }
 
-    @Override public String encode(DaxTrailer message) {
+    //@Override
+    public String encode(DaxTrailer message) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n"); //TODO only for test profile
         sb.append(CHECKSUM).append(DaxpConfig.EQUAL)
@@ -43,7 +44,8 @@ public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
         return sb.toString();
     }
 
-    @Override public DaxTrailer decode(String wire) {
+    //@Override
+    public DaxTrailer decode(String wire) {
         return null;
     }
 }

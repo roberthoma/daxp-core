@@ -139,9 +139,12 @@ public class DaxMessageFactory {
     private void putFieldsGroup(DaxBody body, Integer groupId, Set<DaxTag> daxTags) {
         body.nextBlock(DaxBlockType.BLOCK_FIELD_LIST);
         body.putPair(GROUP_ID, String.valueOf(groupId));
+
+        CharSequence tagListSep = String.valueOf(DaxpConfig.TAG_LIST_SEPARATOR);
+
         String tagListStr = daxTags.stream()
                 .map(this::tagEncode)
-                .collect(Collectors.joining(DaxpConfig.TAG_LIST_SEPARATOR));
+                .collect(Collectors.joining(tagListSep));
         body.putPair(FIELD_ID_LIST, tagListStr);
     }
 
@@ -187,21 +190,11 @@ public class DaxMessageFactory {
     public DaxMessage dictionaryToMsg(DaxDictionary dictionary) {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
-//        DaxStringPair ctxPair = new DaxStringPair(MSG_CONTEXT, String.valueOf(dictionary.getContextId()));
-//        message.getHead().putPair(ctxPair);
-
-
         dictionary.getContextMap().forEach((idCtx, context) ->
                         putContextToBody(message.getBody(), context)
                 );
 
         dictionaryToMsg(message , dictionary);
-
-//        dictionary.getContextDicMap()
-//                  .forEach((id, contextDic) ->
-//                            dictionaryToMsg(message, contextDic)
-        //putDictionaryToBody(message, dictionary.getApplicationDictionary())
- //       );
 
         message.finish();
         return message;

@@ -24,6 +24,7 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
+import org.daxprotocol.core.parser.DaxPatternService;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -39,7 +40,8 @@ import static org.daxprotocol.core.config.DaxpConfig.PAIR_SEPARATOR;
  * Encodes and decodes the PREAMBLE section of a DAXP message.
  * Format example: DAXP|E=UTF-8\n
  */
-public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
+//public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
+public class DaxPreambleCodec {
 
     DaxpConfig config;
     DaxContextMapper contextMapper;
@@ -84,14 +86,9 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
         return msgStr.charAt(DaxpConfig.CHAR_SEPARATOR_IDX); // Example After DAXP is "|" separator
     }
 
-
-    public  Pattern getPairPattern(String msgStr){
-        return DaxDecodeService.getPreamblePairPattern(getPairSeparator(msgStr));
-    }
-
-//    public static Map<String, String> parsePreamble(String msg) {
     public  Map<String, String> parsePreamble(String msg) {
-        return parsePreamble(msg, getPairPattern(msg));
+        Pattern pattern = DaxPatternService.getPreamblePairPattern(getPairSeparator(msg));
+        return parsePreamble(msg, pattern);
     }
 
     public  Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
@@ -115,25 +112,27 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
     }
 
     /** Decode msgStr format → Preamble object. */
-    @Override
+ //   @Override
     public DaxPreamble decode(String msgStr) {
-        DaxPreamble p = new DaxPreamble();
+        DaxPreamble preamble = new DaxPreamble();
 
         //TODO fix this as no IDEA how to set fof test mode
         DaxpConfig.PAIR_SEPARATOR = getPairSeparator(msgStr);
 
-        p.setPairSeparator(getPairSeparator(msgStr));
+        preamble.setPairSeparator(getPairSeparator(msgStr));
 
-        Map<String, String> map = parsePreamble(msgStr, p.getPairPattern());
+        Pattern pairPattern =  DaxPatternService.getPreamblePairPattern(preamble.getMsgPairSeparator());
 
-        p.setProtocolVersion(map.getOrDefault(DaxPreambleTag.VERSION, DaxpConfig.PROTOCOL_VERSION));
+        Map<String, String> map = parsePreamble(msgStr, pairPattern);
+
+        preamble.setProtocolVersion(map.getOrDefault(DaxPreambleTag.VERSION, DaxpConfig.PROTOCOL_VERSION));
 
         Optional<DaxCharacterEncoding>  encodingOpt = DaxCharacterEncoding.fromName(
                 map.getOrDefault(DaxPreambleTag.ENCODING,config.getDefaultEncoding().getCanonicalName()));
 
-        encodingOpt.ifPresent(p::setEncoding);
+        encodingOpt.ifPresent(preamble::setEncoding);
 
-        p.setMsgCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.MSG_COUNT,"1")));
+        preamble.setMsgCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag.MSG_COUNT,"1")));
 
         String context = map.getOrDefault(DaxPreambleTag.MSG_CONTEXT,
                                           map.getOrDefault(DaxPreambleTag.MSG_SENDER,
@@ -141,8 +140,8 @@ public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
                                           )
         );
 
-        p.setMsgContextId(contextMapper.getContextId(context));
-        return p;
+        preamble.setMsgContextId(contextMapper.getContextId(context));
+        return preamble;
 
     }
 

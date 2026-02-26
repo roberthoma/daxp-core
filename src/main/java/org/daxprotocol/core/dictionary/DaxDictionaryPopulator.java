@@ -25,7 +25,7 @@ import org.daxprotocol.core.annotation.DaxpDictionary;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.annotation.DaxpTag;
-import org.daxprotocol.core.codec.DaxDecodeService;
+
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.field.DaxAtrDataType;
@@ -41,6 +41,7 @@ import org.daxprotocol.core.tool.DaxLangTool;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //TODO dictionary validation method after populateFromAnnotations
@@ -50,7 +51,7 @@ import java.util.Map;
 
 public class DaxDictionaryPopulator {
 
-    DaxpConfig config;
+    DaxpConfig       config;
     DaxContextMapper contextMapper;
     DaxParserService parserService;
 
@@ -59,7 +60,7 @@ public class DaxDictionaryPopulator {
                                   DaxContextMapper contextMapper,
                                   DaxParserService parserService
     ){
-        this.config = config;
+        this.config        = config;
         this.contextMapper = contextMapper;
         this.parserService = parserService;
     }
@@ -247,8 +248,8 @@ public class DaxDictionaryPopulator {
 
         if(blockType.equals(DaxBlockType.BLOCK_TAG)){
 
-            DaxTag tag = parserService.parseDaxTag(config.getAppContextId(),
-                              blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue()
+            DaxTag tag = parserService.parseDaxTag(
+                               blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue()
                          ) ;
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
@@ -288,41 +289,27 @@ public class DaxDictionaryPopulator {
 
             }
 
-
-
-
-//
-//            DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
-//            field.setAccessible(true);
-//
-//            int contextId = daxTag.context().isBlank() ? config.getAppContextId():
-//                    contextMapper.getContextId(daxTag.context());
-//
-//            daxDic.putTag( new DaxTag(contextId ,tagId));
-
             return;
         }
 
 
 
 
-/*
+
         if(blockType.equals(DaxBlockType.BLOCK_FIELD_LIST)){
 
             String fieldIdStrList = blockPairMap.get(DaxTagConst.FIELD_ID_LIST).getStrValue();
 
+            List<DaxTag>  tagList = parserService.parseDaxTagList(fieldIdStrList);
 
+            int groupId = blockPairMap.get(DaxTagConst.GROUP_ID).getIntegerValue();
 
-          //TODO  Create parser service
-         //TODO   Create DaxPatterns provider
-            DaxTag tag = DaxDecodeService.parseDaxTag(config.getAppContextId(), fieldId);
+            tagList.forEach(tag -> daxDic.putFieldIntoGroup(tag, groupId));
 
-
-            blockPairMap.forEach((integer, daxPair) ->
-                    daxDic.putAttribute(tag,daxPair));
+            return;
 
         }
-*/
+
 
     }
 

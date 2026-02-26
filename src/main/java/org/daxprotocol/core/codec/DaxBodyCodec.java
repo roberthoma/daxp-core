@@ -26,7 +26,8 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import java.util.List;
 import java.util.Map;
 
-public class DaxBodyCodec implements DaxCodec<DaxBody> {
+//public class DaxBodyCodec implements DaxCodec<DaxBody> {
+public class DaxBodyCodec {
 
     DaxPairCodec pairCodec;
 
@@ -70,7 +71,7 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
         });
     }
 
-    @Override
+    //@Override
     public String encode(DaxBody body) {
         boolean isBlockPair = body.getBlockCount() > 1;
 
@@ -82,10 +83,10 @@ public class DaxBodyCodec implements DaxCodec<DaxBody> {
         return sb.toString();
     }
 
-    @Override
-    public DaxBody decode(String wire) {
-        return null;
-    }
+//    @Override
+//    public DaxBody decode(String wire) {
+//        return null;
+//    }
 
     public  DaxBody createBody(int blockCount , List<DaxStringPair> listOfPair){
         DaxBody body = new DaxBody();
