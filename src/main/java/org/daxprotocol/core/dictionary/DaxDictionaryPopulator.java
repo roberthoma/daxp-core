@@ -192,7 +192,14 @@ public class DaxDictionaryPopulator {
             int contextId = daxTag.context().isBlank() ? config.getAppContextId():
                     contextMapper.getReferenceId(daxTag.context());
 
-            daxDic.putTag( new DaxTag(contextId ,tagId));
+            DaxTag tag = new DaxTag(contextId ,tagId);
+            daxDic.putTag(tag );
+
+            if (daxTag.uiLabel()!=null) {
+                daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
+            }
+
+            popJakartaValidationAttribute(daxDic, field, tag );
 
         }
 
