@@ -22,9 +22,10 @@ package org.daxprotocol.core.model.preamble;
 
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxReferenceMapper;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
-import org.daxprotocol.core.parser.DaxPatternService;
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.parser.DaxPatternFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,9 +45,9 @@ import static org.daxprotocol.core.config.DaxpConfig.PAIR_SEPARATOR;
 public class DaxPreambleCodec {
 
     DaxpConfig config;
-    DaxContextMapper contextMapper;
+    DaxStringReferenceMapper contextMapper;
 
-    public DaxPreambleCodec(DaxpConfig config, DaxContextMapper contextMapper) {
+    public DaxPreambleCodec(DaxpConfig config, DaxStringReferenceMapper contextMapper) {
         this.config = config;
         this.contextMapper = contextMapper;
     }
@@ -68,7 +69,7 @@ public class DaxPreambleCodec {
         Map<String,String> map = new LinkedHashMap<>();
         map.put(DaxPreambleTag.VERSION, preamble.getProtocolVersion());
         map.put(DaxPreambleTag.ENCODING, preamble.getEncoding().getCanonicalName());
-        map.put(DaxPreambleTag.MSG_CONTEXT,contextMapper.getContextSymbol(preamble.getMsgContextId()));
+        map.put(DaxPreambleTag.MSG_CONTEXT,contextMapper.getReference(preamble.getMsgContextId()));
 
         if (preamble.getMsgCnt() > 1){
             map.put(DaxPreambleTag.MSG_COUNT, String.valueOf(preamble.getMsgCnt()));
@@ -87,7 +88,7 @@ public class DaxPreambleCodec {
     }
 
     public  Map<String, String> parsePreamble(String msg) {
-        Pattern pattern = DaxPatternService.getPreamblePairPattern(getPairSeparator(msg));
+        Pattern pattern = DaxPatternFactory.compilePreamblePairPattern(getPairSeparator(msg));
         return parsePreamble(msg, pattern);
     }
 
@@ -117,11 +118,13 @@ public class DaxPreambleCodec {
         DaxPreamble preamble = new DaxPreamble();
 
         //TODO fix this as no IDEA how to set fof test mode
+        // or keep in sessions connection
+        //
         DaxpConfig.PAIR_SEPARATOR = getPairSeparator(msgStr);
 
         preamble.setPairSeparator(getPairSeparator(msgStr));
 
-        Pattern pairPattern =  DaxPatternService.getPreamblePairPattern(preamble.getMsgPairSeparator());
+        Pattern pairPattern =  DaxPatternFactory.compilePreamblePairPattern(preamble.getMsgPairSeparator());
 
         Map<String, String> map = parsePreamble(msgStr, pairPattern);
 
@@ -136,11 +139,11 @@ public class DaxPreambleCodec {
 
         String context = map.getOrDefault(DaxPreambleTag.MSG_CONTEXT,
                                           map.getOrDefault(DaxPreambleTag.MSG_SENDER,
-                                                  contextMapper.getContextSymbol(config.getAppContextId())
+                                                  contextMapper.getReference(config.getAppContextId())
                                           )
         );
 
-        preamble.setMsgContextId(contextMapper.getContextId(context));
+        preamble.setMsgContextId(contextMapper.getReferenceId(context));
         return preamble;
 
     }

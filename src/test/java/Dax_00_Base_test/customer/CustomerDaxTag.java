@@ -32,6 +32,7 @@ public class CustomerDaxTag {
 
     @DaxpTag( uiLabel = "Customer type")
     public static final int CUSTOMER_TYPE          = 2075;
+
     public static final int CUSTOMER_RELATION      = 2076;
 
     @DaxpTag(uiLabel = "Is Citizen")

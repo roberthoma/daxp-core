@@ -41,7 +41,7 @@ public class DaxEnumDictionary {
      * Map of string values and description ; enums others dictionary
      * Key : idField
      * */
-
+    //todo create reference mapper
     Map<String, Map<String, DaxEnumValue>> enumValueMap = new HashMap<>();
 
 

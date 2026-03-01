@@ -34,6 +34,8 @@ public class DaxAtrDataType extends DaxPair<Character> {
     public final static Character DATA_TYPE_CHAR    = 'C';
     public final static Character DATA_TYPE_ENUM    = 'E';
     public final static Character DATA_TYPE_DATE    = 'D';
+    public final static Character DATA_TYPE_GROUP   = 'G';
+
 
 
     public DaxAtrDataType(Character c) {

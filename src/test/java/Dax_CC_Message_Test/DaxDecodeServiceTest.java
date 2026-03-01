@@ -6,7 +6,7 @@ import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.parser.DaxPatternService;
+import org.daxprotocol.core.parser.DaxPatternFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
         Map<String,String>   preamblePairs = cmrProvider.getPreambleCodec().parsePreamble(msg);
         DaxPairCodec pairCodec = cmrProvider.getPairCodec();
         cmrProvider.getConfig().getAppContextId();
-        List<DaxStringPair>  pairsList     = pairCodec.parsePairs(msg, DaxPatternService.getMessagePairPattern('|') ,
+        List<DaxStringPair>  pairsList     = pairCodec.parsePairs(msg, DaxPatternFactory.compileMessagePairPattern('|') ,
                 cmrProvider.getConfig().getAppContextId());
         long equalChar = msg.chars()
                             .filter(c -> c== DaxpConfig.EQUAL)

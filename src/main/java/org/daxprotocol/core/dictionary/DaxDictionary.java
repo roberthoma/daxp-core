@@ -21,12 +21,11 @@
 package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.context.DaxContext;
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.group.DaxGroup;
-import org.daxprotocol.core.group.DaxpGroupItf;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxSetTool;
 
@@ -39,14 +38,14 @@ import java.util.Set;
 public class DaxDictionary {
 
     DaxpConfig config;
-    DaxContextMapper contextMapper;
+    DaxStringReferenceMapper contextMapper;
 
     Map<Integer, DaxContext> contextMap = new HashMap<>();
 
     DaxEnumDictionary enumDictionary = new DaxEnumDictionary();
 
     /*****************************************************
-     * DescriptiveMap : it is main dic of field attributes
+     * DescriptiveMap : it is main dic of tag attributes
      * Key : tagId
      * Value : map of attributes
      * */
@@ -56,25 +55,16 @@ public class DaxDictionary {
     /*****************************************************
      *  Group Map
      */
-    Map<Integer, DaxpGroupItf> groupMap = new HashMap<>();
-//     Map<Integer, DaxpFieldGroup> groupMap = new HashMap<>();
+    Map<Integer, DaxGroup> groupMap = new HashMap<>();
 
 
-    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
-    Map<Integer, Set<DaxTag>> fieldsGroupMap = new HashMap<>();
-
-    //TODO add group of values
-//            7=14|5=L|141=35|100=2001,FIX.T3:67,2005,2074|
-//            7=15|5=D|141=35|100=2001,2002,2005,2074,FIX:34
-
-    // TODo Dictionary od fields define without identification of group
-
+    Map<Integer, Set<DaxTag>> groupFieldsMap = new HashMap<>();
     Set<DaxTag> tagSet = new HashSet<>();
 
     DaxMessageDic messageDic = new DaxMessageDic();
 
 
-    public DaxDictionary(DaxpConfig config, DaxContextMapper contextMapper) {
+    public DaxDictionary(DaxpConfig config, DaxStringReferenceMapper contextMapper) {
         System.out.println("Init DaxDictionary...");
         this.config = config;
         this.contextMapper = contextMapper;
@@ -87,7 +77,7 @@ public class DaxDictionary {
 
 
     public void putContext(DaxContext context){
-        contextMap.put(contextMapper.getContextId(context.getSymbol()),context);
+        contextMap.put(contextMapper.getReferenceId(context.getSymbol()),context);
     }
 
 
@@ -134,19 +124,26 @@ public class DaxDictionary {
     //**********************************************************************
     // Groups
 
-    public void putGroup(int idGroup, String grpName){
-        DaxGroup grp =  new DaxGroup(idGroup,0,grpName);
-        groupMap.put(grp.getId(),grp);
+    public void putGroup(DaxGroup group){
+
+        groupMap.put(group.getId(),group);
 
     }
+//    public void putGroup(int idGroup, String grpName){
+//
+//        DaxGroup grp =  new DaxGroup(grpName);
+//
+//        groupMap.put(idGroup,grp);
+//
+//    }
 
-    public Map<Integer, DaxpGroupItf> getGroupMap() {
+    public Map<Integer, DaxGroup> getGroupMap() {
         return groupMap;
     }
 
 
-    public Map<Integer, Set<DaxTag>> getFieldsGroupMap(){
-        return fieldsGroupMap;
+    public Map<Integer, Set<DaxTag>> getGroupFieldsMap(){
+        return groupFieldsMap;
     }
 
 
@@ -249,7 +246,7 @@ public class DaxDictionary {
     * */
    //TODO chek exist of fields in group
     public void putFieldIntoGroup(DaxTag tag, int groupId) {
-        fieldsGroupMap.merge(groupId,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
+        groupFieldsMap.merge(groupId,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
                 DaxSetTool.addAndReturnSet(daxTags, tag) );
     }
 
@@ -257,26 +254,13 @@ public class DaxDictionary {
     public void putTag(DaxTag tag){
 
         if (tagSet.contains(tag)){
-            throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
+            System.out.println("TAG > "+tag + " ...........  EXIST ............ ");
+            //throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
         }
         tagSet.add(tag);
 
     }
 
-
-    //    public void putAtrGroupId(DaxTag tag, int groupId) {
-//        if(groupId==0) {
-//            return;
-//        }
-//        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrGroupId(groupId));
-//    }
-
-//    public void putAtrGroupId(int tagId, int groupId) {
-//        if(groupId==0) {
-//            return;
-//        }
-//        putAttribute(tagId, new DaxAtrGroupId(groupId));
-//    }
 
 
 }

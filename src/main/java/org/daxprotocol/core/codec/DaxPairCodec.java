@@ -20,8 +20,7 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -30,11 +29,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//public class DaxPairCodec implements DaxCodec<DaxPair<?>> {
 public class DaxPairCodec {
     DaxpConfig config;
-    DaxContextMapper contextMapper;
-    public DaxPairCodec(DaxpConfig config, DaxContextMapper contextMapper) {
+    DaxStringReferenceMapper contextMapper;
+    public DaxPairCodec(DaxpConfig config, DaxStringReferenceMapper contextMapper) {
         this.config = config;
         this.contextMapper = contextMapper;
     }
@@ -46,7 +44,7 @@ public class DaxPairCodec {
         if(contextId!= DaxpConfig.DAXP_CONTEXT_ID &&
            contextId!= config.getAppContextId() )
         {
-            sb.append(contextMapper.getContextSymbol(contextId))
+            sb.append(contextMapper.getReference(contextId))
               .append(DaxpConfig.CONTEXT_TAG_SEPARATOR);
         }
 
@@ -72,7 +70,7 @@ public class DaxPairCodec {
                     contextId = msgContextId;
                 }
             } else {
-                contextId = contextMapper.getContextId(contextStr);
+                contextId = contextMapper.getReferenceId(contextStr);
             }
 
             list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));

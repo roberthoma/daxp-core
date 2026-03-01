@@ -24,7 +24,7 @@ package org.daxprotocol.core.provider;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxReferenceMapper;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
@@ -49,7 +49,7 @@ public interface DaxProvider {
 
     DaxCoreStrategy getCoreStrategy();
 
-    DaxContextMapper getContextMapper();
+    DaxReferenceMapper getContextMapper();
 
     DaxPairCodec getPairCodec();
 

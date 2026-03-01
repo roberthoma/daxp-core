@@ -42,6 +42,10 @@ public class DaxBlockType extends DaxPair<String> {
     //TODO join !!!
     // 7=13|5=G|143=Customer|141=35|  and >>>
     //  7=23|5=F|115=2001,2002,FIX:53,2005,2073,2074,2075,2076,2077|141=35|
+    // replace 141 by 144 GROUP_NAMESPACE
+    // 7=13|5=G|143=Customer|115=2001,2002,FIX:53,2005,2073,2074,2075,2076,2077|144=Any.Name.Space|
+    // it mean Any.Name.Space::Customer
+
     public DaxBlockType(String value) {
         super(DaxTagConst.BLOCK_TYPE, value);
     }

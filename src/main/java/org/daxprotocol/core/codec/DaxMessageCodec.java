@@ -27,14 +27,10 @@ import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
-import org.daxprotocol.core.parser.DaxPatternService;
+import org.daxprotocol.core.parser.DaxPatternFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 //public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 public class DaxMessageCodec {
@@ -75,32 +71,6 @@ public class DaxMessageCodec {
 
         return sb.toString();
     }
-
-    public String encodeList(List<DaxMessage> messageList) {
-    String msgListString;
-        return "";
-    }
-
-
-
-    public static Map<String, String> parseMap(String msgPart, Pattern pairPattern  ) {
-        Map<String, String> map = new HashMap<>();
-
-        Matcher m = pairPattern.matcher(msgPart);
-
-        while (m.find()) {
-            map.put(m.group(1), m.group(2));
-        }
-        return map;
-    }
-
-    //    public List<DaxMessage> decodeFisrt(String msgStr, int nfirs) {
-    //    }
-
-
-//    public List<DaxMessage> decodeAll(String msgStr) {
-//        return decodeAll(msgStr,null);
-//    }
 
    private DaxMessage createMsg(List<DaxStringPair> listOfPair){
        DaxHead head;
@@ -157,7 +127,7 @@ public class DaxMessageCodec {
 
         List<DaxStringPair> listOfPair = pairCodec.
                           parsePairs(msgPairsStr,
-                                     DaxPatternService.getMessagePairPattern(preamble.getMsgPairSeparator()),
+                                     DaxPatternFactory.compileMessagePairPattern(preamble.getMsgPairSeparator()),
                                      preamble.getMsgContextId());
 
         List<List<DaxStringPair>> msgPairList =  splitMessages(listOfPair);

@@ -121,6 +121,14 @@ public final class DaxpConfig {
     public DaxpConfig() {
     }
 
+    public CharSequence getContextTafSeparator() {
+        return DaxpConfig.CONTEXT_TAG_SEPARATOR;
+    }
+
+    public int getNextGroupId() {
+        return 1;
+    }
+
 //    public char getPairSeparator() {
 //        return pairSeparator;
 //    }

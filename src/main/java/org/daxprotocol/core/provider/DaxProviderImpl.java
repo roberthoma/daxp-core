@@ -26,12 +26,13 @@ import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
-import org.daxprotocol.core.context.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxReferenceMapper;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
 import org.daxprotocol.core.parser.DaxParserService;
@@ -56,7 +57,8 @@ public class DaxProviderImpl implements DaxProvider {
 
     private final DaxCoreStrategy coreStrategy;
 
-    private final DaxContextMapper contextMapper;
+    private final DaxStringReferenceMapper contextMapper;
+    private final DaxStringReferenceMapper groupMapper;
 
     private final DaxPairCodec pairCodec;
 
@@ -68,7 +70,9 @@ public class DaxProviderImpl implements DaxProvider {
         DaxContext appContext = DaxContextFactory.createAppContext(config);
         DaxContext sysContext = DaxContextFactory.createSysContext();
 
-        contextMapper = new DaxContextMapper(config);
+        contextMapper = new DaxStringReferenceMapper(config.getNextContextId());
+        groupMapper = new DaxStringReferenceMapper(config.getNextGroupId());
+
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
 
@@ -90,7 +94,7 @@ public class DaxProviderImpl implements DaxProvider {
 
         messageConverter     = new DaxMessageConverter(config,contextMapper );
         messageFactory       = new DaxMessageFactory(config, contextMapper);
-        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper, parserService);
+        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper,groupMapper, parserService);
         coreStrategy         = new DaxCoreStrategyImpl(config, dictionary, dictionaryPopulator);
 
     }
@@ -134,7 +138,7 @@ public class DaxProviderImpl implements DaxProvider {
         return coreStrategy;
     }
 
-    @Override public DaxContextMapper getContextMapper() {
+    @Override public DaxStringReferenceMapper getContextMapper() {
         return contextMapper;
     }
 

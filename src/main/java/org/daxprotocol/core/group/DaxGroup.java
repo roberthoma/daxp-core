@@ -1,38 +1,44 @@
 package org.daxprotocol.core.group;
 
-public class DaxGroup implements DaxpGroupItf{
+import org.daxprotocol.core.mapper.DaxReference;
+import org.daxprotocol.core.mapper.DaxStringReference;
 
-    public DaxGroup(int id, int masterId, String name) {
-        this.id = id;
-        this.masterId = masterId;
-        this.name = name;
-    }
-
+public class DaxGroup implements DaxStringReference {
     int id;
-    int masterId;
     String name;
     String namespace = "";
     String description = "";
 
 
-    @Override public int getId() {
-        return id;
+    public DaxGroup(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
 
-    @Override public int getMasterId() {
-        return masterId;
-    }
-
-    @Override public String getName() {
+    public String getName() {
         return name;
     }
 
-    @Override public String getNamespace() {
+    public String getNamespace() {
         return namespace;
     }
 
-    @Override public String getDescription() {
+    public String getDescription() {
         return description;
+    }
+
+    @Override
+    public String getReference() {
+        return name;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override public void setId(int id) {
+        this.id=id;
     }
 }

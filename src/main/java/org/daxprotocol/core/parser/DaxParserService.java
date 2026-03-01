@@ -1,10 +1,9 @@
 package org.daxprotocol.core.parser;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -14,20 +13,18 @@ import java.util.stream.Collectors;
 public class DaxParserService {
 
     DaxpConfig config;
-    DaxContextMapper mapper;
+    DaxReferenceMapper mapper;
     Pattern ctxTagPattern;
-    public DaxParserService(DaxpConfig config, DaxContextMapper mapper){
+
+    public DaxParserService(DaxpConfig config, DaxReferenceMapper mapper){
         this.config = config;
         this.mapper = mapper;
-        ctxTagPattern = Pattern.compile("^(?:([A-Za-z]+)"+ DaxpConfig.CONTEXT_TAG_SEPARATOR+")?([0-9]+)$");
+        this.ctxTagPattern = DaxPatternFactory.compileContextTagPattern(config);
     }
 
     public DaxTag parseDaxTag(String tagStr) {
         int tagId;
         int contextId = 0;
-
-        //todo move to consts paterns
-        //CharSequence ctxTagSep
 
         Matcher m = ctxTagPattern.matcher(tagStr);
 
@@ -41,12 +38,10 @@ public class DaxParserService {
                 //           }
             }
             else {
-                contextId = mapper.getContextId(contextSymbol);
+                contextId = mapper.getReferenceId(contextSymbol);
             }
             return new DaxTag(contextId, tagId);
         }
-
-
         throw new RuntimeException("NOT correct DaxTag "+tagStr);
     }
 
@@ -81,5 +76,18 @@ public class DaxParserService {
 //        }
 //        return list;
 //    }
+
+
+    //    public static Map<String, String> parseMap(String msgPart, Pattern pairPattern  ) {
+//        Map<String, String> map = new HashMap<>();
+//
+//        Matcher m = pairPattern.matcher(msgPart);
+//
+//        while (m.find()) {
+//            map.put(m.group(1), m.group(2));
+//        }
+//        return map;
+//    }
+
 
 }

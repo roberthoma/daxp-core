@@ -27,8 +27,9 @@ import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.annotation.DaxpTag;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.context.DaxContextMapper;
 import org.daxprotocol.core.field.DaxAtrDataType;
+import org.daxprotocol.core.group.DaxGroup;
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.field.DaxAtrNullable;
@@ -51,17 +52,20 @@ import java.util.Map;
 
 public class DaxDictionaryPopulator {
 
-    DaxpConfig       config;
-    DaxContextMapper contextMapper;
-    DaxParserService parserService;
+    DaxpConfig               config;
+    DaxStringReferenceMapper contextMapper;
+    DaxStringReferenceMapper groupMapper;
+    DaxParserService         parserService;
 
 
     public DaxDictionaryPopulator(DaxpConfig config,
-                                  DaxContextMapper contextMapper,
+                                  DaxStringReferenceMapper contextMapper,
+                                  DaxStringReferenceMapper groupMapper,
                                   DaxParserService parserService
     ){
         this.config        = config;
         this.contextMapper = contextMapper;
+        this.groupMapper   = groupMapper;
         this.parserService = parserService;
     }
 
@@ -90,7 +94,8 @@ public class DaxDictionaryPopulator {
 
     }
 
-    public void populateEnumFromAnnotations(Field field , DaxDictionary daxDic){
+
+    private void populateEnumFromAnnotations(Field field , DaxDictionary daxDic){
 //        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
 
         DaxpField daxp = field.getAnnotation(DaxpField.class);
@@ -115,13 +120,15 @@ public class DaxDictionaryPopulator {
         int groupId = 0;
 
 //        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
-        DaxpFieldGroup group =  clazz.getAnnotation(DaxpFieldGroup.class);
+        DaxpFieldGroup groupAtn =  clazz.getAnnotation(DaxpFieldGroup.class);
 
 //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
-        groupId = group.groupId();
-        group.masterId();
+//        groupId = group.groupId();
 
-        daxDic.putGroup(groupId, group.name() );
+
+
+        groupId = groupMapper.getReferenceId(groupAtn.name());
+        daxDic.putGroup(new DaxGroup(groupId, groupAtn.name()));
 
 
         for (Field field : DaxLangTool.allFields(clazz)) {
@@ -135,10 +142,12 @@ public class DaxDictionaryPopulator {
 
             int contextId = daxField.context().isBlank() ?
                     config.getAppContextId():
-                    contextMapper.getContextId(daxField.context());
+                    contextMapper.getReferenceId(daxField.context());
 
 
             DaxTag tag = new DaxTag(contextId ,daxField.tagId());
+
+            daxDic.putTag(tag);
             //Class  change type to char
             daxDic.putAtrDataType(tag,field.getType());
 
@@ -153,7 +162,6 @@ public class DaxDictionaryPopulator {
             }
 
             daxDic.putFieldIntoGroup(tag, groupId);
-
 
         }
 
@@ -182,7 +190,7 @@ public class DaxDictionaryPopulator {
             field.setAccessible(true);
 
             int contextId = daxTag.context().isBlank() ? config.getAppContextId():
-                    contextMapper.getContextId(daxTag.context());
+                    contextMapper.getReferenceId(daxTag.context());
 
             daxDic.putTag( new DaxTag(contextId ,tagId));
 
@@ -190,7 +198,7 @@ public class DaxDictionaryPopulator {
 
     }
 
-
+//TODO throw Runtim exception of tags, group etc are duplicated
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
         // DaxEnumPopulator enumManager = new DaxEnumPopulator();
 
@@ -240,10 +248,6 @@ public class DaxDictionaryPopulator {
             return;
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
-            daxDic.putGroup( Integer.parseInt(blockPairMap.get(DaxTagConst.GROUP_ID).getStrValue()),
-                    blockPairMap.get(DaxTagConst.GROUP_NAME).getStrValue());
-        }
 
 
         if(blockType.equals(DaxBlockType.BLOCK_TAG)){
@@ -251,6 +255,8 @@ public class DaxDictionaryPopulator {
             DaxTag tag = parserService.parseDaxTag(
                                blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue()
                          ) ;
+
+            daxDic.putTag( tag);
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
             Class<?> clazz = DaxAtrDataType.charToClass(
@@ -294,20 +300,15 @@ public class DaxDictionaryPopulator {
 
 
 
-
-
-        if(blockType.equals(DaxBlockType.BLOCK_FIELD_LIST)){
-
+        if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
+            String groupName = blockPairMap.get(DaxTagConst.GROUP_NAME).getStrValue();
+            int groupId = groupMapper.getReferenceId(groupName);
+            DaxGroup group = new DaxGroup(groupId,groupName);
+            daxDic.putGroup(group);
             String fieldIdStrList = blockPairMap.get(DaxTagConst.FIELD_ID_LIST).getStrValue();
-
             List<DaxTag>  tagList = parserService.parseDaxTagList(fieldIdStrList);
-
-            int groupId = blockPairMap.get(DaxTagConst.GROUP_ID).getIntegerValue();
-
             tagList.forEach(tag -> daxDic.putFieldIntoGroup(tag, groupId));
-
             return;
-
         }
 
 

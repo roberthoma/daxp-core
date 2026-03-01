@@ -31,8 +31,8 @@ public class DaxDictionaryDecoratorService {
         System.out.println(" >> DaxpGroup ");
 
         System.out.println("GRP name : " +group.name());
-        System.out.println("GRP id : " +group.groupId());
-        System.out.println("GRP master id : " +group.masterId());
+//        System.out.println("GRP id : " +group.groupId());
+//        System.out.println("GRP master id : " +group.masterId());
         System.out.println("GRP desc : " +group.description());
         System.out.println("GRP namespace : " +group.namespace());
     }

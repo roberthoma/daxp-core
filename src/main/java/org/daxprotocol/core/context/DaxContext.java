@@ -1,15 +1,24 @@
 package org.daxprotocol.core.context;
 
-public class DaxContext {
+import org.daxprotocol.core.mapper.DaxReference;
+
+public class DaxContext implements DaxReference {
     private int id;
     private String tagPrefix;
     private String symbol;
     private String description;
 
+    @Override
+    public String getReference() {
+        return "";
+    }
+
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

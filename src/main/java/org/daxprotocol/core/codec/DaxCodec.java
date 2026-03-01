@@ -20,7 +20,10 @@
 package org.daxprotocol.core.codec;
 import org.daxprotocol.core.model.DaxMessage;
 
+import java.util.List;
+
 public interface DaxCodec<T> {
     String encode(T object);
     T decode(String wire);
+//    List<T> decode(String wire);
 }

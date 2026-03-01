@@ -9,26 +9,24 @@ import org.daxprotocol.core.annotation.DaxpField;
 
 import java.util.Date;
 
-@DaxpFieldGroup(groupId = GroupsTestList.GRP_CUSTOMER,
-                name = "Customer",
-                namespace = "crm",
-                masterId = GroupsTestList.GRP_CRM)
+@DaxpFieldGroup(name = "Customer",
+                namespace = "crm")
 public class Customer {
 
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_ID, uiLabel = "Id customer")
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_ID) //, uiLabel = "Id customer")
     int customerId;
 
-    @NotNull
-    @Size(min = 2 ,max = 120)
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_NAME, uiLabel = "First name")
+//    @NotNull
+//    @Size(min = 2 ,max = 120)
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_NAME) //, uiLabel = "First name")
     String name;
 
     @Size(min=2)
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
 
-    @Size(min=2)
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TELEPHONE, uiLabel = "Telephone")
+//    @Size(min=2)
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TELEPHONE) //, uiLabel = "Telephone")
     String telephone;
 
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TYPE, uiLabel = "Type")

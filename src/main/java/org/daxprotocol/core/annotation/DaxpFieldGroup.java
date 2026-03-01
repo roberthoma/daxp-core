@@ -27,10 +27,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Documented
 public @interface DaxpFieldGroup {
-    int groupId();
-    int masterId()  default 0;
     String name();            // e.g. "Customer"
     String description() default "";
     String namespace() default "default";
-
 }

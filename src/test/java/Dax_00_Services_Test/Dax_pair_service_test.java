@@ -4,7 +4,7 @@ import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxStringPair;
-import org.daxprotocol.core.parser.DaxPatternService;
+import org.daxprotocol.core.parser.DaxPatternFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
 
     @Test
     public void prb_pair_parse_wrongPreamble(){
-        Pattern pattern = DaxPatternService.getPreamblePairPattern('|');
+        Pattern pattern = DaxPatternFactory.compilePreamblePairPattern('|');
         try {
 
             Map<String, String> pairList = cmrProvider.getPreambleCodec().parsePreamble(prbPairsStr1, pattern);
@@ -35,7 +35,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
     }
     @Test
     public void prb_pair_parse_test(){
-        Pattern pattern = DaxPatternService.getPreamblePairPattern('|');
+        Pattern pattern = DaxPatternFactory.compilePreamblePairPattern('|');
         Map<String, String> pairList = cmrProvider.getPreambleCodec().parsePreamble(prbPairsStr2,pattern);
 
         pairList.forEach((s, s2) ->
@@ -46,7 +46,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
 
     @Test
     public void pair_parse_test(){
-        Pattern pattern = DaxPatternService.getMessagePairPattern('|');
+        Pattern pattern = DaxPatternFactory.compileMessagePairPattern('|');
         DaxPairCodec pairCodec = cmrProvider.getPairCodec();
         DaxpConfig   crmConfig = cmrProvider.getConfig();
         List<DaxStringPair> pairList = pairCodec.parsePairs(msgPairsStr1,pattern,crmConfig.getAppContextId());

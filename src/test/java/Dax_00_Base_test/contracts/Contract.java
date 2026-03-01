@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 
-@DaxpFieldGroup(groupId = ContractConst.GROUP_CONTRACT , name = "Contract")
+@DaxpFieldGroup(name = "Contract")
 public class Contract {
 
     @DaxpField(tagId = ContractConst.CONTRACT_ID, uiLabel = "Id")
