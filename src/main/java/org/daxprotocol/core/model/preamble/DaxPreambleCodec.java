@@ -22,7 +22,6 @@ package org.daxprotocol.core.model.preamble;
 
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.mapper.DaxReferenceMapper;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.parser.DaxPatternFactory;

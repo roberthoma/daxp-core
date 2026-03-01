@@ -65,7 +65,7 @@ public final class DaxpConfig {
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
-    private int    appContextId = 1;
+    private int appContextId = 1;
 
     public int getNextContextId() {
         return appContextId + 1;

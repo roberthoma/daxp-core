@@ -10,7 +10,7 @@ public class DaxContext implements DaxReference {
 
     @Override
     public String getReference() {
-        return "";
+        return tagPrefix;
     }
 
     @Override

@@ -7,29 +7,32 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 
 public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
-    //@Test
+    @Test
     void createMsgFromCustomer() {
-        String expectMsg = "DAXP|V=1|EN=UTF-8|\n" +
-                "9=UCi|20=1|2001=123|2002=Robert|2076=WORKER|2077=Y|\n" +
+        String expectMsg = "DAXP|V="+DaxpConfig.PROTOCOL_VERSION+"|EN=UTF-8|CX=CMR|\n" +
+                "9=UCi|2001=123|2002=Robert|2076=WORKER|2077=Y|\n" +
                 "99=123|";
 
         Customer customer = new Customer(123, "Robert");
         customer.setRelation(CustomerRelation.WORKER);
         customer.setCitizen(true);
+
         DaxMessage message = cmrProvider.getMessageFactory().toDaxMessage("UCi", customer);
         String ecMsg = cmrProvider.getMessageCodec().encode(message);
+
         ecMsg= ecMsg.replace(DaxpConfig.PAIR_SEPARATOR,'|');
         Assertions.assertEquals(expectMsg,ecMsg);
     }
 
 
 
-    //@Test
+    @Test
     void customer_tag_info(){
 //        CustomerDaxDic dic = new CustomerDaxDic();
         Customer customer = new Customer(123, "Robert");
@@ -65,7 +68,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
     }
 
-    //@Test
+    @Test
     void injection(){
         String msgStr = "DAXP|V=1|EN=UTF-8|9=UCi|20=1|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
 
@@ -75,7 +78,8 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
         Assertions.assertEquals("Robert" , customer.getName());
         Assertions.assertEquals(123 , customer.getCustomerId());
 
-        DaxMessage updMsg = cmrProvider.getMessageCodec().decode("DAXP|V=1|EN=UTF-8|9=CU|20=1|2001=123|2002=Jan|2074=Toronto|99=123|\"");
+        DaxMessage updMsg = cmrProvider.getMessageCodec()
+                                       .decode("DAXP|V=1|EN=UTF-8|9=CU|2001=123|2002=Jan|2074=Toronto|99=123|\"");
 
         cmrProvider.getMessageConverter().updateFromMessage(updMsg, customer );
         Assertions.assertEquals("Jan",customer.getName());

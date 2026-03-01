@@ -6,13 +6,14 @@ import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MultiMessage_Test extends DaxTestConfig {
 
-//@Test
+    @Test
     void createMsgFromCustomer() {
         String msgStr = "DAXP|V=1|EN=UTF-8|CNT=4|\n" +
                 "9=UCi|2001=123|2002=Robert3|99=123|\n" +
@@ -33,7 +34,7 @@ public class MultiMessage_Test extends DaxTestConfig {
         Assertions.assertEquals("Robert4", customer.getName());
     }
 
-//@Test
+    @Test
     void createMsgFromCustomerList() {
         List<Customer> customerList = new ArrayList<>();
 

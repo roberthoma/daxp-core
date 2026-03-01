@@ -23,5 +23,6 @@ public class Dax_00_ConfigParametersTest extends DaxTestConfig {
         Assertions.assertEquals("CNT",cntConfig.getAppContextTagPrefix());
 
 
+
     }
 }

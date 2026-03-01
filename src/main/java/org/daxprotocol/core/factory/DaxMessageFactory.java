@@ -220,11 +220,6 @@ public class DaxMessageFactory {
     @SuppressWarnings("unchecked")
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {
 
-//        if (daxDataEntry instanceof Map<?,?>) { ????
-//
-//            System.out.println("JEST Map<DaxTag,DaxPair<?>>");
-//        }
-
         return  daxDataEntry instanceof List<?> ?
             toDaxMessageFromList( messageType, (List<Object>) daxDataEntry )
           : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
@@ -246,11 +241,7 @@ public class DaxMessageFactory {
        //     body.putPair(GROUP_ID, String.valueOf(group.groupId()));
             }
 
-
-
-
             try {
-//                for (Field field : entry.getClass().getDeclaredFields()) {
                 for (Field field : DaxLangTool.allFields(entry.getClass())) {
                     if (field.isAnnotationPresent(DaxpField.class)) {
                         DaxpField daxp = field.getAnnotation(DaxpField.class);

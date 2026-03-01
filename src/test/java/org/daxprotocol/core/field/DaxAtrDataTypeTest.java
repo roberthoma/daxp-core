@@ -15,7 +15,6 @@ class DaxAtrDataTypeTest extends DaxTestConfig {
         Assertions.assertEquals('S',classType);
     }
     @Test
-
     void classToCharENUM() {
 
         Character classType =  DaxAtrDataType.classToChar(Enum.class);

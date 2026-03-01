@@ -203,14 +203,14 @@ public class DaxDictionaryPopulator {
         // DaxEnumPopulator enumManager = new DaxEnumPopulator();
 
         try {
+            if (clazz.isAnnotationPresent(DaxpDictionary.class)){
+                populateDaxpDictionary(daxDic,clazz);
+            }
 
             if (clazz.isAnnotationPresent(DaxpFieldGroup.class)){
                 populateDaxpFieldGroup(daxDic,clazz);
             }
 
-            if (clazz.isAnnotationPresent(DaxpDictionary.class)){
-                populateDaxpDictionary(daxDic,clazz);
-            }
 
         }catch (Exception e){
             throw new RuntimeException(e);
