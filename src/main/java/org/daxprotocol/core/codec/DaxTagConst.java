@@ -90,9 +90,9 @@ public class DaxTagConst {
     public static final DaxTag ENUM_NAME               = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,130); ; //
     public static final DaxTag ENUM_DESCRIPTION        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,131); ; //
     public static final DaxTag ENUM_VALUE              = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,132); ; //
-    public static final DaxTag ENUM_VALUE_ID           = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,133); ; //
+    public static final DaxTag ENUM_VALUE_DESCRIPTION           = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,133); ; //
     public static final DaxTag ENUM_VALUE_SYMBOL       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,134); ; //
-    public static final DaxTag ENUM_VALUE_DESCRIPTION  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,135); ; //
+    public static final DaxTag ENUM_VALUE_LIST  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,135); ; //
     //----
     public static final DaxTag NAMESPACE          = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,144); ; //
     public static final DaxTag NAMESPACE_DESC     = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,144); ; //

@@ -23,6 +23,7 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpFieldGroup;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.dictionary.DaxEnumValue;
 import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
 import org.daxprotocol.core.context.DaxContext;
@@ -31,7 +32,7 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageDicItem;
-import org.daxprotocol.core.dictionary.DaxEnumName;
+import org.daxprotocol.core.dictionary.DaxEnum;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
@@ -102,30 +103,31 @@ public class DaxMessageFactory {
     private void putGroupToBody(DaxBody body, DaxGroup group, Set<DaxTag> daxFields){
         body.nextBlock(DaxBlockType.BLOCK_GROUP);
         body.putPair(GROUP_NAME, String.valueOf(group.getName()));
-//        if (group.getMasterId() != 0 ){
-//            body.putPair(GROUP_MASTER_ID, String.valueOf(group.getMasterId()));
-//        }
+
         if (!group.getDescription().isBlank() ){
             body.putPair(GROUP_DESCRIPTION, group.getDescription());
         }
 
-//        daxFields.forEach(daxTag ->  putFieldsGroup(body,daxFields));
-
-        CharSequence tagListSep = String.valueOf(DaxpConfig.TAG_LIST_SEPARATOR);
-
         String tagListStr = daxFields.stream()
                 .map(this::tagEncode)
-                .collect(Collectors.joining(tagListSep));
+                .collect(Collectors.joining(DaxpConfig.TAG_LIST_SEPARATOR));
         body.putPair(FIELD_ID_LIST, tagListStr);
 
 
 
-}
+    }
 
-    private void putEnumToBlock(DaxBody body, DaxEnumName enumName){
+    private void putEnumToBlock(DaxBody body,
+                                DaxEnum enumName,
+                                        Map<String, DaxEnumValue> enumValueMap){
         body.nextBlock(DaxBlockType.BLOCK_ENUM);
         body.putPair(ENUM_NAME, enumName.getName());
         body.putPair(ENUM_DESCRIPTION, enumName.getDesc());
+
+        if (enumValueMap != null) {
+            body.putPair(ENUM_VALUE_LIST, String.join(DaxpConfig.VALUE_LIST_SEPARATOR, enumValueMap.keySet()));
+        }
+
     }
     private void putMsgItem(DaxBody body,  DaxMessageDicItem msgItem){
         body.nextBlock(DaxBlockType.BLOCK_MESSAGE);
@@ -135,7 +137,6 @@ public class DaxMessageFactory {
 
     private void putContextToBody(DaxBody body, DaxContext daxContext) {
         body.nextBlock(DaxBlockType.BLOCK_CONTEXT);
-       // body.putPair(FIELD_ID, String.valueOf(daxContext.id));
         body.putPair(FIELD_VALUE_SYMBOL, daxContext.getSymbol());
         body.putPair(FIELD_VALUE_PREFIX, daxContext.getTagPrefix());
         body.putPair(FIELD_VALUE_DESCRIPTION, daxContext.getDescription());
@@ -153,21 +154,7 @@ public class DaxMessageFactory {
 
     }
 
-//    private void putFieldsGroup(DaxBody body, Integer groupId, Set<DaxTag> daxTags) {
-    private void putFieldsGroup(DaxBody body, Set<DaxTag> daxTags) {
-        //body.nextBlock(DaxBlockType.BLOCK_FIELD_LIST);
-//        body.putPair(GROUP_ID, String.valueOf(groupId));
 
-        CharSequence tagListSep = String.valueOf(DaxpConfig.TAG_LIST_SEPARATOR);
-
-        String tagListStr = daxTags.stream()
-                .map(this::tagEncode)
-                .collect(Collectors.joining(tagListSep));
-        body.putPair(FIELD_ID_LIST, tagListStr);
-    }
-
-
-    //TODO Create message with dictionary using context, or group, or field/(list of field)
     //TODO  create multi message with context dictionary values
 
     private void dictionaryToMsg(DaxDictionary dictionary, DaxMessage message)
@@ -177,21 +164,14 @@ public class DaxMessageFactory {
                 );
 
         dictionary.getEnumMap().forEach((s, enumName) ->
-                putEnumToBlock(message.getBody(), enumName)
+                putEnumToBlock(message.getBody(), enumName, dictionary.getEnumValueMap().get(enumName.getName()))
                 );
-
-        dictionary.getEnumValueMap().forEach((enumName, valeMap) ->
-                valeMap.forEach((v, enumValue)
-                        -> putEnumDicToEnumBody(message.getBody(), enumName, v, enumValue.getDesc() ))
-                );
-
-
 
         dictionary.getGroupMap().forEach((integer, group) ->
                 putGroupToBody(message.getBody(), group, dictionary.getGroupFieldsMap().get(group.getId())));
 
        //-------------------------
-       // TODO create attributes by tags
+       // TODO create attributes by tags !!!!!
         dictionary.getAttributMap().forEach((tag, atrMap) ->
                 putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );

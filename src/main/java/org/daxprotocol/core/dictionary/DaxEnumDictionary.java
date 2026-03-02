@@ -25,6 +25,8 @@ import org.daxprotocol.core.tool.DaxSetTool;
 import java.util.HashMap;
 import java.util.Map;
 
+
+//TODO move back to dictionary
 public class DaxEnumDictionary {
 
     /*****************************************************
@@ -33,7 +35,7 @@ public class DaxEnumDictionary {
      * Key : idField
      * */
 
-    Map<String, DaxEnumName> enumMap = new HashMap<>();
+    Map<String, DaxEnum> enumMap = new HashMap<>();
 
 
     /*****************************************************
@@ -41,13 +43,14 @@ public class DaxEnumDictionary {
      * Map of string values and description ; enums others dictionary
      * Key : idField
      * */
-    //todo create reference mapper
+    //TODO create reference mapper
+    //
     Map<String, Map<String, DaxEnumValue>> enumValueMap = new HashMap<>();
 
 
 
     public void putEnum(String name,  String desc){
-        enumMap.computeIfAbsent(name,nameS -> new DaxEnumName(nameS, desc));
+        enumMap.computeIfAbsent(name,nameS -> new DaxEnum(nameS, desc));
     }
 
 
@@ -61,7 +64,7 @@ public class DaxEnumDictionary {
         return  enumValueMap;
     }
 
-    public  Map<String, DaxEnumName> getEnumMap(){
+    public  Map<String, DaxEnum> getEnumMap(){
         return enumMap;
     }
 

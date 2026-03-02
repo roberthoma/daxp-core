@@ -44,11 +44,19 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 //TODO dictionary validation method after populateFromAnnotations
 // error  example :
 // 1) if any group refer to no existed master group
 //TODO create  service  DaxValidationAttributeManager
+
+/* TODO join Enum with values
+7=6|5=E|130=CustomerRelation|131=CustomerRelation|
+        7=8|5=V|130=CustomerRelation|103=CLIENT|
+        7=9|5=V|130=CustomerRelation|103=CONSULTANT|
+        7=10|5=V|130=CustomerRelation|103=WORKER|
+*/
 
 public class DaxDictionaryPopulator {
 
@@ -244,6 +252,13 @@ public class DaxDictionaryPopulator {
                 desc = blockPairMap.get(DaxTagConst.ENUM_DESCRIPTION).getStrValue();
             }
             daxDic.putEnum(name, desc );
+            String valuesStrList = blockPairMap.get(DaxTagConst.ENUM_VALUE_LIST).getStrValue();
+            List<String>  valueList =  Arrays.stream(valuesStrList
+                                                     .split(DaxpConfig.VALUE_LIST_SEPARATOR.toString()))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.toList());
+             valueList.forEach(eValue -> daxDic.putEnumValue( name,eValue , ""));
             return;
         }
 

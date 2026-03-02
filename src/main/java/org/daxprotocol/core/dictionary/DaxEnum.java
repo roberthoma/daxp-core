@@ -19,11 +19,11 @@
  */
 package org.daxprotocol.core.dictionary;
 
-public class DaxEnumName {
+public class DaxEnum {
     String name;
     String desc;
 
-    public DaxEnumName(String name, String desc) {
+    public DaxEnum(String name, String desc) {
         this.name = name;
         this.desc = desc;
     }

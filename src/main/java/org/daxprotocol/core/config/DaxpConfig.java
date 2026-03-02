@@ -52,14 +52,15 @@ public final class DaxpConfig {
 //    public static final char TAG_LIST_SEPARATOR    = ',';
 //    public static final char CONTEXT_TAG_SEPARATOR = ',';
 
-    public static final CharSequence TAG_LIST_SEPARATOR    = ",";
+    public static final CharSequence TAG_LIST_SEPARATOR    = ";";
+    public static final CharSequence VALUE_LIST_SEPARATOR    = ";";
     public static final CharSequence CONTEXT_TAG_SEPARATOR = ":";
 
     /** key=value */
     public static final char EQUAL = '=';
 
     /**  Pair separator on the WIRE (binary, non-printable). */
-    //public static char PAIR_SEPARATOR = 0x0001; <<<< target
+    //public static char PAIR_SEPARATOR = 0x0001;  //<<<< target
     public static char PAIR_SEPARATOR = '|';   // << TMP for test
 
 

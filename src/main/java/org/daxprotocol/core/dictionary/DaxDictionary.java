@@ -107,7 +107,7 @@ public class DaxDictionary {
           enumDictionary.putEnum(enumName, desc);
     }
 
-    public void putEnum(DaxEnumName enumName){
+    public void putEnum(DaxEnum enumName){
         enumDictionary.putEnum(enumName.getName(), enumName.getDesc());
     }
 
@@ -116,7 +116,7 @@ public class DaxDictionary {
         return  enumDictionary.getValueMap();
     }
 
-    public Map<String, DaxEnumName>  getEnumMap() {
+    public Map<String, DaxEnum>  getEnumMap() {
         return  enumDictionary.getEnumMap();
     }
 
