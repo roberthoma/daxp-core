@@ -30,13 +30,18 @@ import java.util.Map;
 public class DaxTrailer {
 
     Map<DaxTag, DaxPair<?>> map = new LinkedHashMap<>();
+    private final DaxPair<Integer> checksumPair;
 
     public DaxTrailer(){
-        map.put(DaxTagConst.CHECKSUM,new DaxPair<Integer>(DaxTagConst.CHECKSUM,321));
+        checksumPair = new DaxPair<Integer>(DaxTagConst.CHECKSUM,0);
+        map.put(DaxTagConst.CHECKSUM,checksumPair);
     }
 
 
     public Integer getChecksum() {
         return (Integer)(map.get(DaxTagConst.CHECKSUM).getValue());
+    }
+    public void setChecksum(int checksum){
+        checksumPair.setValue(checksum);
     }
 }

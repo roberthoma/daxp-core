@@ -60,8 +60,8 @@ public final class DaxpConfig {
     public static final char EQUAL = '=';
 
     /**  Pair separator on the WIRE (binary, non-printable). */
-    //public static char PAIR_SEPARATOR = 0x0001;  //<<<< target
-    public static char PAIR_SEPARATOR = '|';   // << TMP for test
+    public static char PAIR_SEPARATOR = 0x0001;  //<<<< target
+    //public static char PAIR_SEPARATOR = '|';   // << TMP for test
 
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file

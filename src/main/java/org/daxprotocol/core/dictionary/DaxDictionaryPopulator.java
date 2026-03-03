@@ -48,15 +48,9 @@ import java.util.stream.Collectors;
 
 //TODO dictionary validation method after populateFromAnnotations
 // error  example :
-// 1) if any group refer to no existed master group
+ // 1) if any group refer to no existed master group
 //TODO create  service  DaxValidationAttributeManager
 
-/* TODO join Enum with values
-7=6|5=E|130=CustomerRelation|131=CustomerRelation|
-        7=8|5=V|130=CustomerRelation|103=CLIENT|
-        7=9|5=V|130=CustomerRelation|103=CONSULTANT|
-        7=10|5=V|130=CustomerRelation|103=WORKER|
-*/
 
 public class DaxDictionaryPopulator {
 

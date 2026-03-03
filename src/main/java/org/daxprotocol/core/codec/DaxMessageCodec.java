@@ -26,9 +26,11 @@ import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
+import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
 import org.daxprotocol.core.parser.DaxPatternFactory;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,30 +60,66 @@ public class DaxMessageCodec {
 
     }
 
-    //@Override
+//TODO move to any service
+        public  int calculateChecksum(String input) {
+            byte[] bytes = input.getBytes(StandardCharsets.US_ASCII);
+
+            int sum = 0;
+
+            for (byte b : bytes) {
+//                if (b != DaxpConfig.PAIR_SEPARATOR
+//                && b != '\n' // TODO move to DaxpConfig create array abandoned char
+//                )
+
+//                {   // ignore pipe
+                    sum += b;
+//                }
+            }
+
+            return sum % 256;
+        }
+
+
+        //@Override
     public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
         DaxPreamble preamble = new DaxPreamble();
         preamble.setEncoding(config.getDefaultEncoding());
         preamble.setMsgContextId(config.getAppContextId());
+
+        StringBuilder msgSb = new StringBuilder();
+
+        msgSb.append(headCodec.encode(message.getHead(), message.getBody().getBlockCount()))
+                .append(bodyCodec.encode(message.getBody()));
+
+        DaxTrailer trailer = new DaxTrailer();
+
+        trailer.setChecksum(calculateChecksum(msgSb.toString()));
+
         sb.append(preambleCodec.encode(preamble))
-          .append(headCodec.encode(message.getHead(), message.getBody().getBlockCount()))
-          .append(bodyCodec.encode(message.getBody()))
-          .append(trailerCodec.encode(message.getTrailer()));
+                .append(msgSb)
+                .append(trailerCodec.encode(trailer));
+
+//        sb.append(preambleCodec.encode(preamble))
+//          .append(headCodec.encode(message.getHead(), message.getBody().getBlockCount()))
+//          .append(bodyCodec.encode(message.getBody()))
+//          .append(trailerCodec.encode(message.getTrailer()));
 
         return sb.toString();
     }
 
    private DaxMessage createMsg(List<DaxStringPair> listOfPair){
        DaxHead head;
-       DaxBody body ;
+       DaxBody body;
+       DaxTrailer trailer;
 
 //       head = DaxHeadCodec.createHead(listOfPair);
        head = headCodec.createHead(listOfPair);
        body = bodyCodec.createBody(head.getBlockCount(), listOfPair) ;
+       trailer = trailerCodec.createTrailer(listOfPair);
        //todo trailer with check
 
-       return new DaxMessage(head,body,null);
+       return new DaxMessage(head,body,trailer);
    }
 
    private List<List<DaxStringPair>> splitMessages(List<DaxStringPair> allPairs) {

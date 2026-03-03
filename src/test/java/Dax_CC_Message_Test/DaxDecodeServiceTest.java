@@ -45,7 +45,7 @@ class DaxDecodeServiceTest extends DaxTestConfig {
     void parseAndDecodeNumberPairsToString_TEST(){
         Map<String,String>   preamblePairs = cmrProvider.getPreambleCodec().parsePreamble(msg);
         DaxPairCodec pairCodec = cmrProvider.getPairCodec();
-        cmrProvider.getConfig().getAppContextId();
+
         List<DaxStringPair>  pairsList     = pairCodec.parsePairs(msg, DaxPatternFactory.compileMessagePairPattern('|') ,
                 cmrProvider.getConfig().getAppContextId());
         long equalChar = msg.chars()

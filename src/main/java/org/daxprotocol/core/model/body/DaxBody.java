@@ -78,7 +78,6 @@ public class DaxBody {
     }
 
     public DaxPair<?> getPair(int blockIdx, DaxTag tag){
-        //return blockMap.get(blockIdx).get(new DaxTag(tag));
         return blockMap.get(blockIdx).get(tag);
     }
 

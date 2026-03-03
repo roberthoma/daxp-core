@@ -83,10 +83,6 @@ public class DaxBodyCodec {
         return sb.toString();
     }
 
-//    @Override
-//    public DaxBody decode(String wire) {
-//        return null;
-//    }
 
     public  DaxBody createBody(int blockCount , List<DaxStringPair> listOfPair){
         DaxBody body = new DaxBody();

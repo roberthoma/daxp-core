@@ -129,13 +129,6 @@ public class DaxDictionary {
         groupMap.put(group.getId(),group);
 
     }
-//    public void putGroup(int idGroup, String grpName){
-//
-//        DaxGroup grp =  new DaxGroup(grpName);
-//
-//        groupMap.put(idGroup,grp);
-//
-//    }
 
     public Map<Integer, DaxGroup> getGroupMap() {
         return groupMap;

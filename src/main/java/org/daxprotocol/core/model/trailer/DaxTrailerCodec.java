@@ -21,7 +21,12 @@
 package org.daxprotocol.core.model.trailer;
 
 import org.daxprotocol.core.codec.DaxPairCodec;
+import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.pair.DaxStringPair;
+
+import java.util.List;
 
 import static org.daxprotocol.core.codec.DaxTagConst.*;
 
@@ -38,7 +43,7 @@ public class DaxTrailerCodec {
         StringBuilder sb = new StringBuilder();
         sb.append("\n"); //TODO only for test profile
         sb.append(CHECKSUM).append(DaxpConfig.EQUAL)
-                .append("123")
+                .append(message.getChecksum())
                 .append(DaxpConfig.PAIR_SEPARATOR);
 
         return sb.toString();
@@ -47,5 +52,17 @@ public class DaxTrailerCodec {
     //@Override
     public DaxTrailer decode(String wire) {
         return null;
+    }
+
+    public DaxTrailer createTrailer(List<DaxStringPair> listOfPair) {
+        DaxTrailer trailer = new DaxTrailer();
+
+        for(DaxPair<?> pair : listOfPair) {
+            if (pair.getTag().equals(DaxTagConst.CHECKSUM)) {
+                trailer.setChecksum(pair.getIntegerValue());
+                break;
+            }
+        }
+       return trailer;
     }
 }
