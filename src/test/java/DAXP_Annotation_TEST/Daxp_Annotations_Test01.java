@@ -16,8 +16,8 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
     @Test
     void createMsgFromCustomer() {
         String expectMsg = "DAXP|V="+DaxpConfig.PROTOCOL_VERSION+"|EN=UTF-8|CX=CMR|\n" +
-                "9=UCi|2001=123|2002=Robert|2076=WORKER|2077=Y|\n" +
-                "99=52|";
+                 "9=UCi|143=Customer|2080=Big bike|2001=123|2002=Robert|2076=WORKER|2077=Y|\n" +
+                 "99=39|";
 
         Customer customer = new Customer(123, "Robert");
         customer.setRelation(CustomerRelation.WORKER);

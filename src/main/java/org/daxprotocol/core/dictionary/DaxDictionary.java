@@ -227,6 +227,9 @@ public class DaxDictionary {
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrNullable(able));
     }
 
+    public void putAtrReadOnly(DaxTag tag, Boolean able) {
+        putAttribute(tag.getContextId(),tag.getTagId(), new DaxArtReadOnly(able));
+    }
 
     public void putAtrEnumName(int tagId, String enumName) {
         putAttribute(tagId, new DaxAtrEnumName(enumName));

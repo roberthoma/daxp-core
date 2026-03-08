@@ -18,5 +18,7 @@ import java.lang.annotation.Target;
 public @interface  DaxpTag {
     String context() default ""; //>>>> empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
     String uiLabel() default "";
+    String dataType()  default "";
+    boolean readOnly() default false;
 }
 

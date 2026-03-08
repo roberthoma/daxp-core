@@ -18,39 +18,133 @@
  * ***********************************************************************
  */
 
-
 package org.daxprotocol.core.provider;
 
+import org.daxprotocol.core.codec.DaxBodyCodec;
+import org.daxprotocol.core.codec.DaxHeadCodec;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.mapper.DaxReferenceMapper;
+import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
+import org.daxprotocol.core.context.DaxContext;
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
+import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
+import org.daxprotocol.core.parser.DaxParserService;
 import org.daxprotocol.core.strategy.DaxCoreStrategy;
+import org.daxprotocol.core.strategy.DaxCoreStrategyImpl;
 
-public interface DaxProvider {
-    DaxpConfig getConfig();
+public class DaxProvider {
 
-    DaxPreambleCodec getPreambleCodec();
+    private final DaxpConfig config;
 
-    DaxMessageCodec getMessageCodec();
+    private final DaxPreambleCodec preambleCodec;
 
-    DaxMessageConverter getMessageConverter();
+    private final DaxMessageCodec messageCodec;
 
-    DaxDictionary getDictionary();
+    private final DaxMessageConverter messageConverter;
 
-    DaxMessageFactory getMessageFactory();
+    private final DaxDictionary dictionary;
 
-    DaxDictionaryPopulator getDictionaryPopulator();
+    private final DaxMessageFactory messageFactory;
 
-    DaxCoreStrategy getCoreStrategy();
+    private final DaxDictionaryPopulator dictionaryPopulator;
 
-    DaxReferenceMapper getContextMapper();
+    private final DaxCoreStrategy coreStrategy;
 
-    DaxPairCodec getPairCodec();
+    private final DaxStringReferenceMapper contextMapper;
+    private final DaxStringReferenceMapper groupMapper;
+
+    private final DaxPairCodec pairCodec;
+
+    private final DaxParserService parserService;
+
+    public DaxProvider(DaxpConfig config){
+        this.config = config;
+
+        DaxContext appContext = DaxContextFactory.createAppContext(config);
+        DaxContext sysContext = DaxContextFactory.createSysContext();
+
+        contextMapper = new DaxStringReferenceMapper(config.getNextContextId());
+        groupMapper = new DaxStringReferenceMapper(config.getNextGroupId());
+
+        contextMapper.registerPredefined(sysContext);
+        contextMapper.registerPredefined(appContext);
+
+        parserService = new DaxParserService(config, contextMapper);
+
+        dictionary = new DaxDictionary(config, contextMapper);
+        dictionary.putContext(sysContext);
+        dictionary.putContext(appContext);
+
+        pairCodec     = new DaxPairCodec(config, contextMapper);
+        preambleCodec = new DaxPreambleCodec(config, contextMapper);
+
+        DaxHeadCodec headCodec = new DaxHeadCodec(pairCodec);;
+        DaxBodyCodec bodyCodec = new DaxBodyCodec(pairCodec);
+        DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
+
+        messageCodec = new DaxMessageCodec(config, pairCodec, preambleCodec, headCodec, bodyCodec, trailerCodec);
+
+
+        messageConverter     = new DaxMessageConverter(config,contextMapper );
+        messageFactory       = new DaxMessageFactory(config, contextMapper);
+        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper,groupMapper, parserService);
+        coreStrategy         = new DaxCoreStrategyImpl(config, dictionary, dictionaryPopulator);
+
+    }
+
+
+    public DaxpConfig getConfig() {
+        if (config == null) {
+            throw new RuntimeException("Config is NOT READY !!!!");
+        }
+        return config;
+    }
+
+    public DaxPreambleCodec getPreambleCodec() {
+
+        return preambleCodec;
+    }
+
+    public DaxMessageCodec getMessageCodec() {
+        return messageCodec;
+    }
+
+    public DaxMessageConverter getMessageConverter() {
+        return messageConverter;
+    }
+
+    public DaxDictionary getDictionary() {
+        if(dictionary == null){
+            throw new RuntimeException("Dictionary is NOT READY !!!!");
+        }
+        return dictionary;
+    }
+
+    public DaxMessageFactory getMessageFactory() {
+        return messageFactory;
+    }
+
+    public DaxDictionaryPopulator getDictionaryPopulator (){
+        return dictionaryPopulator;
+    }
+
+    public DaxCoreStrategy getCoreStrategy() {
+        return coreStrategy;
+    }
+
+    public DaxStringReferenceMapper getContextMapper() {
+        return contextMapper;
+    }
+
+    public DaxPairCodec getPairCodec() {
+        return pairCodec;
+    }
+
 
 }

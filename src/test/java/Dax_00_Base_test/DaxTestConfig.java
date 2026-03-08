@@ -5,7 +5,6 @@ import Dax_00_Base_test.customer.CustomerDaxTag;
 import Dax_00_Base_test.customer.CustomerMessages;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.provider.DaxProvider;
-import org.daxprotocol.core.provider.DaxProviderImpl;
 import org.junit.jupiter.api.BeforeAll;
 
 public abstract class DaxTestConfig {
@@ -16,17 +15,18 @@ public abstract class DaxTestConfig {
     @BeforeAll
     public static void initAll(){
 
-        cmrProvider = new DaxProviderImpl(DaxpConfigFactory
+        cmrProvider = new DaxProvider(DaxpConfigFactory
                                            .createConfig( DaxpConfigFactory
                                                          .createProperties("application_CMR.properties")));
 
-        cntProvider = new DaxProviderImpl(DaxpConfigFactory
+        cntProvider = new DaxProvider(DaxpConfigFactory
                                           .createConfig( DaxpConfigFactory
                                                         .createProperties("application_CNT.properties")));
 
 
         cmrProvider.getCoreStrategy()
                    .populateFromAnnotations( Customer.class);
+
         cmrProvider.getCoreStrategy()
                    .populateFromAnnotations(CustomerDaxTag.class);
 

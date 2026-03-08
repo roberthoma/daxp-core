@@ -36,6 +36,7 @@ public class DaxAtrDataType extends DaxPair<Character> {
     public final static Character DATA_TYPE_DATE    = 'D';
     public final static Character DATA_TYPE_GROUP   = 'G';
 
+    //TODO Add JSON, XML etc
 
 
     public DaxAtrDataType(Character c) {

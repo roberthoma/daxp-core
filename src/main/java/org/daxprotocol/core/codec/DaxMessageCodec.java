@@ -61,23 +61,6 @@ public class DaxMessageCodec {
     }
 
 //TODO move to any service
-        public  int calculateChecksum(String input) {
-            byte[] bytes = input.getBytes(StandardCharsets.US_ASCII);
-
-            int sum = 0;
-
-            for (byte b : bytes) {
-//                if (b != DaxpConfig.PAIR_SEPARATOR
-//                && b != '\n' // TODO move to DaxpConfig create array abandoned char
-//                )
-
-//                {   // ignore pipe
-                    sum += b;
-//                }
-            }
-
-            return sum % 256;
-        }
 
 
         //@Override
@@ -90,21 +73,16 @@ public class DaxMessageCodec {
         StringBuilder msgSb = new StringBuilder();
 
         msgSb.append(headCodec.encode(message.getHead(), message.getBody().getBlockCount()))
-                .append(bodyCodec.encode(message.getBody()));
+             .append(bodyCodec.encode(message.getBody()));
 
         DaxTrailer trailer = new DaxTrailer();
 
-        trailer.setChecksum(calculateChecksum(msgSb.toString()));
+        trailer.setChecksum(DaxCodecService.calculateChecksum(msgSb.toString()));
 
         sb.append(preambleCodec.encode(preamble))
                 .append(msgSb)
                 .append(trailerCodec.encode(trailer));
-
-//        sb.append(preambleCodec.encode(preamble))
-//          .append(headCodec.encode(message.getHead(), message.getBody().getBlockCount()))
-//          .append(bodyCodec.encode(message.getBody()))
-//          .append(trailerCodec.encode(message.getTrailer()));
-
+        System.out.println("encoddeed mess le="+sb.length());
         return sb.toString();
     }
 

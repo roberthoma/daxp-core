@@ -113,9 +113,9 @@ public class DaxTagConst {
     public static final DaxTag ATR_STEP_SIZE       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,164); ; //        <atr_data_type>
     public static final DaxTag ATR_UNIT_ID         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,166); ; //
     public static final DaxTag ATR_NULLABLE        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,165); ; //
-    public static final DaxTag ATR_SIZE_MAX        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,166);;
-    public static final DaxTag ATR_SIZE_MIN        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,167);;
-
+    public static final DaxTag ATR_SIZE_MAX        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,166);
+    public static final DaxTag ATR_SIZE_MIN        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,167);
+    public static final DaxTag ATR_READONLY        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,168);
     /*****************************
      * Attributes of UI
      */

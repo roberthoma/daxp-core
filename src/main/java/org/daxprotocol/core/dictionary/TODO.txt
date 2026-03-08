@@ -1,0 +1,16 @@
+Builder
+
+// Przykład koncepcyjny tworzenia wiadomości DAXP
+DaxpMessage message = DaxpMessage.builder()
+    .withHeader(DaxpHeader.create(protocolVersion))
+    .withTag(10, "Value1") // Użycie tagu zamiast pełnej nazwy pola
+    .withTag(20, "Value2")
+    .build();
+
+// Serializacja do formatu binarnego
+byte[] serialized = message.toBytes();
+
+// Deserializacja po stronie odbiorcy
+DaxpMessage received = DaxpMessage.fromBytes(serialized);
+String value = received.get(10); // Odczyt po tagu
+

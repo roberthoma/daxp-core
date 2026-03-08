@@ -7,7 +7,6 @@ import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.provider.DaxProvider;
-import org.daxprotocol.core.provider.DaxProviderImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +27,7 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         System.out.println(msgStrOrg);
 
         System.out.println(" -- after -- ");
-        DaxProvider providerAfter             =  new DaxProviderImpl(cmrProvider.getConfig());
+        DaxProvider providerAfter             =  new DaxProvider(cmrProvider.getConfig());
         DaxDictionary dicAfter                = providerAfter.getDictionary();
         DaxMessageCodec messageCodecAfter     = providerAfter.getMessageCodec();
         DaxDictionaryPopulator populatorAfter = providerAfter.getDictionaryPopulator();

@@ -30,6 +30,11 @@ public class Dax_Customer_test01_dic extends DaxTestConfig {
         Assertions.assertEquals("Telephone",telAttrMap.get( DaxTagConst.ATR_UI_LABEL_TAG).getStrValue());
         Assertions.assertEquals("S",telAttrMap.get(DaxTagConst.FIELD_DATA_TYPE_TAG).getStrValue());
 
+        Map<DaxTag, DaxPair<?>> methodAttrMap = dic.getFieldAttributeMap(CustomerDaxTag.BEST_TOY_M);
+        Assertions.assertEquals("Best toy",methodAttrMap.get( DaxTagConst.ATR_UI_LABEL_TAG).getStrValue());
+        Assertions.assertEquals("S",methodAttrMap.get(DaxTagConst.FIELD_DATA_TYPE_TAG).getStrValue());
+        Assertions.assertEquals("Y",methodAttrMap.get(DaxTagConst.ATR_READONLY).getStrValue());
+
 
     }
 

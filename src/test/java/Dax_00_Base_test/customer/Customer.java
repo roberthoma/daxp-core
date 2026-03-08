@@ -2,14 +2,14 @@ package Dax_00_Base_test.customer;
 
 import Dax_00_Base_test.*;
 import Dax_00_Base_test.fix.FixConstTag;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.annotation.DaxpGroup;
 import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpMethod;
 
 import java.util.Date;
 
-@DaxpFieldGroup(name = "Customer",
+@DaxpGroup(name = "Customer",
                 namespace = "crm")
 public class Customer {
 
@@ -49,6 +49,10 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_RELATION , uiLabel = "Relation")
     CustomerRelation relation;
 
+    @DaxpMethod(tagId = CustomerDaxTag.BEST_TOY_M)
+    public String getBestToy(){
+        return "Big bike";
+    }
     //---------------------------------------------------------------------------
 
     public String getTown() {

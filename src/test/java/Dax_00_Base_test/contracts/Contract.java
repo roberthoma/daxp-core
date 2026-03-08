@@ -5,9 +5,9 @@ import Dax_00_Base_test.customer.CustomerDaxTag;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.annotation.DaxpGroup;
 
-@DaxpFieldGroup(name = "Contract")
+@DaxpGroup(name = "Contract")
 public class Contract {
 
     @DaxpField(tagId = ContractConst.CONTRACT_ID, uiLabel = "Id")

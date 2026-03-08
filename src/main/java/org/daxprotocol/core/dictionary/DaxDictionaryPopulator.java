@@ -21,10 +21,7 @@ package org.daxprotocol.core.dictionary;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.annotation.DaxpDictionary;
-import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpFieldGroup;
-import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.annotation.*;
 
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.field.DaxAtrDataType;
@@ -40,6 +37,7 @@ import org.daxprotocol.core.parser.DaxParserService;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
@@ -117,57 +115,71 @@ public class DaxDictionaryPopulator {
 
     }
 
-    private void populateDaxpFieldGroup(DaxDictionary daxDic, Class<?> clazz){
+    private void putFieldIntoGroup(Field field, DaxDictionary daxDic , int groupId){
 
-        int groupId = 0;
+        DaxpField daxField = field.getAnnotation(DaxpField.class);
+        field.setAccessible(true);
 
-//        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
-        DaxpFieldGroup groupAtn =  clazz.getAnnotation(DaxpFieldGroup.class);
-
-//        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
-//        groupId = group.groupId();
-
+        int contextId = daxField.context().isBlank() ?
+                config.getAppContextId():
+                contextMapper.getReferenceId(daxField.context());
 
 
-        groupId = groupMapper.getReferenceId(groupAtn.name());
-        daxDic.putGroup(new DaxGroup(groupId, groupAtn.name()));
+        DaxTag tag = new DaxTag(contextId ,daxField.tagId());
+
+        daxDic.putTag(tag);
+        //Class  change type to char
+        daxDic.putAtrDataType(tag,field.getType());
+
+        if (field.getType().isEnum()){
+            populateEnumFromAnnotations(field,daxDic);
+        }
+
+        popJakartaValidationAttribute(daxDic, field, tag );
+
+        if (daxField.uiLabel()!=null) {
+            daxDic.putAtrUiLabel(tag, daxField.uiLabel());
+        }
+
+        daxDic.putFieldIntoGroup(tag, groupId);
+
+
+    }
+
+
+    private void putMethodIntoGroup(Field field, DaxDictionary daxDic , int groupId){
+
+    }
+
+    private void populateDaxpFieldAtGroup(int groupId ,DaxDictionary daxDic, Class<?> clazz){
 
 
         for (Field field : DaxLangTool.allFields(clazz)) {
 //            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
-            if (!field.isAnnotationPresent(DaxpField.class)) {
-                continue;
+            if (field.isAnnotationPresent(DaxpField.class)) {
+                putFieldIntoGroup(field, daxDic, groupId);
             }
-
-            DaxpField daxField = field.getAnnotation(DaxpField.class);
-            field.setAccessible(true);
-
-            int contextId = daxField.context().isBlank() ?
-                    config.getAppContextId():
-                    contextMapper.getReferenceId(daxField.context());
+        }
 
 
-            DaxTag tag = new DaxTag(contextId ,daxField.tagId());
+    }
+    private void populateDaxpMethodAtGroup(int groupId ,DaxDictionary daxDic, Class<?> clazz){
 
-            daxDic.putTag(tag);
-            //Class  change type to char
-            daxDic.putAtrDataType(tag,field.getType());
 
-            if (field.getType().isEnum()){
-                populateEnumFromAnnotations(field,daxDic);
-            }
+        for (Method m : clazz.getDeclaredMethods()) {
+            DaxpMethod methodAnn = m.getAnnotation(DaxpMethod.class);
+            if (methodAnn == null) continue;
 
-            popJakartaValidationAttribute(daxDic, field, tag );
-
-            if (daxField.uiLabel()!=null) {
-                daxDic.putAtrUiLabel(tag, daxField.uiLabel());
-            }
-
-            daxDic.putFieldIntoGroup(tag, groupId);
+            Class<?> returnType = m.getReturnType();
+            // Object value =  m.invoke(clazz);
+            System.out.println(methodAnn.tagId());
+         //   putFieldIntoGroup(field, daxDic, groupId);
 
         }
 
     }
+
+
 
     private void populateDaxpDictionary(DaxDictionary daxDic, Class<?> clazz){
         for (Field field : DaxLangTool.allFields(clazz)) {
@@ -201,6 +213,19 @@ public class DaxDictionaryPopulator {
                 daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
             }
 
+            if (daxTag.uiLabel()!=null) {
+                daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
+            }
+
+            if (daxTag.dataType().equals("S")) {
+                daxDic.putAtrDataType(tag,String.class);
+            }
+
+            if (daxTag.readOnly()) {
+                daxDic.putAtrReadOnly(tag,Boolean.TRUE);
+            }
+
+
             popJakartaValidationAttribute(daxDic, field, tag );
 
         }
@@ -209,15 +234,30 @@ public class DaxDictionaryPopulator {
 
 //TODO throw Runtim exception of tags, group etc are duplicated
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
-        // DaxEnumPopulator enumManager = new DaxEnumPopulator();
 
         try {
             if (clazz.isAnnotationPresent(DaxpDictionary.class)){
                 populateDaxpDictionary(daxDic,clazz);
             }
 
-            if (clazz.isAnnotationPresent(DaxpFieldGroup.class)){
-                populateDaxpFieldGroup(daxDic,clazz);
+            if (clazz.isAnnotationPresent(DaxpGroup.class)){
+      //        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
+
+                int groupId = 0;
+
+                DaxpGroup groupAtn =  clazz.getAnnotation(DaxpGroup.class);
+
+      //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
+
+                groupId = groupMapper.getReferenceId(groupAtn.name());
+                daxDic.putGroup(new DaxGroup(groupId, groupAtn.name()));
+
+
+
+                groupId = groupMapper.getReferenceId(groupAtn.name());
+
+                populateDaxpFieldAtGroup(groupId,daxDic,clazz);
+                populateDaxpMethodAtGroup(groupId, daxDic,clazz);
             }
 
 
@@ -278,6 +318,7 @@ public class DaxDictionaryPopulator {
             Class<?> clazz = DaxAtrDataType.charToClass(
                     blockPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getCharValue()
             );
+
             daxDic.putAtrDataType(tag, clazz);
 
 

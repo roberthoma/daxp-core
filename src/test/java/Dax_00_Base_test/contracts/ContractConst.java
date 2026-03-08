@@ -18,5 +18,8 @@ public class ContractConst {
     public static final int CONTRACT_STATUS = 2205;
 
 
-    public static final int GROUP_CONTRACT = 1;
+
+
+
+
 }

@@ -21,7 +21,8 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpFieldGroup;
+import org.daxprotocol.core.annotation.DaxpGroup;
+import org.daxprotocol.core.annotation.DaxpMethod;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
 import org.daxprotocol.core.group.DaxGroup;
@@ -43,6 +44,7 @@ import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -205,6 +207,11 @@ public class DaxMessageFactory {
           : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
     }
 
+    //private
+
+
+
+
     private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry ){
       //  DaxPreamble preamble = new DaxPreamble();
         DaxHead head = new DaxHead(messageType);
@@ -212,13 +219,13 @@ public class DaxMessageFactory {
         DaxTrailer trailer = new DaxTrailer();
         daxDataEntry.forEach(entry -> {
             //todo REFACTORING
-            if (entry.getClass().isAnnotationPresent(DaxpFieldGroup.class)) {
+            if (entry.getClass().isAnnotationPresent(DaxpGroup.class)) {
                 DaxDictionaryDecoratorService.printDaxScanClass(entry.getClass());
-                DaxpFieldGroup group = entry.getClass().getAnnotation(DaxpFieldGroup.class);
+                DaxpGroup group = entry.getClass().getAnnotation(DaxpGroup.class);
 
             body.nextBlock();
             body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
-       //     body.putPair(GROUP_ID, String.valueOf(group.groupId()));
+            body.putPair(GROUP_NAME, String.valueOf(group.name()));
             }
 
             try {
@@ -235,6 +242,27 @@ public class DaxMessageFactory {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
+            //>>>>>>>>>>>>....
+            try {
+                for (Method m : entry.getClass().getDeclaredMethods()) {
+                    DaxpMethod methodAnn = m.getAnnotation(DaxpMethod.class);
+                    if (methodAnn == null) continue;
+                    Class<?> returnType = m.getReturnType();
+                    Object o = m.invoke(entry);
+                    DaxTag tag = new DaxTag(methodAnn.tagId());
+                    body.putPair(new DaxPair<>(tag, o.toString()));
+                }
+            } catch (Exception e) {
+                //throw new RuntimeException(e);
+                e.printStackTrace();
+            }
+
+            //<<<<<<<<<
+
+
+
+
         });
 
         return new DaxMessage(head,body,trailer);

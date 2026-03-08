@@ -44,7 +44,13 @@ public class MultiMessage_Test extends DaxTestConfig {
 
         DaxMessageFactory factory = cmrProvider.getMessageFactory();
         DaxMessage message = factory.toDaxMessage("UCi", customerList);
-//        Assertions.assertEquals(customerList.size(), message.getBlockCount() );  fix block.. for MessageCnt
+        Assertions.assertEquals(customerList.size(), message.getBlockCount() );
+
+        String messageEncode = cmrProvider.getMessageCodec().encode(message);
+
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        System.out.println(messageEncode);
+        System.out.println("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
 

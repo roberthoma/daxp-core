@@ -38,5 +38,7 @@ public class CustomerDaxTag {
     @DaxpTag(uiLabel = "Is Citizen")
     public static final int CUSTOMER_IS_CITIZEN    = 2077;
 
+    @DaxpTag(uiLabel = "Best toy", dataType = "S", readOnly = true)
+    public static final int BEST_TOY_M = 2080;
 
 }
