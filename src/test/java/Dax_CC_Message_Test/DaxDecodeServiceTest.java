@@ -6,7 +6,7 @@ import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.parser.DaxPatternFactory;
+import org.daxprotocol.core.rules.DaxPatternFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

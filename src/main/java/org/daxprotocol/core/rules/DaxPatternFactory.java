@@ -1,4 +1,4 @@
-package org.daxprotocol.core.parser;
+package org.daxprotocol.core.rules;
 
 import org.daxprotocol.core.config.DaxpConfig;
 

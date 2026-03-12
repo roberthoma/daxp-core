@@ -34,7 +34,7 @@ import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
-import org.daxprotocol.core.parser.DaxParserService;
+import org.daxprotocol.core.rules.DaxParserService;
 import org.daxprotocol.core.strategy.DaxCoreStrategy;
 import org.daxprotocol.core.strategy.DaxCoreStrategyImpl;
 

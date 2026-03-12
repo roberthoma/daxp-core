@@ -37,6 +37,7 @@ public class DaxPairCodec {
         this.contextMapper = contextMapper;
     }
 
+    //TODO Rebuild and use DaxProtocolRules
     private  String encode(StringBuilder sb, int contextId ,int tagId, String value ) {
         if (value.isBlank()){
             return sb.toString();

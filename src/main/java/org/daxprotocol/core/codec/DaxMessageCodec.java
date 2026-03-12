@@ -28,9 +28,8 @@ import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
-import org.daxprotocol.core.parser.DaxPatternFactory;
+import org.daxprotocol.core.rules.DaxPatternFactory;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 

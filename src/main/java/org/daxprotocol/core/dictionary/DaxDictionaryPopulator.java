@@ -24,17 +24,15 @@ import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.*;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.field.DaxAtrDataType;
 import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.field.DaxAtrNullable;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.parser.DaxParserService;
+import org.daxprotocol.core.rules.DaxParserService;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;

@@ -24,7 +24,7 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
-import org.daxprotocol.core.parser.DaxPatternFactory;
+import org.daxprotocol.core.rules.DaxPatternFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

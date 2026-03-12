@@ -1,4 +1,4 @@
-package org.daxprotocol.core.parser;
+package org.daxprotocol.core.rules;
 
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.mapper.DaxReferenceMapper;
@@ -22,6 +22,7 @@ public class DaxParserService {
         this.ctxTagPattern = DaxPatternFactory.compileContextTagPattern(config);
     }
 
+    //TODO rebuild and  DaxProtocolRules
     public DaxTag parseDaxTag(String tagStr) {
         int tagId;
         int contextId = 0;

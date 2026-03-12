@@ -53,14 +53,8 @@ public class DaxTag {
 
     @Override
     public String toString(){
-//        return DaxContextMapper.getContextSymbol(contextId) + ":" + tagId;
-
-//        if ( contextId != DaxpConfig.DAX_CONTEXT_ID &&
-//
-//        DaxContextMapper.getContextSymbol()
-
-    return contextId != DaxpConfig.DAXP_CONTEXT_ID ? contextId + ":" + tagId //???????
-                                                                 : ""+tagId;
+    return contextId != DaxpConfig.DAXP_CONTEXT_ID ? contextId + ":" + tagId
+                                                                : "" + tagId;
 
     }
 
