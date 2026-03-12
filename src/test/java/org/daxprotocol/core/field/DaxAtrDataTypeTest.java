@@ -13,19 +13,42 @@ class DaxAtrDataTypeTest extends DaxTestConfig {
     void classToCharString() {
 
         DaxDataType classType =  DaxDataType.fromClass(String.class);
-        Assertions.assertEquals('S',classType.getCode());
+        Assertions.assertEquals(DaxDataType.STRING.getCode(),classType.getCode());
     }
     @Test
     void classToCharENUM() {
 
         DaxDataType classType =  DaxDataType.fromClass(Enum.class);
-        Assertions.assertEquals('E',classType.getCode());
+        Assertions.assertEquals(DaxDataType.ENUM.getCode(),classType.getCode());
     }
 
     @Test
     void classCustomerToCharGroup() {
 
         DaxDataType classType =  DaxDataType.fromClass(Customer.class);
-        Assertions.assertEquals('G',classType.getCode());
+        Assertions.assertEquals(DaxDataType.GROUP.getCode(),classType.getCode());
+    }
+
+    @Test
+    void classToCharInteger() {
+
+        DaxDataType classType =  DaxDataType.fromClass(Integer.class);
+        Assertions.assertEquals(DaxDataType.INTEGER.getCode(), classType.getCode());
+    }
+
+    @Test
+    void classToCharBoolean() {
+
+        DaxDataType classType =  DaxDataType.fromClass(Boolean.class);
+        Assertions.assertEquals(DaxDataType.BOOLEAN.getCode(), classType.getCode());
+
+    }
+
+    @Test
+    void classToLongBoolean() {
+
+        DaxDataType classType =  DaxDataType.fromClass(Long.class);
+        Assertions.assertEquals(DaxDataType.LONG.getCode(), classType.getCode());
+
     }
 }
