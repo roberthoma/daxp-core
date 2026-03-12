@@ -5,8 +5,6 @@ import Dax_00_Base_test.customer.Customer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class DaxAtrDataTypeTest extends DaxTestConfig {
 
     @Test

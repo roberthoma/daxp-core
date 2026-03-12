@@ -24,7 +24,18 @@ import org.daxprotocol.core.annotation.DaxpGroup;
 
 import java.util.Date;
 import java.util.Map;
-
+/*
+TODO Extend for
+- BigDecimal
+- LocalDate
+- LocalDateTime
+- JSON
+- XML
+- DayOfMonth
+- Country 	-  String field (see definition of "String" above) representing a country using ISO 3166
+- Currency - String field (see definition of "String" above) representing a currency type using ISO 4217 Currency <15> code (3 character) values.
+like FIX protocol
+* */
 public enum DaxDataType {
     INTEGER('I'),
     LONG('L'),

@@ -27,7 +27,6 @@ public  class DaxPair<T>{
     protected T value;
 
     public DaxPair(Integer tagId, T value){
-//        this.tag = new DaxTag(tagId);
         this.tag =  DaxTag.newPredefineTag(tagId);
         this.value = value;
     }
@@ -73,7 +72,12 @@ public  class DaxPair<T>{
     }
 
     public Boolean getBooleanValue() {
-        System.out.println("Boolean roho test ");
-        return true;
+        if( value instanceof Character) {
+            return (Character) value == 'Y' ? Boolean.TRUE : Boolean.FALSE;
+        }
+        if( value instanceof String) {
+            return value.equals("Y") ? Boolean.TRUE : Boolean.FALSE;
+        }
+        return (Boolean) value;
     }
 }
