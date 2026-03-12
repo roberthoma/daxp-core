@@ -1,6 +1,7 @@
 package org.daxprotocol.core.field;
 
 import Dax_00_Base_test.DaxTestConfig;
+import Dax_00_Base_test.customer.Customer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,13 @@ class DaxAtrDataTypeTest extends DaxTestConfig {
 
         Character classType =  DaxAtrDataType.classToChar(Enum.class);
         Assertions.assertEquals('E',classType);
+    }
+
+    @Test
+    void classCustomerToCharGroup() {
+
+        Character classType =  DaxAtrDataType.classToChar(Customer.class);
+        Assertions.assertEquals('G',classType);
     }
 
 //    @Test

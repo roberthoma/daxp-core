@@ -1,9 +1,14 @@
 package Dax_00_Base_test.contracts;
 
-import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpDictionary;
 import org.daxprotocol.core.annotation.DaxpTag;
 
-public class ContractConst {
+@DaxpDictionary
+public class ContractDaxTag {
+
+    @DaxpTag(uiLabel = "Contract")
+    public static final int GRP_CONTRACT = 2200;
+
 
     @DaxpTag(uiLabel = "Contract Id")
     public static final int CONTRACT_ID = 2201;

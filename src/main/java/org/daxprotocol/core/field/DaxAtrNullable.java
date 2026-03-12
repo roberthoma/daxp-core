@@ -22,12 +22,9 @@ package org.daxprotocol.core.field;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 
-public class DaxAtrNullable extends DaxPair<Character> {
+public class DaxAtrNullable extends DaxPair<Boolean> {
 
-    public static Character NULLABLE_TRUE = 'Y';
-    public static Character NULLABLE_FALSE  = 'N';
-
-    public DaxAtrNullable(Character value) {
+    public DaxAtrNullable(Boolean value) {
         super(DaxTagConst.ATR_NULLABLE, value);
     }
 }

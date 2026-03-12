@@ -8,6 +8,11 @@ import org.daxprotocol.core.annotation.DaxpTag;
 @DaxpDictionary
 public class CustomerDaxTag {
 
+
+    @DaxpTag( uiLabel = "Customer")
+    public static final int CUSTOMER_GRP           = 2000;
+
+
     @DaxpTag( uiLabel = "Id customer")
     public static final int CUSTOMER_ID            = 2001;
 

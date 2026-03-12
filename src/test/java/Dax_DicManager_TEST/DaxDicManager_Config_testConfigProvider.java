@@ -2,13 +2,18 @@ package Dax_DicManager_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.provider.DaxProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
 
@@ -52,6 +57,15 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         Assertions.assertEquals(cmrDictionary.getEnumValueMap().size(), dicAfter.getEnumValueMap().size());
         Assertions.assertEquals(cmrDictionary.getGroupMap().size(),     dicAfter.getGroupMap().size());
 
+        for (Map.Entry<Integer, Map<DaxTag, DaxPair<?>>> entry : messageDicAfter.getBody().getBlockMap().entrySet()) {
+            Integer idx = entry.getKey();
+            Map<DaxTag, DaxPair<?>> daxTagDaxPairMap = entry.getValue();
+            if (daxTagDaxPairMap.containsKey(DaxTagConst.FIELD_DATA_TYPE)) {
+                if (daxTagDaxPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue().equals("?")) {
+                    Assertions.fail("No FIELD_DATA_TYPE at BLOCK_INDEX = : " + (idx + 1));
+                }
+            }
+        }
 
 
         System.out.println("------------    End OF DOC populate -------- ");

@@ -7,9 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })
-public @interface DaxpMethod {
-    String context() default "";   // Empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
-    int    tagId();                // It can be define by @DaxpTag
+
+public @interface  DaxpRPC {
+    int    tagId();
     String uiLabel() default "";
 }
-

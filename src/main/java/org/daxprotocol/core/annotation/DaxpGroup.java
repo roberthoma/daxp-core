@@ -27,6 +27,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Documented
 public @interface DaxpGroup {
+    int    tagId();
     String name();            // e.g. "Customer"
     String description() default "";
     String namespace() default "default";

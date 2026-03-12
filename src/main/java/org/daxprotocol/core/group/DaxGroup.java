@@ -2,16 +2,18 @@ package org.daxprotocol.core.group;
 
 import org.daxprotocol.core.mapper.DaxReference;
 import org.daxprotocol.core.mapper.DaxStringReference;
+import org.daxprotocol.core.model.tag.DaxTag;
 
-public class DaxGroup implements DaxStringReference {
-    int id;
+//public class DaxGroup implements DaxStringReference {
+public class DaxGroup {
+    DaxTag tag;
     String name;
     String namespace = "";
     String description = "";
 
 
-    public DaxGroup(int id, String name) {
-        this.id = id;
+    public DaxGroup(DaxTag tag, String name) {
+        this.tag = tag;
         this.name = name;
     }
 
@@ -28,17 +30,18 @@ public class DaxGroup implements DaxStringReference {
         return description;
     }
 
-    @Override
-    public String getReference() {
-        return name;
+//    @Override
+//    public String getReference() {
+//        return name;
+//    }
+
+//    @Override
+    public DaxTag getTag() {
+        return tag;
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override public void setId(int id) {
-        this.id=id;
+//    @Override
+    public void setTag(DaxTag tag) {
+        this.tag = tag;
     }
 }

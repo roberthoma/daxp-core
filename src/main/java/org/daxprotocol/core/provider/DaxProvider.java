@@ -57,7 +57,7 @@ public class DaxProvider {
     private final DaxCoreStrategy coreStrategy;
 
     private final DaxStringReferenceMapper contextMapper;
-    private final DaxStringReferenceMapper groupMapper;
+   // private final DaxStringReferenceMapper groupMapper;
 
     private final DaxPairCodec pairCodec;
 
@@ -70,7 +70,7 @@ public class DaxProvider {
         DaxContext sysContext = DaxContextFactory.createSysContext();
 
         contextMapper = new DaxStringReferenceMapper(config.getNextContextId());
-        groupMapper = new DaxStringReferenceMapper(config.getNextGroupId());
+       // groupMapper = new DaxStringReferenceMapper(config.getNextGroupId());
 
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
@@ -93,7 +93,8 @@ public class DaxProvider {
 
         messageConverter     = new DaxMessageConverter(config,contextMapper );
         messageFactory       = new DaxMessageFactory(config, contextMapper);
-        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper,groupMapper, parserService);
+//        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper,groupMapper, parserService);
+        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper, parserService);
         coreStrategy         = new DaxCoreStrategyImpl(config, dictionary, dictionaryPopulator);
 
     }

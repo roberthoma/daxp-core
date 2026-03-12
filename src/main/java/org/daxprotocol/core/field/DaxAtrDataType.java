@@ -20,6 +20,7 @@
 
 package org.daxprotocol.core.field;
 
+import org.daxprotocol.core.annotation.DaxpGroup;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 
@@ -56,22 +57,26 @@ public class DaxAtrDataType extends DaxPair<Character> {
             return null;
         }
 
+        if (clazz.isAnnotationPresent(DaxpGroup.class)){
+            return DATA_TYPE_GROUP;
+        }
+
         String key = clazz.isPrimitive() ? clazz.getName() : clazz.getSimpleName();
 
         if(clazz.isEnum()){
             return DATA_TYPE_ENUM;
         }
 
-            return switch (key) {
-                case "String" -> DATA_TYPE_STRING;
-                case "Integer", "int" -> DATA_TYPE_INTEGER;
-                case "Character", "char" -> DATA_TYPE_CHAR;
-                case "Boolean", "boolean" -> DATA_TYPE_BOOLEAN;
-                case "Long" -> DATA_TYPE_LONG;
-                case "Date" -> DATA_TYPE_DATE;
-                case "Enum" -> DATA_TYPE_ENUM;
-                default -> '?';
-            };
+        return switch (key) {
+            case "String" -> DATA_TYPE_STRING;
+            case "Integer", "int" -> DATA_TYPE_INTEGER;
+            case "Character", "char" -> DATA_TYPE_CHAR;
+            case "Boolean", "boolean" -> DATA_TYPE_BOOLEAN;
+            case "Long" -> DATA_TYPE_LONG;
+            case "Date" -> DATA_TYPE_DATE;
+            case "Enum" -> DATA_TYPE_ENUM;
+            default -> '?';
+        };
 
     }
     public static Class<?>  charToClass(Character c){

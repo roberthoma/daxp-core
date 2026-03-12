@@ -55,10 +55,10 @@ public class DaxDictionary {
     /*****************************************************
      *  Group Map
      */
-    Map<Integer, DaxGroup> groupMap = new HashMap<>();
+    Map<DaxTag, DaxGroup> groupMap = new HashMap<>();
 
 
-    Map<Integer, Set<DaxTag>> groupFieldsMap = new HashMap<>();
+    Map<DaxTag, Set<DaxTag>> groupFieldsMap = new HashMap<>();
     Set<DaxTag> tagSet = new HashSet<>();
 
     DaxMessageDic messageDic = new DaxMessageDic();
@@ -126,16 +126,16 @@ public class DaxDictionary {
 
     public void putGroup(DaxGroup group){
 
-        groupMap.put(group.getId(),group);
+        groupMap.put(group.getTag(),group);
 
     }
 
-    public Map<Integer, DaxGroup> getGroupMap() {
+    public Map<DaxTag, DaxGroup> getGroupMap() {
         return groupMap;
     }
 
 
-    public Map<Integer, Set<DaxTag>> getGroupFieldsMap(){
+    public Map<DaxTag, Set<DaxTag>> getGroupFieldsMap(){
         return groupFieldsMap;
     }
 
@@ -192,8 +192,8 @@ public class DaxDictionary {
     };
 
 
-    public void putAtrDataType(int tagId,  Character c){
-        putAttribute(tagId, new DaxAtrDataType(c));
+    public void putAtrDataType(DaxTag tag,  Character c){
+        putAttribute(tag, new DaxAtrDataType(c));
     };
 
 
@@ -220,10 +220,10 @@ public class DaxDictionary {
     }
 
 
-    public void putAtrNullable(int tadId,  Character able){
+    public void putAtrNullable(int tadId,  Boolean able){
         putAttribute(tadId, new DaxAtrNullable(able));
     }
-    public void putAtrNullable(DaxTag tag,  Character able){
+    public void putAtrNullable(DaxTag tag,  Boolean able){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrNullable(able));
     }
 
@@ -241,8 +241,8 @@ public class DaxDictionary {
     *
     * */
    //TODO chek exist of fields in group
-    public void putFieldIntoGroup(DaxTag tag, int groupId) {
-        groupFieldsMap.merge(groupId,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
+    public void putFieldIntoGroup(DaxTag tag, DaxTag groupTag) {
+        groupFieldsMap.merge(groupTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
                 DaxSetTool.addAndReturnSet(daxTags, tag) );
     }
 

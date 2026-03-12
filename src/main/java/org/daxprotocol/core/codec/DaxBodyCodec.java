@@ -65,7 +65,8 @@ public class DaxBodyCodec {
         blockMap.forEach((tag, s) ->
         {
             if (!tag.equals(DaxTagConst.BLOCK_INDEX) &&
-                    !tag.equals(DaxTagConst.BLOCK_TYPE) ) {
+                !tag.equals(DaxTagConst.BLOCK_TYPE) )
+            {
                 pairCodec.encode(sb, tag, s.getStrValue());
             }
         });

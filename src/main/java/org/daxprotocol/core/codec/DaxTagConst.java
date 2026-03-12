@@ -36,10 +36,10 @@ public class DaxTagConst {
     /**
      * Head TAGS
      * */
-    public static final DaxTag MSG_TYPE  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,9);;
-    public static final DaxTag MSG_BLOCK_COUNT = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,6);;
-    public static final DaxTag MSG_ROLE = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,18);;
-    public static final DaxTag MSG_CONTEXT = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,20);; //Default context
+    public static final DaxTag MSG_TYPE  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,9);
+    public static final DaxTag MSG_BLOCK_COUNT = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,6);
+    public static final DaxTag MSG_ROLE = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,18);
+    public static final DaxTag MSG_CONTEXT = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,20); //Default context
 
     //TODO Create predefine sys DaxTag
     //DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)

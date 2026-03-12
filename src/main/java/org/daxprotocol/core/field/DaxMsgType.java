@@ -26,7 +26,8 @@ import org.daxprotocol.core.codec.DaxTagConst;
 public class DaxMsgType extends DaxPair<String> {
 
     //request : introduce yourself
-    //DEPENDENCY from required tags/fields
+    //TODO Message DEPENDENCY from required tags/fields
+    //TODO Message respond
     //TODO Add to preferences
     private static final String daxPrefix = "SYS.";
 

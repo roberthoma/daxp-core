@@ -27,11 +27,11 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 
 public class DaxpConfigFactory {
-    private static final String APPLICATION_CONTEXT_KEY = "daxp.application-context";
-    private static final int APPLICATION_CONTEXT_FALLBACK = 0;
+//    private static final String APPLICATION_CONTEXT_KEY = "daxp.application-context";
+//    private static final int APPLICATION_CONTEXT_FALLBACK = 0;
 
-    private static final Pattern CONTEXT_PATTERN =
-            Pattern.compile("^daxp\\.contexts\\[(\\d+)]\\.(\\w+)$");
+//    private static final Pattern CONTEXT_PATTERN =
+//            Pattern.compile("^daxp\\.contexts\\[(\\d+)]\\.(\\w+)$");
 
     private static ClassLoader getClassLoader() {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();

@@ -49,7 +49,7 @@ public  class DaxPair<T>{
 
     public String getStrValue() {
         if (value instanceof Boolean){
-            return ((Boolean)value)? "Y":"N";
+            return ((Boolean)value)? "Y" : "N";
         }
         return value.toString();
     };
@@ -59,11 +59,10 @@ public  class DaxPair<T>{
     };
 
 
-
-
     public void setValue(T value) {
         this.value = value;
     }
+
     @Override
     public String toString(){
         return tag.toString() + DaxpConfig.EQUAL +getStrValue() ; //TODO  DaxCodecSymbol.PAIR_SEPARATOR;
@@ -71,5 +70,10 @@ public  class DaxPair<T>{
 
     public Integer getIntegerValue() {
         return Integer.valueOf((String) value);
+    }
+
+    public Boolean getBooleanValue() {
+        System.out.println("Boolean roho test ");
+        return true;
     }
 }

@@ -22,7 +22,7 @@ package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpGroup;
-import org.daxprotocol.core.annotation.DaxpMethod;
+import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
 import org.daxprotocol.core.group.DaxGroup;
@@ -104,8 +104,8 @@ public class DaxMessageFactory {
 
     private void putGroupToBody(DaxBody body, DaxGroup group, Set<DaxTag> daxFields){
         body.nextBlock(DaxBlockType.BLOCK_GROUP);
-        body.putPair(GROUP_NAME, String.valueOf(group.getName()));
-
+        body.putPair(GROUP_NAME, group.getName());
+        body.putPair(FIELD_ID, tagEncode(group.getTag()));
         if (!group.getDescription().isBlank() ){
             body.putPair(GROUP_DESCRIPTION, group.getDescription());
         }
@@ -170,7 +170,7 @@ public class DaxMessageFactory {
                 );
 
         dictionary.getGroupMap().forEach((integer, group) ->
-                putGroupToBody(message.getBody(), group, dictionary.getGroupFieldsMap().get(group.getId())));
+                putGroupToBody(message.getBody(), group, dictionary.getGroupFieldsMap().get(group.getTag())));
 
        //-------------------------
        // TODO create attributes by tags !!!!!
@@ -246,7 +246,7 @@ public class DaxMessageFactory {
             //>>>>>>>>>>>>....
             try {
                 for (Method m : entry.getClass().getDeclaredMethods()) {
-                    DaxpMethod methodAnn = m.getAnnotation(DaxpMethod.class);
+                    DaxpValue methodAnn = m.getAnnotation(DaxpValue.class);
                     if (methodAnn == null) continue;
                     Class<?> returnType = m.getReturnType();
                     Object o = m.invoke(entry);

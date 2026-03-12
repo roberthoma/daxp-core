@@ -54,18 +54,18 @@ public class DaxDictionaryPopulator {
 
     DaxpConfig               config;
     DaxStringReferenceMapper contextMapper;
-    DaxStringReferenceMapper groupMapper;
+    //DaxStringReferenceMapper groupMapper;
     DaxParserService         parserService;
 
 
     public DaxDictionaryPopulator(DaxpConfig config,
                                   DaxStringReferenceMapper contextMapper,
-                                  DaxStringReferenceMapper groupMapper,
+                                //  DaxStringReferenceMapper groupMapper,
                                   DaxParserService parserService
     ){
         this.config        = config;
         this.contextMapper = contextMapper;
-        this.groupMapper   = groupMapper;
+     //   this.groupMapper   = groupMapper;
         this.parserService = parserService;
     }
 
@@ -79,7 +79,7 @@ public class DaxDictionaryPopulator {
         }
 
         if (field.isAnnotationPresent(NotNull.class)) {
-            daxDic.putAtrNullable(tag, DaxAtrNullable.NULLABLE_FALSE);
+            daxDic.putAtrNullable(tag, false);
         }
 
         if (field.isAnnotationPresent(Size.class)) {
@@ -115,7 +115,7 @@ public class DaxDictionaryPopulator {
 
     }
 
-    private void putFieldIntoGroup(Field field, DaxDictionary daxDic , int groupId){
+    private void putFieldIntoGroup(Field field, DaxDictionary daxDic , DaxTag groupTag){
 
         DaxpField daxField = field.getAnnotation(DaxpField.class);
         field.setAccessible(true);
@@ -141,7 +141,7 @@ public class DaxDictionaryPopulator {
             daxDic.putAtrUiLabel(tag, daxField.uiLabel());
         }
 
-        daxDic.putFieldIntoGroup(tag, groupId);
+        daxDic.putFieldIntoGroup(tag, groupTag);
 
 
     }
@@ -151,29 +151,34 @@ public class DaxDictionaryPopulator {
 
     }
 
-    private void populateDaxpFieldAtGroup(int groupId ,DaxDictionary daxDic, Class<?> clazz){
+    private void populateDaxpFieldAtGroup(DaxTag groupTag ,DaxDictionary daxDic, Class<?> clazz){
 
 
         for (Field field : DaxLangTool.allFields(clazz)) {
 //            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
             if (field.isAnnotationPresent(DaxpField.class)) {
-                putFieldIntoGroup(field, daxDic, groupId);
+                putFieldIntoGroup(field, daxDic, groupTag);
             }
+            //TODO  DaxpValue methodAnn = field.getAnnotation(DaxpValue.class);
+
+
         }
 
 
     }
-    private void populateDaxpMethodAtGroup(int groupId ,DaxDictionary daxDic, Class<?> clazz){
+    private void populateDaxpMethodAtGroup(DaxTag groupTag ,DaxDictionary daxDic, Class<?> clazz){
 
 
         for (Method m : clazz.getDeclaredMethods()) {
-            DaxpMethod methodAnn = m.getAnnotation(DaxpMethod.class);
+            DaxpValue methodAnn = m.getAnnotation(DaxpValue.class);
             if (methodAnn == null) continue;
 
             Class<?> returnType = m.getReturnType();
             // Object value =  m.invoke(clazz);
             System.out.println(methodAnn.tagId());
          //   putFieldIntoGroup(field, daxDic, groupId);
+
+            //TODO DaxpRPC ????
 
         }
 
@@ -189,6 +194,7 @@ public class DaxDictionaryPopulator {
 
             // (optional but recommended) only accept static int constants
             if (!Modifier.isStatic(field.getModifiers())) continue;
+
             if (!Modifier.isFinal(field.getModifiers())) continue;
 
             int tagId = -1;
@@ -249,15 +255,17 @@ public class DaxDictionaryPopulator {
 
       //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
 
-                groupId = groupMapper.getReferenceId(groupAtn.name());
-                daxDic.putGroup(new DaxGroup(groupId, groupAtn.name()));
 
+//                groupId = groupMapper.getReferenceId(groupAtn.name());
+                DaxTag grpTag = new DaxTag(config.getAppContextId(),groupAtn.tagId());
+                daxDic.putGroup(new DaxGroup(grpTag, groupAtn.name()));
 
+                daxDic.putAtrDataType(grpTag, DaxAtrDataType.DATA_TYPE_GROUP);
 
-                groupId = groupMapper.getReferenceId(groupAtn.name());
+//                groupId = groupMapper.getReferenceId(groupAtn.name());
 
-                populateDaxpFieldAtGroup(groupId,daxDic,clazz);
-                populateDaxpMethodAtGroup(groupId, daxDic,clazz);
+                populateDaxpFieldAtGroup(grpTag,daxDic,clazz);
+                populateDaxpMethodAtGroup(grpTag, daxDic,clazz);
             }
 
 
@@ -315,11 +323,13 @@ public class DaxDictionaryPopulator {
             daxDic.putTag( tag);
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
-            Class<?> clazz = DaxAtrDataType.charToClass(
-                    blockPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getCharValue()
-            );
 
-            daxDic.putAtrDataType(tag, clazz);
+            daxDic.putAtrDataType(tag, blockPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getCharValue());
+//            Class<?> clazz = DaxAtrDataType.charToClass(
+//                    blockPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getCharValue()
+//            );
+//
+//            daxDic.putAtrDataType(tag, clazz);
 
 
             if(blockPairMap.containsKey(DaxTagConst.ATR_UI_LABEL_TAG)) {
@@ -329,7 +339,7 @@ public class DaxDictionaryPopulator {
 
             if(blockPairMap.containsKey(DaxTagConst.ATR_NULLABLE)) {
                 daxDic.putAtrNullable(tag,
-                        blockPairMap.get(DaxTagConst.ATR_NULLABLE).getCharValue()
+                        blockPairMap.get(DaxTagConst.ATR_NULLABLE).getCharValue()=='Y'
                         );
             }
 
@@ -345,11 +355,16 @@ public class DaxDictionaryPopulator {
                         blockPairMap.get(DaxTagConst.ATR_SIZE_MIN).getIntegerValue()
                 );
             }
+            if(blockPairMap.containsKey(DaxTagConst.ATR_READONLY)) {
+                daxDic.putAtrReadOnly(tag,
+                        blockPairMap.get(DaxTagConst.ATR_READONLY).getBooleanValue()
+                );
+            }
 
             if(blockPairMap.containsKey(DaxTagConst.ENUM_NAME)) {
-
-                daxDic.putAtrEnumName(tag,blockPairMap.get(DaxTagConst.ENUM_NAME).getStrValue() );
-
+                daxDic.putAtrEnumName(tag,
+                        blockPairMap.get(DaxTagConst.ENUM_NAME).getStrValue()
+                );
             }
 
             return;
@@ -359,12 +374,19 @@ public class DaxDictionaryPopulator {
 
         if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
             String groupName = blockPairMap.get(DaxTagConst.GROUP_NAME).getStrValue();
-            int groupId = groupMapper.getReferenceId(groupName);
-            DaxGroup group = new DaxGroup(groupId,groupName);
+
+            //int groupId = groupMapper.getReferenceId(groupName);
+            DaxTag groupTag = parserService.parseDaxTag(
+                    blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue()
+            ) ;
+
+            //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
+
+            DaxGroup group = new DaxGroup(groupTag,groupName);
             daxDic.putGroup(group);
             String fieldIdStrList = blockPairMap.get(DaxTagConst.FIELD_ID_LIST).getStrValue();
             List<DaxTag>  tagList = parserService.parseDaxTagList(fieldIdStrList);
-            tagList.forEach(tag -> daxDic.putFieldIntoGroup(tag, groupId));
+            tagList.forEach(tag -> daxDic.putFieldIntoGroup(tag, groupTag));
             return;
         }
 
