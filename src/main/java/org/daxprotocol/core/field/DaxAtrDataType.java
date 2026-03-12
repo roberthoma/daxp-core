@@ -19,82 +19,24 @@
  */
 
 package org.daxprotocol.core.field;
-
-import org.daxprotocol.core.annotation.DaxpGroup;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 
-import java.util.Date;
+public final class DaxAtrDataType extends DaxPair<Character> {
 
-//TODO data type to has to be developed
-public class DaxAtrDataType extends DaxPair<Character> {
-    public final static Character DATA_TYPE_INTEGER = 'I';
-    public final static Character DATA_TYPE_LONG    = 'L';
-    public final static Character DATA_TYPE_STRING  = 'S';
-    public final static Character DATA_TYPE_BOOLEAN = 'B';
-    public final static Character DATA_TYPE_CHAR    = 'C';
-    public final static Character DATA_TYPE_ENUM    = 'E';
-    public final static Character DATA_TYPE_DATE    = 'D';
-    public final static Character DATA_TYPE_GROUP   = 'G';
-
-    //TODO Add JSON, XML etc
-
-
-    public DaxAtrDataType(Character c) {
-        super(DaxTagConst.FIELD_DATA_TYPE, c);
+    public DaxAtrDataType(Character code) {
+        super(DaxTagConst.FIELD_DATA_TYPE, code);
     }
 
+    public DaxAtrDataType(DaxDataType dataType) {
+        super(DaxTagConst.FIELD_DATA_TYPE, dataType != null ? dataType.getCode() : null);
+    }
 
     public DaxAtrDataType(Class<?> clazz) {
-        super(DaxTagConst.FIELD_DATA_TYPE, classToChar(clazz));
+        this(DaxDataType.fromClass(clazz));
     }
 
-
-//TODO for refactoring
-        public static Character classToChar(Class<?> clazz){
-
-        if (clazz == null) {
-            return null;
-        }
-
-        if (clazz.isAnnotationPresent(DaxpGroup.class)){
-            return DATA_TYPE_GROUP;
-        }
-
-        String key = clazz.isPrimitive() ? clazz.getName() : clazz.getSimpleName();
-
-        if(clazz.isEnum()){
-            return DATA_TYPE_ENUM;
-        }
-
-        return switch (key) {
-            case "String" -> DATA_TYPE_STRING;
-            case "Integer", "int" -> DATA_TYPE_INTEGER;
-            case "Character", "char" -> DATA_TYPE_CHAR;
-            case "Boolean", "boolean" -> DATA_TYPE_BOOLEAN;
-            case "Long" -> DATA_TYPE_LONG;
-            case "Date" -> DATA_TYPE_DATE;
-            case "Enum" -> DATA_TYPE_ENUM;
-            default -> '?';
-        };
-
+    public DaxDataType getDataType() {
+        return DaxDataType.fromCode(getValue());
     }
-    public static Class<?>  charToClass(Character c){
-
-        return switch (c) {
-            case 'S' -> String.class;
-            case 'L' -> Long.class;
-            case 'I' -> Integer.class;
-            case 'C' -> Character.class;
-            case 'B' -> Boolean.class;
-            case 'D' -> Date.class;
-            case 'E' -> Enum.class;
-            default -> Object.class;
-        };
-
-
-    }
-
-
-
 }

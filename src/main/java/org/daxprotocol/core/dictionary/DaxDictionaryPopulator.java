@@ -25,6 +25,7 @@ import org.daxprotocol.core.annotation.*;
 
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.field.DaxAtrDataType;
+import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -260,7 +261,7 @@ public class DaxDictionaryPopulator {
                 DaxTag grpTag = new DaxTag(config.getAppContextId(),groupAtn.tagId());
                 daxDic.putGroup(new DaxGroup(grpTag, groupAtn.name()));
 
-                daxDic.putAtrDataType(grpTag, DaxAtrDataType.DATA_TYPE_GROUP);
+                daxDic.putAtrDataType(grpTag, DaxDataType.GROUP.getCode());
 
 //                groupId = groupMapper.getReferenceId(groupAtn.name());
 

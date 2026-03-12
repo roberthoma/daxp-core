@@ -182,9 +182,9 @@ public class DaxDictionary {
         putAttribute(tagId, new DaxAtrDataType(clazz));
     };
 
-    public void putAtrDataType(int tagId,  Class<?> clazz){
-        putAttribute(tagId, new DaxAtrDataType(clazz));
-    };
+//    public void putAtrDataType(int tagId,  Class<?> clazz){
+//        putAttribute(tagId, new DaxAtrDataType(clazz));
+//    };
 
 
     public void putAtrDataType(DaxTag tag,  Class<?> clazz){

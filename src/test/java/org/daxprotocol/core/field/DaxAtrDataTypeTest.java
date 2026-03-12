@@ -12,24 +12,20 @@ class DaxAtrDataTypeTest extends DaxTestConfig {
     @Test
     void classToCharString() {
 
-        Character classType =  DaxAtrDataType.classToChar(String.class);
-        Assertions.assertEquals('S',classType);
+        DaxDataType classType =  DaxDataType.fromClass(String.class);
+        Assertions.assertEquals('S',classType.getCode());
     }
     @Test
     void classToCharENUM() {
 
-        Character classType =  DaxAtrDataType.classToChar(Enum.class);
-        Assertions.assertEquals('E',classType);
+        DaxDataType classType =  DaxDataType.fromClass(Enum.class);
+        Assertions.assertEquals('E',classType.getCode());
     }
 
     @Test
     void classCustomerToCharGroup() {
 
-        Character classType =  DaxAtrDataType.classToChar(Customer.class);
-        Assertions.assertEquals('G',classType);
+        DaxDataType classType =  DaxDataType.fromClass(Customer.class);
+        Assertions.assertEquals('G',classType.getCode());
     }
-
-//    @Test
-//    void charToClass() {
-//    }
 }
