@@ -2,7 +2,7 @@ package Dax_00_Base_test.contracts;
 
 
 import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxMessageDicItem;
+import org.daxprotocol.core.dictionary.DaxMessageItem;
 
 public class ContractMessage {
 
@@ -19,9 +19,9 @@ public class ContractMessage {
 
     public void init (DaxDictionary dictionary){
 
-        dictionary.putMsgItem(new DaxMessageDicItem(CRM_DATA_REQ, "Request for Customer Data"));
-        dictionary.putMsgItem(new DaxMessageDicItem(CRM_DATA, "Customer Data"));
-        dictionary.putMsgItem(new DaxMessageDicItem(CRM_INSERT, "New Customer"));
+        dictionary.putMsgItem(new DaxMessageItem(CRM_DATA_REQ, "Request for Customer Data"));
+        dictionary.putMsgItem(new DaxMessageItem(CRM_DATA, "Customer Data"));
+        dictionary.putMsgItem(new DaxMessageItem(CRM_INSERT, "New Customer"));
 
     }
 

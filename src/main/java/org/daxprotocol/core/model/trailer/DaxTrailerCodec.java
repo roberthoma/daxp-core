@@ -42,17 +42,13 @@ public class DaxTrailerCodec {
     public String encode(DaxTrailer message) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n"); //TODO only for test profile
-        sb.append(CHECKSUM).append(DaxpConfig.EQUAL)
+        sb.append(CHECKSUM.getTagId()).append(DaxpConfig.EQUAL)
                 .append(message.getChecksum())
                 .append(DaxpConfig.PAIR_SEPARATOR);
 
         return sb.toString();
     }
 
-    //@Override
-    public DaxTrailer decode(String wire) {
-        return null;
-    }
 
     public DaxTrailer createTrailer(List<DaxStringPair> listOfPair) {
         DaxTrailer trailer = new DaxTrailer();

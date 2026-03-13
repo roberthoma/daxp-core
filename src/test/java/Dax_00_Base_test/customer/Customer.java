@@ -22,6 +22,9 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_NAME) //, uiLabel = "First name")
     String name;
 
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_SURNAME) //, uiLabel = "First name")
+    String surname;
+
     @Size(min=2)
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
@@ -33,6 +36,10 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TYPE, uiLabel = "Type")
     CustomerType type;
 
+    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_EMAIL, uiLabel = "Email")
+    String email;
+
+
 
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
     Boolean isCitizen;
@@ -40,8 +47,6 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;
 
-//    @DaxpFieldReference( contextSymbol = ContextConst.CTX_FIX_PROTOCOL,
-//                                 tagId = FixConstTag.FIX_CLIENT_ID)
     @DaxpField( context = ContextConst.CTX_FIX_PROTOCOL,
                   tagId = FixConstTag.FIX_CLIENT_ID,
                 uiLabel = "FIX Customer Id ")

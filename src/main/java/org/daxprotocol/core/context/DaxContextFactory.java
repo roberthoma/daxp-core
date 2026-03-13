@@ -17,7 +17,7 @@ public class DaxContextFactory {
         DaxContext context = new DaxContext();
         context.setId(DaxpConfig.DAXP_CONTEXT_ID);
         context.setSymbol(DaxpConfig.DAXP_CONTEXT_SYMBOL);
-        context.setTagPrefix("");
+        context.setTagPrefix(DaxpConfig.DAXP_CONTEXT_TAG_PREFIX);
         context.setDescription(DaxpConfig.DAXP_CONTEXT_DESCRIPTION);
        return context;
     }

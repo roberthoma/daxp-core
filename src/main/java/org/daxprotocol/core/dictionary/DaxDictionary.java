@@ -39,19 +39,31 @@ public class DaxDictionary {
 
     DaxpConfig config;
     DaxStringReferenceMapper contextMapper;
+    DaxStringReferenceMapper messageMapper;
 
+    /*****************************************************
+     *  Map of context referenced by integer
+     */
     Map<Integer, DaxContext> contextMap = new HashMap<>();
 
-    DaxEnumDictionary enumDictionary = new DaxEnumDictionary();
+
+    /*****************************************************
+     * Main SET of tags
+     */
+    Set<DaxTag> tagSet = new HashSet<>();
+
+
+
+    Map<Integer, DaxEnumDictionary> enumDictionaryMap = new HashMap<>();
+    DaxEnumDictionary enumDictionary; //Application enumDic
 
     /*****************************************************
      * Dictionary of messages type, required and respond tags
      * Key: Message type
      * */
-    Map<String, DaxMessageDicItem> msgMap = new HashMap<>();
-    Map<String, Set<DaxTag>> requiredTags =  new HashMap<>();
-    Map<String, Set<DaxTag>> respondTags =  new HashMap<>();
 
+    Map<Integer, DaxMessageDictionary> messageDicMap = new HashMap<>();;
+    DaxMessageDictionary msgMap;
 
     /*****************************************************
      * DescriptiveMap : it is main dic of tag attributes
@@ -64,19 +76,35 @@ public class DaxDictionary {
     /*****************************************************
      *  Group Map
      */
-    Map<DaxTag, DaxGroup> groupMap = new HashMap<>();
-
-
+    Map<DaxTag, DaxGroup>    groupMap       = new HashMap<>();
     Map<DaxTag, Set<DaxTag>> groupFieldsMap = new HashMap<>();
-    Set<DaxTag> tagSet = new HashSet<>();
 
+    /******************************************************/
+    int appContextId;
 
-    public DaxDictionary(DaxpConfig config, DaxStringReferenceMapper contextMapper) {
+    public DaxDictionary(DaxpConfig config,
+                         DaxStringReferenceMapper contextMapper ,
+                         DaxStringReferenceMapper messageMapper
+    )
+    {
         System.out.println("Init DaxDictionary...");
+        appContextId = config.getAppContextId();
         this.config = config;
+
         this.contextMapper = contextMapper;
+        this.messageMapper = messageMapper;
+
+        enumDictionary = new DaxEnumDictionary(appContextId);
+        enumDictionaryMap.put(appContextId, enumDictionary );
+
+        msgMap = new DaxMessageDictionary(appContextId);
+        messageDicMap.put(appContextId,msgMap);
+
+
     }
 
+    //**********************************************************************
+    // Context
 
     public Map<Integer, DaxContext> getContextMap() {
         return contextMap;
@@ -90,26 +118,17 @@ public class DaxDictionary {
 
     //**********************************************************************
     // Messages
-
-
-    public void putMsgItem(DaxMessageDicItem messageDicItem){
-        if (msgMap.containsKey(messageDicItem.getMsgType())){
-            throw new RuntimeException( "Message "+messageDicItem.getMsgType()
-                    +" exists in DAXP dictionary !!!");
-        }
-        msgMap.put(messageDicItem.getMsgType(),messageDicItem);
+    public void putMsgItem(DaxMessageItem messageDicItem){
+        msgMap.putMsgItem(messageDicItem);
     }
 
-    public Map<String, DaxMessageDicItem> getMsgMap() {
-        return msgMap;
+    public Map<String, DaxMessageItem> getMsgMap() {
+        return msgMap.getMsgMap();
     }
-
-
 
 
     //**********************************************************************
     // Enums
-
 
     public void putEnumValue(String enumName, String value, String desc){
         enumDictionary.putEnumValue(enumName, value, desc);
@@ -119,8 +138,8 @@ public class DaxDictionary {
           enumDictionary.putEnum(enumName, desc);
     }
 
-    public void putEnum(DaxEnum enumName){
-        enumDictionary.putEnum(enumName.getName(), enumName.getDesc());
+    public void putEnum(DaxEnum daxEnum){
+        enumDictionary.putEnum(daxEnum.getName(), daxEnum.getDesc());
     }
 
 
@@ -131,6 +150,9 @@ public class DaxDictionary {
     public Map<String, DaxEnum>  getEnumMap() {
         return  enumDictionary.getEnumMap();
     }
+
+    //TODO getters and setter for other context enumDic;
+
 
 
     //**********************************************************************
@@ -154,6 +176,13 @@ public class DaxDictionary {
 
     public Set<DaxTag> getTagSet(){
         return tagSet;
+    }
+
+    //TODO chek exist of fields in group,
+    //TODO check recursions
+    public void putFieldIntoGroup(DaxTag tag, DaxTag groupTag) {
+        groupFieldsMap.merge(groupTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
+                DaxSetTool.addAndReturnSet(daxTags, tag) );
     }
 
     //**********************************************************************
@@ -194,47 +223,40 @@ public class DaxDictionary {
         putAttribute(tagId, new DaxAtrDataType(clazz));
     };
 
-//    public void putAtrDataType(int tagId,  Class<?> clazz){
-//        putAttribute(tagId, new DaxAtrDataType(clazz));
-//    };
-
-
     public void putAtrDataType(DaxTag tag,  Class<?> clazz){
         putAttribute(tag, new DaxAtrDataType(clazz));
     };
-
 
     public void putAtrDataType(DaxTag tag,  Character c){
         putAttribute(tag, new DaxAtrDataType(c));
     };
 
 
-    public void putAtrUiLabel(int tagId,  String uiLabel){
-        putAttribute(tagId, new DaxAtrUiLabel(uiLabel));
-    }
     public void putAtrUiLabel(DaxTag tag,  String uiLabel){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrUiLabel(uiLabel));
     }
 
-    public void putAtrSizeMax(int tagId,  Integer max){
-        putAttribute(tagId, new DaxAtrSizeMax(max));
-    }
+//    public void putAtrSizeMax(int tagId,  Integer max){
+//        putAttribute(tagId, new DaxAtrSizeMax(max));
+//    }
 
     public void putAtrSizeMax(DaxTag tag,  Integer max){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMax(max));
     }
 
-    public void putAtrSizeMin(int tagId,  Integer min){
-        putAttribute(tagId, new DaxAtrSizeMin(min));
-    }
+//    public void putAtrSizeMin(int tagId,  Integer min){
+//        putAttribute(tagId, new DaxAtrSizeMin(min));
+//    }
+
     public void putAtrSizeMin(DaxTag tag,  Integer min){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMin(min));
     }
 
 
-    public void putAtrNullable(int tadId,  Boolean able){
-        putAttribute(tadId, new DaxAtrNullable(able));
-    }
+//    public void putAtrNullable(int tadId,  Boolean able){
+//        putAttribute(tadId, new DaxAtrNullable(able));
+//    }
+
     public void putAtrNullable(DaxTag tag,  Boolean able){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrNullable(able));
     }
@@ -254,20 +276,12 @@ public class DaxDictionary {
     public void putAtrEnumName(DaxTag tag, String enumName) {
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrEnumName(enumName));
     }
-   /**
-    *
-    * */
-   //TODO chek exist of fields in group
-    public void putFieldIntoGroup(DaxTag tag, DaxTag groupTag) {
-        groupFieldsMap.merge(groupTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
-                DaxSetTool.addAndReturnSet(daxTags, tag) );
-    }
 
 
     public void putTag(DaxTag tag){
 
         if (tagSet.contains(tag)){
-            System.out.println("TAG > "+tag + " ...........  EXIST ............ ");
+            System.out.println("TAG > "+tag.getTagId() + " ...........  EXIST ............ ");
             //throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
         }
         tagSet.add(tag);

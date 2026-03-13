@@ -1,24 +1,40 @@
 package Dax_00_Base_test.customer;
 
 
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxMessageDicItem;
+import org.daxprotocol.core.dictionary.DaxMessageItem;
+import org.daxprotocol.core.model.tag.DaxTag;
 
 public class CustomerMessages {
 
 
-    public static final String  CRM_DATA_REQ     =  "CRM.DR"; // 	REQ 	Request for Customer Data
-    public static final String  CRM_DATA         =  "CRM.DD"; // 	REs 	Customer Data
-    public static final String  CRM_INSERT       =  "CRM.DI"; // 	REs 	New Customer
-    public static final String  CRM_UPDATE       =  "CRM.DU"; // 	REs 	New Customer
+    public static final String  CRM_DATA_REQ     =  "CDR"; // 	REQ 	Request for Customer Data
+    public static final String  CRM_DATA         =  "CDD"; // 	REs 	Customer Data
+    public static final String  CRM_INSERT       =  "CDI"; // 	REs 	New Customer
+    public static final String  CRM_UPDATE       =  "CDU"; // 	REs 	Update Customer
 
 
 
-    public  static void initDictionaryBeforeTest(DaxDictionary dictionary){
+    public  static void initDictionaryBeforeTest(DaxpConfig config, DaxDictionary dictionary){
+        DaxMessageItem mgs ;
 
-        dictionary.putMsgItem(new DaxMessageDicItem(CRM_DATA_REQ, "Request for Customer Data"));
-        dictionary.putMsgItem(new DaxMessageDicItem(CRM_DATA, "Customer Data"));
-        dictionary.putMsgItem(new DaxMessageDicItem(CRM_INSERT, "New Customer"));
+        mgs = new DaxMessageItem(CRM_DATA_REQ, "Customer Data Request");
+        mgs.addReqTag(new DaxTag(config.getAppContextId() , CustomerDaxTag.CUSTOMER_ID));
+        mgs.addRelatedMsgType(CRM_DATA);
+        dictionary.putMsgItem(mgs);
+        //--------------------
+
+        mgs =new DaxMessageItem(CRM_DATA, "Customer Data");
+        mgs.addReqTag(new DaxTag(config.getAppContextId() , CustomerDaxTag.CUSTOMER_GRP));
+        dictionary.putMsgItem(mgs);
+
+        mgs = new DaxMessageItem(CRM_INSERT, "New Customer");
+        mgs.addReqTag(new DaxTag(config.getAppContextId() , CustomerDaxTag.CUSTOMER_NAME));
+        mgs.addReqTag(new DaxTag(config.getAppContextId() , CustomerDaxTag.CUSTOMER_SURNAME));
+        mgs.addReqTag(new DaxTag(config.getAppContextId() , CustomerDaxTag.CUSTOMER_EMAIL));
+        mgs.addReqTag(new DaxTag(config.getAppContextId() , CustomerDaxTag.CUSTOMER_IS_CITIZEN));
+        dictionary.putMsgItem(mgs);
 
     }
 

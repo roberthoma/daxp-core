@@ -32,7 +32,7 @@ import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxMessageDicItem;
+import org.daxprotocol.core.dictionary.DaxMessageItem;
 import org.daxprotocol.core.dictionary.DaxEnum;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
@@ -67,6 +67,7 @@ public class DaxMessageFactory {
     }
 
 
+    //TODO Use DaxProtocolstools
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
         String fieldId;
         body.nextBlock(DaxBlockType.BLOCK_TAG);
@@ -88,6 +89,30 @@ public class DaxMessageFactory {
     }
 
 
+    private String tagEncode(DaxTag tag){
+        if (tag.getContextId() == config.getAppContextId()){
+            return String.valueOf(tag.getTagId());
+        }
+
+        return contextMapper.getReference(tag.getContextId())+
+                DaxpConfig.CONTEXT_TAG_SEPARATOR+
+                tag.getTagId();
+
+    }
+
+    private   String createTagListStr(Set<DaxTag> daxFields){
+
+        return daxFields.stream()
+                .map(this::tagEncode)
+                .collect(Collectors.joining(DaxpConfig.TAG_LIST_SEPARATOR));
+    }
+
+    private   String createStringValueListStr(Set<String> stringSet){
+
+        return String.join(DaxpConfig.TAG_LIST_SEPARATOR, stringSet);
+    }
+
+
     private void putEnumDicToEnumBody(DaxBody body, String enumName ,String kValue, String vDesc){
         body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
         body.putPair(ENUM_NAME,enumName);
@@ -104,16 +129,13 @@ public class DaxMessageFactory {
 
     private void putGroupToBody(DaxBody body, DaxGroup group, Set<DaxTag> daxFields){
         body.nextBlock(DaxBlockType.BLOCK_GROUP);
-        body.putPair(GROUP_NAME, group.getName());
         body.putPair(FIELD_ID, tagEncode(group.getTag()));
+        body.putPair(GROUP_NAME, group.getName());
         if (!group.getDescription().isBlank() ){
             body.putPair(GROUP_DESCRIPTION, group.getDescription());
         }
 
-        String tagListStr = daxFields.stream()
-                .map(this::tagEncode)
-                .collect(Collectors.joining(DaxpConfig.TAG_LIST_SEPARATOR));
-        body.putPair(FIELD_ID_LIST, tagListStr);
+        body.putPair(FIELD_ID_LIST, createTagListStr(daxFields));
 
 
 
@@ -131,10 +153,14 @@ public class DaxMessageFactory {
         }
 
     }
-    private void putMsgItem(DaxBody body,  DaxMessageDicItem msgItem){
+    private void putMsgItem(DaxBody body,  DaxMessageItem msgItem){
         body.nextBlock(DaxBlockType.BLOCK_MESSAGE);
         body.putPair(FIELD_VALUE, msgItem.getMsgType());
         body.putPair(FIELD_VALUE_DESCRIPTION, msgItem.getMsgDesc());
+
+        body.putPair(MESSAGE_TAGS, createTagListStr(msgItem.getMsgFields()));
+        body.putPair(MESSAGE_RELATED_MSGS, createStringValueListStr(msgItem.getRelatedMsgType()));
+
     }
 
     private void putContextToBody(DaxBody body, DaxContext daxContext) {
@@ -142,17 +168,6 @@ public class DaxMessageFactory {
         body.putPair(FIELD_VALUE_SYMBOL, daxContext.getSymbol());
         body.putPair(FIELD_VALUE_PREFIX, daxContext.getTagPrefix());
         body.putPair(FIELD_VALUE_DESCRIPTION, daxContext.getDescription());
-
-    }
-
-
-    private String tagEncode(DaxTag tag){
-        if (tag.getContextId() == config.getAppContextId()){
-            return String.valueOf(tag.getTagId());
-        }
-        return contextMapper.getReference(tag.getContextId())+
-               DaxpConfig.CONTEXT_TAG_SEPARATOR+
-               tag.getTagId();
 
     }
 
@@ -168,17 +183,19 @@ public class DaxMessageFactory {
         dictionary.getEnumMap().forEach((s, enumName) ->
                 putEnumToBlock(message.getBody(), enumName, dictionary.getEnumValueMap().get(enumName.getName()))
                 );
-
-        dictionary.getGroupMap().forEach((integer, group) ->
-                putGroupToBody(message.getBody(), group, dictionary.getGroupFieldsMap().get(group.getTag())));
-
-       //-------------------------
-       // TODO create attributes by tags !!!!!
+        //----------------------------------------------------------------------------------
+        // TODO create attributes by tags !!!!!
         dictionary.getAttributMap().forEach((tag, atrMap) ->
                 putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );
 
-   //     dictionary.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
+        //     dictionary.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
+        //-------------------------------------------------------------------------------
+
+        dictionary.getGroupMap().forEach((integer, group) ->
+                putGroupToBody(message.getBody(), group, dictionary.getGroupFieldsMap().get(group.getTag())));
+
+
 
     }
 
@@ -250,7 +267,7 @@ public class DaxMessageFactory {
                     if (methodAnn == null) continue;
                     Class<?> returnType = m.getReturnType();
                     Object o = m.invoke(entry);
-                    DaxTag tag = new DaxTag(methodAnn.tagId());
+                    DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.tagId());
                     body.putPair(new DaxPair<>(tag, o.toString()));
                 }
             } catch (Exception e) {

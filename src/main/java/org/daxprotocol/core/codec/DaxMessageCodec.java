@@ -136,7 +136,7 @@ public class DaxMessageCodec {
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);
 
-        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTagConst.MSG_TYPE)+ DaxpConfig.EQUAL);
+        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTagConst.MSG_TYPE.getTagId())+ DaxpConfig.EQUAL);
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 

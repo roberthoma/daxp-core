@@ -101,7 +101,7 @@ public class DaxPreambleCodec {
 
         // Everything after "DAXP|" and  before tag "9="
         String preamblePart = msg.substring(DaxpConfig.CHAR_SEPARATOR_IDX +1)
-                             .split(String.valueOf(DaxTagConst.MSG_TYPE) + DaxpConfig.EQUAL)[0];
+                             .split(String.valueOf(DaxTagConst.MSG_TYPE.getTagId()) + DaxpConfig.EQUAL)[0];
 
         Matcher m = pairPattern.matcher(preamblePart);
 

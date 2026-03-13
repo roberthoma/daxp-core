@@ -44,6 +44,7 @@ public final class DaxpConfig {
     public static final int    DAXP_CONTEXT_ID          = 0;
     public static final String DAXP_CONTEXT_SYMBOL      = "DAXP";
     public static final String DAXP_CONTEXT_DESCRIPTION = "DAXP Context";
+    public static final String DAXP_CONTEXT_TAG_PREFIX  = "$" ;
 
 
     /*****************************************************
@@ -67,6 +68,7 @@ public final class DaxpConfig {
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
     private int appContextId = 1;
+    private int nextMsgId    = 100;
 
     public int getNextContextId() {
         return appContextId + 1;
@@ -126,8 +128,8 @@ public final class DaxpConfig {
         return DaxpConfig.CONTEXT_TAG_SEPARATOR;
     }
 
-    public int getNextGroupId() {
-        return 1;
+    public int getNextMsgId() {
+        return nextMsgId+1;
     }
 
 //    public char getPairSeparator() {

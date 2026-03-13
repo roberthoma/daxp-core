@@ -20,6 +20,7 @@
 
 package org.daxprotocol.core.dictionary;
 
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.tool.DaxSetTool;
 
 import java.util.HashMap;
@@ -28,6 +29,9 @@ import java.util.Map;
 
 //TODO move back to dictionary
 public class DaxEnumDictionary {
+    Integer contextId;
+
+    DaxStringReferenceMapper enumNameMapper = new DaxStringReferenceMapper();
 
     /*****************************************************
      *  Standard EnumMap
@@ -47,6 +51,10 @@ public class DaxEnumDictionary {
     //
     Map<String, Map<String, DaxEnumValue>> enumValueMap = new HashMap<>();
 
+
+    public DaxEnumDictionary(Integer contextId){
+        this.contextId = contextId;
+    }
 
 
     public void putEnum(String name,  String desc){

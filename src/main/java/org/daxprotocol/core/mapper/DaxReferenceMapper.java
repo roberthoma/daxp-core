@@ -51,14 +51,17 @@ public class DaxReferenceMapper <T>{
     // Static initialization (predefined reference)
     // ---------------------------------------
     int beginId;
+
     public DaxReferenceMapper(int beginId){
        this.beginId = beginId;
        beginReferenceId = new AtomicInteger( beginId );
     }
+    public DaxReferenceMapper(){
+        this(1);
+    }
 
     public  void registerPredefined(DaxReference<?> reference) {
 
-        //reference.getClass().equals()
 
         if (reference.getId() >= beginId){
             throw new RuntimeException("It is impossible to register predefined reference with ID "

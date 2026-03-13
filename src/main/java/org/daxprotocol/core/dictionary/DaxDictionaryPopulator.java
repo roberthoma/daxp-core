@@ -233,6 +233,13 @@ public class DaxDictionaryPopulator {
 
             popJakartaValidationAttribute(daxDic, field, tag );
 
+
+            //TODO Add
+            //            public static final DaxTag MSG_REQUIRED_TAGS        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,151); ; //
+//            public static final DaxTag MSG_RESPOND_TAGS         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,152); ; //
+//            public static final DaxTag MSG_REQ_IN_RESPOND_TAGS  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,155); ; //
+
+
         }
 
     }
@@ -254,8 +261,6 @@ public class DaxDictionaryPopulator {
 
       //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
 
-
-//                groupId = groupMapper.getReferenceId(groupAtn.name());
                 DaxTag grpTag = new DaxTag(config.getAppContextId(),groupAtn.tagId());
                 daxDic.putGroup(new DaxGroup(grpTag, groupAtn.name()));
 
@@ -278,11 +283,16 @@ public class DaxDictionaryPopulator {
         String blockType =   blockPairMap.get(DaxTagConst.BLOCK_TYPE).getStrValue();
 
         if(blockType.equals(DaxBlockType.BLOCK_MESSAGE)){
-            DaxMessageDicItem item = new DaxMessageDicItem(
+            DaxMessageItem item = new DaxMessageItem(
                     blockPairMap.get(DaxTagConst.FIELD_VALUE).getStrValue(),
                     blockPairMap.get(DaxTagConst.FIELD_VALUE_DESCRIPTION).getStrValue());
 
             daxDic.putMsgItem(item);
+
+//            public static final DaxTag MSG_REQUIRED_TAGS        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,151); ; //
+//            public static final DaxTag MSG_RESPOND_TAGS         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,152); ; //
+//            public static final DaxTag MSG_REQ_IN_RESPOND_TAGS  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,155); ; //
+
             return;
         }
 

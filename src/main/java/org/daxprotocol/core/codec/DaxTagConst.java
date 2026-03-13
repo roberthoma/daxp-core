@@ -109,8 +109,9 @@ public class DaxTagConst {
     /*****************************
      * Attributes
      */
-    public static final DaxTag MESSAGE_REQUIRED_TAGS    = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,151); ; //
-    public static final DaxTag MESSAGE_RESPOND_TAGS     = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,152); ; //
+    public static final DaxTag MESSAGE_TAGS             = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,151); ; //
+    public static final DaxTag MESSAGE_RELATED_MSGS      = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,152); ; //
+ //    public static final DaxTag MSG_REQ_IN_RESPOND_TAGS  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,155); ; //
 
 
 

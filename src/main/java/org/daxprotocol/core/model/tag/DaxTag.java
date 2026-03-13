@@ -4,7 +4,7 @@ import org.daxprotocol.core.config.DaxpConfig;
 
 import java.util.Objects;
 
-public class DaxTag {
+public final class DaxTag {
     int contextId;
     int tagId;
 
@@ -22,11 +22,6 @@ public class DaxTag {
 
     public void setTagId(int tagId) {
         this.tagId = tagId;
-    }
-
-    public DaxTag(Integer tag) {
-        this.contextId = DaxpConfig.DAXP_CONTEXT_ID;
-        this.tagId = tag;
     }
 
     public DaxTag(int contextId, int tagId) {
@@ -49,13 +44,6 @@ public class DaxTag {
 
     @Override public int hashCode() {
         return Objects.hash(contextId, tagId);
-    }
-
-    @Override
-    public String toString(){
-    return contextId != DaxpConfig.DAXP_CONTEXT_ID ? contextId + ":" + tagId
-                                                                : "" + tagId;
-
     }
 
 }

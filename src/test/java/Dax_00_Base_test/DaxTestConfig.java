@@ -31,7 +31,7 @@ public abstract class DaxTestConfig {
                    .populateFromAnnotations(CustomerDaxTag.class);
 
 
-        CustomerMessages.initDictionaryBeforeTest(cmrProvider.getDictionary());
+        CustomerMessages.initDictionaryBeforeTest(cmrProvider.getConfig() ,cmrProvider.getDictionary());
 
     }
 

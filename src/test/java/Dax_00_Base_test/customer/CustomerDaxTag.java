@@ -21,11 +21,17 @@ public class CustomerDaxTag {
     @DaxpTag(uiLabel = "First name")
     public static final int CUSTOMER_NAME          = 2002;
 
+    @NotNull
+    @Size(min = 2 ,max = 120)
+    @DaxpTag(uiLabel = "Surname")
     public static final int CUSTOMER_SURNAME       = 2003;
 
     @DaxpTag(uiLabel = "Date of birth")
     public static final int CUSTOMER_YEAR_OF_BIRTH = 2005;
 
+    @NotNull
+    @Size(min = 2 ,max = 120)
+    @DaxpTag(uiLabel = "Email")
     public static final int CUSTOMER_EMAIL         = 2011;
 
     @Size(min=2)

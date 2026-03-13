@@ -1,4 +1,4 @@
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.model;
 
 //TODO create DaxpMessageBuilder
 public class DaxpMessageBuilder {
