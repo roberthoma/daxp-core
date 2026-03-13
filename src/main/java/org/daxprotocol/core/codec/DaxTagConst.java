@@ -90,9 +90,9 @@ public class DaxTagConst {
     public static final DaxTag ENUM_NAME               = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,130); ; //
     public static final DaxTag ENUM_DESCRIPTION        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,131); ; //
     public static final DaxTag ENUM_VALUE              = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,132); ; //
-    public static final DaxTag ENUM_VALUE_DESCRIPTION           = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,133); ; //
+    public static final DaxTag ENUM_VALUE_DESCRIPTION  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,133); ; //
     public static final DaxTag ENUM_VALUE_SYMBOL       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,134); ; //
-    public static final DaxTag ENUM_VALUE_LIST  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,135); ; //
+    public static final DaxTag ENUM_VALUE_LIST         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,135); ; //
     //----
     public static final DaxTag NAMESPACE          = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,144); ; //
     public static final DaxTag NAMESPACE_DESC     = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,144); ; //
@@ -105,8 +105,18 @@ public class DaxTagConst {
     public static final DaxTag GROUP_NAMESPACE         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,144); ; //
     public static final DaxTag GROUP_DESCRIPTION       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,145); ; //
 
-    //    Character[1]
 
+    /*****************************
+     * Attributes
+     */
+    public static final DaxTag MESSAGE_REQUIRED_TAGS    = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,151); ; //
+    public static final DaxTag MESSAGE_RESPOND_TAGS     = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,152); ; //
+
+
+
+    /*****************************
+     * Attributes
+     */
     public static final DaxTag ATR_RANGE_MIN_VALUE = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,161); ; //          <atr_data_type>     Minimum value
     public static final DaxTag ATR_RANGE_MAX_VALUE = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,162); ; //          <atr_data_type>     Maximum value
     public static final DaxTag ATR_PRECISION       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,163); ; //        Integer     Double precision
@@ -121,12 +131,11 @@ public class DaxTagConst {
      */
     public static final DaxTag ATR_UI_ITEM_TYPE    = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,208); ; //
     public static final DaxTag ATR_UI_LABEL        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,209); ; //     UiLabel     String
-    public static final DaxTag ATR_UI_LABEL_TAG        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID, 209) ; //     UiLabel     String
     public static final DaxTag ATR_UI_DESCRIPTION  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,210); ; //   UiDescription   String
     public static final DaxTag ATR_UI_IS_EDITABLE  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,220); ; //       Boolean
 
     /*****************************
-     * Errors of UI
+     * Errors
      */
     public static final DaxTag ERR_FIELD_NR        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,224); ; //
     public static final DaxTag ERR_FIELD_ID        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,225); ; //

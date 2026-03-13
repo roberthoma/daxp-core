@@ -324,15 +324,10 @@ public class DaxDictionaryPopulator {
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 
             daxDic.putAtrDataType(tag, blockPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getCharValue());
-//            Class<?> clazz = DaxAtrDataType.charToClass(
-//                    blockPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getCharValue()
-//            );
-//
-//            daxDic.putAtrDataType(tag, clazz);
 
 
-            if(blockPairMap.containsKey(DaxTagConst.ATR_UI_LABEL_TAG)) {
-                daxDic.putAtrUiLabel(tag, blockPairMap.get(DaxTagConst.ATR_UI_LABEL_TAG).getStrValue());
+            if(blockPairMap.containsKey(DaxTagConst.ATR_UI_LABEL)) {
+                daxDic.putAtrUiLabel(tag, blockPairMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
 
             }
 

@@ -2,15 +2,13 @@ package org.daxprotocol.core.dictionary;
 
 public class DaxMessageDicItem {
 
-    public int getContextId() {
-        return contextId;
-    }
 
     private int contextId;
 
     private final String msgType;
-    //private final String msgRole;
     private final String msgDesc;
+
+    //private final String msgRole;
 
     public String getMsgDesc() {
         return msgDesc;
@@ -27,6 +25,10 @@ public class DaxMessageDicItem {
 
     public String getMsgType() {
         return msgType;
+    }
+
+    public int getContextId() {
+        return contextId;
     }
 
 //    public String getMsgRole() {

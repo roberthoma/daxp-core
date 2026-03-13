@@ -41,7 +41,7 @@ public final class DaxpConfig {
     /*****************************************************
      *  DAXP Context
      */
-    public static final int    DAXP_CONTEXT_ID = 0;
+    public static final int    DAXP_CONTEXT_ID          = 0;
     public static final String DAXP_CONTEXT_SYMBOL      = "DAXP";
     public static final String DAXP_CONTEXT_DESCRIPTION = "DAXP Context";
 
@@ -60,8 +60,8 @@ public final class DaxpConfig {
     public static final char EQUAL = '=';
 
     /**  Pair separator on the WIRE (binary, non-printable). */
-    //public static char PAIR_SEPARATOR = 0x0001;  //<<<< target
-    public static char PAIR_SEPARATOR = '|';   // << ONLY for test
+    //public static char PAIR_SEPARATOR = 0x0001;  // Target on product
+    public static char PAIR_SEPARATOR = '|';       // << ONLY for test
 
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file

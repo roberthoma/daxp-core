@@ -47,7 +47,7 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         System.out.println(msgDicAfter);
 
         //Assertions.assertEquals(msgStrOrg,msgDicAfter);
-        //TODO Expand tests
+        //TODO Extend tests
         Assertions.assertEquals(messageDicAfter.getBlockCount(), messageOrg.getBlockCount());
 
         Assertions.assertEquals(cmrDictionary.getAttributMap().size(),  dicAfter.getAttributMap().size());

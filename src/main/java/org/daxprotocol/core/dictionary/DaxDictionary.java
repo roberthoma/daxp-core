@@ -45,6 +45,15 @@ public class DaxDictionary {
     DaxEnumDictionary enumDictionary = new DaxEnumDictionary();
 
     /*****************************************************
+     * Dictionary of messages type, required and respond tags
+     * Key: Message type
+     * */
+    Map<String, DaxMessageDicItem> msgMap = new HashMap<>();
+    Map<String, Set<DaxTag>> requiredTags =  new HashMap<>();
+    Map<String, Set<DaxTag>> respondTags =  new HashMap<>();
+
+
+    /*****************************************************
      * DescriptiveMap : it is main dic of tag attributes
      * Key : tagId
      * Value : map of attributes
@@ -60,8 +69,6 @@ public class DaxDictionary {
 
     Map<DaxTag, Set<DaxTag>> groupFieldsMap = new HashMap<>();
     Set<DaxTag> tagSet = new HashSet<>();
-
-    DaxMessageDic messageDic = new DaxMessageDic();
 
 
     public DaxDictionary(DaxpConfig config, DaxStringReferenceMapper contextMapper) {
@@ -86,12 +93,17 @@ public class DaxDictionary {
 
 
     public void putMsgItem(DaxMessageDicItem messageDicItem){
-          messageDic.putMsgItem(messageDicItem);
+        if (msgMap.containsKey(messageDicItem.getMsgType())){
+            throw new RuntimeException( "Message "+messageDicItem.getMsgType()
+                    +" exists in DAXP dictionary !!!");
+        }
+        msgMap.put(messageDicItem.getMsgType(),messageDicItem);
     }
 
     public Map<String, DaxMessageDicItem> getMsgMap() {
-        return messageDic.getMsgMap();
+        return msgMap;
     }
+
 
 
 
@@ -261,7 +273,6 @@ public class DaxDictionary {
         tagSet.add(tag);
 
     }
-
 
 
 }

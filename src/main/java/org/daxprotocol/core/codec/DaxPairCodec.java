@@ -56,7 +56,7 @@ public class DaxPairCodec {
                 .append(DaxpConfig.PAIR_SEPARATOR);
         return sb.toString() ;
     }
-
+    //TODO rebuild and  DaxProtocolRules
     public List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, int  msgContextId) {
         List<DaxStringPair> list = new ArrayList<>();
         Matcher m = pairPattern.matcher(msg);

@@ -17,11 +17,7 @@
  * limitations under the License.
  * ***********************************************************************
  */
-
-
 package org.daxprotocol.core.annotation;
-
-import org.daxprotocol.core.config.DaxpConfig;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
