@@ -29,12 +29,12 @@ public final class DaxpConfig {
     public static final String PROTOCOL_VERSION = "v0.1.0";
 
 
-     /*****************************************************
-     *  Preamble DAXP|V=v0.1.0|...
-     *  DAXP| char after DAXP is default separator for current message
-     */
-    public static final String DAXP_PREAMBLE_PREFIX = "DAXP";
-    public static final int    CHAR_SEPARATOR_IDX  = 4;
+//     /*****************************************************
+//     *  Preamble DAXP|V=v0.1.0|...
+//     *  DAXP| char after DAXP is default separator for current message
+//     */
+//    public static final String DAXP_PREAMBLE_PREFIX = "DAXP";
+//    public static final int    CHAR_SEPARATOR_IDX  = 4;
 
     public static final int    DAXP_MAX_TAG_ID = 255;
 

@@ -1,9 +1,11 @@
 package org.daxprotocol.core.rules;
 
 import org.daxprotocol.core.config.DaxpConfig;
-import org.daxprotocol.core.mapper.DaxReferenceMapper;
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,12 +15,12 @@ import java.util.stream.Collectors;
 public class DaxParserService {
 
     DaxpConfig config;
-    DaxReferenceMapper mapper;
+    DaxStringReferenceMapper contextMapper;
     Pattern ctxTagPattern;
 
-    public DaxParserService(DaxpConfig config, DaxReferenceMapper mapper){
+    public DaxParserService(DaxpConfig config, DaxStringReferenceMapper contextMapper){
         this.config = config;
-        this.mapper = mapper;
+        this.contextMapper = contextMapper;
         this.ctxTagPattern = DaxPatternFactory.compileContextTagPattern(config);
     }
 
@@ -39,7 +41,7 @@ public class DaxParserService {
                 //           }
             }
             else {
-                contextId = mapper.getReferenceId(contextSymbol);
+                contextId = contextMapper.getReferenceId(contextSymbol);
             }
             return new DaxTag(contextId, tagId);
         }
@@ -55,40 +57,30 @@ public class DaxParserService {
     }
 
 
-//    public static List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, String dftContext) {
-//        List<DaxStringPair> list = new ArrayList<>();
-//        Matcher m = pairPattern.matcher(msg);
-//        while (m.find()) {
-//            String contextSymbol;
-//            String contextStr = m.group(1);
-//            int tagId = Integer.parseInt(m.group(2));
-//            int contextId;
-//            if (contextStr == null) {
-//                if (tagId < DaxpConfig.MAX_DAXP_TAG_ID) {
-//                    contextSymbol = DaxpConfig.DAX_CONTEXT_SYMBOL;
-//                } else {
-//                    contextSymbol = dftContext;
-//                }
-//            } else {
-//                contextSymbol = contextStr;
-//            }
-//            contextId = DaxContextMapper.getContextId(contextSymbol);
-//            list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));
-//        }
-//        return list;
-//    }
+    //TODO rebuild and  DaxProtocolRules
+    public List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, int  msgContextId) {
+        List<DaxStringPair> list = new ArrayList<>();
+        Matcher m = pairPattern.matcher(msg);
 
+        while (m.find()) {
 
-    //    public static Map<String, String> parseMap(String msgPart, Pattern pairPattern  ) {
-//        Map<String, String> map = new HashMap<>();
-//
-//        Matcher m = pairPattern.matcher(msgPart);
-//
-//        while (m.find()) {
-//            map.put(m.group(1), m.group(2));
-//        }
-//        return map;
-//    }
+            String contextStr = m.group(1);
+            int tagId = Integer.parseInt(m.group(2));
+            int contextId;
+            if (contextStr == null) {
+                if (tagId < DaxpConfig.DAXP_MAX_TAG_ID) {
+                    contextId = DaxpConfig.DAXP_CONTEXT_ID;
+                } else {
+                    contextId = msgContextId;
+                }
+            } else {
+                contextId = contextMapper.getReferenceId(contextStr);
+            }
+
+            list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));
+        }
+        return list;
+    }
 
 
 }

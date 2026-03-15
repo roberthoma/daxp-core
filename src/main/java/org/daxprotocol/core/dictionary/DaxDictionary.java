@@ -66,7 +66,7 @@ public class DaxDictionary {
     DaxMessageDictionary msgMap;
 
     /*****************************************************
-     * DescriptiveMap : it is main dic of tag attributes
+     *Map of tag attributes
      * Key : tagId
      * Value : map of attributes
      * */

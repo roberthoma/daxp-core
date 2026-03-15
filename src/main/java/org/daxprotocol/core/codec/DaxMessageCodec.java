@@ -25,9 +25,9 @@ import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.model.preamble.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
+import org.daxprotocol.core.rules.DaxParserService;
 import org.daxprotocol.core.rules.DaxPatternFactory;
 
 import java.util.ArrayList;
@@ -41,21 +41,22 @@ public class DaxMessageCodec {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-
+    DaxParserService parserService;
     public DaxMessageCodec(
             DaxpConfig config,
             DaxPairCodec pairCodec,
             DaxPreambleCodec preambleCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
-            DaxTrailerCodec trailerCodec
-            ) {
+            DaxTrailerCodec trailerCodec,
+            DaxParserService parserService) {
       this.pairCodec = pairCodec;
       this.preambleCodec = preambleCodec;
       this.headCodec = headCodec;
       this.bodyCodec = bodyCodec;
       this.trailerCodec = trailerCodec;
       this.config = config;
+      this.parserService = parserService;
 
     }
 
@@ -81,7 +82,10 @@ public class DaxMessageCodec {
         sb.append(preambleCodec.encode(preamble))
                 .append(msgSb)
                 .append(trailerCodec.encode(trailer));
-        System.out.println("encoddeed mess le="+sb.length());
+
+        //TODO create statistics counter
+        //TODO  System.out.println("TODO Counter statistics message length = "+sb.length());
+
         return sb.toString();
     }
 
@@ -90,7 +94,6 @@ public class DaxMessageCodec {
        DaxBody body;
        DaxTrailer trailer;
 
-//       head = DaxHeadCodec.createHead(listOfPair);
        head = headCodec.createHead(listOfPair);
        body = bodyCodec.createBody(head.getBlockCount(), listOfPair) ;
        trailer = trailerCodec.createTrailer(listOfPair);
@@ -131,7 +134,11 @@ public class DaxMessageCodec {
    }
 
 //TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPE !!!
+//??????  chage dfecode to decode first
+//decideall to decode
 
+
+    /// ////
     public List<DaxMessage> decodeAll(String msgStr) {
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);
@@ -140,9 +147,9 @@ public class DaxMessageCodec {
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 
-        List<DaxStringPair> listOfPair = pairCodec.
+        List<DaxStringPair> listOfPair = parserService.
                           parsePairs(msgPairsStr,
-                                     DaxPatternFactory.compileMessagePairPattern(preamble.getMsgPairSeparator()),
+                                     DaxPatternFactory.compileMessagePairPattern(DaxpConfig.PAIR_SEPARATOR),
                                      preamble.getMsgContextId());
 
         List<List<DaxStringPair>> msgPairList =  splitMessages(listOfPair);

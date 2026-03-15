@@ -4,7 +4,7 @@ import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.tag.DaxTag;
 
-public final class DaxProtocolRules {
+public final class DaxpRules {
 
     public int resolveImplicitContext(int tagId, int msgContextId, DaxpConfig config) {
         if (tagId < DaxpConfig.DAXP_MAX_TAG_ID) {

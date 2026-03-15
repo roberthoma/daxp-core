@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.Map;
 /*
 TODO Extend for
+- email
 - BigDecimal
 - LocalDate
 - LocalDateTime
@@ -35,6 +36,8 @@ TODO Extend for
 - Country 	-  String field (see definition of "String" above) representing a country using ISO 3166
 - Currency - String field (see definition of "String" above) representing a currency type using ISO 4217 Currency <15> code (3 character) values.
 like FIX protocol
+
+-Regexp
 * */
 public enum DaxDataType {
     INTEGER('I'),

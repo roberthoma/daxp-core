@@ -43,14 +43,6 @@ public class DaxHeadCodec{
 
         pairCodec.encode(sb,MSG_TYPE,head.getMsgType());
 
-//        if (head.getContextId() != config.getApplicationContextId()
-//            && head.getContextId() != 0 ) //TODO add to const
-//        {
-//        int msgContextId = head.getContextId()!= -1 ? head.getContextId():
-//                config.getApplicationContextId();
-//            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(msgContextId));
-//            pairCodec.encode(sb, MSG_CONTEXT, String.valueOf(head.getContextId()));
-//        }
 
         if (blockCount>1) {
             pairCodec.encode(sb, MSG_BLOCK_COUNT, String.valueOf(blockCount));
@@ -67,9 +59,7 @@ public class DaxHeadCodec{
         return sb.toString();
     }
 
-//    @Override public DaxHead decode(String wire) {
-//        return null;
-//    }
+
 
     public  DaxHead createHead(List<DaxStringPair> listOfPair) {
         String msgType = listOfPair.get(0).getValue();

@@ -12,7 +12,7 @@ public class Dax_message_dic_req extends DaxTestConfig {
 
     @Test
     public void base_message_request(){
-        String reqMsgStr = "DAXP|V="+ DaxpConfig.PROTOCOL_VERSION +"|EN=UTF-8|CX=CMR|9=SYS.DR|99=181|";
+        String reqMsgStr = "DAXP="+ DaxpConfig.PROTOCOL_VERSION +"|EN=UTF-8|CX=CMR|9=SYS.DR|99=181|";
         DaxMessageFactory factory = cmrProvider.getMessageFactory();
 
         DaxMessage message = factory.createDictionaryReq();

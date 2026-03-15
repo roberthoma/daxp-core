@@ -23,10 +23,10 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpGroup;
 import org.daxprotocol.core.annotation.DaxpValue;
+import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
 import org.daxprotocol.core.group.DaxGroup;
-import org.daxprotocol.core.decorator.DaxDictionaryDecoratorService;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -56,36 +56,22 @@ public class DaxMessageFactory {
 
     DaxpConfig config;
     DaxStringReferenceMapper contextMapper;
+    DaxTagCodec tagCodec;
 
-    public DaxMessageFactory(DaxpConfig config, DaxStringReferenceMapper contextMapper) {
+    public DaxMessageFactory(DaxpConfig config, DaxStringReferenceMapper contextMapper, DaxTagCodec tagCodec) {
         this.config = config;
         this.contextMapper = contextMapper;
+        this.tagCodec = tagCodec;
     }
 
     public DaxMessage createDictionaryReq() {
         return new DaxMessage(DaxMsgType.DIC_REQ);
     }
 
-
-    //TODO Use DaxProtocolstools
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
-        String fieldId;
         body.nextBlock(DaxBlockType.BLOCK_TAG);
-
-        if ( tag.getContextId() != config.getAppContextId()
-          && tag.getContextId() != DaxpConfig.DAXP_CONTEXT_ID
-        ){
-            fieldId = contextMapper.getReference(tag.getContextId())+DaxpConfig.CONTEXT_TAG_SEPARATOR+
-                    tag.getTagId();
-        }
-        else {
-            fieldId = String.valueOf(tag.getTagId());
-        }
-
-        body.putPair(FIELD_ID,fieldId);
-
+        body.putPair(FIELD_ID,tagCodec.encode(tag));
         map.forEach((i, pair) -> body.putPair(pair));
-
     }
 
 
@@ -216,6 +202,8 @@ public class DaxMessageFactory {
 
 
 
+    //TODO Check message atributes if  any massage is resoint type then will need message reqwuest
+    // and throw exception
     @SuppressWarnings("unchecked")
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {
 
@@ -224,7 +212,13 @@ public class DaxMessageFactory {
           : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
     }
 
-    //private
+    //TODO reate message with token
+    public DaxMessage toDaxMessage( DaxMessage messageReq , String messageType, Object daxDataEntry ) {
+
+        return  daxDataEntry instanceof List<?> ?
+                toDaxMessageFromList( messageType, (List<Object>) daxDataEntry )
+                : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
+    }
 
 
 
@@ -237,7 +231,7 @@ public class DaxMessageFactory {
         daxDataEntry.forEach(entry -> {
             //todo REFACTORING
             if (entry.getClass().isAnnotationPresent(DaxpGroup.class)) {
-                DaxDictionaryDecoratorService.printDaxScanClass(entry.getClass());
+//                DaxDictionaryDecoratorService.printDaxScanClass(entry.getClass());
                 DaxpGroup group = entry.getClass().getAnnotation(DaxpGroup.class);
 
             body.nextBlock();

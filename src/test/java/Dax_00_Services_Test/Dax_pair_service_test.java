@@ -4,6 +4,7 @@ import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.rules.DaxParserService;
 import org.daxprotocol.core.rules.DaxPatternFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
 
 
     static String prbPairsStr1 = "NO_DAX|V=1|EN=UTF-8|";
-    static String prbPairsStr2 = "DAXP|V=1|EN=UTF-8|";
+    static String prbPairsStr2 = "DAXP=1|EN=UTF-8|";
     static String msgPairsStr1 = "123=ValueSYS|ABC:123=ValueABC|CBA:234=ValueCBA|SYS:128=ValueSYS|";
     static String msgPairsStr2 = "123=Value1|234=Value3|";
 
@@ -49,7 +50,8 @@ public class Dax_pair_service_test extends DaxTestConfig {
         Pattern pattern = DaxPatternFactory.compileMessagePairPattern('|');
         DaxPairCodec pairCodec = cmrProvider.getPairCodec();
         DaxpConfig   crmConfig = cmrProvider.getConfig();
-        List<DaxStringPair> pairList = pairCodec.parsePairs(msgPairsStr1,pattern,crmConfig.getAppContextId());
+        DaxParserService parserService = cmrProvider.getParserService();
+        List<DaxStringPair> pairList = parserService.parsePairs(msgPairsStr1,pattern,crmConfig.getAppContextId());
 
         pairList.forEach(System.out::println);
 
