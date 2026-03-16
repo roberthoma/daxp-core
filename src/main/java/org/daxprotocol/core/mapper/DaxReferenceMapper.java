@@ -46,10 +46,6 @@ public class DaxReferenceMapper <T>{
     /** Generator used for assigning IDs to unknown key */
     private  final AtomicInteger beginReferenceId;
 
-
-    // ---------------------------------------
-    // Static initialization (predefined reference)
-    // ---------------------------------------
     int beginId;
 
     public DaxReferenceMapper(int beginId){

@@ -20,6 +20,7 @@
 package org.daxprotocol.core.dictionary;
 
 public class DaxEnum {
+    int contextId;
     String name;
     String desc;
 

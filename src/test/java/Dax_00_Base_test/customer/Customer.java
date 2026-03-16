@@ -3,15 +3,15 @@ package Dax_00_Base_test.customer;
 import Dax_00_Base_test.*;
 import Dax_00_Base_test.fix.FixConstTag;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.annotation.DaxpGroup;
+import org.daxprotocol.core.annotation.DaxpType;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
 
 import java.util.Date;
 
-@DaxpGroup(tagId = CustomerDaxTag.CUSTOMER_GRP,
-           name = "Customer",
-           namespace = "crm")
+@DaxpType(tagId = CustomerDaxTag.CUSTOMER_GRP,
+           name = "Customer"
+           )
 public class Customer {
 
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_ID) //, uiLabel = "Id customer")
@@ -50,7 +50,7 @@ public class Customer {
     @DaxpField( context = ContextConst.CTX_FIX_PROTOCOL,
                   tagId = FixConstTag.FIX_CLIENT_ID,
                 uiLabel = "FIX Customer Id ")
-    Integer fixClientId;
+    String fixClientId;
 
     @DaxpField(tagId = CustomerDaxTag.CUSTOMER_RELATION , uiLabel = "Relation")
     CustomerRelation relation;

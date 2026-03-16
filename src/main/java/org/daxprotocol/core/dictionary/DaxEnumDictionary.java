@@ -20,8 +20,8 @@
 
 package org.daxprotocol.core.dictionary;
 
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
-import org.daxprotocol.core.tool.DaxSetTool;
+import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.tool.DaxCollectionTool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,16 +31,14 @@ import java.util.Map;
 public class DaxEnumDictionary {
     Integer contextId;
 
-    DaxStringReferenceMapper enumNameMapper = new DaxStringReferenceMapper();
-
     /*****************************************************
      *  Standard EnumMap
      * Map of string values and description ; enums others dictionary
      * Key : idField
      * */
 
-    Map<String, DaxEnum> enumMap = new HashMap<>();
-
+    Map<DaxTag, DaxEnum> enumMap      = new HashMap<>();
+//    Map<DaxTag, Enum<?> > enumMap2      = new HashMap<>();
 
     /*****************************************************
      *  Standard valueNamesMap
@@ -49,7 +47,7 @@ public class DaxEnumDictionary {
      * */
     //TODO create reference mapper
     //
-    Map<String, Map<String, DaxEnumValue>> enumValueMap = new HashMap<>();
+    Map<DaxTag, Map<String, DaxEnumValue>> enumValueMap = new HashMap<>();
 
 
     public DaxEnumDictionary(Integer contextId){
@@ -57,24 +55,33 @@ public class DaxEnumDictionary {
     }
 
 
-    public void putEnum(String name,  String desc){
-        enumMap.computeIfAbsent(name,nameS -> new DaxEnum(nameS, desc));
+    public void putEnum(DaxTag tag, DaxEnum daxEnum){
+        enumMap.computeIfAbsent(tag,nameS -> daxEnum);
     }
 
+//    public void putEnum2(DaxTag tag, Enum<?> daxEnum){
+//        enumMap2.computeIfAbsent(tag,nameS -> daxEnum);
+//    }
 
-    public void putEnumValue(String enumName, String value, String desc){
-        enumValueMap.merge(enumName,new HashMap<>(Map.of(value, new DaxEnumValue(value , desc))),
+
+//    public void putEnumValue(DaxTag tag, String value, String desc){
+    public void putEnumValue(DaxTag tag, DaxEnumValue enumValue){
+
+        enumValueMap.merge(tag,new HashMap<>(Map.of(enumValue.getValue(), enumValue)),
                 (svMap, svMapN)
-                        ->  DaxSetTool.putAndReturnMap(svMap,value, svMapN.get(value)));
+                        ->  DaxCollectionTool.putAndReturnMap(svMap,enumValue.getValue(), enumValue));
     }
 
-    public Map<String, Map<String, DaxEnumValue>> getValueMap() {
+    public Map<DaxTag, Map<String, DaxEnumValue>> getValueMap() {
         return  enumValueMap;
     }
 
-    public  Map<String, DaxEnum> getEnumMap(){
+    public  Map<DaxTag, DaxEnum> getEnumMap(){
         return enumMap;
     }
 
 
+    public Map<String, DaxEnumValue> getEnumValueMap(DaxTag daxTag) {
+        return enumValueMap.get(daxTag);
+    }
 }

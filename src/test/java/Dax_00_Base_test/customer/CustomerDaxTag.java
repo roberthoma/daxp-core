@@ -44,6 +44,7 @@ public class CustomerDaxTag {
     @DaxpTag( uiLabel = "Customer type")
     public static final int CUSTOMER_TYPE          = 2075;
 
+    @DaxpTag( uiLabel = "Customer relation" ) //, context = "FIX")
     public static final int CUSTOMER_RELATION      = 2076;
 
     @DaxpTag(uiLabel = "Is Citizen")
@@ -51,5 +52,8 @@ public class CustomerDaxTag {
 
     @DaxpTag(uiLabel = "Best toy", dataType = "S", readOnly = true)
     public static final int BEST_TOY_M = 2080;
+
+    @DaxpTag(uiLabel = "Customer Relation type")
+    public static final int CUSTOMER_RELATION_ENUM   = 3000;
 
 }

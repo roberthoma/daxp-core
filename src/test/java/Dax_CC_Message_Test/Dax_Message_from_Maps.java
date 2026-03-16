@@ -5,6 +5,7 @@ import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.mapper.DaxReferenceMapper;
 import org.daxprotocol.core.factory.DaxMessageFactory;
+import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxStringPair;
@@ -22,7 +23,7 @@ public class Dax_Message_from_Maps extends DaxTestConfig {
     public void testFactoryMsgFromMap(){
         DaxMessageFactory factory = cmrProvider.getMessageFactory();
         DaxMessageCodec codec = cmrProvider.getMessageCodec();
-        DaxReferenceMapper contextMapper = cmrProvider.getContextMapper();
+        DaxStringReferenceMapper contextMapper = cmrProvider.getContextMapper();
         int appContextId = cmrProvider.getConfig().getAppContextId();
         Map<DaxTag,DaxPair<?>> pairMap = new HashMap<>();
         int fixContextId = contextMapper.getReferenceId(ContextConst.CTX_FIX_PROTOCOL);

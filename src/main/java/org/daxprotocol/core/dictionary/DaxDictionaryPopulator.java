@@ -53,18 +53,15 @@ public class DaxDictionaryPopulator {
 
     DaxpConfig               config;
     DaxStringReferenceMapper contextMapper;
-    //DaxStringReferenceMapper groupMapper;
     DaxParserService         parserService;
 
 
     public DaxDictionaryPopulator(DaxpConfig config,
                                   DaxStringReferenceMapper contextMapper,
-                                //  DaxStringReferenceMapper groupMapper,
                                   DaxParserService parserService
     ){
         this.config        = config;
         this.contextMapper = contextMapper;
-     //   this.groupMapper   = groupMapper;
         this.parserService = parserService;
     }
 
@@ -93,24 +90,70 @@ public class DaxDictionaryPopulator {
 
     }
 
+    private void populateEnumType(DaxDictionary daxDic, Class<?> clazz ){
+        DaxpType groupAtn =  clazz.getAnnotation(DaxpType.class);
 
-    private void populateEnumFromAnnotations(Field field , DaxDictionary daxDic){
+
+        //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
+
+        String enumName = !groupAtn.name().isBlank() ? groupAtn.name() :
+                clazz.getSimpleName();
+
+
+        DaxTag enumTag = new DaxTag(config.getAppContextId(),groupAtn.tagId());
+
+        daxDic.putEnum(enumTag, new DaxEnum(enumName,groupAtn.description()) );
+//        daxDic.getEnumDictionary(). putEnum2(enumTag, DaxLangTool.asEnumClass(clazz)  );
+
+        Object[] constants = clazz.getEnumConstants();
+
+        for (Object c : constants) {
+            daxDic.putEnumValue(enumTag, new DaxEnumValue(c.toString(),""));
+        }
+
+
+        System.out.println("Test 123");
+
+//                groupId = groupMapper.getReferenceId(groupAtn.name());
+
+    }
+
+
+//    private void populateEnumFromTypeAnnotation(Field field , DaxDictionary daxDic){
+//
+//        for (Object c : constants) {
+//            daxDic.putEnumValue(enumName, c.toString(),"");
+//        }
+//
+//    }
+
+
+    private void populateEnumFromFieldAnnotation(Field field , DaxDictionary daxDic){
 //        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
 
         DaxpField daxp = field.getAnnotation(DaxpField.class);
         field.setAccessible(true);
+
         DaxTag tag = new DaxTag(config.getAppContextId(),daxp.tagId());
+
         String enumName = field.getType().getSimpleName();
+
         daxDic.putAtrEnumName(tag, enumName);
 
+//        String typeName = !groupAtn.name().isBlank() ? groupAtn.name() :
+//                clazz.getSimpleName();
+
         //TODO check exist
-        daxDic.putEnum(enumName,enumName);  // to improve
+        daxDic.putEnum(tag,new DaxEnum(enumName,""));  // to improve
 
         Object[] constants = field.getType().getEnumConstants();
 
+
         for (Object c : constants) {
-            daxDic.putEnumValue(enumName, c.toString(),"");
+            daxDic.putEnumValue(tag, new DaxEnumValue(c.toString(),""));
         }
+
+        System.out.println("Test 123");
 
     }
 
@@ -131,7 +174,23 @@ public class DaxDictionaryPopulator {
         daxDic.putAtrDataType(tag,field.getType());
 
         if (field.getType().isEnum()){
-            populateEnumFromAnnotations(field,daxDic);
+            /// ////////////////
+            if (field.getClass().isAnnotationPresent(DaxpType.class)) {
+                DaxpType typeAtn = field.getAnnotation(DaxpType.class);
+
+                        //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
+
+                        String typeName = !typeAtn.name().isBlank() ? typeAtn.name() :
+                                field.getClass().getSimpleName();
+
+                        DaxTag typeTag = new DaxTag(config.getAppContextId(),typeAtn.tagId());
+
+              //  daxDic.putAtr DataType(tag,field.getType());
+
+
+            }
+        /// /////////
+            //populateEnumFromFieldAnnotation(field,daxDic);
         }
 
         popJakartaValidationAttribute(daxDic, field, tag );
@@ -146,9 +205,12 @@ public class DaxDictionaryPopulator {
     }
 
 
-    private void putMethodIntoGroup(Field field, DaxDictionary daxDic , int groupId){
 
-    }
+
+//    private void putMethodIntoGroup(Field field, DaxDictionary daxDic , int groupId){
+//
+//    }
+
 
     private void populateDaxpFieldAtGroup(DaxTag groupTag ,DaxDictionary daxDic, Class<?> clazz){
 
@@ -189,7 +251,9 @@ public class DaxDictionaryPopulator {
         for (Field field : DaxLangTool.allFields(clazz)) {
 //            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
 
-            if (!field.isAnnotationPresent(DaxpTag.class)) continue;
+            if (!field.isAnnotationPresent(DaxpTag.class)
+             //TODO || !field.isAnnotationPresent(DaxpType.class)
+            ) continue;
 
             // (optional but recommended) only accept static int constants
             if (!Modifier.isStatic(field.getModifiers())) continue;
@@ -230,19 +294,14 @@ public class DaxDictionaryPopulator {
                 daxDic.putAtrReadOnly(tag,Boolean.TRUE);
             }
 
-
             popJakartaValidationAttribute(daxDic, field, tag );
-
-
-            //TODO Add
-            //            public static final DaxTag MSG_REQUIRED_TAGS        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,151); ; //
-//            public static final DaxTag MSG_RESPOND_TAGS         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,152); ; //
-//            public static final DaxTag MSG_REQ_IN_RESPOND_TAGS  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,155); ; //
-
 
         }
 
     }
+
+
+
 
 //TODO throw Runtim exception of tags, group etc are duplicated
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
@@ -252,17 +311,24 @@ public class DaxDictionaryPopulator {
                 populateDaxpDictionary(daxDic,clazz);
             }
 
-            if (clazz.isAnnotationPresent(DaxpGroup.class)){
+            if (clazz.isAnnotationPresent(DaxpType.class)){
       //        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
 
-                int groupId = 0;
+                if (clazz.isEnum()){
+                    populateEnumType(daxDic, clazz);
+                    return;
+                }
 
-                DaxpGroup groupAtn =  clazz.getAnnotation(DaxpGroup.class);
+                DaxpType groupAtn =  clazz.getAnnotation(DaxpType.class);
 
       //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
 
+                String typeName = !groupAtn.name().isBlank() ? groupAtn.name() :
+                                   clazz.getSimpleName();
+
+
                 DaxTag grpTag = new DaxTag(config.getAppContextId(),groupAtn.tagId());
-                daxDic.putGroup(new DaxGroup(grpTag, groupAtn.name()));
+                daxDic.putGroup(new DaxGroup(grpTag, typeName));
 
                 daxDic.putAtrDataType(grpTag, DaxDataType.GROUP.getCode());
 
@@ -297,27 +363,43 @@ public class DaxDictionaryPopulator {
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM)){
+
+            DaxTag enumTag = parserService.parseDaxTag(
+                    blockPairMap.get(DaxTagConst.ENUM_ID).getStrValue()
+            ) ;
+
+            daxDic.putTag( enumTag);
+
+
             String name = blockPairMap.get(DaxTagConst.ENUM_NAME).getStrValue();
             String desc = "";
             if (blockPairMap.containsKey(DaxTagConst.ENUM_DESCRIPTION)){
                 desc = blockPairMap.get(DaxTagConst.ENUM_DESCRIPTION).getStrValue();
             }
-            daxDic.putEnum(name, desc );
-            String valuesStrList = blockPairMap.get(DaxTagConst.ENUM_VALUE_LIST).getStrValue();
-            List<String>  valueList =  Arrays.stream(valuesStrList
-                                                     .split(DaxpConfig.VALUE_LIST_SEPARATOR.toString()))
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .collect(Collectors.toList());
-             valueList.forEach(eValue -> daxDic.putEnumValue( name,eValue , ""));
+            daxDic.putEnum(enumTag, new DaxEnum(name , desc ));
+//            String valuesStrList = blockPairMap.get(DaxTagConst.ENUM_VALUE_LIST).getStrValue();
+//            List<String>  valueList =  Arrays.stream(valuesStrList
+//                                                     .split(DaxpConfig.VALUE_LIST_SEPARATOR.toString()))
+//                    .map(String::trim)
+//                    .filter(s -> !s.isEmpty())
+//                    .collect(Collectors.toList());
+//             valueList.forEach(eValue -> daxDic.putEnumValue( enumTag, new DaxEnumValue(eValue , "")));
+
             return;
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM_VALUE)){
-            String name  = blockPairMap.get(DaxTagConst.ENUM_NAME).getStrValue();
-            String value = blockPairMap.get(DaxTagConst.FIELD_VALUE).getStrValue();
+            DaxTag enumTag = parserService.parseDaxTag(
+                    blockPairMap.get(DaxTagConst.ENUM_ID).getStrValue()
+            ) ;
 
-            daxDic.putEnumValue(name,value,"");
+            String name  = blockPairMap.get(DaxTagConst.ENUM_VALUE).getStrValue();
+
+            if (blockPairMap.containsKey(DaxTagConst.ENUM_VALUE_DESCRIPTION)) {
+                String value = blockPairMap.get(DaxTagConst.ENUM_VALUE_DESCRIPTION).getStrValue();
+                daxDic.putEnumValue(enumTag, new DaxEnumValue(name, value));
+            }
+
             return;
         }
 

@@ -32,4 +32,16 @@ public class DaxLangTool {
         }
         return fields;
     }
+
+
+    public static <E extends Enum<E>> Class<E> asEnumClass(Class<?> clazz) {
+        if (!clazz.isEnum()) {
+            throw new IllegalArgumentException("Class is not an enum: " + clazz.getName());
+        }
+        @SuppressWarnings("unchecked")
+        Class<E> enumClass = (Class<E>) clazz;
+        return enumClass;
+    }
+
 }
+

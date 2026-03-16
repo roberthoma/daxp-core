@@ -20,21 +20,21 @@
 
 package org.daxprotocol.core.decorator;
 
-import org.daxprotocol.core.annotation.DaxpGroup;
+import org.daxprotocol.core.annotation.DaxpType;
 
 import java.lang.reflect.Field;
 
 public class DaxDictionaryDecoratorService {
 
 
-    public static  void printDaxGroupInfo(DaxpGroup group ){
+    public static  void printDaxGroupInfo(DaxpType group ){
         System.out.println(" >> DaxpGroup ");
 
         System.out.println("GRP name : " +group.name());
 //        System.out.println("GRP id : " +group.groupId());
 //        System.out.println("GRP master id : " +group.masterId());
         System.out.println("GRP desc : " +group.description());
-        System.out.println("GRP namespace : " +group.namespace());
+       // System.out.println("GRP namespace : " +group.namespace());
     }
 
     public static void  printDaxFieldInfo(Field field){

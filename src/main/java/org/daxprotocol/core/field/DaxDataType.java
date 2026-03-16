@@ -20,7 +20,7 @@
 
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.annotation.DaxpGroup;
+import org.daxprotocol.core.annotation.DaxpType;
 
 import java.util.Date;
 import java.util.Map;
@@ -92,13 +92,14 @@ public enum DaxDataType {
             return null;
         }
 
-        if (clazz.isAnnotationPresent(DaxpGroup.class)) {
-            return GROUP;
-        }
-
-        if (clazz.isEnum()) {
-            return ENUM;
-        }
+   //    ???????  daxptype it can be enum and class
+//        if (clazz.isAnnotationPresent(DaxpType.class)) {
+//            return GROUP;
+//        }
+//
+//        if (clazz.isEnum()) {
+//            return ENUM;
+//        }
 
         if (Date.class.isAssignableFrom(clazz)) {
             return DATE;

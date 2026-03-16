@@ -27,7 +27,7 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.tool.DaxSetTool;
+import org.daxprotocol.core.tool.DaxCollectionTool;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,7 +55,7 @@ public class DaxDictionary {
 
 
     Map<Integer, DaxEnumDictionary> enumDictionaryMap = new HashMap<>();
-    DaxEnumDictionary enumDictionary; //Application enumDic
+//    DaxEnumDictionary enumDictionary; //Application enumDic
 
     /*****************************************************
      * Dictionary of messages type, required and respond tags
@@ -94,8 +94,7 @@ public class DaxDictionary {
         this.contextMapper = contextMapper;
         this.messageMapper = messageMapper;
 
-        enumDictionary = new DaxEnumDictionary(appContextId);
-        enumDictionaryMap.put(appContextId, enumDictionary );
+        enumDictionaryMap.put(appContextId, new DaxEnumDictionary(appContextId) );
 
         msgMap = new DaxMessageDictionary(appContextId);
         messageDicMap.put(appContextId,msgMap);
@@ -112,7 +111,8 @@ public class DaxDictionary {
 
 
     public void putContext(DaxContext context){
-        contextMap.put(contextMapper.getReferenceId(context.getSymbol()),context);
+        contextMap.put(contextMapper.getReferenceId(context.getTagPrefix()),context);
+//        contextMap.put(contextMapper.getReferenceId(context.getSymbol()),context);
     }
 
 
@@ -130,30 +130,32 @@ public class DaxDictionary {
     //**********************************************************************
     // Enums
 
-    public void putEnumValue(String enumName, String value, String desc){
-        enumDictionary.putEnumValue(enumName, value, desc);
+    public DaxEnumDictionary getEnumDictionary(int contextId){
+        return enumDictionaryMap.get(contextId);
     }
 
-    public void putEnum(String enumName, String desc){
-          enumDictionary.putEnum(enumName, desc);
-    }
+    public void putEnum(DaxTag tag, DaxEnum daxEnum){
+        enumDictionaryMap.get(tag.getContextId()).putEnum(tag, daxEnum);
 
-    public void putEnum(DaxEnum daxEnum){
-        enumDictionary.putEnum(daxEnum.getName(), daxEnum.getDesc());
     }
 
 
-    public Map<String, Map<String, DaxEnumValue>> getEnumValueMap() {
-        return  enumDictionary.getValueMap();
+    public Map<DaxTag, DaxEnum>  getEnumMap(int contextId) {
+        return enumDictionaryMap.get(contextId).getEnumMap();
     }
 
-    public Map<String, DaxEnum>  getEnumMap() {
-        return  enumDictionary.getEnumMap();
+    public void putEnumValue(DaxTag tag, DaxEnumValue value){
+        enumDictionaryMap.get(tag.getContextId()).putEnumValue (tag, value);
     }
+
+
+
+    public Map<DaxTag, Map<String, DaxEnumValue>> getEnumValueMap(DaxTag tag) {
+        return enumDictionaryMap.get(tag.getContextId()).getValueMap();
+    }
+
 
     //TODO getters and setter for other context enumDic;
-
-
 
     //**********************************************************************
     // Groups
@@ -182,7 +184,7 @@ public class DaxDictionary {
     //TODO check recursions
     public void putFieldIntoGroup(DaxTag tag, DaxTag groupTag) {
         groupFieldsMap.merge(groupTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
-                DaxSetTool.addAndReturnSet(daxTags, tag) );
+                DaxCollectionTool.addAndReturnSet(daxTags, tag) );
     }
 
     //**********************************************************************
@@ -194,7 +196,7 @@ public class DaxDictionary {
 
       attributMap.merge(tag, new HashMap<>(Map.of(atrPair.getTag(), atrPair)),
                 (eM, nM) ->
-                        DaxSetTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
+                        DaxCollectionTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
 
     }
 
@@ -236,26 +238,16 @@ public class DaxDictionary {
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrUiLabel(uiLabel));
     }
 
-//    public void putAtrSizeMax(int tagId,  Integer max){
-//        putAttribute(tagId, new DaxAtrSizeMax(max));
-//    }
-
     public void putAtrSizeMax(DaxTag tag,  Integer max){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMax(max));
     }
 
-//    public void putAtrSizeMin(int tagId,  Integer min){
-//        putAttribute(tagId, new DaxAtrSizeMin(min));
-//    }
 
     public void putAtrSizeMin(DaxTag tag,  Integer min){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMin(min));
     }
 
 
-//    public void putAtrNullable(int tadId,  Boolean able){
-//        putAttribute(tadId, new DaxAtrNullable(able));
-//    }
 
     public void putAtrNullable(DaxTag tag,  Boolean able){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrNullable(able));

@@ -33,13 +33,19 @@ public class DaxTagConst {
 //    public static final String EN   = "EN";   // encoding: ASCII | UTF8 | UTF16
 //    public static final String CTX  = "CX";   // context: optional  - list FIX, CRM
 
+    private static DaxTag daxpSysTag(int tagId){
+        //TODO add checking duplication or create factory
+        return new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,tagId);
+
+    }
+
     /**
      * Head TAGS
      * */
-    public static final DaxTag MSG_TYPE  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,9);
-    public static final DaxTag MSG_BLOCK_COUNT = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,6);
-    public static final DaxTag MSG_ROLE = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,18);
-    public static final DaxTag MSG_CONTEXT = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,20); //Default context
+    public static final DaxTag MSG_TYPE  = daxpSysTag(9);
+    public static final DaxTag MSG_BLOCK_COUNT = daxpSysTag(6);
+    public static final DaxTag MSG_ROLE = daxpSysTag(18);
+    public static final DaxTag MSG_CONTEXT = daxpSysTag(20); //Default context
 
     //TODO Create predefine sys DaxTag
     //DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)
@@ -57,8 +63,8 @@ public class DaxTagConst {
     /**********************************
      * Body tags
      */
-    public static final DaxTag BLOCK_INDEX             = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,7);;
-    public static final DaxTag BLOCK_TYPE              = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,5);;
+    public static final DaxTag BLOCK_INDEX             = daxpSysTag(7);;
+    public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);;
 
     // Set of universal tags
 //    F_NAME
@@ -67,85 +73,86 @@ public class DaxTagConst {
 //    STATUS
 
 
-    public static final DaxTag FIELD_ID                = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,100); ; //  FieldId     Integer
-    public static final DaxTag FIELD_NAME              = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,101); ; //  FieldName   String
-    public static final DaxTag FIELD_STATUS            = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,102); ; //  FieldStatus     Char    Indicates the current life-cycle state of a field  in the DAXP dictionary.
-    public static final DaxTag FIELD_VALUE             = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,103); ; //  FieldValue  <atr_data_type>
-    public static final DaxTag FIELD_VALUE_DEFAULT     = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,104); ; //  FieldDefaultValue   <atr_data_type>
-    public static final DaxTag FIELD_VALUE_DESCRIPTION = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,105); ; //  Field Value Description use in Value list
-    public static final DaxTag FIELD_VALUE_SYMBOL      = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,106); ; //  Field Value Symbol use in Value list
-    public static final DaxTag FIELD_VALUE_PREFIX      = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,107); ; //  Field Value Symbol use in Value list
+    public static final DaxTag FIELD_ID                = daxpSysTag(100);
+    public static final DaxTag FIELD_NAME              = daxpSysTag(101);
+    public static final DaxTag FIELD_STATUS            = daxpSysTag(102);
+    public static final DaxTag FIELD_VALUE             = daxpSysTag(103);
+    public static final DaxTag FIELD_VALUE_DEFAULT     = daxpSysTag(104);
+    public static final DaxTag FIELD_VALUE_DESCRIPTION = daxpSysTag(105);
+    public static final DaxTag FIELD_VALUE_SYMBOL      = daxpSysTag(106);
+    public static final DaxTag FIELD_VALUE_PREFIX      = daxpSysTag(107);
 
-    public static final DaxTag FIELD_ID_LIST           = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,115); ; //  FieldIdList     List<Integer>
-    public static final DaxTag FIELD_DATA_TYPE         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,110); ; //
-    public static final DaxTag FIELD_DATA_TYPE_TAG         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID, 110) ; //
-//    public static final DaxTag FIELD_ENUM_NAME         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,111); ; //
-//    public static final DaxTag FIELD_GROUP_ID          = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,120); ; //
+    public static final DaxTag FIELD_ID_LIST           = daxpSysTag(115);
+    public static final DaxTag FIELD_DATA_TYPE         = daxpSysTag(110);
+    public static final DaxTag FIELD_DATA_TYPE_TAG         = daxpSysTag( 110) ; //
+//    public static final DaxTag FIELD_ENUM_NAME         = daxpSysTag(111);
+//    public static final DaxTag FIELD_GROUP_ID          = daxpSysTag(120);
 
     //------
-    public static final DaxTag FIELD_ROLE         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,122); ; //
+    public static final DaxTag FIELD_ROLE         = daxpSysTag(122);
 
 
 
-    public static final DaxTag ENUM_NAME               = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,130); ; //
-    public static final DaxTag ENUM_DESCRIPTION        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,131); ; //
-    public static final DaxTag ENUM_VALUE              = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,132); ; //
-    public static final DaxTag ENUM_VALUE_DESCRIPTION  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,133); ; //
-    public static final DaxTag ENUM_VALUE_SYMBOL       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,134); ; //
-    public static final DaxTag ENUM_VALUE_LIST         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,135); ; //
+    public static final DaxTag ENUM_ID                 = daxpSysTag(129);
+    public static final DaxTag ENUM_NAME               = daxpSysTag(130);
+    public static final DaxTag ENUM_DESCRIPTION        = daxpSysTag(131);
+    public static final DaxTag ENUM_VALUE              = daxpSysTag(132);
+    public static final DaxTag ENUM_VALUE_DESCRIPTION  = daxpSysTag(133);
+    public static final DaxTag ENUM_VALUE_SYMBOL       = daxpSysTag(134);
+    public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
     //----
-    public static final DaxTag NAMESPACE          = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,144); ; //
-    public static final DaxTag NAMESPACE_DESC     = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,144); ; //
+    public static final DaxTag NAMESPACE          = daxpSysTag(144);
+    public static final DaxTag NAMESPACE_DESC     = daxpSysTag(144);
 
 
     //----
-    public static final DaxTag GROUP_ID                = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,141); ; //
-    public static final DaxTag GROUP_MASTER_ID         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,142); ; //
-    public static final DaxTag GROUP_NAME              = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,143); ; //
-    public static final DaxTag GROUP_NAMESPACE         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,144); ; //
-    public static final DaxTag GROUP_DESCRIPTION       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,145); ; //
+    public static final DaxTag GROUP_ID                = daxpSysTag(141);
+    public static final DaxTag GROUP_MASTER_ID         = daxpSysTag(142);
+    public static final DaxTag GROUP_NAME              = daxpSysTag(143);
+    public static final DaxTag GROUP_NAMESPACE         = daxpSysTag(144);
+    public static final DaxTag GROUP_DESCRIPTION       = daxpSysTag(145);
 
 
     /*****************************
      * Attributes
      */
-    public static final DaxTag MESSAGE_TAGS             = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,151); ; //
-    public static final DaxTag MESSAGE_RELATED_MSGS      = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,152); ; //
- //    public static final DaxTag MSG_REQ_IN_RESPOND_TAGS  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,155); ; //
+    public static final DaxTag MESSAGE_TAGS             = daxpSysTag(151);
+    public static final DaxTag MESSAGE_RELATED_MSGS      = daxpSysTag(152);
+    //    public static final DaxTag MSG_REQ_IN_RESPOND_TAGS  = daxpSysTag(155);
 
 
 
     /*****************************
      * Attributes
      */
-    public static final DaxTag ATR_RANGE_MIN_VALUE = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,161); ; //          <atr_data_type>     Minimum value
-    public static final DaxTag ATR_RANGE_MAX_VALUE = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,162); ; //          <atr_data_type>     Maximum value
-    public static final DaxTag ATR_PRECISION       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,163); ; //        Integer     Double precision
-    public static final DaxTag ATR_STEP_SIZE       = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,164); ; //        <atr_data_type>
-    public static final DaxTag ATR_UNIT_ID         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,166); ; //
-    public static final DaxTag ATR_NULLABLE        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,165); ; //
-    public static final DaxTag ATR_SIZE_MAX        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,166);
-    public static final DaxTag ATR_SIZE_MIN        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,167);
-    public static final DaxTag ATR_READONLY        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,168);
+    public static final DaxTag ATR_RANGE_MIN_VALUE = daxpSysTag(161);
+    public static final DaxTag ATR_RANGE_MAX_VALUE = daxpSysTag(162);
+    public static final DaxTag ATR_PRECISION       = daxpSysTag(163);
+    public static final DaxTag ATR_STEP_SIZE       = daxpSysTag(164);
+    public static final DaxTag ATR_UNIT_ID         = daxpSysTag(166);
+    public static final DaxTag ATR_NULLABLE        = daxpSysTag(165);
+    public static final DaxTag ATR_SIZE_MAX        = daxpSysTag(166);
+    public static final DaxTag ATR_SIZE_MIN        = daxpSysTag(167);
+    public static final DaxTag ATR_READONLY        = daxpSysTag(168);
     /*****************************
      * Attributes of UI
      */
-    public static final DaxTag ATR_UI_ITEM_TYPE    = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,208); ; //
-    public static final DaxTag ATR_UI_LABEL        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,209); ; //     UiLabel     String
-    public static final DaxTag ATR_UI_DESCRIPTION  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,210); ; //   UiDescription   String
-    public static final DaxTag ATR_UI_IS_EDITABLE  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,220); ; //       Boolean
+    public static final DaxTag ATR_UI_ITEM_TYPE    = daxpSysTag(208);
+    public static final DaxTag ATR_UI_LABEL        = daxpSysTag(209);
+    public static final DaxTag ATR_UI_DESCRIPTION  = daxpSysTag(210);
+    public static final DaxTag ATR_UI_IS_EDITABLE  = daxpSysTag(220);
 
     /*****************************
      * Errors
      */
-    public static final DaxTag ERR_FIELD_NR        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,224); ; //
-    public static final DaxTag ERR_FIELD_ID        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,225); ; //
-    public static final DaxTag ERR_DESCRIPTION     = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,226); ; //
+    public static final DaxTag ERR_FIELD_NR        = daxpSysTag(224);
+    public static final DaxTag ERR_FIELD_ID        = daxpSysTag(225);
+    public static final DaxTag ERR_DESCRIPTION     = daxpSysTag(226);
 
     /******************************
      * Trailer tag
      * */
-    public static final DaxTag CHECKSUM                = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,99); ; //     Checksum    Integer
+    public static final DaxTag CHECKSUM                = daxpSysTag(99);
 
 
 }

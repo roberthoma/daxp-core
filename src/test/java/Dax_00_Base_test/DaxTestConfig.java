@@ -3,6 +3,7 @@ package Dax_00_Base_test;
 import Dax_00_Base_test.customer.Customer;
 import Dax_00_Base_test.customer.CustomerDaxTag;
 import Dax_00_Base_test.customer.CustomerMessages;
+import Dax_00_Base_test.customer.CustomerRelation;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.provider.DaxProvider;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,6 +30,9 @@ public abstract class DaxTestConfig {
 
         cmrProvider.getCoreStrategy()
                    .populateFromAnnotations(CustomerDaxTag.class);
+
+        cmrProvider.getCoreStrategy()
+                   .populateFromAnnotations(CustomerRelation.class);
 
 
         CustomerMessages.initDictionaryBeforeTest(cmrProvider.getConfig() ,cmrProvider.getDictionary());
