@@ -156,7 +156,10 @@ public class DaxMessageFactory {
             body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
             body.putPair(ENUM_ID, tagEncode(tag));
             body.putPair(ENUM_VALUE, value.getValue());
-            body.putPair(ENUM_VALUE_DESCRIPTION, value.getDesc());
+
+            if (!value.getDesc().isBlank()) {
+                body.putPair(ENUM_VALUE_DESCRIPTION, value.getDesc());
+            }
         }
         );
 
@@ -205,7 +208,7 @@ public class DaxMessageFactory {
 //        dictionary.getContextMap().forEach((i, context) ->
 //                enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(i)));
 
-                enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(1));
+        enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(1));
 
         //----------------------------------------------------------------------------------
         // TODO create attributes by tags !!!!!

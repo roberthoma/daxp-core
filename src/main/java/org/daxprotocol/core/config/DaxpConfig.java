@@ -128,6 +128,10 @@ public final class DaxpConfig {
         return DaxpConfig.CONTEXT_TAG_SEPARATOR;
     }
 
+    public CharSequence getTagListSeparator(){
+        return DaxpConfig.TAG_LIST_SEPARATOR;
+    }
+
     public int getNextMsgId() {
         return nextMsgId+1;
     }

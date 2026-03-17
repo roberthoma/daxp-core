@@ -110,6 +110,7 @@ public class DaxDictionaryPopulator {
         for (Object c : constants) {
             daxDic.putEnumValue(enumTag, new DaxEnumValue(c.toString(),""));
         }
+        daxDic.putAtrDataType(enumTag, Enum.class );
 
 
         System.out.println("Test 123");
@@ -349,15 +350,40 @@ public class DaxDictionaryPopulator {
         String blockType =   blockPairMap.get(DaxTagConst.BLOCK_TYPE).getStrValue();
 
         if(blockType.equals(DaxBlockType.BLOCK_MESSAGE)){
-            DaxMessageItem item = new DaxMessageItem(
-                    blockPairMap.get(DaxTagConst.FIELD_VALUE).getStrValue(),
-                    blockPairMap.get(DaxTagConst.FIELD_VALUE_DESCRIPTION).getStrValue());
+            String msgDesc = "";
+            if (blockPairMap.containsKey(DaxTagConst.FIELD_VALUE_DESCRIPTION)){
+                msgDesc =  blockPairMap.get(DaxTagConst.FIELD_VALUE_DESCRIPTION).getStrValue();
+            }
 
-            daxDic.putMsgItem(item);
+            DaxMessageItem msgItem = new DaxMessageItem(
+                    blockPairMap.get(DaxTagConst.FIELD_VALUE).getStrValue(),msgDesc);
 
-//            public static final DaxTag MSG_REQUIRED_TAGS        = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,151); ; //
-//            public static final DaxTag MSG_RESPOND_TAGS         = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,152); ; //
-//            public static final DaxTag MSG_REQ_IN_RESPOND_TAGS  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,155); ; //
+            if (blockPairMap.containsKey(DaxTagConst.MESSAGE_TAGS)){
+
+                parserService.parseDaxTagList(blockPairMap.get(DaxTagConst.MESSAGE_TAGS)
+                        .getStrValue())
+                        .forEach(msgItem::addReqTag);
+
+            }
+
+            if (blockPairMap.containsKey(DaxTagConst.MESSAGE_RELATED_MSGS)){
+                Arrays.stream(blockPairMap.get(DaxTagConst.MESSAGE_RELATED_MSGS)
+                        .getStrValue().split(";")).forEach(msgItem::addRelatedMsgType);
+            }
+
+
+            daxDic.putMsgItem(msgItem);
+
+
+
+
+//            mgs.addRelatedMsgType(CRM_DATA);
+            //--------------------
+        /// //////
+
+
+
+
 
             return;
         }
@@ -377,6 +403,8 @@ public class DaxDictionaryPopulator {
                 desc = blockPairMap.get(DaxTagConst.ENUM_DESCRIPTION).getStrValue();
             }
             daxDic.putEnum(enumTag, new DaxEnum(name , desc ));
+
+            //TODO Add this implementation
 //            String valuesStrList = blockPairMap.get(DaxTagConst.ENUM_VALUE_LIST).getStrValue();
 //            List<String>  valueList =  Arrays.stream(valuesStrList
 //                                                     .split(DaxpConfig.VALUE_LIST_SEPARATOR.toString()))
@@ -393,12 +421,13 @@ public class DaxDictionaryPopulator {
                     blockPairMap.get(DaxTagConst.ENUM_ID).getStrValue()
             ) ;
 
-            String name  = blockPairMap.get(DaxTagConst.ENUM_VALUE).getStrValue();
+            String valueDesc = "";
+            String value  = blockPairMap.get(DaxTagConst.ENUM_VALUE).getStrValue();
 
             if (blockPairMap.containsKey(DaxTagConst.ENUM_VALUE_DESCRIPTION)) {
-                String value = blockPairMap.get(DaxTagConst.ENUM_VALUE_DESCRIPTION).getStrValue();
-                daxDic.putEnumValue(enumTag, new DaxEnumValue(name, value));
+                valueDesc = blockPairMap.get(DaxTagConst.ENUM_VALUE_DESCRIPTION).getStrValue();
             }
+            daxDic.putEnumValue(enumTag, new DaxEnumValue(value, valueDesc));
 
             return;
         }

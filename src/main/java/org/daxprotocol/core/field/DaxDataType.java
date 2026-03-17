@@ -92,14 +92,13 @@ public enum DaxDataType {
             return null;
         }
 
-   //    ???????  daxptype it can be enum and class
-//        if (clazz.isAnnotationPresent(DaxpType.class)) {
-//            return GROUP;
-//        }
-//
-//        if (clazz.isEnum()) {
-//            return ENUM;
-//        }
+        if (clazz.isEnum()) {
+            return ENUM;
+        }
+
+        if (clazz.isAnnotationPresent(DaxpType.class)) {
+            return GROUP;
+        }
 
         if (Date.class.isAssignableFrom(clazz)) {
             return DATE;

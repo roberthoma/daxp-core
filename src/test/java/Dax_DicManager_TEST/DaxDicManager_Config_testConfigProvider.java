@@ -70,6 +70,10 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         }
 
 
+        Assertions.assertEquals(messageDicAfter.getTrailer().getChecksum(),
+        messageOrg.getTrailer().getChecksum() );
+
+
         System.out.println("------------    End OF DOC populate -------- ");
     }
 
