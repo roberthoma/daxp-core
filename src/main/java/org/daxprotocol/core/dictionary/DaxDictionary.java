@@ -262,11 +262,11 @@ public class DaxDictionary {
                 Boolean.FALSE));
     }
 
-    public void putAtrEnumName(int tagId, String enumName) {
-        putAttribute(tagId, new DaxAtrEnumName(enumName));
-    }
-    public void putAtrEnumName(DaxTag tag, String enumName) {
-        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrEnumName(enumName));
+//    public void putAtrEnumTypeTag(int tagId, Da String enumName) {
+//        putAttribute(tagId, new DaxAtrEnumName(enumName));
+//    }
+    public void putAtrEnumTypeTag(DaxTag tag, DaxTag enumTag) {
+        putAttribute(tag, new DaxAtrEnumTag(enumTag));
     }
 
 

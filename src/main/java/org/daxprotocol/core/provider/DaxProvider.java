@@ -86,11 +86,13 @@ public class DaxProvider {
         tagCodec       = new DaxTagCodec(config, contextMapper);
         pairCodec     = new DaxPairCodec(config, contextMapper, tagCodec);
         preambleCodec = new DaxPreambleCodec(config, contextMapper);
-        DaxHeadCodec headCodec = new DaxHeadCodec(pairCodec);;
+        DaxHeadCodec headCodec = new DaxHeadCodec(pairCodec);
         DaxBodyCodec bodyCodec = new DaxBodyCodec(pairCodec);
         DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
 
-        messageCodec = new DaxMessageCodec(config, pairCodec, preambleCodec, headCodec, bodyCodec, trailerCodec, parserService);
+        messageCodec = new DaxMessageCodec(config, pairCodec, preambleCodec,
+                                           headCodec, bodyCodec, trailerCodec,
+                                           parserService);
 
 
         messageConverter     = new DaxMessageConverter(config,contextMapper );

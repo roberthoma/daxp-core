@@ -129,34 +129,34 @@ public class DaxDictionaryPopulator {
 //    }
 
 
-    private void populateEnumFromFieldAnnotation(Field field , DaxDictionary daxDic){
-//        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
-
-        DaxpField daxp = field.getAnnotation(DaxpField.class);
-        field.setAccessible(true);
-
-        DaxTag tag = new DaxTag(config.getAppContextId(),daxp.tagId());
-
-        String enumName = field.getType().getSimpleName();
-
-        daxDic.putAtrEnumName(tag, enumName);
-
-//        String typeName = !groupAtn.name().isBlank() ? groupAtn.name() :
-//                clazz.getSimpleName();
-
-        //TODO check exist
-        daxDic.putEnum(tag,new DaxEnum(enumName,""));  // to improve
-
-        Object[] constants = field.getType().getEnumConstants();
-
-
-        for (Object c : constants) {
-            daxDic.putEnumValue(tag, new DaxEnumValue(c.toString(),""));
-        }
-
-        System.out.println("Test 123");
-
-    }
+//    private void populateEnumFromFieldAnnotation(Field field , DaxDictionary daxDic){
+////        DaxDictionaryDecoratorService.printDaxEnumInfo(field);
+//
+//        DaxpField daxp = field.getAnnotation(DaxpField.class);
+//        field.setAccessible(true);
+//
+//        DaxTag tag = new DaxTag(config.getAppContextId(),daxp.tagId());
+//
+//        String enumName = field.getType().getSimpleName();
+//
+//        daxDic.putAtrEnumName(tag, enumName);
+//
+////        String typeName = !groupAtn.name().isBlank() ? groupAtn.name() :
+////                clazz.getSimpleName();
+//
+//        //TODO check exist
+//        daxDic.putEnum(tag,new DaxEnum(enumName,""));  // to improve
+//
+//        Object[] constants = field.getType().getEnumConstants();
+//
+//
+//        for (Object c : constants) {
+//            daxDic.putEnumValue(tag, new DaxEnumValue(c.toString(),""));
+//        }
+//
+//        System.out.println("Test 123");
+//
+//    }
 
     private void putFieldIntoGroup(Field field, DaxDictionary daxDic , DaxTag groupTag){
 
@@ -173,22 +173,28 @@ public class DaxDictionaryPopulator {
         daxDic.putTag(tag);
         //Class  change type to char
         daxDic.putAtrDataType(tag,field.getType());
+        /// ////////////////
 
         if (field.getType().isEnum()){
-            /// ////////////////
-            if (field.getClass().isAnnotationPresent(DaxpType.class)) {
-                DaxpType typeAtn = field.getAnnotation(DaxpType.class);
+
+            if (field.getType().isAnnotationPresent(DaxpType.class)) {
+                DaxpType typeAtn = field.getType().getAnnotation(DaxpType.class);
 
                         //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
 
-                        String typeName = !typeAtn.name().isBlank() ? typeAtn.name() :
-                                field.getClass().getSimpleName();
+//                        String typeName = !typeAtn.name().isBlank() ? typeAtn.name() :
+//                                field.getClass().getSimpleName();
 
                         DaxTag typeTag = new DaxTag(config.getAppContextId(),typeAtn.tagId());
 
-              //  daxDic.putAtr DataType(tag,field.getType());
+                daxDic.putAtrEnumTypeTag(tag, typeTag);
 
+                System.out.println("is aaaa ");
 
+            }
+            else {
+                //TODO
+                System.out.println("No annotation ");
             }
         /// /////////
             //populateEnumFromFieldAnnotation(field,daxDic);
@@ -374,17 +380,6 @@ public class DaxDictionaryPopulator {
 
             daxDic.putMsgItem(msgItem);
 
-
-
-
-//            mgs.addRelatedMsgType(CRM_DATA);
-            //--------------------
-        /// //////
-
-
-
-
-
             return;
         }
 
@@ -476,9 +471,9 @@ public class DaxDictionaryPopulator {
                 );
             }
 
-            if(blockPairMap.containsKey(DaxTagConst.ENUM_NAME)) {
-                daxDic.putAtrEnumName(tag,
-                        blockPairMap.get(DaxTagConst.ENUM_NAME).getStrValue()
+            if(blockPairMap.containsKey(DaxTagConst.ENUM_ID)) {
+                daxDic.putAtrEnumTypeTag(tag,
+                  parserService.parseDaxTag(blockPairMap.get(DaxTagConst.ENUM_ID).getStrValue())
                 );
             }
 

@@ -68,6 +68,7 @@ public class DaxMessageFactory {
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
         body.nextBlock(DaxBlockType.BLOCK_TAG);
         body.putPair(FIELD_ID,tagCodec.encode(tag));
+
         map.forEach((i, pair) -> body.putPair(pair));
     }
 
@@ -96,12 +97,12 @@ public class DaxMessageFactory {
     }
 
 
-    private void putEnumDicToEnumBody(DaxBody body, String enumName ,String kValue, String vDesc){
-        body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
-        body.putPair(ENUM_NAME,enumName);
-        body.putPair(FIELD_VALUE,kValue);
-        body.putPair(FIELD_VALUE_DESCRIPTION,vDesc);
-    }
+//    private void putEnumDicToEnumBody(DaxBody body, String enumName ,String kValue, String vDesc){
+//        body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
+//        body.putPair(ENUM_NAME,enumName);
+//        body.putPair(FIELD_VALUE,kValue);
+//        body.putPair(FIELD_VALUE_DESCRIPTION,vDesc);
+//    }
 
 //
 //            dictionary.getFieldsGroupMap().forEach((groupId, daxFields) ->
@@ -124,18 +125,18 @@ public class DaxMessageFactory {
 
     }
 
-    private void purEnumValueToBlock(DaxBody body,
-            DaxTag tag,
-            DaxEnumValue enumValueMap)
-//                                Map<String, DaxEnumValue> enumValueMap)
-    {
-        body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
-        body.putPair(ENUM_ID, tagEncode(tag));
-        body.putPair(ENUM_VALUE, enumValueMap.getValue());
-        body.putPair(ENUM_VALUE_DESCRIPTION, enumValueMap.getDesc());
-
-
-    }
+//    private void purEnumValueToBlock(DaxBody body,
+//            DaxTag tag,
+//            DaxEnumValue enumValueMap)
+////                                Map<String, DaxEnumValue> enumValueMap)
+//    {
+//        body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
+//        body.putPair(ENUM_ID, tagEncode(tag));
+//        body.putPair(ENUM_VALUE, enumValueMap.getValue());
+//        body.putPair(ENUM_VALUE_DESCRIPTION, enumValueMap.getDesc());
+//
+//
+//    }
 
     private void putEnumToBlock(DaxBody body,
                                         DaxTag tag,

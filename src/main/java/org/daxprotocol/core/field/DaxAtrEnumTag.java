@@ -22,9 +22,10 @@ package org.daxprotocol.core.field;
 
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.model.tag.DaxTag;
 
-public class DaxAtrEnumName extends DaxPair<String> {
-    public DaxAtrEnumName(String value) {
-        super(DaxTagConst.ENUM_NAME, value);
+public class DaxAtrEnumTag extends DaxPair<DaxTag> {
+    public DaxAtrEnumTag(DaxTag tag) {
+        super(DaxTagConst.ENUM_ID, tag);
     }
 }

@@ -21,13 +21,8 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
-import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DaxPairCodec {
     DaxpConfig config;
@@ -38,7 +33,6 @@ public class DaxPairCodec {
         this.contextMapper = contextMapper;
         this.tagCodec = tagCodec;
     }
-
 
     public   String encode(StringBuilder sb, DaxTag tag, String value ) {
         if (value.isBlank()){
@@ -51,4 +45,14 @@ public class DaxPairCodec {
         return sb.toString() ;
     }
 
+    public   String encode(StringBuilder sb, DaxTag tag, DaxPair<?> pair ) {
+        String value;
+        if (pair.getValue() instanceof DaxTag){
+            value = tagCodec.encode((DaxTag)pair.getValue());
+        }
+        else {
+            value = pair.getStrValue();
+        }
+        return encode(sb,tag,value );
+    }
 }

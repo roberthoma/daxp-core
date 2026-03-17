@@ -50,7 +50,7 @@ public class DaxTagConst {
     //TODO Create predefine sys DaxTag
     //DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)
 
-    static Set<DaxTag> headSet = Set.of(MSG_TYPE,
+    private static final Set<DaxTag> headSet = Set.of(MSG_TYPE,
             MSG_BLOCK_COUNT
             //new DaxTag(MSG_CONTEXT)
     );
@@ -84,7 +84,6 @@ public class DaxTagConst {
 
     public static final DaxTag FIELD_ID_LIST           = daxpSysTag(115);
     public static final DaxTag FIELD_DATA_TYPE         = daxpSysTag(110);
-    public static final DaxTag FIELD_DATA_TYPE_TAG         = daxpSysTag( 110) ; //
 //    public static final DaxTag FIELD_ENUM_NAME         = daxpSysTag(111);
 //    public static final DaxTag FIELD_GROUP_ID          = daxpSysTag(120);
 

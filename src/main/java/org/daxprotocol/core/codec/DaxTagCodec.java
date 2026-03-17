@@ -37,10 +37,11 @@ public class DaxTagCodec {
 //
 //    }
 
-//    public DaxTag decode(){
-//
-//
-//    }
+    public DaxTag decode(String tagStr){
+        DaxTag tag = new DaxTag(0,0);
+
+        return tag;
+    }
 
 
 

@@ -20,19 +20,19 @@ public class Dax_Customer_test01_dic extends DaxTestConfig {
         Map<DaxTag, DaxPair<?>> idAttrMap =  dic.getFieldAttributeMap(CustomerDaxTag.CUSTOMER_ID);
 
         Assertions.assertEquals("Id customer",idAttrMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
-        Assertions.assertEquals("I",idAttrMap.get(DaxTagConst.FIELD_DATA_TYPE_TAG).getStrValue());
+        Assertions.assertEquals("I",idAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
         Map<DaxTag, DaxPair<?>> nameAttrMap = dic.getFieldAttributeMap(CustomerDaxTag.CUSTOMER_NAME);
         Assertions.assertEquals("First name",nameAttrMap.get(DaxTagConst.ATR_UI_LABEL).getStrValue());
-        Assertions.assertEquals("S",nameAttrMap.get(DaxTagConst.FIELD_DATA_TYPE_TAG).getStrValue());
+        Assertions.assertEquals("S",nameAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
         Map<DaxTag, DaxPair<?>> telAttrMap = dic.getFieldAttributeMap(CustomerDaxTag.CUSTOMER_TELEPHONE);
         Assertions.assertEquals("Telephone",telAttrMap.get( DaxTagConst.ATR_UI_LABEL).getStrValue());
-        Assertions.assertEquals("S",telAttrMap.get(DaxTagConst.FIELD_DATA_TYPE_TAG).getStrValue());
+        Assertions.assertEquals("S",telAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
 
         Map<DaxTag, DaxPair<?>> methodAttrMap = dic.getFieldAttributeMap(CustomerDaxTag.BEST_TOY_M);
         Assertions.assertEquals("Best toy",methodAttrMap.get( DaxTagConst.ATR_UI_LABEL).getStrValue());
-        Assertions.assertEquals("S",methodAttrMap.get(DaxTagConst.FIELD_DATA_TYPE_TAG).getStrValue());
+        Assertions.assertEquals("S",methodAttrMap.get(DaxTagConst.FIELD_DATA_TYPE).getStrValue());
         Assertions.assertEquals("Y",methodAttrMap.get(DaxTagConst.ATR_READONLY).getStrValue());
 
 

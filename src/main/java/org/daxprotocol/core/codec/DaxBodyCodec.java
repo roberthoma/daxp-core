@@ -62,12 +62,13 @@ public class DaxBodyCodec {
         }
 
 
-        blockMap.forEach((tag, s) ->
+        blockMap.forEach((tag, pair) ->
         {
             if (!tag.equals(DaxTagConst.BLOCK_INDEX) &&
                 !tag.equals(DaxTagConst.BLOCK_TYPE) )
             {
-                pairCodec.encode(sb, tag, s.getStrValue());
+                pairCodec.encode(sb, tag, pair);
+//                pairCodec.encode(sb, tag, pair.getStrValue());
             }
         });
     }
