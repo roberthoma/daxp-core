@@ -262,9 +262,6 @@ public class DaxDictionary {
                 Boolean.FALSE));
     }
 
-//    public void putAtrEnumTypeTag(int tagId, Da String enumName) {
-//        putAttribute(tagId, new DaxAtrEnumName(enumName));
-//    }
     public void putAtrEnumTypeTag(DaxTag tag, DaxTag enumTag) {
         putAttribute(tag, new DaxAtrEnumTag(enumTag));
     }

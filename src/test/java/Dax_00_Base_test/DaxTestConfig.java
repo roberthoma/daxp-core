@@ -16,27 +16,28 @@ public abstract class DaxTestConfig {
     @BeforeAll
     public static void initAll(){
 
-        cmrProvider = new DaxProvider(DaxpConfigFactory
-                                           .createConfig( DaxpConfigFactory
-                                                         .createProperties("application_CMR.properties")));
+        if (cmrProvider == null) {
+            cmrProvider = new DaxProvider(DaxpConfigFactory
+                    .createConfig(DaxpConfigFactory
+                            .createProperties("application_CMR.properties")));
 
-        cntProvider = new DaxProvider(DaxpConfigFactory
-                                          .createConfig( DaxpConfigFactory
-                                                        .createProperties("application_CNT.properties")));
-
-
-        cmrProvider.getCoreStrategy()
-                   .populateFromAnnotations( Customer.class);
-
-        cmrProvider.getCoreStrategy()
-                   .populateFromAnnotations(CustomerDaxTag.class);
-
-        cmrProvider.getCoreStrategy()
-                   .populateFromAnnotations(CustomerRelation.class);
+            cntProvider = new DaxProvider(DaxpConfigFactory
+                    .createConfig(DaxpConfigFactory
+                            .createProperties("application_CNT.properties")));
 
 
-        CustomerMessages.initDictionaryBeforeTest(cmrProvider.getConfig() ,cmrProvider.getDictionary());
+            cmrProvider.getCoreStrategy()
+                    .populateFromAnnotations(Customer.class);
 
+            cmrProvider.getCoreStrategy()
+                    .populateFromAnnotations(CustomerDaxTag.class);
+
+            cmrProvider.getCoreStrategy()
+                    .populateFromAnnotations(CustomerRelation.class);
+
+
+            CustomerMessages.initDictionaryBeforeTest(cmrProvider.getConfig(), cmrProvider.getDictionary());
+        }
     }
 
 }

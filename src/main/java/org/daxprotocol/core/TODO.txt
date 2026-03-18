@@ -1,0 +1,31 @@
+For annotetion 
+@DaxpValue
+
+not regirestion tag in type in group
+
+-----------------------
+
+Create again annotation 
+@DaxpGroup  and keep DaxpType
+
+
+If calss has only DaxpValue without daxpField then  throw exeption :(
+
+
+-------------------------
+
+COnstrains FK , uniqua  an PK
+
+---------------------------
+
+
+Mecanizm regiraion of messages 
+
+Message with error codes no reequred 
+
+provider.getMessageFactory().errorInvalidMessageType(); //TODO create meressage with error
+----------------
+
+standard Msg error code 
+
+

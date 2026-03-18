@@ -83,9 +83,10 @@ public class DaxProvider {
         dictionary.putContext(sysContext);
         dictionary.putContext(appContext);
 
-        tagCodec       = new DaxTagCodec(config, contextMapper);
+        tagCodec      = new DaxTagCodec(config, contextMapper, parserService);
         pairCodec     = new DaxPairCodec(config, contextMapper, tagCodec);
         preambleCodec = new DaxPreambleCodec(config, contextMapper);
+
         DaxHeadCodec headCodec = new DaxHeadCodec(pairCodec);
         DaxBodyCodec bodyCodec = new DaxBodyCodec(pairCodec);
         DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
@@ -152,6 +153,10 @@ public class DaxProvider {
 
     public DaxParserService getParserService(){
         return parserService;
+    }
+
+    public DaxTagCodec getTagCodec(){
+        return tagCodec;
     }
 
 

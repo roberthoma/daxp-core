@@ -68,7 +68,6 @@ public class DaxBodyCodec {
                 !tag.equals(DaxTagConst.BLOCK_TYPE) )
             {
                 pairCodec.encode(sb, tag, pair);
-//                pairCodec.encode(sb, tag, pair.getStrValue());
             }
         });
     }

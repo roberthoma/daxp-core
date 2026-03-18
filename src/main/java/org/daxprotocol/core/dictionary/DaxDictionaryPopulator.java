@@ -41,7 +41,6 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 //TODO dictionary validation method after populateFromAnnotations
 // error  example :
@@ -196,7 +195,7 @@ public class DaxDictionaryPopulator {
                 //TODO
                 System.out.println("No annotation ");
             }
-        /// /////////
+
             //populateEnumFromFieldAnnotation(field,daxDic);
         }
 
@@ -210,13 +209,6 @@ public class DaxDictionaryPopulator {
 
 
     }
-
-
-
-
-//    private void putMethodIntoGroup(Field field, DaxDictionary daxDic , int groupId){
-//
-//    }
 
 
     private void populateDaxpFieldAtGroup(DaxTag groupTag ,DaxDictionary daxDic, Class<?> clazz){
