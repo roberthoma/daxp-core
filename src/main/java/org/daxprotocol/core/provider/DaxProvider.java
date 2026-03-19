@@ -55,9 +55,11 @@ public class DaxProvider {
     private final DaxCoreStrategy coreStrategy;
 
     private final DaxStringReferenceMapper contextMapper;
+
     private final DaxStringReferenceMapper messageMapper;
 
     private final DaxTagCodec tagCodec;
+
     private final DaxPairCodec pairCodec;
 
     private final DaxpRules daxpRules;

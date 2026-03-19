@@ -36,8 +36,45 @@ TODO Extend for
 - Country 	-  String field (see definition of "String" above) representing a country using ISO 3166
 - Currency - String field (see definition of "String" above) representing a currency type using ISO 4217 Currency <15> code (3 character) values.
 like FIX protocol
-
 -Regexp
+
+- String
+- Integer
+- Double
+- Float
+- boolean
+
+From java
+primitive type → int, long, boolean
+class type → String, Customer
+interface type → List, Serializable
+enum type → OrderStatus
+record type → CustomerDto
+annotation type → @Override
+array type → String[]
+
+
+S = String
+I = Integer
+B = Boolean
+D = LocalDate
+T = LocalDateTime
+F = Float
+R = Double
+N = Decimal
+P = BigDecimal
+J = JSON
+X = XML
+Q = Regexp
+e = Email
+M = DayOfMonth
+C = Country
+U = Currency
+Y = Enum
+K = Tag
+O = DTO
+
+
 * */
 public enum DaxDataType {
     INTEGER('I'),

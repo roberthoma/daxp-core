@@ -26,6 +26,38 @@ Message with error codes no reequred
 provider.getMessageFactory().errorInvalidMessageType(); //TODO create meressage with error
 ----------------
 
-standard Msg error code 
+standard Msg error code
+
+-------------------
+Rules
+Dependency Tags
+---------
+W świecie GUI nazywamy to często Dynamic Form Rules.
+
+-------------------
+To świetny kierunek. Wprowadzenie logiki warunkowej i zależności bezpośrednio do protokołu DAXP sprawi, że Twój system przestanie być tylko "opisem danych", a stanie się "opisem zachowania" (Behavioral Metadata).
+
+W świecie GUI nazywamy to często Dynamic Form Rules. Dzięki temu backend może sterować interfejsem użytkownika bez pisania ani jednej linii kodu w JavaScript czy Swift.
+1. Koncepcja Tagów Zależności (Dependency Tags)
+
+Aby to zrealizować w DAXP, potrzebujemy zestawu atrybutów, które opiszą relację między tagami. Możemy wprowadzić nową grupę tagów atrybutów:
+
+    ATR_DEP_PARENT_TAG (np. 230): ID taga, od którego zależy widoczność/aktywność obecnego pola.
+
+    ATR_DEP_VALUE (np. 231): Wartość taga nadrzędnego, która aktywuje regułę.
+
+    ATR_DEP_ACTION (np. 232): Co ma się stać? (np. SHOW, HIDE, ENABLE, DISABLE, REQUIRE).
+
+Przykład w Twoim formacie:
+
+Załóżmy, że pole Email (100=2011) ma się pojawić tylko wtedy, gdy Is Citizen (100=2077) ma wartość Y (Yes).
+
+7=21|5=T|209=Email|100=2011|230=2077|231=Y|232=SHOW|110=S|
+2. Architektura Silnika Reguł (DAXP Rule Engine)
+
+Twoja aplikacja kliencka (Renderer GUI) powinna posiadać prosty Observer Pattern. Gdy użytkownik zmienia wartość dowolnego pola, silnik sprawdza, czy inne pola w słowniku mają ten tag wpisany jako ATR_DEP_PARENT_TAG.
 
 
++++++++++++++++++++++++++++++=
+
+"Enterprise" oznacza, że system musi obsłużyć nie 10, a 10 000 użytkowników jednocześnie, dbając o uprawnienia (kto widzi jakie pole) i integrację z bazami danych (Oracle, SAP, Salesforce).

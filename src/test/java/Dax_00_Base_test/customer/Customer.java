@@ -8,6 +8,7 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
 
 import java.util.Date;
+// TODO change to  @DaxpDto as Daxp Data Transfer Object
 
 @DaxpType(tagId = CustomerDaxTag.CUSTOMER_GRP,
            name = "Customer"

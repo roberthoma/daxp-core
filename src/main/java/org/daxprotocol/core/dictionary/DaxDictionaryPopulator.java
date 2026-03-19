@@ -42,11 +42,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-//TODO dictionary validation method after populateFromAnnotations
-// error  example :
- // 1) if any group refer to no existed master group
-//TODO create  service  DaxValidationAttributeManager
 
+//TODO create  service  DaxValidationAttributeManager
 
 public class DaxDictionaryPopulator {
 
@@ -172,7 +169,6 @@ public class DaxDictionaryPopulator {
         daxDic.putTag(tag);
         //Class  change type to char
         daxDic.putAtrDataType(tag,field.getType());
-        /// ////////////////
 
         if (field.getType().isEnum()){
 
@@ -342,6 +338,7 @@ public class DaxDictionaryPopulator {
             throw new RuntimeException(e);
         }
     }
+//------------------------------------------------
 
     private void populateFromMsgBlock(DaxDictionary daxDic, Map<DaxTag, DaxPair<?>> blockPairMap) {
 
@@ -474,7 +471,7 @@ public class DaxDictionaryPopulator {
 
 
 
-        if(blockType.equals(DaxBlockType.BLOCK_GROUP)){
+        if(blockType.equals(DaxBlockType.BLOCK_DTO)){
             String groupName = blockPairMap.get(DaxTagConst.GROUP_NAME).getStrValue();
 
             //int groupId = groupMapper.getReferenceId(groupName);

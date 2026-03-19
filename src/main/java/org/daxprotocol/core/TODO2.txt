@@ -1,0 +1,26 @@
+1. Rozszerzenie Metadanych o Reguły Spójności
+
+Dodając tagi takie jak IS_UNIQUE, IS_PRIMARY_KEY, czy FOREIGN_KEY_REF, pozwalasz warstwie odbiorczej (np. Twojej implementacji w Javie) na automatyczne budowanie Index Map w pamięci.
+
+    PK (Primary Key): Pozwala na błyskawiczne nadpisywanie starych wersji obiektu w GUI (Upsert). Jeśli przyjdzie nowy blok O z tym samym PK, UI po prostu odświeży istniejący wiersz zamiast dodawać nowy.
+
+    Unique: Umożliwia walidację po stronie klienta (Client-Side Validation) zanim dane w ogóle trafią do bazy.
+
+    FK (Foreign Key): Pozwala na budowanie relacji między encjami (np. "Ten Klient należy do Tej Grupy") bezpośrednio w parserze DAXP.
+
+2. DAXP jako "Virtual Database Layer"
+
+Dla dużych graczy (Oracle, SAP) to jest "Święty Graal". Dlaczego? Bo systemy te walczą z opóźnieniem (latency) między bazą a interfejsem.
+
+    Jeśli DAXP niesie ze sobą wiedzę o kluczach i unikalności, możesz stworzyć "Stateful Client", który zachowuje się jak lokalna baza danych (np. SQLite), ale jest zasilany strumieniem DAXP.
+
+    To pozwala na budowanie aplikacji typu Offline-First. Aplikacja zna strukturę i klucze, więc może pozwolić na edycję danych bez połączenia, wiedząc dokładnie, jak je zsynchronizować (Conflict Resolution) po powrocie online.
+
+3. Propozycja tagów dla Constraints
+
+W Twoim systemie DaxTagConst mogłoby to wyglądać tak:
+Tag ID	Nazwa	Opis
+ATR_IS_PK	Primary Key	Oznacza pole jako unikalny identyfikator encji w bloku O.
+ATR_IS_UNIQUE	Uniqueness	Wymusza unikalność w obrębie kolekcji/listy.
+ATR_REF_ENTITY	Relation	Wskazuje na ID innej encji (np. 100=2000).
+ATR_CASCADE	Logic	Określa zachowanie przy usunięciu (np. DELETE_CASCADE).

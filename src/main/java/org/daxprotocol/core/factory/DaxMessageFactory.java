@@ -112,7 +112,7 @@ public class DaxMessageFactory {
 
 
     private void putGroupToBody(DaxBody body, DaxGroup group, Set<DaxTag> daxFields){
-        body.nextBlock(DaxBlockType.BLOCK_GROUP);
+        body.nextBlock(DaxBlockType.BLOCK_DTO);
         body.putPair(FIELD_ID, tagEncode(group.getTag()));
         body.putPair(GROUP_NAME, group.getName());
         if (!group.getDescription().isBlank() ){
