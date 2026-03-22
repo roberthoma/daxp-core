@@ -49,6 +49,10 @@ public class DaxMessageItem {
         tagMap.add(daxTag);
     }
 
+//    public void addReqTag(String daxTag) {
+//        tagMap.add(daxTag);
+//    }
+
     public Set<DaxTag> getMsgFields(){
         return tagMap;
     }

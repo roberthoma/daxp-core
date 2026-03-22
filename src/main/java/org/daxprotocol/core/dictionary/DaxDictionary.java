@@ -23,12 +23,14 @@ package org.daxprotocol.core.dictionary;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -74,10 +76,19 @@ public class DaxDictionary {
 
 
     /*****************************************************
-     *  Group Map
+     *  Group Map // TODO chage to type or schema
      */
     Map<DaxTag, DaxGroup>    groupMap       = new HashMap<>();
     Map<DaxTag, Set<DaxTag>> groupFieldsMap = new HashMap<>();
+
+
+    /*****************************************************
+     *  Handler And controller maps
+     */
+
+    Map<String, Method> handlerMap = new HashMap<>();
+    Map<Class<?>, Object >  daxControllerMap = new HashMap<>();
+
 
     /******************************************************/
     int appContextId;
@@ -277,5 +288,31 @@ public class DaxDictionary {
 
     }
 
+
+    public void putHandler(String msgType, Method method, Class<?> clazz) {
+        handlerMap.put(msgType, method);
+    }
+
+    public void registerCtrl(Object daxpController) {
+        daxControllerMap.put(daxpController.getClass(), daxpController);
+    }
+
+    public DaxMessage executor(DaxMessage reqMsg) {
+        try {
+            String msgType = reqMsg.getMsgType();
+            Method method = handlerMap.get(msgType);
+
+            Object obj = daxControllerMap.get(method.getDeclaringClass());
+
+            Object respObj = method.invoke(obj, reqMsg);
+
+            System.out.println("I jestem po  ");
+            return (DaxMessage) respObj;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
 }

@@ -8,3 +8,36 @@ Accept: application/daxp
 DAXP|V=v0.1.0|EN=UTF-8|CX=FXG|
 9=US|143=Application state|4005=Init|
 99=150|
+
+/////////////////////////////////////////////
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface DaxpParam {
+    int tagId();
+    String context() default "";
+    boolean required() default true;
+}
+
+@DaxpHandler(context = "CMR", operation = "createCustomer")
+public CustomerResult createCustomer(
+        @DaxpParam(tagId = 2001) String firstName,
+        @DaxpParam(tagId = 2002) String lastName,
+        @DaxpParam(tagId = 2003) String countryCode) {
+    ...
+}
+
+/////////////////////////
+@DaxpEndpoint(context = "CMR")
+public class CustomerService {
+
+    @DaxpHandler(operation = "findById")
+    public CustomerDto findById(DaxMessage request) {
+        String customerId = request.getValue(2001);
+        return loadCustomer(customerId);
+    }
+
+    private CustomerDto loadCustomer(String customerId) {
+        return new CustomerDto(customerId, "Robert");
+    }
+}

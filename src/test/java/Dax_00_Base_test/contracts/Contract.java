@@ -1,7 +1,7 @@
 package Dax_00_Base_test.contracts;
 
 import Dax_00_Base_test.ContextConst;
-import Dax_00_Base_test.customer.CustomerDaxTag;
+import Dax_00_Base_test.customer.CustomerDaxSchema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpField;
@@ -13,7 +13,7 @@ public class Contract {
     @DaxpField(tagId = ContractDaxTag.CONTRACT_ID, uiLabel = "Id")
     Long id;
 
-    @DaxpField( context =  ContextConst.CTX_CUSTOMER , tagId = CustomerDaxTag.CUSTOMER_ID)
+    @DaxpField( context =  ContextConst.CTX_CUSTOMER , tagId = CustomerDaxSchema.CUSTOMER_ID)
     Long customerId;
 
     @NotNull

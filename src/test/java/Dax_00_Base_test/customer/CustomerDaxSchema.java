@@ -2,12 +2,15 @@ package Dax_00_Base_test.customer;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.annotation.DaxpDictionary;
+import org.daxprotocol.core.annotation.DaxpMsg;
+import org.daxprotocol.core.annotation.DaxpSchema;
 import org.daxprotocol.core.annotation.DaxpTag;
 
-@DaxpDictionary
-public class CustomerDaxTag {
+@DaxpSchema
+public class CustomerDaxSchema {
 
+
+    public String  MSG_TYPE_CDR =  "CDR";
 
     @DaxpTag( uiLabel = "Customer")
     public static final int CUSTOMER_GRP           = 2000;
@@ -55,5 +58,22 @@ public class CustomerDaxTag {
 
     @DaxpTag(uiLabel = "Customer Relation type")
     public static final int CUSTOMER_RELATION_ENUM   = 3000;
+
+
+
+
+    @DaxpMsg(description = "Customer Data Request ",
+            respMsg = {"CDD","DAX_ERR"},
+            reqTag = {"2001"}
+    )
+    public static final String  CRM_DATA_REQ     =  "CDR";
+
+
+
+    public static final String  CRM_DATA         =  "CDD"; // 	REs 	Customer Data
+    public static final String  CRM_INSERT       =  "CDI"; // 	REs 	New Customer
+    public static final String  CRM_UPDATE       =  "CDU"; // 	REs 	Update Customer
+    public static final String  CRM_NOT_ACCESS    =  "CNA"; // 	REs 	Update Customer
+
 
 }

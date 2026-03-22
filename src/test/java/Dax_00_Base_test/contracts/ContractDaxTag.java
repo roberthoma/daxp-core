@@ -1,9 +1,9 @@
 package Dax_00_Base_test.contracts;
 
-import org.daxprotocol.core.annotation.DaxpDictionary;
+import org.daxprotocol.core.annotation.DaxpSchema;
 import org.daxprotocol.core.annotation.DaxpTag;
 
-@DaxpDictionary
+@DaxpSchema
 public class ContractDaxTag {
 
     @DaxpTag(uiLabel = "Contract")

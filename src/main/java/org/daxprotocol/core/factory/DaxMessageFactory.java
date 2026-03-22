@@ -298,11 +298,11 @@ public class DaxMessageFactory {
 
             //>>>>>>>>>>>>....
             try {
-                for (Method m : entry.getClass().getDeclaredMethods()) {
-                    DaxpValue methodAnn = m.getAnnotation(DaxpValue.class);
+                for (Method method : entry.getClass().getDeclaredMethods()) {
+                    DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
                     if (methodAnn == null) continue;
-                    Class<?> returnType = m.getReturnType();
-                    Object o = m.invoke(entry);
+                    Class<?> returnType = method.getReturnType();
+                    Object o = method.invoke(entry);
                     DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.tagId());
                     body.putPair(new DaxPair<>(tag, o.toString()));
                 }

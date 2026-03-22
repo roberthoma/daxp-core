@@ -1,6 +1,7 @@
 1. Rozszerzenie Metadanych o Reguły Spójności
 
-Dodając tagi takie jak IS_UNIQUE, IS_PRIMARY_KEY, czy FOREIGN_KEY_REF, pozwalasz warstwie odbiorczej (np. Twojej implementacji w Javie) na automatyczne budowanie Index Map w pamięci.
+Dodając tagi takie jak IS_UNIQUE, IS_PRIMARY_KEY, czy FOREIGN_KEY_REF, pozwalasz warstwie odbiorczej (np. Twojej implementacji w Javie)
+na automatyczne budowanie Index Map w pamięci.
 
     PK (Primary Key): Pozwala na błyskawiczne nadpisywanie starych wersji obiektu w GUI (Upsert). Jeśli przyjdzie nowy blok O z tym samym PK, UI po prostu odświeży istniejący wiersz zamiast dodawać nowy.
 
@@ -12,7 +13,8 @@ Dodając tagi takie jak IS_UNIQUE, IS_PRIMARY_KEY, czy FOREIGN_KEY_REF, pozwalas
 
 Dla dużych graczy (Oracle, SAP) to jest "Święty Graal". Dlaczego? Bo systemy te walczą z opóźnieniem (latency) między bazą a interfejsem.
 
-    Jeśli DAXP niesie ze sobą wiedzę o kluczach i unikalności, możesz stworzyć "Stateful Client", który zachowuje się jak lokalna baza danych (np. SQLite), ale jest zasilany strumieniem DAXP.
+    Jeśli DAXP niesie ze sobą wiedzę o kluczach i unikalności, możesz stworzyć "Stateful Client",
+    który zachowuje się jak lokalna baza danych (np. SQLite), ale jest zasilany strumieniem DAXP.
 
     To pozwala na budowanie aplikacji typu Offline-First. Aplikacja zna strukturę i klucze, więc może pozwolić na edycję danych bez połączenia, wiedząc dokładnie, jak je zsynchronizować (Conflict Resolution) po powrocie online.
 

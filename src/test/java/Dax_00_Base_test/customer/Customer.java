@@ -10,42 +10,42 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import java.util.Date;
 // TODO change to  @DaxpDto as Daxp Data Transfer Object
 
-@DaxpType(tagId = CustomerDaxTag.CUSTOMER_GRP,
+@DaxpType(tagId = CustomerDaxSchema.CUSTOMER_GRP,
            name = "Customer"
            )
 public class Customer {
 
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_ID) //, uiLabel = "Id customer")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_ID) //, uiLabel = "Id customer")
     int customerId;
 
 //    @NotNull
 //    @Size(min = 2 ,max = 120)
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_NAME) //, uiLabel = "First name")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_NAME) //, uiLabel = "First name")
     String name;
 
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_SURNAME) //, uiLabel = "First name")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_SURNAME) //, uiLabel = "First name")
     String surname;
 
     @Size(min=2)
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TOWN, uiLabel = "Town")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_TOWN, uiLabel = "Town")
     String town;
 
 //    @Size(min=2)
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TELEPHONE) //, uiLabel = "Telephone")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_TELEPHONE) //, uiLabel = "Telephone")
     String telephone;
 
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_TYPE, uiLabel = "Type")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_TYPE, uiLabel = "Type")
     CustomerType type;
 
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_EMAIL, uiLabel = "Email")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_EMAIL, uiLabel = "Email")
     String email;
 
 
 
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
     Boolean isCitizen;
 
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
     Date birthDate;
 
     @DaxpField( context = ContextConst.CTX_FIX_PROTOCOL,
@@ -53,10 +53,10 @@ public class Customer {
                 uiLabel = "FIX Customer Id ")
     String fixClientId;
 
-    @DaxpField(tagId = CustomerDaxTag.CUSTOMER_RELATION , uiLabel = "Relation")
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_RELATION , uiLabel = "Relation")
     CustomerRelation relation;
 
-    @DaxpValue(tagId = CustomerDaxTag.BEST_TOY_M, uiLabel = "Best toy B")
+    @DaxpValue(tagId = CustomerDaxSchema.BEST_TOY_M, uiLabel = "Best toy B")
     public String getBestToy(){
         return "Big bike";
     }

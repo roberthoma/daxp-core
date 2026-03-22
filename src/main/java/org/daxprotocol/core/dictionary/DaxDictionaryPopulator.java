@@ -44,7 +44,7 @@ import java.util.Map;
 
 
 //TODO create  service  DaxValidationAttributeManager
-
+//TODO refactoring all populator class
 public class DaxDictionaryPopulator {
 
     DaxpConfig               config;
@@ -215,14 +215,12 @@ public class DaxDictionaryPopulator {
             if (field.isAnnotationPresent(DaxpField.class)) {
                 putFieldIntoGroup(field, daxDic, groupTag);
             }
-            //TODO  DaxpValue methodAnn = field.getAnnotation(DaxpValue.class);
-
 
         }
 
 
     }
-    private void populateDaxpMethodAtGroup(DaxTag groupTag ,DaxDictionary daxDic, Class<?> clazz){
+    private void populateDaxpValueAtGroup(DaxTag groupTag ,DaxDictionary daxDic, Class<?> clazz){
 
 
         for (Method m : clazz.getDeclaredMethods()) {
@@ -234,75 +232,119 @@ public class DaxDictionaryPopulator {
             System.out.println(methodAnn.tagId());
          //   putFieldIntoGroup(field, daxDic, groupId);
 
-            //TODO DaxpRPC ????
+            //TODO  DaxpValue methodAnn = field.getAnnotation(DaxpValue.class);
+            //TODO DaxpValue as readonly
 
         }
 
     }
 
+
+    private void populateDaxpTag(DaxDictionary daxDic, Field field) {
+        // (optional but recommended) only accept static int constants
+        if (!Modifier.isStatic(field.getModifiers())) return;
+
+        if (!Modifier.isFinal(field.getModifiers())) return;  //TODO check or set read only
+
+        int tagId = -1;
+        try {
+            tagId = field.getInt(null);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
+        field.setAccessible(true);
+
+        int contextId = daxTag.context().isBlank() ? config.getAppContextId():
+                contextMapper.getReferenceId(daxTag.context());
+
+        DaxTag tag = new DaxTag(contextId ,tagId);
+        daxDic.putTag(tag );
+
+        if (daxTag.uiLabel()!=null) {
+            daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
+        }
+
+        if (daxTag.uiLabel()!=null) {
+            daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
+        }
+
+        if (daxTag.dataType().equals("S")) {
+            daxDic.putAtrDataType(tag,String.class);
+        }
+
+        if (daxTag.readOnly()) {
+            daxDic.putAtrReadOnly(tag,Boolean.TRUE);
+        }
+
+        popJakartaValidationAttribute(daxDic, field, tag );
+
+    }
+
+
+//            for (Method m : clazz.getDeclaredMethods()) {
+//        DaxpValue methodAnn = m.getAnnotation(DaxpValue.class);
+//        if (methodAnn == null) continue;
+//
+//        Class<?> returnType = m.getReturnType();
+//        // Object value =  m.invoke(clazz);
+//        System.out.println(methodAnn.tagId());
+//
+//    }
+
+
+    private void populateDaxpMsg(DaxDictionary daxDic, Field field) {
+        try {
+            DaxpMsg msgAnn = field.getAnnotation(DaxpMsg.class);
+            String msgValue = (String) field.get(null);
+
+            DaxMessageItem mgs = new DaxMessageItem(msgValue, msgAnn.description());
+
+            System.out.println("Zarejestrowano MSG: " + msgValue + " (" + msgAnn.description() + ")");
+
+            Arrays.stream(msgAnn.respMsg()).forEach(mgs::addRelatedMsgType);
+            Arrays.stream(msgAnn.reqTag()).forEach(tagStr ->
+                    mgs.addReqTag(parserService.parseDaxTag(tagStr)));
+
+            daxDic.putMsgItem(mgs);
+
+        } catch (IllegalAccessException e) {
+            // Obsłuż wyjątek, jeśli pole nie jest dostępne
+            e.printStackTrace();
+        }
+    }
 
 
     private void populateDaxpDictionary(DaxDictionary daxDic, Class<?> clazz){
         for (Field field : DaxLangTool.allFields(clazz)) {
 //            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
 
-            if (!field.isAnnotationPresent(DaxpTag.class)
-             //TODO || !field.isAnnotationPresent(DaxpType.class)
-            ) continue;
+            if (field.isAnnotationPresent(DaxpTag.class)) {
+                populateDaxpTag(daxDic, field);
 
-            // (optional but recommended) only accept static int constants
-            if (!Modifier.isStatic(field.getModifiers())) continue;
-
-            if (!Modifier.isFinal(field.getModifiers())) continue;
-
-            int tagId = -1;
-            try {
-                tagId = field.getInt(null);
             }
-            catch (Exception e){
-                e.printStackTrace();
+            if (field.isAnnotationPresent(DaxpMsg.class)){
+                populateDaxpMsg(daxDic, field);
             }
-
-
-            DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
-            field.setAccessible(true);
-
-            int contextId = daxTag.context().isBlank() ? config.getAppContextId():
-                    contextMapper.getReferenceId(daxTag.context());
-
-            DaxTag tag = new DaxTag(contextId ,tagId);
-            daxDic.putTag(tag );
-
-            if (daxTag.uiLabel()!=null) {
-                daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
-            }
-
-            if (daxTag.uiLabel()!=null) {
-                daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
-            }
-
-            if (daxTag.dataType().equals("S")) {
-                daxDic.putAtrDataType(tag,String.class);
-            }
-
-            if (daxTag.readOnly()) {
-                daxDic.putAtrReadOnly(tag,Boolean.TRUE);
-            }
-
-            popJakartaValidationAttribute(daxDic, field, tag );
-
         }
-
     }
 
-
+//TODO create hendler method
+//       for (Method method : clazz.getDeclaredMethods()) {
+//        if (method.isAnnotationPresent(DaxpMsg.class)){
+//            populateDaxpMsg(daxDic, method);
+//        }
+//    }
 
 
 //TODO throw Runtim exception of tags, group etc are duplicated
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
 
         try {
-            if (clazz.isAnnotationPresent(DaxpDictionary.class)){
+            if (clazz.isAnnotationPresent(DaxpSchema.class)){
                 populateDaxpDictionary(daxDic,clazz);
             }
 
@@ -330,9 +372,29 @@ public class DaxDictionaryPopulator {
 //                groupId = groupMapper.getReferenceId(groupAtn.name());
 
                 populateDaxpFieldAtGroup(grpTag,daxDic,clazz);
-                populateDaxpMethodAtGroup(grpTag, daxDic,clazz);
+                populateDaxpValueAtGroup(grpTag, daxDic,clazz);
             }
 
+            if (clazz.isAnnotationPresent(DaxpController.class)) {
+                for (Method method : clazz.getDeclaredMethods()) {
+                    DaxpHandler methodAnn = method.getAnnotation(DaxpHandler.class);
+                    if (methodAnn == null) continue;
+
+                    daxDic.putHandler(methodAnn.value(), method, clazz);
+
+//                    daxDic.putHandler(methodAnn.value(), method );
+
+                    //Class<?> returnType = method.getReturnType();
+
+                    // Object value =  m.invoke(clazz);
+                    System.out.println(methodAnn.value());
+                    //   putFieldIntoGroup(field, daxDic, groupId);
+
+                    //TODO  DaxpValue methodAnn = field.getAnnotation(DaxpValue.class);
+                    //TODO DaxpValue as readonly
+
+                }
+            }
 
         }catch (Exception e){
             throw new RuntimeException(e);
@@ -361,6 +423,7 @@ public class DaxDictionaryPopulator {
 
             }
 
+            //TODO refactor : split change do byte after byte reading
             if (blockPairMap.containsKey(DaxTagConst.MESSAGE_RELATED_MSGS)){
                 Arrays.stream(blockPairMap.get(DaxTagConst.MESSAGE_RELATED_MSGS)
                         .getStrValue().split(";")).forEach(msgItem::addRelatedMsgType);

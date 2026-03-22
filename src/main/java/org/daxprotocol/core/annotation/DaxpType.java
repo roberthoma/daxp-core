@@ -28,6 +28,6 @@ import static java.lang.annotation.ElementType.TYPE;
 @Documented
 public @interface DaxpType {
     int    tagId();
-    String name()        default "";            // e.g. "Customer"
+    String name()        default "";
     String description() default "";
 }

@@ -1,9 +1,6 @@
 package Dax_00_Base_test;
 
-import Dax_00_Base_test.customer.Customer;
-import Dax_00_Base_test.customer.CustomerDaxTag;
-import Dax_00_Base_test.customer.CustomerMessages;
-import Dax_00_Base_test.customer.CustomerRelation;
+import Dax_00_Base_test.customer.*;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.provider.DaxProvider;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,6 +9,8 @@ public abstract class DaxTestConfig {
 
     public static DaxProvider cmrProvider;
     public static DaxProvider cntProvider;
+
+    public static CustomerDaxpController customerDaxpController;
 
     @BeforeAll
     public static void initAll(){
@@ -30,13 +29,21 @@ public abstract class DaxTestConfig {
                     .populateFromAnnotations(Customer.class);
 
             cmrProvider.getCoreStrategy()
-                    .populateFromAnnotations(CustomerDaxTag.class);
+                    .populateFromAnnotations(CustomerDaxSchema.class);
 
             cmrProvider.getCoreStrategy()
                     .populateFromAnnotations(CustomerRelation.class);
 
+            cmrProvider.getCoreStrategy()
+                    .populateFromAnnotations(CustomerDaxpController.class);
 
-            CustomerMessages.initDictionaryBeforeTest(cmrProvider.getConfig(), cmrProvider.getDictionary());
+
+            customerDaxpController = new CustomerDaxpController(cmrProvider);
+
+
+
+            cmrProvider.getDictionary().registerCtrl(customerDaxpController);
+            System.out.println("Po inicjacji");
         }
     }
 

@@ -5,6 +5,7 @@ import org.daxprotocol.core.mapper.DaxStringReference;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 //public class DaxGroup implements DaxStringReference {
+//TODO change to scheme
 public class DaxGroup {
     DaxTag tag;
     String name;
