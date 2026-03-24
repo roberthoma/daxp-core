@@ -4,7 +4,7 @@ import org.daxprotocol.core.annotation.DaxpSchema;
 import org.daxprotocol.core.annotation.DaxpTag;
 
 @DaxpSchema
-public class ContractDaxTag {
+public class ContractDaxSchema {
 
     @DaxpTag(uiLabel = "Contract")
     public static final int GRP_CONTRACT = 2200;

@@ -44,28 +44,29 @@ public class DaxBodyCodec {
             sb.append("\n"); //TODO Debug mode or optional
 
             pairCodec.encode(sb, DaxTagConst.BLOCK_INDEX, String.valueOf(blockIdx+1));
+       }
 
-            //TODO Add external exception service
-            if (!blockMap.containsKey(DaxTagConst.BLOCK_TYPE) ){
-
-                StringBuilder blostr  = new StringBuilder();
-
-                blockMap.forEach((daxTag, daxPair) -> blostr.append(daxPair.toString()));
-
-                int excBlockIdx = blockIdx+1;
-                throw new RuntimeException("Block Exception : block without BLOCK_TYPE field !!!+ blockIdx"+excBlockIdx
-                +" block:"+blostr);
-            }
-
-            DaxPair<?> blockType =  blockMap.get(DaxTagConst.BLOCK_TYPE);
-            pairCodec.encode(sb, DaxTagConst.BLOCK_TYPE, blockType.getStrValue());
+        if (!blockMap.containsKey(DaxTagConst.BLOCK_TYPE) ){
+            StringBuilder blostr  = new StringBuilder();
+            blockMap.forEach((daxTag, daxPair) -> blostr.append(daxPair.toString()));
+            int excBlockIdx = blockIdx+1;
+            throw new RuntimeException("Block Exception : block without BLOCK_TYPE field !!!+ blockIdx"+excBlockIdx
+                    +" block:"+blostr);
         }
 
+        DaxPair<?> blockType =  blockMap.get(DaxTagConst.BLOCK_TYPE);
+        pairCodec.encode(sb, DaxTagConst.BLOCK_TYPE, blockType.getStrValue());
+
+        if (blockMap.containsKey(DaxTagConst.FIELD_ID) ){
+            pairCodec.encode(sb, DaxTagConst.FIELD_ID, blockMap.get(DaxTagConst.FIELD_ID));
+        }
 
         blockMap.forEach((tag, pair) ->
         {
             if (!tag.equals(DaxTagConst.BLOCK_INDEX) &&
-                !tag.equals(DaxTagConst.BLOCK_TYPE) )
+                !tag.equals(DaxTagConst.BLOCK_TYPE) &&
+                ! tag.equals(DaxTagConst.FIELD_ID)
+            )
             {
                 pairCodec.encode(sb, tag, pair);
             }
@@ -77,10 +78,12 @@ public class DaxBodyCodec {
         boolean isBlockPair = body.getBlockCount() > 1;
 
         StringBuilder sb = new StringBuilder();
+
         body.getBlockMap()
             .forEach((idx, map) ->
                 encodeBodyBlock(sb,isBlockPair,idx, map)
         );
+
         return sb.toString();
     }
 

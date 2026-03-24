@@ -25,6 +25,8 @@ public class DaxParserService {
     }
 
     //TODO rebuild and  DaxProtocolRules
+    //TODO Add context from preamble , or add contextId
+
     public DaxTag parseDaxTag(String tagStr) {
         int tagId;
         int contextId = 0;

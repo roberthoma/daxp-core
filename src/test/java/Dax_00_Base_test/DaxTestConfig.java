@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 
 public abstract class DaxTestConfig {
 
-    public static DaxProvider cmrProvider;
+    public static DaxProvider crmProvider;
     public static DaxProvider cntProvider;
 
     public static CustomerDaxpController customerDaxpController;
@@ -15,34 +15,34 @@ public abstract class DaxTestConfig {
     @BeforeAll
     public static void initAll(){
 
-        if (cmrProvider == null) {
-            cmrProvider = new DaxProvider(DaxpConfigFactory
+        if (crmProvider == null) {
+            crmProvider = new DaxProvider(DaxpConfigFactory
                     .createConfig(DaxpConfigFactory
-                            .createProperties("application_CMR.properties")));
+                            .createProperties("application_CRM.properties")));
 
             cntProvider = new DaxProvider(DaxpConfigFactory
                     .createConfig(DaxpConfigFactory
                             .createProperties("application_CNT.properties")));
 
 
-            cmrProvider.getCoreStrategy()
+            crmProvider.getCoreStrategy()
                     .populateFromAnnotations(Customer.class);
 
-            cmrProvider.getCoreStrategy()
+            crmProvider.getCoreStrategy()
                     .populateFromAnnotations(CustomerDaxSchema.class);
 
-            cmrProvider.getCoreStrategy()
+            crmProvider.getCoreStrategy()
                     .populateFromAnnotations(CustomerRelation.class);
 
-            cmrProvider.getCoreStrategy()
+            crmProvider.getCoreStrategy()
                     .populateFromAnnotations(CustomerDaxpController.class);
 
 
-            customerDaxpController = new CustomerDaxpController(cmrProvider);
+            customerDaxpController = new CustomerDaxpController(crmProvider);
 
 
 
-            cmrProvider.getDictionary().registerCtrl(customerDaxpController);
+            crmProvider.getDictionary().registerCtrl(customerDaxpController);
             System.out.println("Po inicjacji");
         }
     }

@@ -15,16 +15,15 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
     @Test
     void createMsgFromCustomer() {
-        String expectMsg = "DAXP="+DaxpConfig.PROTOCOL_VERSION+"|EN=UTF-8|CX=CMR|\n" +
-                 "9=UCi|143=Customer|2080=Big bike|2001=123|2002=Robert|2076=WORKER|2077=Y|\n" +
-                 "99=39|";
-
+        String expectMsg = "DAXP="+DaxpConfig.PROTOCOL_VERSION+"|EN=UTF-8|CX=CRM|\n" +
+         "9=UCi|5=I|100=2000|2080=Big bike|2001=123|2002=Robert|2076=WORKER|2077=Y|\n"+
+                "99=199|";
         Customer customer = new Customer(123, "Robert");
         customer.setRelation(CustomerRelation.WORKER);
         customer.setCitizen(true);
 
-        DaxMessage message = cmrProvider.getMessageFactory().toDaxMessage("UCi", customer);
-        String ecMsg = cmrProvider.getMessageCodec().encode(message);
+        DaxMessage message = crmProvider.getMessageFactory().toDaxMessage("UCi", customer);
+        String ecMsg = crmProvider.getMessageCodec().encode(message);
 
         ecMsg= ecMsg.replace(DaxpConfig.PAIR_SEPARATOR,'|');
         Assertions.assertEquals(expectMsg,ecMsg);
@@ -52,7 +51,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
                     System.out.println("Is primitive: " + field.getType().isPrimitive());
                     System.out.println("Pair: "+ daxp.tagId()+"="+field.get(customer));
 */
-                    var attMap =  cmrProvider.getDictionary().getFieldAttributeMap(daxp.tagId());
+                    var attMap =  crmProvider.getDictionary().getFieldAttributeMap(daxp.tagId());
 
 //                    System.out.println("Label: "+ Optional.of(attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL))
 //                                    .
@@ -72,21 +71,21 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
     void injection(){
         String msgStr = "DAXP=1|EN=UTF-8|9=UCi|20=1|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
         System.out.println("BEFORE: "+msgStr);
-        DaxMessage message = cmrProvider.getMessageCodec().decode(msgStr);
+        DaxMessage message = crmProvider.getMessageCodec().decode(msgStr);
 
-        Customer customer = cmrProvider.getMessageConverter().createFromMessage(message, Customer.class);
+        Customer customer = crmProvider.getMessageConverter().createFromMessage(message, Customer.class);
         Assertions.assertEquals("Robert" , customer.getName());
         Assertions.assertEquals(123 , customer.getCustomerId());
 
-        DaxMessage updMsg = cmrProvider.getMessageCodec()
-                                       .decode("DAXP=1|EN=UTF-8|9=CU|2001=123|2002=Jan|2074=Toronto|99=123|\"");
+        DaxMessage updMsg = crmProvider.getMessageCodec()
+                                       .decode("DAXP=1|EN=UTF-8|9=CU|5=I|2001=123|2002=Jan|2074=Toronto|99=123|\"");
         System.out.println("UPDATE MSG: "+msgStr);
-        cmrProvider.getMessageConverter().updateFromMessage(updMsg, customer );
+        crmProvider.getMessageConverter().updateFromMessage(updMsg, customer );
         Assertions.assertEquals("Jan",customer.getName());
         Assertions.assertEquals("Toronto",customer.getTown());
 
-        DaxMessage msg2 = cmrProvider.getMessageFactory().toDaxMessage("CMD",customer);
-        System.out.println("AFTER :"+cmrProvider.getMessageCodec().encode(msg2));
+        DaxMessage msg2 = crmProvider.getMessageFactory().toDaxMessage("CMD",customer);
+        System.out.println("AFTER :"+ crmProvider.getMessageCodec().encode(msg2));
 
     }
 

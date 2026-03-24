@@ -11,24 +11,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Dax_AA_Preamble_Test_01 extends DaxTestConfig {
     @Test
     void AA_shouldEncodeAndDecodePreamble() {
+        System.out.println("------------------------------------------");
+        System.out.println("* Encode And Decode Preamble *");
 
-        DaxPreambleCodec codec = cmrProvider.getPreambleCodec();
-        DaxpConfig config  = cmrProvider.getConfig();
+        DaxPreambleCodec codec = crmProvider.getPreambleCodec();
+        DaxpConfig config  = crmProvider.getConfig();
 
         DaxPreamble pre = new DaxPreamble();
-        pre.setEncoding(cmrProvider.getConfig().getDefaultEncoding());
+        pre.setEncoding(crmProvider.getConfig().getDefaultEncoding());
         pre.setMsgContextId(config.getAppContextId());
 
         String preambleStr = codec.encode(pre);
 
         preambleStr = preambleStr.replace(DaxpConfig.PAIR_SEPARATOR,'|');
 
-        assertEquals("DAXP="+ DaxpConfig.PROTOCOL_VERSION +"|EN=UTF-8|CX=CMR|\n", preambleStr);
+        assertEquals("DAXP="+ DaxpConfig.PROTOCOL_VERSION +"|EN=UTF-8|CX=CRM|\n", preambleStr);
 
         String wire = codec.encode(pre);
         DaxPreamble copy = codec.decode(wire);
         assertEquals(pre.getProtocolVersion(), copy.getProtocolVersion());
         assertEquals(pre.getEncoding(), copy.getEncoding());
+
+        System.out.println("PREAMBLE: "+wire);
+
     }
 
 }

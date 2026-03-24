@@ -25,7 +25,7 @@ import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
+import org.daxprotocol.core.dictionary.populator.DaxPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
@@ -50,7 +50,7 @@ public class DaxProvider {
 
     private final DaxMessageFactory messageFactory;
 
-    private final DaxDictionaryPopulator dictionaryPopulator;
+    private final DaxPopulator dictionaryPopulator;
 
     private final DaxCoreStrategy coreStrategy;
 
@@ -100,7 +100,7 @@ public class DaxProvider {
 
         messageConverter     = new DaxMessageConverter(config,contextMapper );
         messageFactory       = new DaxMessageFactory(config, contextMapper, tagCodec);
-        dictionaryPopulator  = new DaxDictionaryPopulator(config, contextMapper, parserService);
+        dictionaryPopulator  = new DaxPopulator(config, contextMapper, parserService);
         coreStrategy         = new DaxCoreStrategyImpl(config, dictionary, dictionaryPopulator);
 
     }
@@ -137,7 +137,7 @@ public class DaxProvider {
         return messageFactory;
     }
 
-    public DaxDictionaryPopulator getDictionaryPopulator (){
+    public DaxPopulator getDictionaryPopulator (){
         return dictionaryPopulator;
     }
 

@@ -10,11 +10,11 @@ public class Dax_Customer_test10_msg_from_dic extends DaxTestConfig {
     @Test
     void testCustomerDicDecoder(){
 
-        DaxMessage msg = cmrProvider.getMessageFactory()
-                .dictionaryToMsg(cmrProvider.getDictionary());
+        DaxMessage msg = crmProvider.getMessageFactory()
+                .dictionaryToMsg(crmProvider.getDictionary());
 
-        String     msgStr    = cmrProvider.getMessageCodec().encode(msg);
-        DaxMessage msgAfter  = cmrProvider.getMessageCodec().decode(msgStr);
+        String     msgStr    = crmProvider.getMessageCodec().encode(msg);
+        DaxMessage msgAfter  = crmProvider.getMessageCodec().decode(msgStr);
 
         Assertions.assertEquals(msg.getBlockCount(),msgAfter.getBlockCount());
         System.out.println(msg);

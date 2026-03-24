@@ -21,14 +21,19 @@ public class CustomerDaxpController {
 
     @DaxpHandler(CRM_DATA_REQ)
     public DaxMessage customerDaxGetter(DaxMessage msg){
-        DaxMessage repMsg;
         System.out.println("CALLing  customer DaxGetter ");
 
         Customer customer = new Customer(1,"Marzena");
-        repMsg = provider.getMessageFactory().toDaxMessage(CRM_DATA,customer);
-        return repMsg;
+        return provider.getMessageFactory().toDaxMessage(CRM_DATA,customer);
     }
 
+    @DaxpHandler(CRM_DATA_UPD)
+    public DaxMessage customerDaxSetter(DaxMessage msg){
+        System.out.println("CALLing  customer Setter ");
+
+        Customer customer = new Customer(1,"Robert Upd");
+        return provider.getMessageFactory().toDaxMessage(CRM_DATA,customer);
+    }
 
 
 }

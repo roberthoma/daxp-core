@@ -271,14 +271,15 @@ public class DaxMessageFactory {
         DaxBody body = new DaxBody();
         DaxTrailer trailer = new DaxTrailer();
         daxDataEntry.forEach(entry -> {
+            body.nextBlock();
+
             //todo REFACTORING
             if (entry.getClass().isAnnotationPresent(DaxpType.class)) {
 //                DaxDictionaryDecoratorService.printDaxScanClass(entry.getClass());
                 DaxpType group = entry.getClass().getAnnotation(DaxpType.class);
+                body.putPair(FIELD_ID, String.valueOf(group.tagId()));
+                body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
 
-            body.nextBlock();
-            body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
-            body.putPair(GROUP_NAME, String.valueOf(group.name()));
             }
 
             try {
@@ -290,6 +291,7 @@ public class DaxMessageFactory {
                             body.putPair(new DaxPair<>(daxp.tagId(), field.get(entry)));
                         }
                     }
+
                 }
 
             } catch (Exception e) {
@@ -322,15 +324,30 @@ public class DaxMessageFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public DaxMessage toDaxMessageFromPairMap( String messageType, Object pairMap)
-    {
-        return  pairMap instanceof List<?> ?
-                toDaxMessageFromListOfPairMap( messageType, (List<Map<DaxTag,DaxPair<?>>>) pairMap )
-                : toDaxMessageFromList( messageType, List.of(pairMap) );
+//    public DaxMessage toDaxMessageFromPairMap( String messageType, Object pairMap)
+//    {
+//        return  pairMap instanceof List<?> ?
+//                 toDaxMessageFromList( messageType, List.of(pairMap) )
+//        : toDaxMessageFromListOfPairMap( messageType, (List<Map<DaxTag,DaxPair<?>>>) pairMap );
+//
+//    }
+
+    public DaxMessage toDaxMessageFromPairMap( String messageType, Map<DaxTag,DaxPair<?>> pairMap){
+        DaxHead head = new DaxHead(messageType);
+        DaxBody body = new DaxBody();
+        DaxTrailer trailer = new DaxTrailer();
+
+        body.nextBlock();
+        pairMap.forEach((daxTag, daxPair) -> body.putPair(daxPair));
+
+        return new DaxMessage(head,body,trailer);
+
     }
 
-    private DaxMessage toDaxMessageFromListOfPairMap( String messageType,
+
+    public DaxMessage toDaxMessageFromListOfPairMap( String messageType,
                                           List<Map<DaxTag,DaxPair<?>>> pairMapList){
+
 
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();

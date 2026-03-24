@@ -26,7 +26,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
         Pattern pattern = DaxPatternFactory.compilePreamblePairPattern('|');
         try {
 
-            Map<String, String> pairList = cmrProvider.getPreambleCodec().parsePreamble(prbPairsStr1, pattern);
+            Map<String, String> pairList = crmProvider.getPreambleCodec().parsePreamble(prbPairsStr1, pattern);
             Assertions.fail("NO_DAX| << it is not DAXP message");
         }
         catch (RuntimeException e){
@@ -37,7 +37,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
     @Test
     public void prb_pair_parse_test(){
         Pattern pattern = DaxPatternFactory.compilePreamblePairPattern('|');
-        Map<String, String> pairList = cmrProvider.getPreambleCodec().parsePreamble(prbPairsStr2,pattern);
+        Map<String, String> pairList = crmProvider.getPreambleCodec().parsePreamble(prbPairsStr2,pattern);
 
         pairList.forEach((s, s2) ->
                 System.out.println(s+"="+s2));
@@ -48,9 +48,9 @@ public class Dax_pair_service_test extends DaxTestConfig {
     @Test
     public void pair_parse_test(){
         Pattern pattern = DaxPatternFactory.compileMessagePairPattern('|');
-        DaxPairCodec pairCodec = cmrProvider.getPairCodec();
-        DaxpConfig   crmConfig = cmrProvider.getConfig();
-        DaxParserService parserService = cmrProvider.getParserService();
+        DaxPairCodec pairCodec = crmProvider.getPairCodec();
+        DaxpConfig   crmConfig = crmProvider.getConfig();
+        DaxParserService parserService = crmProvider.getParserService();
         List<DaxStringPair> pairList = parserService.parsePairs(msgPairsStr1,pattern,crmConfig.getAppContextId());
 
         pairList.forEach(System.out::println);

@@ -37,6 +37,10 @@ import java.util.Map;
 import java.util.Set;
 
 
+//TODO
+// dictionary od exception by context
+// CRM-00234, DAX-23445, $:23455 , crm:33345
+
 public class DaxDictionary {
 
     DaxpConfig config;
@@ -306,7 +310,6 @@ public class DaxDictionary {
 
             Object respObj = method.invoke(obj, reqMsg);
 
-            System.out.println("I jestem po  ");
             return (DaxMessage) respObj;
         } catch (Exception e) {
             e.printStackTrace();

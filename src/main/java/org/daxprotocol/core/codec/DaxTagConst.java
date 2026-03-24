@@ -99,6 +99,7 @@ public class DaxTagConst {
     public static final DaxTag ENUM_VALUE_DESCRIPTION  = daxpSysTag(133);
     public static final DaxTag ENUM_VALUE_SYMBOL       = daxpSysTag(134);
     public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
+    public static final DaxTag ENUM_VALUE_TAG          = daxpSysTag(136);
     //----
     public static final DaxTag NAMESPACE          = daxpSysTag(144);
     public static final DaxTag NAMESPACE_DESC     = daxpSysTag(144);
@@ -144,6 +145,7 @@ public class DaxTagConst {
     /*****************************
      * Errors
      */
+    //TODO create list of exception - errors like DAX-34444 or . context CRN-020202
     public static final DaxTag ERR_FIELD_NR        = daxpSysTag(224);
     public static final DaxTag ERR_FIELD_ID        = daxpSysTag(225);
     public static final DaxTag ERR_DESCRIPTION     = daxpSysTag(226);

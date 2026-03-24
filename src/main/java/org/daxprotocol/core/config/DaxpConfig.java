@@ -28,14 +28,9 @@ public final class DaxpConfig {
      */
     public static final String PROTOCOL_VERSION = "v0.1.0";
 
-
-//     /*****************************************************
-//     *  Preamble DAXP|V=v0.1.0|...
-//     *  DAXP| char after DAXP is default separator for current message
-//     */
-//    public static final String DAXP_PREAMBLE_PREFIX = "DAXP";
-//    public static final int    CHAR_SEPARATOR_IDX  = 4;
-
+    /*****************************************************
+     *  Reserved tags for DAXP
+     */
     public static final int    DAXP_MAX_TAG_ID = 255;
 
     /*****************************************************
@@ -43,14 +38,15 @@ public final class DaxpConfig {
      */
     public static final int    DAXP_CONTEXT_ID          = 0;
     public static final String DAXP_CONTEXT_SYMBOL      = "DAXP";
-    public static final String DAXP_CONTEXT_DESCRIPTION = "DAXP Context";
+    public static final String DAXP_CONTEXT_DESCRIPTION = "Data & Attribute eXchange Protocol";
     public static final String DAXP_CONTEXT_TAG_PREFIX  = "$" ;
 
 
     /*****************************************************
      * Separators
      */
-//    public static final char TAG_LIST_SEPARATOR    = ',';
+//    public static final char TAG_LIST_SEPARATOR    = ';';
+//    public static final char VALUE_LIST_SEPARATOR  = ';';
 //    public static final char CONTEXT_TAG_SEPARATOR = ',';
 
     public static final CharSequence TAG_LIST_SEPARATOR    = ";";

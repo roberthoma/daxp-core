@@ -6,22 +6,20 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static Dax_00_Base_test.DaxTestConfig.cmrProvider;
-
 public class DaxTagCodec_TEST extends DaxTestConfig {
 
     @Test
     public void encode_test1(){
-        DaxTagCodec codec =  cmrProvider.getTagCodec();
-        DaxTag tag = new DaxTag(1,123);
-        Assertions.assertEquals("123",codec.encode(tag));
+        DaxTagCodec codec =  crmProvider.getTagCodec();
+        DaxTag tag = new DaxTag(crmProvider.getConfig().getAppContextId(),123);
+        Assertions.assertEquals("CRM:123",codec.encode(tag));
     }
 
     @Test
     public void decode_test1(){
-        DaxTagCodec codec =  cmrProvider.getTagCodec();
+        DaxTagCodec codec =  crmProvider.getTagCodec();
 
-        DaxTag tag = new DaxTag(1,345);
+        DaxTag tag = new DaxTag(crmProvider.getConfig().getAppContextId(),345);
 
         //cmrProvider.getP
 

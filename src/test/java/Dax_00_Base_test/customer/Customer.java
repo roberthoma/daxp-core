@@ -15,11 +15,10 @@ import java.util.Date;
            )
 public class Customer {
 
+
     @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_ID) //, uiLabel = "Id customer")
     int customerId;
 
-//    @NotNull
-//    @Size(min = 2 ,max = 120)
     @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_NAME) //, uiLabel = "First name")
     String name;
 
@@ -60,6 +59,16 @@ public class Customer {
     public String getBestToy(){
         return "Big bike";
     }
+
+//    @DaxpValue(tagId = CustomerDaxSchema.SHOE_SIZE, uiLabel = "Shoe Size ")
+//    public  String getShoeSize(){
+//        return shoeSize;
+//    }
+
+
+    @DaxpValue(tagId = CustomerDaxSchema.SHOE_SIZE, uiLabel = "Shoe Size ")
+    public  Integer shoeSize = 42;
+
     //---------------------------------------------------------------------------
 
     public String getTown() {
@@ -96,12 +105,14 @@ public class Customer {
 
 
     public Customer(){
-
+        shoeSize = 23;
     }
 
     public Customer(int customerId, String name) {
+        this();
         this.customerId = customerId;
         this.name = name;
+
     }
 
     public int getCustomerId() {

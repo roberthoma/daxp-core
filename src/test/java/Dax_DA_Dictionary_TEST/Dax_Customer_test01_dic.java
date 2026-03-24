@@ -15,7 +15,7 @@ public class Dax_Customer_test01_dic extends DaxTestConfig {
     @Test
     void testCustomerDicAttributes(){
 
-        DaxDictionary dic = cmrProvider.getDictionary();
+        DaxDictionary dic = crmProvider.getDictionary();
 
         Map<DaxTag, DaxPair<?>> idAttrMap =  dic.getFieldAttributeMap(CustomerDaxSchema.CUSTOMER_ID);
 

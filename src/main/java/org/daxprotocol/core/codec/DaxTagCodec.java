@@ -39,7 +39,9 @@ public class DaxTagCodec {
 
     public String encode( DaxTag tag){
         if(tag.getContextId() != DaxpConfig.DAXP_CONTEXT_ID &&
-                tag.getContextId() != config.getAppContextId() )
+                (tag.getContextId() != config.getAppContextId()
+           || tag.getTagId() <= DaxpConfig.DAXP_MAX_TAG_ID)
+        )
         {
             return  contextMapper.getReference(tag.getContextId()) +
                     DaxpConfig.CONTEXT_TAG_SEPARATOR + tag.getTagId();

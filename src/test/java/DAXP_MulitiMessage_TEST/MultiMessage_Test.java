@@ -22,14 +22,14 @@ public class MultiMessage_Test extends DaxTestConfig {
                 "9=UCi|2001=126|2002=Robert6|99=123|"
                 ;
 
-        List<DaxMessage> msgList = cmrProvider.getMessageCodec().decodeAll(msgStr);
-        int appContextId = cmrProvider.getConfig().getAppContextId();
+        List<DaxMessage> msgList = crmProvider.getMessageCodec().decodeAll(msgStr);
+        int appContextId = crmProvider.getConfig().getAppContextId();
         Assertions.assertEquals("Robert5",msgList.get(2)
                                                   .getBody()
                                                   .getPair(0,new DaxTag(appContextId ,2002)).getStrValue()
         );
 
-        Customer customer = cmrProvider.getMessageConverter().createFromMessage(msgList.get(1),Customer.class);
+        Customer customer = crmProvider.getMessageConverter().createFromMessage(msgList.get(1),Customer.class);
 
         Assertions.assertEquals("Robert4", customer.getName());
     }
@@ -42,11 +42,11 @@ public class MultiMessage_Test extends DaxTestConfig {
         customerList.add(new Customer(124, "Ania"));
         customerList.add(new Customer(125, "Zofia"));
 
-        DaxMessageFactory factory = cmrProvider.getMessageFactory();
+        DaxMessageFactory factory = crmProvider.getMessageFactory();
         DaxMessage message = factory.toDaxMessage("UCi", customerList);
         Assertions.assertEquals(customerList.size(), message.getBlockCount() );
 
-        String messageEncode = cmrProvider.getMessageCodec().encode(message);
+        String messageEncode = crmProvider.getMessageCodec().encode(message);
 
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         System.out.println(messageEncode);

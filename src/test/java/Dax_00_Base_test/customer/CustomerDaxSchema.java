@@ -56,6 +56,12 @@ public class CustomerDaxSchema {
     @DaxpTag(uiLabel = "Best toy", dataType = "S", readOnly = true)
     public static final int BEST_TOY_M = 2080;
 
+//    @DaxpTag(uiLabel = "Shoe size", dataType = "I", readOnly = true)
+    @DaxpTag(uiLabel = "Shoe size",  dataType = "I", readOnly = true)
+    public static final int SHOE_SIZE = 5;  // in msg to should be CRM:5
+
+
+
     @DaxpTag(uiLabel = "Customer Relation type")
     public static final int CUSTOMER_RELATION_ENUM   = 3000;
 
@@ -69,8 +75,18 @@ public class CustomerDaxSchema {
     public static final String  CRM_DATA_REQ     =  "CDR";
 
 
+    @DaxpMsg(description = "Customer Data Update ",
+            respMsg = {"CDD","DAX_ERR"},
+            reqTag = {"2001"}
+    )
+    public static final String  CRM_DATA_UPD     =  "CDU";
 
+
+    @DaxpMsg(description = "Customer DTO "
+    )
     public static final String  CRM_DATA         =  "CDD"; // 	REs 	Customer Data
+
+
     public static final String  CRM_INSERT       =  "CDI"; // 	REs 	New Customer
     public static final String  CRM_UPDATE       =  "CDU"; // 	REs 	Update Customer
     public static final String  CRM_NOT_ACCESS    =  "CNA"; // 	REs 	Update Customer

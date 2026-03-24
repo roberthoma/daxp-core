@@ -4,7 +4,7 @@ import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
+import org.daxprotocol.core.dictionary.populator.DaxPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -21,21 +21,21 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
     @Test
     void dictionaryPopulator_Test(){
 
-        DaxMessageCodec cmrMsgCodec = cmrProvider.getMessageCodec();
+        DaxMessageCodec cmrMsgCodec = crmProvider.getMessageCodec();
 //        DaxDictionaryPopulator dictionaryPopulator = cmrProvider.getDictionaryPopulator();
 //        DaxMessageFactory factoryOrg = cmrProvider.getMessageFactory();
-        DaxDictionary cmrDictionary = cmrProvider.getDictionary();
-        DaxMessage messageOrg       = cmrProvider.getMessageFactory().dictionaryToMsg(cmrDictionary);
+        DaxDictionary cmrDictionary = crmProvider.getDictionary();
+        DaxMessage messageOrg       = crmProvider.getMessageFactory().dictionaryToMsg(cmrDictionary);
         String msgStrOrg            = cmrMsgCodec.encode(messageOrg);
 
         System.out.println("- Cmr Original -");
         System.out.println(msgStrOrg);
 
         System.out.println(" -- after -- ");
-        DaxProvider providerAfter             =  new DaxProvider(cmrProvider.getConfig());
+        DaxProvider providerAfter             =  new DaxProvider(crmProvider.getConfig());
         DaxDictionary dicAfter                = providerAfter.getDictionary();
         DaxMessageCodec messageCodecAfter     = providerAfter.getMessageCodec();
-        DaxDictionaryPopulator populatorAfter = providerAfter.getDictionaryPopulator();
+        DaxPopulator populatorAfter = providerAfter.getDictionaryPopulator();
         DaxMessageFactory messageFactoryAfter = providerAfter.getMessageFactory();
 
         DaxMessage messageAfter  = messageCodecAfter.decode(msgStrOrg);

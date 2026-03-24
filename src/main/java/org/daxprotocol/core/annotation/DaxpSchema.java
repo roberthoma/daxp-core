@@ -12,4 +12,5 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Documented
 public @interface DaxpSchema {
+    String context() default "";
 }

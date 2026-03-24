@@ -27,7 +27,7 @@ public class Dax_Customer_test30_dic_from_msg extends DaxTestConfig {
 
     @Test
     public void testCustomerEntityEncoder(){
-        DaxMessage message = cmrProvider.getMessageCodec().decode(msg);
+        DaxMessage message = crmProvider.getMessageCodec().decode(msg);
         Assertions.assertEquals(9,message.getBlockCount());
     }
 

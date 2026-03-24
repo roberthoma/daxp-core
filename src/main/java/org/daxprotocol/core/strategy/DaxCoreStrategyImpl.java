@@ -2,15 +2,15 @@ package org.daxprotocol.core.strategy;
 
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxDictionaryPopulator;
+import org.daxprotocol.core.dictionary.populator.DaxPopulator;
 import org.daxprotocol.core.model.DaxMessage;
 
 public class DaxCoreStrategyImpl implements DaxCoreStrategy{
 
     DaxpConfig config;
     DaxDictionary dictionary;
-    DaxDictionaryPopulator dictionaryPopulator;
-   public DaxCoreStrategyImpl(DaxpConfig config, DaxDictionary dictionary, DaxDictionaryPopulator dictionaryPopulator){
+    DaxPopulator dictionaryPopulator;
+   public DaxCoreStrategyImpl(DaxpConfig config, DaxDictionary dictionary, DaxPopulator dictionaryPopulator){
        this.config = config;
        this.dictionary = dictionary;
        this.dictionaryPopulator = dictionaryPopulator;

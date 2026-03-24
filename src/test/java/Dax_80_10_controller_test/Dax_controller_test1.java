@@ -8,11 +8,27 @@ import org.junit.jupiter.api.Test;
 
 public class Dax_controller_test1 extends DaxTestConfig {
     @Test
-    public void testController(){
-        DaxMessageCodec messageCodecAfter     = cmrProvider.getMessageCodec();
+    public void testControllerGetter(){
+        DaxMessageCodec messageCodecAfter     = crmProvider.getMessageCodec();
         DaxMessage msg = new DaxMessage(CustomerDaxSchema.CRM_DATA_REQ);
 
-        DaxMessage msgResp =  cmrProvider.getDictionary().executor(msg);
+        DaxMessage msgResp =  crmProvider.getDictionary().executor(msg);
+
+        System.out.println("------------------------------->>");
+
+        String msgAfter =  messageCodecAfter.encode(msgResp);
+        System.out.println(msgAfter);
+
+        System.out.println("<<--------------------------------");
+
+
+    }
+    @Test
+    public void testControllerSetter(){
+        DaxMessageCodec messageCodecAfter     = crmProvider.getMessageCodec();
+        DaxMessage msg = new DaxMessage(CustomerDaxSchema.CRM_DATA_UPD);
+
+        DaxMessage msgResp =  crmProvider.getDictionary().executor(msg);
 
         System.out.println("------------------------------->>");
 
