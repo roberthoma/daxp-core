@@ -1,9 +1,9 @@
 package Dax_00_Base_test.customer;
 
-import org.daxprotocol.core.annotation.DaxpType;
+import org.daxprotocol.core.annotation.DaxpDTO;
 
 
-@DaxpType(tagId = CustomerDaxSchema.CUSTOMER_RELATION_ENUM, description = "Customer relationship")
+@DaxpDTO(tagId = CustomerDaxSchema.CUSTOMER_RELATION_ENUM, description = "Customer relationship")
 public enum CustomerRelation {
 
     WORKER,

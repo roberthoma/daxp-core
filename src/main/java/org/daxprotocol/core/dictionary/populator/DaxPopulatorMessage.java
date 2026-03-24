@@ -1,6 +1,5 @@
 package org.daxprotocol.core.dictionary.populator;
 
-import org.daxprotocol.core.annotation.DaxpMsg;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
@@ -8,13 +7,12 @@ import org.daxprotocol.core.dictionary.DaxEnum;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
 import org.daxprotocol.core.field.DaxBlockType;
-import org.daxprotocol.core.group.DaxGroup;
+import org.daxprotocol.core.group.DaxDTO;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.rules.DaxParserService;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -174,7 +172,7 @@ public class DaxPopulatorMessage {
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
 
-            DaxGroup group = new DaxGroup(groupTag,groupName);
+            DaxDTO group = new DaxDTO(groupTag,groupName);
             daxDic.putGroup(group);
             String fieldIdStrList = blockPairMap.get(DaxTagConst.FIELD_ID_LIST).getStrValue();
             List<DaxTag> tagList = parserService.parseDaxTagList(fieldIdStrList);

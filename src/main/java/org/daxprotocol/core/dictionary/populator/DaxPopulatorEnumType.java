@@ -1,6 +1,6 @@
 package org.daxprotocol.core.dictionary.populator;
 
-import org.daxprotocol.core.annotation.DaxpType;
+import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxEnum;
@@ -24,8 +24,8 @@ public class DaxPopulatorEnumType {
     }
 
 
-    public void populateEnumType(DaxDictionary daxDic, Class<?> clazz ){
-        DaxpType groupAtn =  clazz.getAnnotation(DaxpType.class);
+    public void populate(DaxDictionary daxDic, Class<?> clazz ){
+        DaxpDTO groupAtn =  clazz.getAnnotation(DaxpDTO.class);
 
 
         //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);

@@ -24,7 +24,7 @@ class DaxAtrDataTypeTest extends DaxTestConfig {
     void classCustomerToCharGroup() {
 
         DaxDataType classType =  DaxDataType.fromClass(Customer.class);
-        Assertions.assertEquals(DaxDataType.GROUP.getCode(),classType.getCode());
+        Assertions.assertEquals(DaxDataType.DTO.getCode(),classType.getCode());
     }
 
     @Test

@@ -20,14 +20,14 @@
 
 package org.daxprotocol.core.decorator;
 
-import org.daxprotocol.core.annotation.DaxpType;
+import org.daxprotocol.core.annotation.DaxpDTO;
 
 import java.lang.reflect.Field;
 
 public class DaxDictionaryDecoratorService {
 
 
-    public static  void printDaxGroupInfo(DaxpType group ){
+    public static  void printDaxGroupInfo(DaxpDTO group ){
         System.out.println(" >> DaxpGroup ");
 
         System.out.println("GRP name : " +group.name());

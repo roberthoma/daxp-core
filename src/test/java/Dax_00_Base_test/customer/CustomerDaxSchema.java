@@ -13,7 +13,7 @@ public class CustomerDaxSchema {
     public String  MSG_TYPE_CDR =  "CDR";
 
     @DaxpTag( uiLabel = "Customer")
-    public static final int CUSTOMER_GRP           = 2000;
+    public static final int CUSTOMER_DTO           = 2000;
 
 
     @DaxpTag( uiLabel = "Id customer")
@@ -84,7 +84,7 @@ public class CustomerDaxSchema {
 
     @DaxpMsg(description = "Customer DTO "
     )
-    public static final String  CRM_DATA         =  "CDD"; // 	REs 	Customer Data
+    public static final String CRM_DTO =  "CDD"; // 	REs 	Customer Data
 
 
     public static final String  CRM_INSERT       =  "CDI"; // 	REs 	New Customer

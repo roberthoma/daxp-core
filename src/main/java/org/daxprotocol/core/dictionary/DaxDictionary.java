@@ -26,7 +26,7 @@ import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.*;
-import org.daxprotocol.core.group.DaxGroup;
+import org.daxprotocol.core.group.DaxDTO;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 
@@ -82,7 +82,7 @@ public class DaxDictionary {
     /*****************************************************
      *  Group Map // TODO chage to type or schema
      */
-    Map<DaxTag, DaxGroup>    groupMap       = new HashMap<>();
+    Map<DaxTag, DaxDTO>    groupMap       = new HashMap<>();
     Map<DaxTag, Set<DaxTag>> groupFieldsMap = new HashMap<>();
 
 
@@ -175,13 +175,13 @@ public class DaxDictionary {
     //**********************************************************************
     // Groups
 
-    public void putGroup(DaxGroup group){
+    public void putGroup(DaxDTO group){
 
         groupMap.put(group.getTag(),group);
 
     }
 
-    public Map<DaxTag, DaxGroup> getGroupMap() {
+    public Map<DaxTag, DaxDTO> getGroupMap() {
         return groupMap;
     }
 

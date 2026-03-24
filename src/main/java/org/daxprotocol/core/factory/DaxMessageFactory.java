@@ -21,12 +21,12 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpType;
+import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.*;
-import org.daxprotocol.core.group.DaxGroup;
+import org.daxprotocol.core.group.DaxDTO;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -111,7 +111,7 @@ public class DaxMessageFactory {
 //            );
 
 
-    private void putGroupToBody(DaxBody body, DaxGroup group, Set<DaxTag> daxFields){
+    private void putGroupToBody(DaxBody body, DaxDTO group, Set<DaxTag> daxFields){
         body.nextBlock(DaxBlockType.BLOCK_DTO);
         body.putPair(FIELD_ID, tagEncode(group.getTag()));
         body.putPair(GROUP_NAME, group.getName());
@@ -274,9 +274,9 @@ public class DaxMessageFactory {
             body.nextBlock();
 
             //todo REFACTORING
-            if (entry.getClass().isAnnotationPresent(DaxpType.class)) {
+            if (entry.getClass().isAnnotationPresent(DaxpDTO.class)) {
 //                DaxDictionaryDecoratorService.printDaxScanClass(entry.getClass());
-                DaxpType group = entry.getClass().getAnnotation(DaxpType.class);
+                DaxpDTO group = entry.getClass().getAnnotation(DaxpDTO.class);
                 body.putPair(FIELD_ID, String.valueOf(group.tagId()));
                 body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
 

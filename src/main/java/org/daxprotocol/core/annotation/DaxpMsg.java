@@ -17,4 +17,5 @@ public @interface DaxpMsg {
     String uiLabel() default "";
     String[] reqTag() default {};
     String[] respMsg() default {};
+
 }

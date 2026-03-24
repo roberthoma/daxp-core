@@ -3,7 +3,6 @@ package Dax_00_Base_test.customer;
 
 import org.daxprotocol.core.annotation.DaxpController;
 import org.daxprotocol.core.annotation.DaxpHandler;
-import org.daxprotocol.core.annotation.DaxpMsg;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.provider.DaxProvider;
 
@@ -24,7 +23,7 @@ public class CustomerDaxpController {
         System.out.println("CALLing  customer DaxGetter ");
 
         Customer customer = new Customer(1,"Marzena");
-        return provider.getMessageFactory().toDaxMessage(CRM_DATA,customer);
+        return provider.getMessageFactory().toDaxMessage(CRM_DTO,customer);
     }
 
     @DaxpHandler(CRM_DATA_UPD)
@@ -32,7 +31,7 @@ public class CustomerDaxpController {
         System.out.println("CALLing  customer Setter ");
 
         Customer customer = new Customer(1,"Robert Upd");
-        return provider.getMessageFactory().toDaxMessage(CRM_DATA,customer);
+        return provider.getMessageFactory().toDaxMessage(CRM_DTO,customer);
     }
 
 

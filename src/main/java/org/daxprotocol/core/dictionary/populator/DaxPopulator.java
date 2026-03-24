@@ -23,30 +23,14 @@ import org.daxprotocol.core.annotation.*;
 
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxEnum;
-import org.daxprotocol.core.dictionary.DaxEnumValue;
-import org.daxprotocol.core.dictionary.DaxMessageItem;
-import org.daxprotocol.core.field.DaxDataType;
-import org.daxprotocol.core.group.DaxGroup;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.rules.DaxParserService;
-import org.daxprotocol.core.tool.DaxLangTool;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 
 //TODO create  service  DaxValidationAttributeManager
-//TODO refactoring all populator class
+//TODO throw Runtime exception of tags, group etc are duplicated
+
 public class DaxPopulator {
 
     DaxpConfig               config;
@@ -75,36 +59,6 @@ public class DaxPopulator {
     }
 
 
-
-
-
-
-
-
-//            for (Method m : clazz.getDeclaredMethods()) {
-//        DaxpValue methodAnn = m.getAnnotation(DaxpValue.class);
-//        if (methodAnn == null) continue;
-//
-//        Class<?> returnType = m.getReturnType();
-//        // Object value =  m.invoke(clazz);
-//        System.out.println(methodAnn.tagId());
-//
-//    }
-
-
-
-
-
-
-//TODO create hendler method
-//       for (Method method : clazz.getDeclaredMethods()) {
-//        if (method.isAnnotationPresent(DaxpMsg.class)){
-//            populateDaxpMsg(daxDic, method);
-//        }
-//    }
-
-
-//TODO throw Runtim exception of tags, group etc are duplicated
     public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
 
         annotationPopulator.populate(daxDic, clazz);

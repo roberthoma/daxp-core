@@ -3,14 +3,14 @@ package Dax_00_Base_test.customer;
 import Dax_00_Base_test.*;
 import Dax_00_Base_test.fix.FixConstTag;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.annotation.DaxpType;
+import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
 
 import java.util.Date;
 // TODO change to  @DaxpDto as Daxp Data Transfer Object
 
-@DaxpType(tagId = CustomerDaxSchema.CUSTOMER_GRP,
+@DaxpDTO(tagId = CustomerDaxSchema.CUSTOMER_DTO,
            name = "Customer"
            )
 public class Customer {
