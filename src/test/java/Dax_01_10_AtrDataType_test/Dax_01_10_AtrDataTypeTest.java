@@ -1,11 +1,20 @@
-package org.daxprotocol.core.field;
+package Dax_01_10_AtrDataType_test;
 
 import Dax_00_Base_test.DaxTestConfig;
 import Dax_00_Base_test.customer.Customer;
+import org.daxprotocol.core.field.DaxDataType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class DaxAtrDataTypeTest extends DaxTestConfig {
+class Dax_01_10_AtrDataTypeTest extends DaxTestConfig {
+
+
+    @Test
+    void classNullToUnknow() {
+
+        DaxDataType classType =  DaxDataType.fromClass(null);
+        Assertions.assertEquals(DaxDataType.UNKNOWN.getCode(),classType.getCode());
+    }
 
     @Test
     void classToCharString() {

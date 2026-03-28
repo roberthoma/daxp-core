@@ -61,6 +61,11 @@ public class DaxTagConst {
     }
 
     /**********************************
+     * UNKNOW_TAG
+     */
+     public static final DaxTag UNKNOW_TAG             = daxpSysTag(-1);;
+
+    /**********************************
      * Body tags
      */
     public static final DaxTag BLOCK_INDEX             = daxpSysTag(7);;

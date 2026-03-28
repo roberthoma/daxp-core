@@ -53,7 +53,7 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         Assertions.assertEquals(cmrDictionary.getAttributMap().size(),  dicAfter.getAttributMap().size());
         Assertions.assertEquals(cmrDictionary.getContextMap().size(),   dicAfter.getContextMap().size());
         Assertions.assertEquals(cmrDictionary.getTagSet().size(),       dicAfter.getTagSet().size());
-        Assertions.assertEquals(cmrDictionary.getGroupMap().size(),     dicAfter.getGroupMap().size());
+        Assertions.assertEquals(cmrDictionary.getDtoMap().size(),     dicAfter.getDtoMap().size());
 
         // TODO assertion  with context
         //Assertions.assertEquals(cmrDictionary.getEnumMap().size(),      dicAfter.getEnumMap().size());

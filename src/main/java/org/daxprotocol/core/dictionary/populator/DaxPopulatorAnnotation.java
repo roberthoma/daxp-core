@@ -1,6 +1,7 @@
 package org.daxprotocol.core.dictionary.populator;
 
 import org.daxprotocol.core.annotation.*;
+import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
@@ -33,43 +34,68 @@ public class DaxPopulatorAnnotation {
         jakartaPopulator = new DaxPopulatorJakartaValidation();
         this.config = config;
         this.contextMapper = contextMapper;
-
-
         this.enumPopulator = enumPopulator;
 
     }
 
-    private void populateDaxpField(Field field, DaxDictionary daxDic , DaxTag groupTag){
-
-        DaxpField daxField = field.getAnnotation(DaxpField.class);
-        field.setAccessible(true);
-
-        int contextId = daxField.context().isBlank() ?
-                config.getAppContextId():
-                contextMapper.getReferenceId(daxField.context());
+    private void populateDaxpField(Field field, DaxDictionary daxDic ,
+            DaxTag groupTag
 
 
-        DaxTag tag = new DaxTag(contextId ,daxField.tagId());
 
-        daxDic.putTag(tag);
+    ){
+        String uiLabel="";
+        DaxTag tag = DaxTagConst.UNKNOW_TAG;
+        int contextId = -1;
+        Class<?> fType = field.getType();
+
+        if (field.isAnnotationPresent(DaxpField.class)) {
+            DaxpField daxField = field.getAnnotation(DaxpField.class);
+            uiLabel = daxField.uiLabel();
+
+            field.setAccessible(true);
+             contextId = daxField.context().isBlank() ?
+                    config.getAppContextId():
+                    contextMapper.getReferenceId(daxField.context());
+            tag = new DaxTag(contextId ,daxField.tagId());
+
+        }
+
+        if (field.isAnnotationPresent(DaxpValue.class)) {
+            DaxpValue daxpValue = field.getAnnotation(DaxpValue.class);
+            uiLabel = daxpValue.uiLabel();
+
+            field.setAccessible(true);
+            contextId = daxpValue.context().isBlank() ?
+                    config.getAppContextId():
+                    contextMapper.getReferenceId(daxpValue.context());
+            tag = new DaxTag(contextId ,daxpValue.tagId());
+        }
+
+
+
+
+        if(contextId == -1 || tag.equals(DaxTagConst.UNKNOW_TAG)){
+            System.out.println("ERRRRRRRRRRRRRRRRRR>>>>>");
+            return;
+        }
+
+
+
+
         //Class  change type to char
-        daxDic.putAtrDataType(tag,field.getType());
 
         if (field.getType().isEnum()){
 
-            if (field.getType().isAnnotationPresent(DaxpDTO.class)) {
-                DaxpDTO typeAtn = field.getType().getAnnotation(DaxpDTO.class);
-
-                        //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
+            if (field.getType().isAnnotationPresent(DaxpEnum.class)) {
+                DaxpEnum enumAtn = field.getType().getAnnotation(DaxpEnum.class);
 
     //                        String typeName = !typeAtn.name().isBlank() ? typeAtn.name() :
     //                                field.getClass().getSimpleName();
 
-                        DaxTag typeTag = new DaxTag(config.getAppContextId(),typeAtn.tagId());
-
+                DaxTag typeTag = new DaxTag(config.getAppContextId(),enumAtn.tagId());
                 daxDic.putAtrEnumTypeTag(tag, typeTag);
-
-                System.out.println("is aaaa ");
+                System.out.println("is Enum ");
 
             }
             else {
@@ -81,46 +107,50 @@ public class DaxPopulatorAnnotation {
         }
 
 
-        if (daxField.uiLabel()!=null) {
-            daxDic.putAtrUiLabel(tag, daxField.uiLabel());
-        }
+        daxDic.putTag(tag);
+        daxDic.putAtrDataType(tag,fType);
+        daxDic.putAtrUiLabel(tag, uiLabel);
 
-        daxDic.putFieldIntoGroup(tag, groupTag);
+        daxDic.putDtoField( groupTag,tag);
+
+      //  daxDic.putAtrReadOnly( ????);
 
         jakartaPopulator.populate(daxDic, field, tag );
 
     }
-    private void populateDaxpFieldFromDTO(DaxTag groupTag ,DaxDictionary daxDic, Class<?> clazz){
 
-
-        for (Field field : DaxLangTool.allFields(clazz)) {
-//            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
-            if (field.isAnnotationPresent(DaxpField.class)) {
-                populateDaxpField(field, daxDic, groupTag);
-            }
-
-        }
-
-
-    }
     private void populateDaxpValueFromDTO(DaxTag groupTag ,DaxDictionary daxDic, Class<?> clazz){
 
 
-        for (Method m : clazz.getDeclaredMethods()) {
-            DaxpValue methodAnn = m.getAnnotation(DaxpValue.class);
+        for (Method method : clazz.getDeclaredMethods()) {
+            DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
             if (methodAnn == null) continue;
 
-            Class<?> returnType = m.getReturnType();
+
+            int contextId = methodAnn.context().isBlank() ?
+                    config.getAppContextId():
+                    contextMapper.getReferenceId(methodAnn.context());
+
+            DaxTag tag = new DaxTag(contextId ,methodAnn.tagId());
+
+            daxDic.putTag(tag);
+
+            Class<?> returnType = method.getReturnType();
             // Object value =  m.invoke(clazz);
             System.out.println(methodAnn.tagId());
             //   putFieldIntoGroup(field, daxDic, groupId);
 
             //TODO  DaxpValue methodAnn = field.getAnnotation(DaxpValue.class);
             //TODO DaxpValue as readonly
+            daxDic.putAtrDataType( tag, returnType);
 
+            daxDic.putDtoField( groupTag,tag);
         }
 
     }
+
+
+
     private void populateDaxpMsg(DaxDictionary daxDic, Field field) {
         try {
             DaxpMsg msgAnn = field.getAnnotation(DaxpMsg.class);
@@ -142,6 +172,7 @@ public class DaxPopulatorAnnotation {
         }
     }
     private void populateDaxpSchema(DaxDictionary daxDic, Class<?> clazz){
+
         for (Field field : DaxLangTool.allFields(clazz)) {
 //            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
 
@@ -183,9 +214,9 @@ public class DaxPopulatorAnnotation {
             daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
         }
 
-        if (daxTag.uiLabel()!=null) {
-            daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
-        }
+//        if (daxTag.uiLabel()!=null) {
+//            daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
+//        }
 
         if (daxTag.dataType().equals("S")) {
             daxDic.putAtrDataType(tag,String.class);
@@ -199,23 +230,31 @@ public class DaxPopulatorAnnotation {
 
     }
     private void populateDTO(DaxDictionary daxDic,Class<?> clazz){
-        DaxpDTO typeAnn = clazz.getAnnotation(DaxpDTO.class);
-
         //        DaxDictionaryDecoratorService.printDaxGroupInfo(group); // change to logger
 
-        String typeName = !typeAnn.name().isBlank() ? typeAnn.name() :
+        DaxpDTO typeAnn = clazz.getAnnotation(DaxpDTO.class);
+
+        String dtoName = !typeAnn.name().isBlank() ? typeAnn.name() :
                                                         clazz.getSimpleName();
 
 
-        DaxTag grpTag = new DaxTag(config.getAppContextId(), typeAnn.tagId());
-        daxDic.putGroup(new DaxDTO(grpTag, typeName));
+        DaxTag dtoTag = new DaxTag(config.getAppContextId(), typeAnn.tagId());
+        daxDic.putDTO(new DaxDTO(dtoTag, dtoName));
 
-        daxDic.putAtrDataType(grpTag, DaxDataType.DTO.getCode());
+        daxDic.putAtrDataType(dtoTag, DaxDataType.DTO.getCode());
 
-//                groupId = groupMapper.getReferenceId(groupAtn.name());
+        for (Field field : DaxLangTool.allFields(clazz)) {
+//            DaxDictionaryDecoratorService.printDaxFieldInfo(field); //TODO logger
+            if (field.isAnnotationPresent(DaxpField.class)
+               ||field.isAnnotationPresent(DaxpValue.class))
+            {
+                populateDaxpField(field, daxDic, dtoTag);
+            }
 
-        populateDaxpFieldFromDTO(grpTag, daxDic, clazz);
-        populateDaxpValueFromDTO(grpTag, daxDic, clazz);
+        }
+
+
+        populateDaxpValueFromDTO(dtoTag, daxDic, clazz);
 
     }
 
@@ -229,7 +268,9 @@ public class DaxPopulatorAnnotation {
     }
 
 
-    public void populate(DaxDictionary daxDic,Class<?> clazz) {
+    public void populate(DaxDictionary daxDic, Class<?> clazz) {
+        //        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
+
         try {
             if (clazz.isAnnotationPresent(DaxpSchema.class)) {
                 populateDaxpSchema(daxDic, clazz);
@@ -237,13 +278,14 @@ public class DaxPopulatorAnnotation {
             }
 
             if (clazz.isAnnotationPresent(DaxpDTO.class)) {
-                //        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
-
-                if (clazz.isEnum()) {
-                    enumPopulator.populate(daxDic, clazz);
-                    return;
-                }
                 populateDTO(daxDic,clazz);
+                return;
+            }
+
+            if (clazz.isEnum() ||
+                clazz.isAnnotationPresent(DaxpEnum.class))
+            {
+                enumPopulator.populate(daxDic, clazz);
                 return;
             }
 

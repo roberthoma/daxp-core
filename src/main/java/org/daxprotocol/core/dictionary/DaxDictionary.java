@@ -82,8 +82,8 @@ public class DaxDictionary {
     /*****************************************************
      *  Group Map // TODO chage to type or schema
      */
-    Map<DaxTag, DaxDTO>    groupMap       = new HashMap<>();
-    Map<DaxTag, Set<DaxTag>> groupFieldsMap = new HashMap<>();
+    Map<DaxTag, DaxDTO> dtoMap = new HashMap<>();
+    Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new HashMap<>();
 
 
     /*****************************************************
@@ -175,19 +175,19 @@ public class DaxDictionary {
     //**********************************************************************
     // Groups
 
-    public void putGroup(DaxDTO group){
+    public void putDTO(DaxDTO group){
 
-        groupMap.put(group.getTag(),group);
+        dtoMap.put(group.getTag(),group);
 
     }
 
-    public Map<DaxTag, DaxDTO> getGroupMap() {
-        return groupMap;
+    public Map<DaxTag, DaxDTO> getDtoMap() {
+        return dtoMap;
     }
 
 
-    public Map<DaxTag, Set<DaxTag>> getGroupFieldsMap(){
-        return groupFieldsMap;
+    public Map<DaxTag, Set<DaxTag>> getDtoFieldsMap(){
+        return dtoFieldsMap;
     }
 
 
@@ -197,8 +197,8 @@ public class DaxDictionary {
 
     //TODO chek exist of fields in group,
     //TODO check recursions
-    public void putFieldIntoGroup(DaxTag tag, DaxTag groupTag) {
-        groupFieldsMap.merge(groupTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
+    public void putDtoField(DaxTag dtoTag, DaxTag tag) {
+        dtoFieldsMap.merge(dtoTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
                 DaxCollectionTool.addAndReturnSet(daxTags, tag) );
     }
 
@@ -250,6 +250,7 @@ public class DaxDictionary {
 
 
     public void putAtrUiLabel(DaxTag tag,  String uiLabel){
+        if (uiLabel.isBlank()) return;
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrUiLabel(uiLabel));
     }
 
@@ -281,6 +282,7 @@ public class DaxDictionary {
         putAttribute(tag, new DaxAtrEnumTag(enumTag));
     }
 
+    // put DaxAtrDeprecated
 
     public void putTag(DaxTag tag){
 

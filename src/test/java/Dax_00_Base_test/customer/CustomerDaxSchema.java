@@ -9,9 +9,6 @@ import org.daxprotocol.core.annotation.DaxpTag;
 @DaxpSchema
 public class CustomerDaxSchema {
 
-
-    public String  MSG_TYPE_CDR =  "CDR";
-
     @DaxpTag( uiLabel = "Customer")
     public static final int CUSTOMER_DTO           = 2000;
 
@@ -41,8 +38,6 @@ public class CustomerDaxSchema {
     @DaxpTag(uiLabel = "Telephone")
     public static final int CUSTOMER_TELEPHONE     = 2073;
 
-    @DaxpTag( uiLabel = "Town")
-    public static final int CUSTOMER_TOWN          = 2074;
 
     @DaxpTag( uiLabel = "Customer type")
     public static final int CUSTOMER_TYPE          = 2075;
@@ -58,12 +53,26 @@ public class CustomerDaxSchema {
 
 //    @DaxpTag(uiLabel = "Shoe size", dataType = "I", readOnly = true)
     @DaxpTag(uiLabel = "Shoe size",  dataType = "I", readOnly = true)
-    public static final int SHOE_SIZE = 5;  // in msg to should be CRM:5
+    public static final int SHOE_SIZE = 2085;  // in msg to should be CRM:5
+
+
+    @DaxpTag(uiLabel = "Address",  dataType = "O")
+    public static final int CUSTOMER_ADDRESS = 2100 ;
+
+    @DaxpTag(uiLabel = "Address Id")
+    public static final int ADDRESS_ID = 2101;
+
+    @DaxpTag( uiLabel = "Street")
+    public static final int STREET = 2104;
+
+    @DaxpTag( uiLabel = "Town")
+    public static final int TOWN   = 2105;
 
 
 
     @DaxpTag(uiLabel = "Customer Relation type")
     public static final int CUSTOMER_RELATION_ENUM   = 3000;
+
 
 
 

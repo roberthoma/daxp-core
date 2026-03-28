@@ -22,6 +22,7 @@ public class CustomerDaxpController {
     public DaxMessage customerDaxGetter(DaxMessage msg){
         System.out.println("CALLing  customer DaxGetter ");
 
+
         Customer customer = new Customer(1,"Marzena");
         return provider.getMessageFactory().toDaxMessage(CRM_DTO,customer);
     }

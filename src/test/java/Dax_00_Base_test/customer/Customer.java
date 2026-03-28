@@ -1,6 +1,7 @@
 package Dax_00_Base_test.customer;
 
 import Dax_00_Base_test.*;
+import Dax_00_Base_test.address.Address;
 import Dax_00_Base_test.fix.FixConstTag;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpDTO;
@@ -25,9 +26,8 @@ public class Customer {
     @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_SURNAME) //, uiLabel = "First name")
     String surname;
 
-    @Size(min=2)
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_TOWN, uiLabel = "Town")
-    String town;
+    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_ADDRESS, uiLabel = "Address")
+    Address address;
 
 //    @Size(min=2)
     @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_TELEPHONE) //, uiLabel = "Telephone")
@@ -67,17 +67,9 @@ public class Customer {
 
 
     @DaxpValue(tagId = CustomerDaxSchema.SHOE_SIZE, uiLabel = "Shoe Size ")
-    public  Integer shoeSize = 42;
+    public  Integer shoeSize;
 
     //---------------------------------------------------------------------------
-
-    public String getTown() {
-        return town;
-    }
-
-    public void setTown(String town) {
-        this.town = town;
-    }
 
     public CustomerType getType() {
         return type;

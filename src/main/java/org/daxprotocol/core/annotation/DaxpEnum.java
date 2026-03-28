@@ -12,6 +12,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Documented
 public @interface DaxpEnum {
     int    tagId();
+    String context()     default "";
     String name()        default "";
     String description() default "";
 }

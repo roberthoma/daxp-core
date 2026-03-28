@@ -126,7 +126,7 @@ public enum DaxDataType {
 
     public static DaxDataType fromClass(Class<?> clazz) {
         if (clazz == null) {
-            return null;
+            return UNKNOWN;
         }
 
         if (clazz.isEnum()) {

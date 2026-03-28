@@ -220,8 +220,8 @@ public class DaxMessageFactory {
         //     dictionary.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
         //-------------------------------------------------------------------------------
 
-        dictionary.getGroupMap().forEach((integer, group) ->
-                putGroupToBody(message.getBody(), group, dictionary.getGroupFieldsMap().get(group.getTag())));
+        dictionary.getDtoMap().forEach((integer, group) ->
+                putGroupToBody(message.getBody(), group, dictionary.getDtoFieldsMap().get(group.getTag())));
 
 
 
@@ -276,8 +276,8 @@ public class DaxMessageFactory {
             //todo REFACTORING
             if (entry.getClass().isAnnotationPresent(DaxpDTO.class)) {
 //                DaxDictionaryDecoratorService.printDaxScanClass(entry.getClass());
-                DaxpDTO group = entry.getClass().getAnnotation(DaxpDTO.class);
-                body.putPair(FIELD_ID, String.valueOf(group.tagId()));
+                DaxpDTO dtoAnn = entry.getClass().getAnnotation(DaxpDTO.class);
+                body.putPair(FIELD_ID, String.valueOf(dtoAnn.tagId()));
                 body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
 
             }
@@ -290,7 +290,16 @@ public class DaxMessageFactory {
                         if (field.get(entry) != null) { //TODO For String check is empty
                             body.putPair(new DaxPair<>(daxp.tagId(), field.get(entry)));
                         }
+                        continue;
                     }
+                    if (field.isAnnotationPresent(DaxpValue.class)) {
+                        DaxpValue daxp = field.getAnnotation(DaxpValue.class);
+                     //   field.setAccessible(true);
+                        if (field.get(entry) != null) {
+                            body.putPair(new DaxPair<>(daxp.tagId(), field.get(entry)));
+                        }
+                    }
+
 
                 }
 

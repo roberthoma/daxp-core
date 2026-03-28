@@ -173,10 +173,10 @@ public class DaxPopulatorMessage {
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
 
             DaxDTO group = new DaxDTO(groupTag,groupName);
-            daxDic.putGroup(group);
+            daxDic.putDTO(group);
             String fieldIdStrList = blockPairMap.get(DaxTagConst.FIELD_ID_LIST).getStrValue();
             List<DaxTag> tagList = parserService.parseDaxTagList(fieldIdStrList);
-            tagList.forEach(tag -> daxDic.putFieldIntoGroup(tag, groupTag));
+            tagList.forEach(tag -> daxDic.putDtoField(groupTag, tag));
             return;
         }
 

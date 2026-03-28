@@ -1,5 +1,6 @@
 package Dax_00_Base_test;
 
+import Dax_00_Base_test.address.Address;
 import Dax_00_Base_test.customer.*;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.provider.DaxProvider;
@@ -25,17 +26,11 @@ public abstract class DaxTestConfig {
                             .createProperties("application_CNT.properties")));
 
 
-            crmProvider.getCoreStrategy()
-                    .populateFromAnnotations(Customer.class);
-
-            crmProvider.getCoreStrategy()
-                    .populateFromAnnotations(CustomerDaxSchema.class);
-
-            crmProvider.getCoreStrategy()
-                    .populateFromAnnotations(CustomerRelation.class);
-
-            crmProvider.getCoreStrategy()
-                    .populateFromAnnotations(CustomerDaxpController.class);
+            crmProvider.getCoreStrategy().populateFromAnnotations(Customer.class);
+            crmProvider.getCoreStrategy().populateFromAnnotations(Address.class);
+            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerDaxSchema.class);
+            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerRelation.class);
+            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerDaxpController.class);
 
 
             customerDaxpController = new CustomerDaxpController(crmProvider);

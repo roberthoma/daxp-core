@@ -63,9 +63,6 @@ public class DaxPopulator {
 
         annotationPopulator.populate(daxDic, clazz);
     }
-//------------------------------------------------
-
-
 
     public void populateFromMessage(DaxDictionary daxDic, DaxMessage message) {
 

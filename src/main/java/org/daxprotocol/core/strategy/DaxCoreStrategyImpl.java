@@ -20,6 +20,7 @@ public class DaxCoreStrategyImpl implements DaxCoreStrategy{
         dictionaryPopulator.populateFromAnnotations(dictionary, clazz);
     }
 
+    //TODO Add preamble or context , allow list of messages
     @Override public void populateFromMessage(DaxMessage message) {
         dictionaryPopulator.populateFromMessage(dictionary, message);
     }
