@@ -48,26 +48,47 @@ public class DaxBody {
     public Map<DaxTag, DaxPair<?>> getBlock(int blockIdx){
         return blockMap.get(blockIdx);
     }
-
+    //------------------------------
     public void putPair(DaxPair<?> pair){
         checkBlockCounterBeforePut();
         blockMap.get(blockIdx).put(pair.getTag(),pair);
     }
 
+    public void putPair(int blkIdx , DaxPair<?> pair){
+        checkBlockCounterBeforePut();
+        blockMap.get(blkIdx).put(pair.getTag(),pair);
+    }
+    //----------------------------
     public void putPair(DaxTag tag, String value){
         checkBlockCounterBeforePut();
         blockMap.get(blockIdx).put(tag,new DaxStringPair(tag, value));
     }
+    public void putPair(int blkIdx ,DaxTag tag, String value){
+        checkBlockCounterBeforePut();
+        blockMap.get(blkIdx).put(tag,new DaxStringPair(tag, value));
+    }
+    //----------------------------
 
     public void putPair(DaxTag tag, DaxTag tagValue){
         checkBlockCounterBeforePut();
         blockMap.get(blockIdx).put(tag,new DaxTagPair(tag, tagValue));
     }
+    public void putPair(int blkIdx , DaxTag tag, DaxTag tagValue){
+        checkBlockCounterBeforePut();
+        blockMap.get(blkIdx).put(tag,new DaxTagPair(tag, tagValue));
+    }
+    //----------------------------
 
     public void putPair(DaxTag tag, Integer value){
         checkBlockCounterBeforePut();
         blockMap.get(blockIdx).put(tag,new DaxPairInteger(tag, value));
     }
+    public void putPair(int blkIdx,DaxTag tag, Integer value){
+        checkBlockCounterBeforePut();
+        blockMap.get(blkIdx).put(tag,new DaxPairInteger(tag, value));
+    }
+
+    //-----------------------------
 
     public void nextBlock(){
         blockIdx = blockMap.size();

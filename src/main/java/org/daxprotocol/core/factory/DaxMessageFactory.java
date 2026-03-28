@@ -263,6 +263,7 @@ public class DaxMessageFactory {
                 : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
     }
 
+    //TODO move to tool class
     private DaxTag creatTag(String context, int tagId){
 
         int contextId = context.isBlank() ?
@@ -273,13 +274,8 @@ public class DaxMessageFactory {
 
 
 
-    private void objectToMsgBlock(DaxTag blockTag, Object entry, DaxBody body ,List<DaxpEntry> bodyMsgBlockList ){
-        body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
-
-        body.putPair(FIELD_ID, blockTag);
-//        body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
-
-
+    private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry, DaxBody body ){
+        body.putPair(blogIdx,FIELD_ID, blockTag);
         try {
             for (Field field : DaxLangTool.allFields(entry.getClass())) {
                 //----------------------------------------
@@ -291,11 +287,13 @@ public class DaxMessageFactory {
                         DaxTag tag = creatTag(fieldAnn.context(), fieldAnn.value());
 
                         if (field.get(entry).getClass().isAnnotationPresent(DaxpDTO.class)){
-                            bodyMsgBlockList.add(new DaxpEntry( field.get(entry) , field));
-                            body.putPair(new DaxPair<>(tag,"any idx"));
+                            body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
+                            int nestedIdx = body.getCurrentIdx();
+                            body.putPair(blogIdx, new DaxPair<>(tag,nestedIdx+1));
+                            objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body );
                         }
                         else {
-                            body.putPair(new DaxPair<>(tag, field.get(entry)));
+                            body.putPair(blogIdx,new DaxPair<>(tag, field.get(entry)));
                         }
                     }
                     continue;
@@ -305,7 +303,7 @@ public class DaxMessageFactory {
                     //   field.setAccessible(true);
                     if (field.get(entry) != null) {
                         DaxTag tag = creatTag(daxValue.context(), daxValue.value());
-                        body.putPair(new DaxPair<>(tag, field.get(entry)));
+                        body.putPair(blogIdx,new DaxPair<>(tag, field.get(entry)));
                     }
                 }
                 //----------------------------------------
@@ -323,7 +321,7 @@ public class DaxMessageFactory {
                 Class<?> returnType = method.getReturnType();
                 Object o = method.invoke(entry);
                 DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.value());
-                body.putPair(new DaxPair<>(tag, o.toString()));
+                body.putPair(blogIdx,new DaxPair<>(tag, o.toString()));
             }
         } catch (Exception e) {
             //throw new RuntimeException(e);
@@ -337,25 +335,17 @@ public class DaxMessageFactory {
     private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry ){
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
-        List<DaxpEntry> bodyMsgBlockList  = new ArrayList<>();
         DaxTrailer trailer = new DaxTrailer();
 
         daxDataEntry.forEach(entry -> {
             if (entry.getClass().isAnnotationPresent(DaxpDTO.class)) {
                 DaxpDTO dtoAnn = entry.getClass().getAnnotation(DaxpDTO.class);
                 DaxTag tag = creatTag("",dtoAnn.tagId());
-                objectToMsgBlock(tag, entry, body, bodyMsgBlockList);
+                body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
+                objectToMsgBlock(body.getCurrentIdx(),tag, entry, body);
             }
 
         });
-
-        bodyMsgBlockList.forEach(daxpEntry ->
-                {
-                    DaxpField fieldAnn = daxpEntry.field().getAnnotation(DaxpField.class);
-                    DaxTag tag = creatTag(fieldAnn.context(), fieldAnn.value());
-                    objectToMsgBlock(tag,daxpEntry.entry(), body, bodyMsgBlockList);
-                }
-        );
 
         return new DaxMessage(head,body,trailer);
     }

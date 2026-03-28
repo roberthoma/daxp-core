@@ -20,4 +20,7 @@ public class Address {
     @DaxpField(value = CustomerDaxSchema.TOWN, uiLabel = "Town")
     public String town;
 
+    @DaxpField(CustomerDaxSchema.DISTRICT_DTO)
+    public District district;
+
 }

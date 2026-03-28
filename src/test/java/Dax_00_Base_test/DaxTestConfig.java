@@ -1,6 +1,7 @@
 package Dax_00_Base_test;
 
 import Dax_00_Base_test.address.Address;
+import Dax_00_Base_test.address.District;
 import Dax_00_Base_test.crm_application.customer.Customer;
 import Dax_00_Base_test.crm_application.customer.CustomerDaxSchema;
 import Dax_00_Base_test.crm_application.customer.CustomerDaxpController;
@@ -31,6 +32,7 @@ public abstract class DaxTestConfig {
 
             crmProvider.getCoreStrategy().populateFromAnnotations(Customer.class);
             crmProvider.getCoreStrategy().populateFromAnnotations(Address.class);
+            crmProvider.getCoreStrategy().populateFromAnnotations(District.class);
             crmProvider.getCoreStrategy().populateFromAnnotations(CustomerDaxSchema.class);
             crmProvider.getCoreStrategy().populateFromAnnotations(CustomerRelation.class);
             crmProvider.getCoreStrategy().populateFromAnnotations(CustomerDaxpController.class);

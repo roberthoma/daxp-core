@@ -22,9 +22,4 @@ public class ContractDaxSchema {
     @DaxpTag(uiLabel = "Contract Status")
     public static final int CONTRACT_STATUS = 2205;
 
-
-
-
-
-
 }

@@ -2,6 +2,7 @@ package DAXP_Annotation_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
 import Dax_00_Base_test.address.Address;
+import Dax_00_Base_test.address.District;
 import Dax_00_Base_test.crm_application.customer.Customer;
 import Dax_00_Base_test.crm_application.customer.CustomerDaxSchema;
 import Dax_00_Base_test.crm_application.customer.CustomerRelation;
@@ -117,6 +118,8 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
         customer.corresp_address.town = "Sanok";
         customer.corresp_address.street = "Lipińskiego 1000";
         customer.corresp_address.addressId = 3346;
+        customer.corresp_address.district = new District("43-444","Zakopane");
+
 
         DaxMessage message2 = crmProvider.getMessageFactory().toDaxMessage(CustomerDaxSchema.CRM_DTO, customer);
         DaxMessage message3 = crmProvider.getMessageFactory().toDaxMessage(CustomerDaxSchema.CRM_DTO, customer.address);

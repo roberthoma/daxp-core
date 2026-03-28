@@ -33,6 +33,6 @@ public @interface  DaxpTag {
     String uiLabel() default "";
     String dataType()  default "";
     boolean readOnly() default false;
-    //Class<?> clazz(); default Class<String>.;
+    Class<?> clazz() default Void.class;
 }
 

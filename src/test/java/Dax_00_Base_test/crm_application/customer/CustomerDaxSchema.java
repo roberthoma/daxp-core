@@ -1,5 +1,6 @@
 package Dax_00_Base_test.crm_application.customer;
 
+import Dax_00_Base_test.address.District;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpMsg;
@@ -74,6 +75,16 @@ public class CustomerDaxSchema {
 
     @DaxpTag( uiLabel = "Town")
     public static final int TOWN   = 2115;
+
+
+    @DaxpTag( uiLabel = "District", clazz = District.class)
+    public static final int DISTRICT_DTO   = 2120;
+
+    @DaxpTag( uiLabel = "District Code")
+    public static final int DISTRICT_CODE   = 2121;
+
+    @DaxpTag( uiLabel = "District name")
+    public static final int DISTRICT_NAME   = 2122;
 
 
 
