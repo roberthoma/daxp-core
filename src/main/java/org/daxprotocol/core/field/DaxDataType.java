@@ -70,7 +70,7 @@ e = Email
 M = DayOfMonth
 C = Country
 U = Currency
-Y = Enum
+E = Enum
 K = Tag
 O = DTO
 

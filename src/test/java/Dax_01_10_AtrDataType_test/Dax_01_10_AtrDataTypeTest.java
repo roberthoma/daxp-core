@@ -1,7 +1,7 @@
 package Dax_01_10_AtrDataType_test;
 
 import Dax_00_Base_test.DaxTestConfig;
-import Dax_00_Base_test.customer.Customer;
+import Dax_00_Base_test.crm_application.customer.Customer;
 import org.daxprotocol.core.field.DaxDataType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -42,6 +42,7 @@ import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -262,72 +263,99 @@ public class DaxMessageFactory {
                 : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
     }
 
+    private DaxTag creatTag(String context, int tagId){
 
+        int contextId = context.isBlank() ?
+                config.getAppContextId():
+                contextMapper.getReferenceId(context);
+        return new DaxTag(contextId ,tagId);
+    }
+
+
+
+    private void objectToMsgBlock(DaxTag blockTag, Object entry, DaxBody body ,List<DaxpEntry> bodyMsgBlockList ){
+        body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
+
+        body.putPair(FIELD_ID, blockTag);
+//        body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
+
+
+        try {
+            for (Field field : DaxLangTool.allFields(entry.getClass())) {
+                //----------------------------------------
+                if (field.isAnnotationPresent(DaxpField.class)) {
+                    DaxpField fieldAnn = field.getAnnotation(DaxpField.class);
+                    field.setAccessible(true);
+
+                    if (field.get(entry) != null){
+                        DaxTag tag = creatTag(fieldAnn.context(), fieldAnn.value());
+
+                        if (field.get(entry).getClass().isAnnotationPresent(DaxpDTO.class)){
+                            bodyMsgBlockList.add(new DaxpEntry( field.get(entry) , field));
+                            body.putPair(new DaxPair<>(tag,"any idx"));
+                        }
+                        else {
+                            body.putPair(new DaxPair<>(tag, field.get(entry)));
+                        }
+                    }
+                    continue;
+                }
+                if (field.isAnnotationPresent(DaxpValue.class)) {
+                    DaxpValue daxValue = field.getAnnotation(DaxpValue.class);
+                    //   field.setAccessible(true);
+                    if (field.get(entry) != null) {
+                        DaxTag tag = creatTag(daxValue.context(), daxValue.value());
+                        body.putPair(new DaxPair<>(tag, field.get(entry)));
+                    }
+                }
+                //----------------------------------------
+
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            for (Method method : entry.getClass().getDeclaredMethods()) {
+                DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
+                if (methodAnn == null) continue;
+                Class<?> returnType = method.getReturnType();
+                Object o = method.invoke(entry);
+                DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.value());
+                body.putPair(new DaxPair<>(tag, o.toString()));
+            }
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            e.printStackTrace();
+        }
+
+
+    }
 
 
     private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry ){
-      //  DaxPreamble preamble = new DaxPreamble();
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
+        List<DaxpEntry> bodyMsgBlockList  = new ArrayList<>();
         DaxTrailer trailer = new DaxTrailer();
+
         daxDataEntry.forEach(entry -> {
-            body.nextBlock();
-
-            //todo REFACTORING
             if (entry.getClass().isAnnotationPresent(DaxpDTO.class)) {
-//                DaxDictionaryDecoratorService.printDaxScanClass(entry.getClass());
                 DaxpDTO dtoAnn = entry.getClass().getAnnotation(DaxpDTO.class);
-                body.putPair(FIELD_ID, String.valueOf(dtoAnn.tagId()));
-                body.putPair(BLOCK_TYPE, DaxBlockType.BLOCK_INSTANCE);
-
+                DaxTag tag = creatTag("",dtoAnn.tagId());
+                objectToMsgBlock(tag, entry, body, bodyMsgBlockList);
             }
-
-            try {
-                for (Field field : DaxLangTool.allFields(entry.getClass())) {
-                    if (field.isAnnotationPresent(DaxpField.class)) {
-                        DaxpField daxp = field.getAnnotation(DaxpField.class);
-                        field.setAccessible(true);
-                        if (field.get(entry) != null) { //TODO For String check is empty
-                            body.putPair(new DaxPair<>(daxp.tagId(), field.get(entry)));
-                        }
-                        continue;
-                    }
-                    if (field.isAnnotationPresent(DaxpValue.class)) {
-                        DaxpValue daxp = field.getAnnotation(DaxpValue.class);
-                     //   field.setAccessible(true);
-                        if (field.get(entry) != null) {
-                            body.putPair(new DaxPair<>(daxp.tagId(), field.get(entry)));
-                        }
-                    }
-
-
-                }
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-            //>>>>>>>>>>>>....
-            try {
-                for (Method method : entry.getClass().getDeclaredMethods()) {
-                    DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
-                    if (methodAnn == null) continue;
-                    Class<?> returnType = method.getReturnType();
-                    Object o = method.invoke(entry);
-                    DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.tagId());
-                    body.putPair(new DaxPair<>(tag, o.toString()));
-                }
-            } catch (Exception e) {
-                //throw new RuntimeException(e);
-                e.printStackTrace();
-            }
-
-            //<<<<<<<<<
-
-
-
 
         });
+
+        bodyMsgBlockList.forEach(daxpEntry ->
+                {
+                    DaxpField fieldAnn = daxpEntry.field().getAnnotation(DaxpField.class);
+                    DaxTag tag = creatTag(fieldAnn.context(), fieldAnn.value());
+                    objectToMsgBlock(tag,daxpEntry.entry(), body, bodyMsgBlockList);
+                }
+        );
 
         return new DaxMessage(head,body,trailer);
     }

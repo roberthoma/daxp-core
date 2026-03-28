@@ -1,14 +1,14 @@
-package Dax_00_Base_test.customer;
+package Dax_00_Base_test.crm_application.customer;
 
 import Dax_00_Base_test.*;
 import Dax_00_Base_test.address.Address;
 import Dax_00_Base_test.fix.FixConstTag;
-import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
 
 import java.util.Date;
+import static Dax_00_Base_test.crm_application.customer.CustomerDaxSchema.*;
 // TODO change to  @DaxpDto as Daxp Data Transfer Object
 
 @DaxpDTO(tagId = CustomerDaxSchema.CUSTOMER_DTO,
@@ -17,56 +17,53 @@ import java.util.Date;
 public class Customer {
 
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_ID) //, uiLabel = "Id customer")
+    @DaxpField(CUSTOMER_ID) //, uiLabel = "Id customer")
     int customerId;
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_NAME) //, uiLabel = "First name")
+    @DaxpField(CUSTOMER_NAME) //, uiLabel = "First name")
     String name;
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_SURNAME) //, uiLabel = "First name")
+    @DaxpField(CUSTOMER_SURNAME) //, uiLabel = "First name")
     String surname;
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_ADDRESS, uiLabel = "Address")
-    Address address;
+    @DaxpField(CUSTOMER_ADDRESS)
+    public Address address;
 
-//    @Size(min=2)
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_TELEPHONE) //, uiLabel = "Telephone")
+    @DaxpField(CUSTOMER_ADDRESS_CORRESPONDENCE)
+    public Address corresp_address;
+
+    //    @Size(min=2)
+    @DaxpField(CUSTOMER_TELEPHONE) //, uiLabel = "Telephone")
     String telephone;
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_TYPE, uiLabel = "Type")
+    @DaxpField(CUSTOMER_TYPE)
     CustomerType type;
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_EMAIL, uiLabel = "Email")
+    @DaxpField(CUSTOMER_EMAIL)
     String email;
 
 
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_IS_CITIZEN, uiLabel = "Citizen")
+    @DaxpField(CUSTOMER_IS_CITIZEN)
     Boolean isCitizen;
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_YEAR_OF_BIRTH , uiLabel = "Date of birth")
+    @DaxpField(CUSTOMER_YEAR_OF_BIRTH)
     Date birthDate;
 
     @DaxpField( context = ContextConst.CTX_FIX_PROTOCOL,
-                  tagId = FixConstTag.FIX_CLIENT_ID,
+                  value = FixConstTag.FIX_CLIENT_ID,
                 uiLabel = "FIX Customer Id ")
     String fixClientId;
 
-    @DaxpField(tagId = CustomerDaxSchema.CUSTOMER_RELATION , uiLabel = "Relation")
+    @DaxpField(value = CustomerDaxSchema.CUSTOMER_RELATION , uiLabel = "Relation")
     CustomerRelation relation;
 
-    @DaxpValue(tagId = CustomerDaxSchema.BEST_TOY_M, uiLabel = "Best toy B")
+    @DaxpValue(value = CustomerDaxSchema.BEST_TOY_M, uiLabel = "Best toy B")
     public String getBestToy(){
         return "Big bike";
     }
 
-//    @DaxpValue(tagId = CustomerDaxSchema.SHOE_SIZE, uiLabel = "Shoe Size ")
-//    public  String getShoeSize(){
-//        return shoeSize;
-//    }
-
-
-    @DaxpValue(tagId = CustomerDaxSchema.SHOE_SIZE, uiLabel = "Shoe Size ")
+    @DaxpValue(value = CustomerDaxSchema.SHOE_SIZE, uiLabel = "Shoe Size ")
     public  Integer shoeSize;
 
     //---------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 package Dax_DA_Dictionary_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
-import Dax_00_Base_test.customer.CustomerDaxSchema;
+import Dax_00_Base_test.crm_application.customer.CustomerDaxSchema;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;

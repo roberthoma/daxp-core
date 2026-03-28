@@ -1,4 +1,4 @@
-package Dax_00_Base_test.customer;
+package Dax_00_Base_test.crm_application.customer;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -56,17 +56,24 @@ public class CustomerDaxSchema {
     public static final int SHOE_SIZE = 2085;  // in msg to should be CRM:5
 
 
-    @DaxpTag(uiLabel = "Address",  dataType = "O")
-    public static final int CUSTOMER_ADDRESS = 2100 ;
+//    @DaxpTag(uiLabel = "Address",  dataType = "O")
+    @DaxpTag(uiLabel = "Address")
+    public static final int ADDRESS_DTO = 2100 ;
+
+    @DaxpTag(uiLabel = "Address" )
+    public static final int CUSTOMER_ADDRESS = 2101 ;
+
+    @DaxpTag(uiLabel = "Correspondence address",  dataType = "O")
+    public static final int CUSTOMER_ADDRESS_CORRESPONDENCE = 2102 ;
 
     @DaxpTag(uiLabel = "Address Id")
-    public static final int ADDRESS_ID = 2101;
+    public static final int ADDRESS_ID = 2111;
 
     @DaxpTag( uiLabel = "Street")
-    public static final int STREET = 2104;
+    public static final int STREET = 2114;
 
     @DaxpTag( uiLabel = "Town")
-    public static final int TOWN   = 2105;
+    public static final int TOWN   = 2115;
 
 
 

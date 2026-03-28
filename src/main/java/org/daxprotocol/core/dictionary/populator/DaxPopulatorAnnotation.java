@@ -57,7 +57,7 @@ public class DaxPopulatorAnnotation {
              contextId = daxField.context().isBlank() ?
                     config.getAppContextId():
                     contextMapper.getReferenceId(daxField.context());
-            tag = new DaxTag(contextId ,daxField.tagId());
+            tag = new DaxTag(contextId ,daxField.value());
 
         }
 
@@ -69,7 +69,7 @@ public class DaxPopulatorAnnotation {
             contextId = daxpValue.context().isBlank() ?
                     config.getAppContextId():
                     contextMapper.getReferenceId(daxpValue.context());
-            tag = new DaxTag(contextId ,daxpValue.tagId());
+            tag = new DaxTag(contextId ,daxpValue.value());
         }
 
 
@@ -131,13 +131,13 @@ public class DaxPopulatorAnnotation {
                     config.getAppContextId():
                     contextMapper.getReferenceId(methodAnn.context());
 
-            DaxTag tag = new DaxTag(contextId ,methodAnn.tagId());
+            DaxTag tag = new DaxTag(contextId ,methodAnn.value());
 
             daxDic.putTag(tag);
 
             Class<?> returnType = method.getReturnType();
             // Object value =  m.invoke(clazz);
-            System.out.println(methodAnn.tagId());
+            System.out.println(methodAnn.value());
             //   putFieldIntoGroup(field, daxDic, groupId);
 
             //TODO  DaxpValue methodAnn = field.getAnnotation(DaxpValue.class);

@@ -1,7 +1,10 @@
 package Dax_00_Base_test;
 
 import Dax_00_Base_test.address.Address;
-import Dax_00_Base_test.customer.*;
+import Dax_00_Base_test.crm_application.customer.Customer;
+import Dax_00_Base_test.crm_application.customer.CustomerDaxSchema;
+import Dax_00_Base_test.crm_application.customer.CustomerDaxpController;
+import Dax_00_Base_test.crm_application.customer.CustomerRelation;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.provider.DaxProvider;
 import org.junit.jupiter.api.BeforeAll;

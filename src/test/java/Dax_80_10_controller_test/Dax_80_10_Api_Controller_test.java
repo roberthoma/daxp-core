@@ -1,7 +1,7 @@
 package Dax_80_10_controller_test;
 
 import Dax_00_Base_test.DaxTestConfig;
-import Dax_00_Base_test.customer.CustomerDaxSchema;
+import Dax_00_Base_test.crm_application.customer.CustomerDaxSchema;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Test;

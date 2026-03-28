@@ -1,6 +1,5 @@
-package Dax_00_Base_test.customer;
+package Dax_00_Base_test.crm_application.customer;
 
-import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpEnum;
 
 

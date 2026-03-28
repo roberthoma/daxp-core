@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.FIELD })
 public @interface DaxpValue {
     String context() default "";   // Empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
-    int    tagId();                // It can be define by @DaxpTag
+    int value();                // It can be define by @DaxpTag
     String uiLabel() default "";
 }
 

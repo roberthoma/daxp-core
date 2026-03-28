@@ -1,23 +1,23 @@
 package Dax_00_Base_test.address;
 
 
-import Dax_00_Base_test.customer.CustomerDaxSchema;
+import Dax_00_Base_test.crm_application.customer.CustomerDaxSchema;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpField;
 
-@DaxpDTO(tagId = CustomerDaxSchema.CUSTOMER_ADDRESS, name = "Address")
+@DaxpDTO(tagId = CustomerDaxSchema.ADDRESS_DTO, name = "Address")
 public class Address {
 
-    @DaxpField(tagId = CustomerDaxSchema.ADDRESS_ID, uiLabel = "Town")
-    int addressId;
+    @DaxpField(value = CustomerDaxSchema.ADDRESS_ID, uiLabel = "Town")
+    public int addressId;
 
     @Size(min=2)
-    @DaxpField(tagId = CustomerDaxSchema.STREET, uiLabel = "Street")
-    String street;
+    @DaxpField(value = CustomerDaxSchema.STREET, uiLabel = "Street")
+    public String street;
 
     @Size(min=2)
-    @DaxpField(tagId = CustomerDaxSchema.TOWN, uiLabel = "Town")
-    String town;
+    @DaxpField(value = CustomerDaxSchema.TOWN, uiLabel = "Town")
+    public String town;
 
 }

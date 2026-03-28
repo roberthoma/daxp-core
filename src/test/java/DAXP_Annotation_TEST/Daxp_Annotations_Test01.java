@@ -1,8 +1,10 @@
 package DAXP_Annotation_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
-import Dax_00_Base_test.customer.Customer;
-import Dax_00_Base_test.customer.CustomerRelation;
+import Dax_00_Base_test.address.Address;
+import Dax_00_Base_test.crm_application.customer.Customer;
+import Dax_00_Base_test.crm_application.customer.CustomerDaxSchema;
+import Dax_00_Base_test.crm_application.customer.CustomerRelation;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.DaxMessage;
@@ -16,8 +18,8 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
     @Test
     void createMsgFromCustomer() {
         String expectMsg = "DAXP="+DaxpConfig.PROTOCOL_VERSION+"|EN=UTF-8|CX=CRM|\n" +
-        "9=UCi|5=I|100=2000|2080=Big bike|2001=123|2002=Robert|2085=23|2076=WORKER|2077=Y|\n"+
-                "99=180|";
+        "9=UCi|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|2085=23|2076=WORKER|2077=Y|\n"+
+                "99=169|";
         System.out.println("--------------------------------------------------->>>");
         System.out.println("   Generation parallel message");
 
@@ -59,7 +61,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
                     System.out.println("Is primitive: " + field.getType().isPrimitive());
                     System.out.println("Pair: "+ daxp.tagId()+"="+field.get(customer));
 */
-                    var attMap =  crmProvider.getDictionary().getFieldAttributeMap(daxp.tagId());
+                    var attMap =  crmProvider.getDictionary().getFieldAttributeMap(daxp.value());
 
 //                    System.out.println("Label: "+ Optional.of(attMap.get(org.daxprotocol.core.codec.DaxTag.ATR_UI_LABEL))
 //                                    .
@@ -94,6 +96,39 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
         DaxMessage msg2 = crmProvider.getMessageFactory().toDaxMessage("CMD",customer);
         System.out.println("AFTER :"+ crmProvider.getMessageCodec().encode(msg2));
+
+    }
+
+    @Test
+    void addressTest(){
+        System.out.println("ADDRESS setting");
+        String msgStr = "DAXP=1|EN=UTF-8|9=UCi|20=1|2001=123|2002=Robert|2075=INDIVIDUAL|99=123|";
+        System.out.println("BEFORE: "+msgStr);
+        DaxMessage message = crmProvider.getMessageCodec().decode(msgStr);
+        Customer customer = crmProvider.getMessageConverter().createFromMessage(message, Customer.class);
+
+        customer.address = new Address();
+        customer.address.town = "Warszawa";
+        customer.address.street = "Polna 7";
+        customer.address.addressId = 345;
+
+
+        customer.corresp_address = new Address();
+        customer.corresp_address.town = "Sanok";
+        customer.corresp_address.street = "Lipińskiego 1000";
+        customer.corresp_address.addressId = 3346;
+
+        DaxMessage message2 = crmProvider.getMessageFactory().toDaxMessage(CustomerDaxSchema.CRM_DTO, customer);
+        DaxMessage message3 = crmProvider.getMessageFactory().toDaxMessage(CustomerDaxSchema.CRM_DTO, customer.address);
+        DaxMessage message4 = crmProvider.getMessageFactory().toDaxMessage(CustomerDaxSchema.CRM_DTO, customer.corresp_address);
+
+        System.out.println("----------------------");
+        System.out.println("Customer and address: msg");
+        System.out.println(crmProvider.getMessageCodec().encode(message2));
+        System.out.println("----------------------");
+        System.out.println("Address: msg");
+
+        System.out.println(crmProvider.getMessageCodec().encode(message3));
 
     }
 

@@ -1,7 +1,7 @@
 package DAXP_MulitiMessage_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
-import Dax_00_Base_test.customer.Customer;
+import Dax_00_Base_test.crm_application.customer.Customer;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
