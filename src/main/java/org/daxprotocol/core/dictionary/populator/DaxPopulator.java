@@ -25,6 +25,7 @@ import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.rules.DaxParserService;
 
 
@@ -64,10 +65,11 @@ public class DaxPopulator {
         annotationPopulator.populate(daxDic, clazz);
     }
 
-    public void populateFromMessage(DaxDictionary daxDic, DaxMessage message) {
+//    public void populateFromMessage(DaxDictionary daxDic, DaxMessage message) {
+    public void populateFromMessage(DaxDictionary daxDic, DaxPreamble preamble,  DaxMessage message) {
 
-        messagePopulator.populate(daxDic, message);
-        //TODO get context from head , if not exist default ctx is obligatory
+        messagePopulator.populate(daxDic, preamble ,message);
+
 
     }
 

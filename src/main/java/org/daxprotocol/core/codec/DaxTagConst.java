@@ -89,6 +89,7 @@ public class DaxTagConst {
 
     public static final DaxTag FIELD_ID_LIST           = daxpSysTag(115);
     public static final DaxTag FIELD_DATA_TYPE         = daxpSysTag(110);
+    public static final DaxTag DTO_DATA_TYPE_ID        = daxpSysTag(118);
 //    public static final DaxTag FIELD_ENUM_NAME         = daxpSysTag(111);
 //    public static final DaxTag FIELD_GROUP_ID          = daxpSysTag(120);
 

@@ -21,7 +21,8 @@ public class DaxCoreStrategyImpl implements DaxCoreStrategy{
     }
 
     //TODO Add preamble or context , allow list of messages
-    @Override public void populateFromMessage(DaxMessage message) {
-        dictionaryPopulator.populateFromMessage(dictionary, message);
-    }
+//    @Override public void populateFromMessage(DaxMessage message) {
+//
+//        dictionaryPopulator.populateFromMessage(dictionary, message);
+//    }
 }

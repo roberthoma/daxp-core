@@ -8,9 +8,11 @@ import org.daxprotocol.core.dictionary.DaxMessageItem;
 import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.group.DaxDTO;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.rules.DaxParserService;
 import org.daxprotocol.core.tool.DaxLangTool;
+
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -31,7 +33,7 @@ public class DaxPopulatorAnnotation {
 
     ){
         this.parserService = parserService;
-        jakartaPopulator = new DaxPopulatorJakartaValidation();
+        this.jakartaPopulator = new DaxPopulatorJakartaValidation();
         this.config = config;
         this.contextMapper = contextMapper;
         this.enumPopulator = enumPopulator;
@@ -48,12 +50,15 @@ public class DaxPopulatorAnnotation {
         DaxTag tag = DaxTagConst.UNKNOW_TAG;
         int contextId = -1;
         Class<?> fType = field.getType();
+        DaxDataType dataType = DaxDataType.fromClass(fType);
+        DaxTag dataTypeTag = DaxTagConst.UNKNOW_TAG;
 
         if (field.isAnnotationPresent(DaxpField.class)) {
             DaxpField daxField = field.getAnnotation(DaxpField.class);
             uiLabel = daxField.uiLabel();
 
             field.setAccessible(true);
+            //TODO move to tool  class
              contextId = daxField.context().isBlank() ?
                     config.getAppContextId():
                     contextMapper.getReferenceId(daxField.context());
@@ -66,6 +71,7 @@ public class DaxPopulatorAnnotation {
             uiLabel = daxpValue.uiLabel();
 
             field.setAccessible(true);
+            //TODO move to tool  class
             contextId = daxpValue.context().isBlank() ?
                     config.getAppContextId():
                     contextMapper.getReferenceId(daxpValue.context());
@@ -108,7 +114,24 @@ public class DaxPopulatorAnnotation {
 
 
         daxDic.putTag(tag);
-        daxDic.putAtrDataType(tag,fType);
+
+
+//        daxDic.putAtrDataType(tag,dataType.getCode());
+
+
+        if (dataType.getCode() == DaxDataType.DTO.getCode()){
+            DaxpDTO dto = field.getType(). getAnnotation(DaxpDTO.class);
+            int contextId2 = dto.context().isBlank() ?
+                    config.getAppContextId():
+                    contextMapper.getReferenceId(dto.context());
+
+            dataTypeTag = new DaxTag(contextId ,dto.tagId());
+            daxDic.putAtrDtoDataTypeId(tag,dataTypeTag);
+        }
+        else {
+            daxDic.putAtrDataType(tag,dataType.getCode());
+        }
+
         daxDic.putAtrUiLabel(tag, uiLabel);
 
         daxDic.putDtoField( groupTag,tag);

@@ -60,14 +60,18 @@ public class DaxParserService {
 
 
     //TODO rebuild and  DaxProtocolRules
+
+
+    //TODO change to List<DaxPair<?>>
     public List<DaxStringPair> parsePairs(String msg, Pattern pairPattern, int  msgContextId) {
         List<DaxStringPair> list = new ArrayList<>();
-        Matcher m = pairPattern.matcher(msg);
+        Matcher matcher = pairPattern.matcher(msg);
 
-        while (m.find()) {
+        while (matcher.find()) {
 
-            String contextStr = m.group(1);
-            int tagId = Integer.parseInt(m.group(2));
+            String contextStr = matcher.group(1);
+            int tagId = Integer.parseInt(matcher.group(2));
+            //-------------
             int contextId;
             if (contextStr == null) {
                 if (tagId < DaxpConfig.DAXP_MAX_TAG_ID) {
@@ -78,8 +82,9 @@ public class DaxParserService {
             } else {
                 contextId = contextMapper.getReferenceId(contextStr);
             }
+            //-------------
 
-            list.add(new DaxStringPair(new DaxTag(contextId, tagId), m.group(3)));
+            list.add(new DaxStringPair(new DaxTag(contextId, tagId), matcher.group(3)));
         }
         return list;
     }

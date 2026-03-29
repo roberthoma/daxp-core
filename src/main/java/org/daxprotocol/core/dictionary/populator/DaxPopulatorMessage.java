@@ -10,6 +10,7 @@ import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.group.DaxDTO;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.rules.DaxParserService;
 
@@ -24,7 +25,7 @@ public class DaxPopulatorMessage {
     }
 
 
-    private void populateFromMsgBlock(DaxDictionary daxDic, Map<DaxTag, DaxPair<?>> blockPairMap) {
+    private void populateFromMsgBlock(DaxDictionary daxDic, DaxPreamble preamble , Map<DaxTag, DaxPair<?>> blockPairMap) {
 
         String blockType =   blockPairMap.get(DaxTagConst.BLOCK_TYPE).getStrValue();
 
@@ -117,6 +118,10 @@ public class DaxPopulatorMessage {
             if(blockPairMap.containsKey(DaxTagConst.FIELD_DATA_TYPE)) {
                 daxDic.putAtrDataType(tag, blockPairMap.get(DaxTagConst.FIELD_DATA_TYPE).getCharValue());
             }
+
+            else if(blockPairMap.containsKey(DaxTagConst.DTO_DATA_TYPE_ID)) {
+                daxDic.putAtrDtoDataTypeId(tag, blockPairMap.get(DaxTagConst.DTO_DATA_TYPE_ID).getTagValue());
+            }
             else{
                 System.out.println("No data type !!!!!! ");
             }
@@ -157,6 +162,7 @@ public class DaxPopulatorMessage {
                 );
             }
 
+
             return;
         }
 
@@ -183,9 +189,9 @@ public class DaxPopulatorMessage {
 
     }
 
-    public void populate(DaxDictionary daxDic, DaxMessage message) {
+    public void populate(DaxDictionary daxDic,  DaxPreamble preamble, DaxMessage message) {
         message.getBody().getBlockMap().forEach((integer, integerDaxPairMap) ->
-                populateFromMsgBlock(daxDic, integerDaxPairMap)
+                populateFromMsgBlock(daxDic, preamble, integerDaxPairMap)
         );
 
     }

@@ -18,17 +18,14 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.annotation;
+package org.daxprotocol.core.field;
 
-import java.lang.annotation.*;
-import static java.lang.annotation.ElementType.TYPE;
+import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.tag.DaxTag;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ TYPE })
-@Documented
-public @interface DaxpDTO {
-    int    tagId();
-    String context()     default "";
-    String name()        default "";
-    String description() default "";
+public class DaxAtrDtoDataTypeId extends DaxPair<DaxTag> {
+    public DaxAtrDtoDataTypeId(DaxTag tag) {
+        super(DaxTagConst.DTO_DATA_TYPE_ID, tag);
+    }
 }

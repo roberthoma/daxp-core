@@ -61,7 +61,7 @@ public class CustomerDaxSchema {
     @DaxpTag(uiLabel = "Address")
     public static final int ADDRESS_DTO = 2100 ;
 
-    @DaxpTag(uiLabel = "Address" )
+    @DaxpTag(uiLabel = "Registered address" )
     public static final int CUSTOMER_ADDRESS = 2101 ;
 
     @DaxpTag(uiLabel = "Correspondence address",  dataType = "O")

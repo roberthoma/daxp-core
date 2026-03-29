@@ -26,10 +26,6 @@ public  class DaxPair<T>{
     DaxTag tag;
     protected T value;
 
-//    public DaxPair(Integer tagId, T value){
-//        this.tag =  DaxTag.newPredefineTag(tagId);
-//        this.value = value;
-//    }
     public DaxPair(DaxTag tag, T value){
         this.tag = tag;
         this.value = value;
@@ -69,6 +65,10 @@ public  class DaxPair<T>{
 
     public Integer getIntegerValue() {
         return Integer.valueOf((String) value);
+    }
+
+    public DaxTag getTagValue() {
+        return (DaxTag) value;
     }
 
     public Boolean getBooleanValue() {

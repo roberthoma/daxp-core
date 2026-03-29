@@ -2,12 +2,14 @@ package Dax_DicManager_TEST;
 
 import Dax_00_Base_test.DaxTestConfig;
 import org.daxprotocol.core.codec.DaxMessageCodec;
+import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.populator.DaxPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.provider.DaxProvider;
 import org.junit.jupiter.api.Assertions;
@@ -37,9 +39,11 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         DaxMessageCodec messageCodecAfter     = providerAfter.getMessageCodec();
         DaxPopulator populatorAfter = providerAfter.getDictionaryPopulator();
         DaxMessageFactory messageFactoryAfter = providerAfter.getMessageFactory();
+        DaxPreambleCodec preambleCodecAfter = providerAfter.getPreambleCodec();
 
         DaxMessage messageAfter  = messageCodecAfter.decode(msgStrOrg);
-        populatorAfter.populateFromMessage(dicAfter, messageAfter);
+        DaxPreamble preamble = preambleCodecAfter.decode(msgStrOrg);
+        populatorAfter.populateFromMessage(dicAfter, preamble ,messageAfter);
 
         DaxMessage messageDicAfter = messageFactoryAfter.dictionaryToMsg(dicAfter);
 

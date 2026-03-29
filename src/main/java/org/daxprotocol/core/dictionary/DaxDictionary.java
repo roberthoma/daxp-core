@@ -215,9 +215,6 @@ public class DaxDictionary {
 
     }
 
-    public void putAttribute(int tagId, DaxPair<?> atrPair){
-        putAttribute(config.getAppContextId(), tagId, atrPair);
-    }
 
     public void putAttribute(DaxTag tag, DaxPair<?> atrPair){
         putAttribute(tag.getContextId(), tag.getTagId(), atrPair);
@@ -236,17 +233,22 @@ public class DaxDictionary {
     }
 
 
-    public void put(int tagId,  Class<?> clazz){
-        putAttribute(tagId, new DaxAtrDataType(clazz));
-    };
+//    public void put(int tagId,  Class<?> clazz){
+//        putAttribute(tagId, new DaxAtrDataType(clazz));
+//    };
 
     public void putAtrDataType(DaxTag tag,  Class<?> clazz){
         putAttribute(tag, new DaxAtrDataType(clazz));
     };
 
+
     public void putAtrDataType(DaxTag tag,  Character c){
         putAttribute(tag, new DaxAtrDataType(c));
     };
+
+//    public void putAtrDataType(DaxTag tag,  DaxAtrDataType dataType){
+//        putAttribute(tag, dataType);
+//    };
 
 
     public void putAtrUiLabel(DaxTag tag,  String uiLabel){
@@ -280,6 +282,11 @@ public class DaxDictionary {
 
     public void putAtrEnumTypeTag(DaxTag tag, DaxTag enumTag) {
         putAttribute(tag, new DaxAtrEnumTag(enumTag));
+    }
+
+
+    public void putAtrDtoDataTypeId(DaxTag tag, DaxTag dataTypeTag) {
+        putAttribute(tag, new DaxAtrDtoDataTypeId(dataTypeTag));
     }
 
     // put DaxAtrDeprecated

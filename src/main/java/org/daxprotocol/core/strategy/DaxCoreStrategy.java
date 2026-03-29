@@ -5,5 +5,5 @@ import org.daxprotocol.core.model.DaxMessage;
 
 public interface DaxCoreStrategy {
     void populateFromAnnotations(Class<?> clazz);
-    void populateFromMessage(DaxMessage message);
+  //  void populateFromMessage(DaxMessage message);
 }
