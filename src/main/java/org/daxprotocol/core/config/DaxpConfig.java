@@ -50,11 +50,13 @@ public final class DaxpConfig {
 //    public static final char CONTEXT_TAG_SEPARATOR = ',';
 
     public static final CharSequence TAG_LIST_SEPARATOR    = ";";
+    public static final char TAG_LIST_SEPARATOR_CHAR    = ';';
     public static final CharSequence VALUE_LIST_SEPARATOR    = ";";
     public static final CharSequence CONTEXT_TAG_SEPARATOR = ":";
 
     /** key=value */
     public static final char EQUAL = '=';
+    public static final char CONTEXT_TAG_SEPARATOR_CHAR = ':';
 
     /**  Pair separator on the WIRE (binary, non-printable). */
     //public static char PAIR_SEPARATOR = 0x0001;  // Target on product

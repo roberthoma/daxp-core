@@ -20,6 +20,7 @@
 
 package org.daxprotocol.core.field;
 
+import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 
@@ -29,14 +30,14 @@ public class DaxMsgType extends DaxPair<String> {
     //TODO Message DEPENDENCY from required tags/fields
     //TODO Message respond
     //TODO Add to preferences
-    private static final String daxPrefix = "SYS.";
+    private static final String daxPrefix = DaxpConfig.DAXP_CONTEXT_TAG_PREFIX+ DaxpConfig.CONTEXT_TAG_SEPARATOR;
 
     public static final String  DIC_REQ     =  daxPrefix+"DR"; // 	REQ 	Request for a dictionary
     public static final String  DATA_DIC    =  daxPrefix+"DD";  // 	RES 	Dictionary of data types and their attributes
     public static final String  CONTEXT_DIC =  daxPrefix+"XD";  // 	RES 	Dictionary of data types and their attributes
 
     public static final String  OK_RES      =  daxPrefix+"OK";  // 	RES 	Error request
-    public static final String  ERR_RES     =  daxPrefix+"ER";  // 	RES 	Error request
+    public static final String  ERR_RES     =  daxPrefix+"ER";  // 	RES 	Error respond
     public static final String  DIC_RELOAD  =  daxPrefix+"RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
 
     // new sys message .. daxp configuration  : set pairSeparator ..

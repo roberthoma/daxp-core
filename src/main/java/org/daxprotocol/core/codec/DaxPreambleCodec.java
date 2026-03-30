@@ -25,7 +25,7 @@ import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
-import org.daxprotocol.core.rules.DaxPatternFactory;
+import org.daxprotocol.core.parsers.DaxPatternFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -79,7 +79,6 @@ public class DaxPreambleCodec {
         encode(sb,DaxPreambleTag.DAXP, preamble.getProtocolVersion() ); //Always first
 
         map.forEach((k, v) -> encode(sb,k,v));
-        sb.append("\n"); // TODO configuration
         return sb.toString();
     }
 

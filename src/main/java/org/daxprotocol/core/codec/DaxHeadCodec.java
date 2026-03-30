@@ -19,9 +19,8 @@
  */
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.head.DaxHead;
-import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.model.pair.DaxPair;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,14 +60,15 @@ public class DaxHeadCodec{
 
 
 
-    public  DaxHead createHead(List<DaxStringPair> listOfPair) {
-        String msgType = listOfPair.get(0).getValue();
+    public  DaxHead createHead(List<DaxPair<?>> listOfPair) {
+        String msgType = listOfPair.get(0).getStrValue();
         DaxHead head = new DaxHead(msgType);
 
-        Optional<DaxStringPair> optBlockCount = listOfPair.stream()
+        Optional<DaxPair<?>> optBlockCount = listOfPair.stream()
                 .filter(p -> p.getTag().equals(MSG_BLOCK_COUNT) )
                 .findFirst();
-        optBlockCount.ifPresent(pair -> head.setBlockCount(Integer.parseInt(pair.getValue())));
+
+        optBlockCount.ifPresent(pair -> head.setBlockCount(pair.getIntegerValue()));
 
         return head;
     }

@@ -23,15 +23,17 @@ import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
-import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
-import org.daxprotocol.core.rules.DaxParserService;
-import org.daxprotocol.core.rules.DaxPatternFactory;
+import org.daxprotocol.core.parsers.DaxParserService;
+import org.daxprotocol.core.parsers.DaxPatternFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 //public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 public class DaxMessageCodec {
@@ -62,7 +64,9 @@ public class DaxMessageCodec {
 
 //TODO move to any service
 
-
+    public String encodeAll(List<DaxMessage> messageList) {
+    return " no messss !!!";
+    }
         //@Override
     public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
@@ -89,7 +93,7 @@ public class DaxMessageCodec {
         return sb.toString();
     }
 
-   private DaxMessage createMsg(List<DaxStringPair> listOfPair){
+   private DaxMessage createMsg(List<DaxPair<?>> listOfPair){
        DaxHead head;
        DaxBody body;
        DaxTrailer trailer;
@@ -102,40 +106,11 @@ public class DaxMessageCodec {
        return new DaxMessage(head,body,trailer);
    }
 
-   private List<List<DaxStringPair>> splitMessages(List<DaxStringPair> allPairs) {
-       List<List<DaxStringPair>> result = new ArrayList<>();
-       List<DaxStringPair> current = new ArrayList<>();
-
-       for (DaxStringPair pair : allPairs) {
-           if (pair.getTag().equals(DaxTagConst.MSG_TYPE)) {
-               // start of a new message
-               if (!current.isEmpty()) {
-                   // if previous message wasn't closed correctly, save it anyway
-                   result.add(new ArrayList<>(current));
-                   current.clear();
-               }
-           }
-
-           current.add(pair);
-
-           if (pair.getTag().equals(DaxTagConst.CHECKSUM)) {
-               // end of current message
-               result.add(new ArrayList<>(current));
-               current.clear();
-           }
-       }
-
-       // handle last incomplete message (optional)
-       if (!current.isEmpty()) {
-           result.add(current);
-       }
-
-       return result;
-   }
 
 //TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPE !!!
-//??????  chage dfecode to decode first
-//decideall to decode
+
+
+
 
 
     /// ////
@@ -143,20 +118,77 @@ public class DaxMessageCodec {
         List<DaxMessage> messageList = new ArrayList<>();
         DaxPreamble preamble = preambleCodec.decode(msgStr);
 
-        int fistMsgIdx = msgStr.indexOf(String.valueOf(DaxTagConst.MSG_TYPE.getTagId())+ DaxpConfig.EQUAL);
+//        String fisrtTagType = "|9=";
+        String strTagType = ""+
+                DaxpConfig.PAIR_SEPARATOR+ DaxTagConst.MSG_TYPE.getTagId()+ DaxpConfig.EQUAL;
+
+        String strTagBlock = ""+
+                DaxpConfig.PAIR_SEPARATOR+ DaxTagConst.BLOCK_INDEX.getTagId()+ DaxpConfig.EQUAL;
+
+
+        int fistMsgIdx = msgStr.indexOf(strTagType);
 
         String msgPairsStr = msgStr.substring(fistMsgIdx);
 
-        List<DaxStringPair> listOfPair = parserService.
-                          parsePairs(msgPairsStr,
-                                     DaxPatternFactory.compileMessagePairPattern(DaxpConfig.PAIR_SEPARATOR),
-                                     preamble.getMsgContextId());
 
-        List<List<DaxStringPair>> msgPairList =  splitMessages(listOfPair);
+    //tmp    List<String> messagesList = parserService.splitByTag(msgPairsStr,strTagType);
 
-        msgPairList.forEach(pairs ->
-            messageList.add(createMsg(pairs))
-        );
+        List<List<String>> listOfMsgBlock = new ArrayList<>();
+//tmp
+//        messagesList.forEach(s -> {
+//            int fistBBIdx = s.indexOf(strTagBlock);
+//
+//            if (fistBBIdx==-1){
+//                List<String> sss = new ArrayList<>();
+//                sss.add(s);
+//                listOfMsgBlock.add(sss);
+//            }
+//           else {
+//                //  sss.add(s.substring(0,fistBBIdx));
+//                List<String> sss = new ArrayList<>(parserService.splitByTag(s, strTagBlock));
+//
+//                listOfMsgBlock.add(sss);
+//                //listOfMsgBlock.add(parserService.splitByTag(s, strTagType));
+//           }
+//
+//
+//
+//        });
+
+         //MSG List> Block List> Map of tag  and string value
+        // rebuild "Primitive Obsession"
+
+
+        List<List<Map< DaxTag, String>>> listMsgValue = new ArrayList<>();
+//tmp
+//        listOfMsgBlock.forEach(blockList ->  {
+//                    List<Map< DaxTag, String>> mapTagValueList = new ArrayList<>();
+//                      blockList.forEach(s ->
+//                              mapTagValueList.add( parserService.parserBlock(s))
+//                       );
+//                    listMsgValue.add(mapTagValueList);
+//        }
+//        );
+
+
+     //   Map<DaxTag, String> blockPairMap = parserService.blockParse();
+
+        //tmp
+//        List<DaxPair<?>> listOfPair = parserService.
+//                          parsePairs(msgPairsStr,
+//                                     DaxPatternFactory.compileMessagePairPattern(DaxpConfig.PAIR_SEPARATOR),
+//                                     preamble.getMsgContextId());
+
+        //tmp
+        //List<List<DaxPair<?>>> msgPairList =  parserService.splitMessages(listOfPair);
+
+
+
+
+//tmp
+//        msgPairList.forEach(pairs ->
+//            messageList.add(createMsg(pairs))
+//        );
 
         return messageList;
     }

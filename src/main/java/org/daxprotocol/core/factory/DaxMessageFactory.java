@@ -30,7 +30,7 @@ import org.daxprotocol.core.group.DaxDTO;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.pair.DaxStringPair;
+import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
@@ -42,7 +42,6 @@ import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -394,7 +393,7 @@ public class DaxMessageFactory {
     public DaxMessage errorResourceNotFound() {
         DaxMessage message = new DaxMessage(DaxMsgType.ERR_RES);
         message.getBody().nextBlock();
-        message.getBody().putPair(new DaxStringPair(ERR_DESCRIPTION,"Resource not found"));
+        message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Resource not found"));
         return message;
     }
 
@@ -407,7 +406,7 @@ public class DaxMessageFactory {
     public DaxMessage errorInvalidMessageType() {
         DaxMessage message = new DaxMessage(DaxMsgType.ERR_RES);
         message.getBody().nextBlock();
-        message.getBody().putPair(new DaxStringPair(ERR_DESCRIPTION,"Invalid Message Type"));
+        message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Invalid Message Type"));
         return message;
     }
 

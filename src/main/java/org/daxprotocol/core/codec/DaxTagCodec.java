@@ -23,7 +23,7 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.rules.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParserService;
 
 public class DaxTagCodec {
     DaxpConfig config;
@@ -50,9 +50,13 @@ public class DaxTagCodec {
 
     }
 
-    public DaxTag decode(String tagStr){
-        return parserService.parseDaxTag(tagStr);
+    public DaxTag decode(String tagStr, int msgContextId){
+        return parserService.parseDaxTag(tagStr, msgContextId);
     }
+
+//    public DaxTag decode(String tagStr){
+//        return parserService.parseDaxTag(tagStr);
+//    }
 
 
 

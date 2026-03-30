@@ -20,7 +20,6 @@
 package org.daxprotocol.core.codec;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.pair.DaxStringPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.List;
@@ -40,8 +39,6 @@ public class DaxBodyCodec {
                                       int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap)
     {
         if (isBlogIdx) {
-
-            sb.append("\n"); //TODO Debug mode or optional
 
             pairCodec.encode(sb, DaxTagConst.BLOCK_INDEX, String.valueOf(blockIdx+1));
        }
@@ -88,7 +85,7 @@ public class DaxBodyCodec {
     }
 
 
-    public  DaxBody createBody(int blockCount , List<DaxStringPair> listOfPair){
+    public  DaxBody createBody(int blockCount , List<DaxPair<?>> listOfPair){
         DaxBody body = new DaxBody();
 
         if (blockCount==0) {

@@ -20,18 +20,19 @@
 
 package org.daxprotocol.core.config;
 
-import org.daxprotocol.core.context.DaxContext;
-
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.regex.Pattern;
+
+/***
+ *
+ org.daxprotocol.core.config.defaultEncoding="UTF-8"
+ org.daxprotocol.core.config.tagPrefix=CRN
+ org.daxprotocol.core.config.context.symbol=CUSTOMER
+ org.daxprotocol.core.config.context.description=Customer data
+
+ */
 
 public class DaxpConfigFactory {
-//    private static final String APPLICATION_CONTEXT_KEY = "daxp.application-context";
-//    private static final int APPLICATION_CONTEXT_FALLBACK = 0;
-
-//    private static final Pattern CONTEXT_PATTERN =
-//            Pattern.compile("^daxp\\.contexts\\[(\\d+)]\\.(\\w+)$");
 
     private static ClassLoader getClassLoader() {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -69,7 +70,6 @@ public class DaxpConfigFactory {
 
         String default_encoding = props.getProperty(parDomain+ "default_encoding");
 
-
         // Optional: validate
         if (ctxTagPrefix == null || ctxSymbol == null || ctxDescription == null) {
             throw new IllegalStateException("Missing "+parDomain+".* properties");
@@ -79,21 +79,8 @@ public class DaxpConfigFactory {
         config.setAppContextSymbol(ctxSymbol);
         config.setAppContextDescription(ctxDescription);
 
-//todo add defaultEncoding
-        // >>>>>>> diffrent application can work in the same context
-
-
         return config;
     }
 
 }
 
-
-/***
- *
- org.daxprotocol.core.config.defaultEncoding="UTF-8"
- org.daxprotocol.core.config.tagPrefix=CRN
- org.daxprotocol.core.config.context.symbol=CUSTOMER
- org.daxprotocol.core.config.context.description=Customer data
-
- */

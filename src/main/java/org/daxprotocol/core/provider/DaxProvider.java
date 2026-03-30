@@ -31,8 +31,9 @@ import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
-import org.daxprotocol.core.rules.DaxParserService;
-import org.daxprotocol.core.rules.DaxpRules;
+import org.daxprotocol.core.parsers.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParserService_V2;
+import org.daxprotocol.core.parsers.DaxpRules;
 import org.daxprotocol.core.strategy.DaxCoreStrategy;
 import org.daxprotocol.core.strategy.DaxCoreStrategyImpl;
 
@@ -66,6 +67,7 @@ public class DaxProvider {
 
     private final DaxParserService parserService;
 
+
     public DaxProvider(DaxpConfig config){
         this.config = config;
         this.daxpRules = new DaxpRules();
@@ -79,7 +81,8 @@ public class DaxProvider {
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
 
-        parserService = new DaxParserService(config, contextMapper);
+
+        parserService = new DaxParserService_V2(config, contextMapper);
 
         dictionary = new DaxDictionary(config, contextMapper, messageMapper);
         dictionary.putContext(sysContext);
@@ -160,7 +163,5 @@ public class DaxProvider {
     public DaxTagCodec getTagCodec(){
         return tagCodec;
     }
-
-
 
 }

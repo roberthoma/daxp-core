@@ -11,7 +11,7 @@ public class DaxMessageItem {
     private final String msgType;
     private final String msgDesc;
 
-    Set<DaxTag> tagMap = new HashSet<>();
+    Set<DaxTag> reqTagMap = new HashSet<>();
 
 
     /************************
@@ -46,7 +46,7 @@ public class DaxMessageItem {
     }
 
     public void addReqTag(DaxTag daxTag) {
-        tagMap.add(daxTag);
+        reqTagMap.add(daxTag);
     }
 
 //    public void addReqTag(String daxTag) {
@@ -54,7 +54,7 @@ public class DaxMessageItem {
 //    }
 
     public Set<DaxTag> getMsgFields(){
-        return tagMap;
+        return reqTagMap;
     }
 
     public void addRelatedMsgType(String msgType) {

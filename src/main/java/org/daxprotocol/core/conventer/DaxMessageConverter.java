@@ -46,6 +46,7 @@ public class DaxMessageConverter {
                 DaxpField ann = f.getAnnotation(DaxpField.class);
                 if (ann == null) continue; // skip non-annotated fields (e.g., town)
 
+                //TODO Add to utility class
                 int contextId = ann.context().isBlank() ? config.getAppContextId():
                         contextMapper.getReferenceId(ann.context());
 

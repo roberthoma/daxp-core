@@ -1,6 +1,5 @@
 package org.daxprotocol.core.dictionary.populator;
 
-import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpEnum;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
@@ -8,20 +7,17 @@ import org.daxprotocol.core.dictionary.DaxEnum;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.rules.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParserService;
 
 public class DaxPopulatorEnumType {
     DaxpConfig config;
     DaxStringReferenceMapper contextMapper;
-    DaxParserService parserService;
 
    public DaxPopulatorEnumType (DaxpConfig config,
-    DaxStringReferenceMapper contextMapper,
-    DaxParserService parserService
+                               DaxStringReferenceMapper contextMapper
     ){
         this.config        = config;
         this.contextMapper = contextMapper;
-        this.parserService = parserService;
     }
 
 

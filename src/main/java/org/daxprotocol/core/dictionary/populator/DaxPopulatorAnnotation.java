@@ -8,9 +8,8 @@ import org.daxprotocol.core.dictionary.DaxMessageItem;
 import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.group.DaxDTO;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
-import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.rules.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParserService;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 
@@ -184,8 +183,9 @@ public class DaxPopulatorAnnotation {
             System.out.println("Zarejestrowano MSG: " + msgValue + " (" + msgAnn.description() + ")");
 
             Arrays.stream(msgAnn.respMsg()).forEach(mgs::addRelatedMsgType);
+
             Arrays.stream(msgAnn.reqTag()).forEach(tagStr ->
-                    mgs.addReqTag(parserService.parseDaxTag(tagStr)));
+                    mgs.addReqTag(parserService.parseDaxTag(tagStr, config.getAppContextId())));
 
             daxDic.putMsgItem(mgs);
 

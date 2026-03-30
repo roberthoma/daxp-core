@@ -19,14 +19,12 @@
  */
 package org.daxprotocol.core.dictionary.populator;
 
-import org.daxprotocol.core.annotation.*;
-
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.rules.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParserService;
 
 
 //TODO create  service  DaxValidationAttributeManager
@@ -36,7 +34,7 @@ public class DaxPopulator {
 
     DaxpConfig               config;
     DaxStringReferenceMapper contextMapper;
-    DaxParserService         parserService;
+    DaxParserService parserService;
 
     DaxPopulatorEnumType enumPopulator;
 
@@ -50,12 +48,13 @@ public class DaxPopulator {
         this.config        = config;
         this.contextMapper = contextMapper;
         this.parserService = parserService;
-        enumPopulator = new DaxPopulatorEnumType(config, contextMapper, parserService);
+        enumPopulator = new DaxPopulatorEnumType(config, contextMapper);
         annotationPopulator = new DaxPopulatorAnnotation(
                                         parserService ,
                                         enumPopulator,
                                         config,
                                         contextMapper);
+
         messagePopulator = new DaxPopulatorMessage(parserService);
     }
 
