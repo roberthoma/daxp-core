@@ -1,5 +1,6 @@
 package org.daxprotocol.core.ut.Dax_00_10_Parser;
 
+import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxBaseTestConfig;
@@ -9,18 +10,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 public class DaxParserServiceV1Test extends DaxBaseTestConfig {
-
-    //    @Test
-//    void ParserBaseTest() {
-//
-//    DaxParserService parserService = crmProvider.getParserService();
-//
-//    Map<DaxTag, String> pairStrMap = parserService.parseBlock("|7=1|5=INST|100=2000|2080=Small boll|2001=123|2002=Kasia|2101=2|2085=23|2102=3|2075=INDIVIDUAL");
-//        pairStrMap.forEach((daxTag, s) -> System.out.println(daxTag+"  = "+s));
-//
-//    }
 
 
 
@@ -48,4 +40,36 @@ public class DaxParserServiceV1Test extends DaxBaseTestConfig {
 
         Assertions.assertEquals(10,pairList.size());
     }
+
+//    @Test
+//    void parseAndDecodeNumberPairsToString_TEST(){
+//        DaxpConfig config = crmProvider.getConfig();
+//        Map<String,String> preamblePairs = crmProvider.getPreambleCodec().parsePreamble(msg);
+//
+//        DaxPairCodec pairCodec = crmProvider.getPairCodec();
+//
+//        DaxParserService parserService = crmProvider.getParserService();
+//
+//        List<DaxPair<?>> pairsList = parserService
+//                .parsePairs(msgPairs, config.getAppContextId());//(DaxPatternFactory.compileMessagePairPattern('|') ,
+//
+//        long equalChar = msgPairs.chars()
+//                .filter(c -> c == '|')
+//                .count();
+//        Assertions.assertEquals(equalChar,pairsList.size());
+//    }
+
+
+    //    @Test
+//    void ParserBaseTest() {
+//
+//    DaxParserService parserService = crmProvider.getParserService();
+//
+//    Map<DaxTag, String> pairStrMap = parserService.parseBlock("|7=1|5=INST|100=2000|2080=Small boll|2001=123|2002=Kasia|2101=2|2085=23|2102=3|2075=INDIVIDUAL");
+//        pairStrMap.forEach((daxTag, s) -> System.out.println(daxTag+"  = "+s));
+//
+//    }
+
+
+
 }

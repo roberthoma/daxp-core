@@ -66,7 +66,8 @@ public final class DaxpConfig {
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
     private int appContextId = 1;
-    private int nextMsgId    = 100;
+    public static final int  START_IDX_MSG_MAPPER = 100;
+    public static final int  START_IDX_CTX_MAPPER = 100;
 
     public int getNextContextId() {
         return appContextId + 1;
@@ -130,15 +131,7 @@ public final class DaxpConfig {
         return DaxpConfig.TAG_LIST_SEPARATOR;
     }
 
-    public int getNextMsgId() {
-        return nextMsgId+1;
-    }
+    //TODO get About  STRING
+    //TODO get configuration String
 
-//    public char getPairSeparator() {
-//        return pairSeparator;
-//    }
-//
-//    public void setPairSeparator(char pairSeparator) {
-//        this.pairSeparator = pairSeparator;
-//    }
 }

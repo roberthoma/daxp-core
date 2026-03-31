@@ -45,17 +45,7 @@ public class Dax_pair_service_test extends DaxTestConfig {
     }
 
 
-    @Test
-    public void pair_parse_test(){
-        Pattern pattern = DaxPatternFactory.compileMessagePairPattern('|');
-        DaxPairCodec pairCodec = crmProvider.getPairCodec();
-        DaxpConfig   crmConfig = crmProvider.getConfig();
-        DaxParserService parserService = crmProvider.getParserService();
-        List<DaxPair<?>> pairList = parserService.parsePairs(msgPairsStr1,crmConfig.getAppContextId());
 
-        pairList.forEach(System.out::println);
-
-    }
 
 
 }

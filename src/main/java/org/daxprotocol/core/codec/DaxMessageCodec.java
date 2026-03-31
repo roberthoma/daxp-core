@@ -27,9 +27,7 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
-import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
 import org.daxprotocol.core.parsers.DaxParserService;
-import org.daxprotocol.core.parsers.DaxPatternFactory;
 
 import java.util.ArrayList;
 import java.util.List;

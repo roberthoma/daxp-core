@@ -55,19 +55,17 @@ public class DaxParserService_tagTest extends DaxBaseTestConfig {
     }
     @Test
     void parseTag60(){
-        String tagStr = " : 9";
+        String tagStr = " : 7";
         DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
-        DaxTag expectedTag  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,9);
+        DaxTag expectedTag  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,7);
 
         Assertions.assertEquals(expectedTag ,tag);
     }
     @Test
     void parseTag70(){
         String tagStr = " w 9";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
-        DaxTag expectedTag  = new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,9);
-
-        Assertions.assertEquals(expectedTag ,tag);
+        Assertions.assertThrows(RuntimeException.class, () ->
+                parser.parseDaxTag(tagStr, appContextId));  // TODO change to dedicated exception
     }
 
     @Test
@@ -76,6 +74,15 @@ public class DaxParserService_tagTest extends DaxBaseTestConfig {
         DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
         int expContextId = provider.getContextMapper().getReferenceId("FIX");
         DaxTag expectedTag  = new DaxTag(expContextId,9);
+
+        Assertions.assertEquals(expectedTag ,tag);
+    }
+    @Test
+    void parseTag90(){
+        String tagStr = "CRM:1029";
+        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        int expContextId = provider.getContextMapper().getReferenceId("CRM");
+        DaxTag expectedTag  = new DaxTag(expContextId,1029);
 
         Assertions.assertEquals(expectedTag ,tag);
     }

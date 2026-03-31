@@ -2,6 +2,7 @@ package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -15,14 +16,15 @@ public class DaxParserService_V2 implements DaxParserService{
 
     DaxpConfig config;
     DaxStringReferenceMapper contextMapper;
-    DaxParserTools parserTools = new DaxParserTools();
-  //  Pattern ctxTagPattern;
+    DaxParserTools parserTools =  DaxParserTools.getInstance();
+    DaxParserTag parserTag ;
 
-    public DaxParserService_V2(DaxpConfig config, DaxStringReferenceMapper contextMapper)
+    public DaxParserService_V2(DaxpConfig config, DaxContextMapper contextMapper)
      {
         this.config = config;
         this.contextMapper = contextMapper;
-    //    this.ctxTagPattern = DaxPatternFactory.compileContextTagPattern(config);
+       this.parserTag = new DaxParserTag(contextMapper);
+
     }
 
 
@@ -153,95 +155,11 @@ public class DaxParserService_V2 implements DaxParserService{
         return list;
     }
 
-    /**
-     * Parses a string representation of a DaxTag (e.g., "  CTX:100  ")
-     * into a DaxTag object using high-performance index tracking.
-     * * This version handles:
-     * - Leading/trailing whitespaces around the whole string.
-     * - Whitespaces around the separator (e.g., "CTX : 100").
-     * - Single-character separator defined in config.
-     *
-     * @param tagStr The raw tag string to parse.
-     * @return A new DaxTag object with mapped contextId and tagId.
-     * @throws RuntimeException if the format is invalid or tagId is not a numerical value.
-     */
     @Override
     public DaxTag parseDaxTag(String tagStr, int msgContextId) {
-        if (tagStr == null) {
-            throw new RuntimeException("NOT correct DaxTag: Input is null");
-        }
-
-        // 1. Trim the entire string without creating a new String object
-        int start = 0;
-        int end = tagStr.length();
-        while (start < end && tagStr.charAt(start) <= ' ') start++;
-        while (end > start && tagStr.charAt(end - 1) <= ' ') end--;
-
-        if (start >= end) {
-            throw new RuntimeException("NOT correct DaxTag: Input is empty or only whitespace");
-        }
-
-        char separator = DaxpConfig.CONTEXT_TAG_SEPARATOR_CHAR; // config.getContextTafSeparator(); // char type
-        int separatorPos = -1;
-
-        // 2. Search for the separator only within the trimmed range
-        for (int i = start; i < end; i++) {
-            if (tagStr.charAt(i) == separator) {
-                separatorPos = i;
-                break;
-            }
-        }
-
-        String contextSymbol = null;
-        int tagIdStart;
-
-        if (separatorPos != -1) {
-            // --- Context Prefix Found ---
-            // Trim the context symbol (handle "CTX :")
-            int ctxEnd = separatorPos;
-            while (ctxEnd > start && tagStr.charAt(ctxEnd - 1) <= ' ') {
-                ctxEnd--;
-            }
-
-            if (ctxEnd > start) {
-                contextSymbol = tagStr.substring(start, ctxEnd);
-            }
-
-            // Tag ID starts after the separator
-            tagIdStart = separatorPos + 1;
-        } else {
-            // --- No Context Prefix ---
-            tagIdStart = start;
-        }
-
-        // 3. Trim leading spaces for Tag ID (handle ": 100")
-        while (tagIdStart < end && tagStr.charAt(tagIdStart) <= ' ') {
-            tagIdStart++;
-        }
-
-        // 4. Parse Tag ID directly from the sequence
-        int tagId;
-        try {
-            tagId = parserTools.parseIntFromSequence(tagStr, tagIdStart, end);
-        } catch (NumberFormatException e) {
-            throw new RuntimeException("NOT correct DaxTag: " + tagStr, e);
-        }
-
-        // 5. Context ID resolution logic
-        int contextId ;
-        if (contextSymbol == null || contextSymbol.isEmpty()) {
-            if( tagId <= DaxpConfig.DAXP_MAX_TAG_ID) {
-                contextId = DaxpConfig.DAXP_CONTEXT_ID;
-            }
-            else {
-                contextId = msgContextId ;// config.getAppContextId();
-            }
-        } else {
-            contextId = contextMapper.getReferenceId(contextSymbol);
-        }
-        return new DaxTag(contextId, tagId);
+        return parserTag.parseDaxTag(tagStr,  msgContextId);
     }
-//------------------------------------------------------
+    //------------------------------------------------------
 
     public Map<DaxTag, String> parserBlock(String blockStr) {
         Map<DaxTag, String> result = new HashMap<>();

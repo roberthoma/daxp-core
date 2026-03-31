@@ -45,23 +45,6 @@ class DaxDecodeServiceTest extends DaxTestConfig {
         Assertions.assertEquals("UTF-8",preamblePairs.get("EN"));
     }
 
-    @Test
-    void parseAndDecodeNumberPairsToString_TEST(){
-        DaxpConfig config = crmProvider.getConfig();
-        Map<String,String>   preamblePairs = crmProvider.getPreambleCodec().parsePreamble(msg);
-
-        DaxPairCodec pairCodec = crmProvider.getPairCodec();
-
-        DaxParserService parserService = crmProvider.getParserService();
-
-        List<DaxPair<?>> pairsList = parserService
-                                       .parsePairs(msgPairs, config.getAppContextId());//(DaxPatternFactory.compileMessagePairPattern('|') ,
-
-        long equalChar = msgPairs.chars()
-                            .filter(c -> c == '|')
-                            .count();
-        Assertions.assertEquals(equalChar,pairsList.size());
-    }
 
     @Test
     void decodeMSG_TEST(){

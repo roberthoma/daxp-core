@@ -18,12 +18,11 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.model.trailer;
+package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.codec.DaxPairCodec;
-import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.trailer.DaxTrailer;
 
 import java.util.List;
 

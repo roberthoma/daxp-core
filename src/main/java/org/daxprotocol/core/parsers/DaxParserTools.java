@@ -2,6 +2,15 @@ package org.daxprotocol.core.parsers;
 
 public class DaxParserTools {
 
+    private static final DaxParserTools INSTANCE = new DaxParserTools();
+
+    private DaxParserTools() {
+    }
+
+    public static DaxParserTools getInstance() {
+        return INSTANCE;
+    }
+
     /**
      * Efficiently parses an integer from a specific range within a String
      * while ignoring any trailing whitespaces within that range.

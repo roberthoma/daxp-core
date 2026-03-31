@@ -23,14 +23,16 @@ package org.daxprotocol.core.provider;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxpConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.populator.DaxPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
+import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
-import org.daxprotocol.core.model.trailer.DaxTrailerCodec;
+import org.daxprotocol.core.codec.DaxTrailerCodec;
 import org.daxprotocol.core.parsers.DaxParserService;
 import org.daxprotocol.core.parsers.DaxParserService_V2;
 import org.daxprotocol.core.parsers.DaxpRules;
@@ -55,7 +57,7 @@ public class DaxProvider {
 
     private final DaxCoreStrategy coreStrategy;
 
-    private final DaxStringReferenceMapper contextMapper;
+    private final DaxContextMapper contextMapper;
 
     private final DaxStringReferenceMapper messageMapper;
 
@@ -75,8 +77,8 @@ public class DaxProvider {
         DaxContext appContext = DaxContextFactory.createAppContext(config);
         DaxContext sysContext = DaxContextFactory.createSysContext();
 
-        contextMapper = new DaxStringReferenceMapper(config.getNextContextId());
-        messageMapper = new DaxStringReferenceMapper(config.getNextMsgId());
+        contextMapper = new DaxContextMapper(); //new DaxStringReferenceMapper(config.getNextContextId());
+        messageMapper = new DaxMessageMapper();
 
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
