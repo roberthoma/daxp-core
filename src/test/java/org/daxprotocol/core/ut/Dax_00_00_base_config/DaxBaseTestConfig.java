@@ -4,10 +4,7 @@ import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.parsers.DaxParserService;
 import org.daxprotocol.core.provider.DaxProvider;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 public class DaxBaseTestConfig {
     public static DaxProvider provider;
@@ -41,5 +38,13 @@ public class DaxBaseTestConfig {
         Assertions.assertEquals(1, provider.getConfig().getAppContextId());
     }
 
+    @AfterAll
+    static void checkContextList(){
+        System.out.println("*************************************************");
+        System.out.println("               Context list");
+        System.out.println();
+        provider.getContextMapper().getAllMappings().forEach((s, id) -> System.out.println(s +" id="+id));
+        System.out.println("*************************************************");
+    }
 
 }

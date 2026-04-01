@@ -21,7 +21,7 @@
 package org.daxprotocol.core.provider;
 
 import org.daxprotocol.core.codec.*;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
@@ -30,7 +30,6 @@ import org.daxprotocol.core.dictionary.populator.DaxPopulator;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTrailerCodec;
 import org.daxprotocol.core.parsers.DaxParserService;
@@ -41,7 +40,7 @@ import org.daxprotocol.core.strategy.DaxCoreStrategyImpl;
 
 public class DaxProvider {
 
-    private final DaxpConfig config;
+    private final DaxConfig config;
 
     private final DaxPreambleCodec preambleCodec;
 
@@ -59,7 +58,7 @@ public class DaxProvider {
 
     private final DaxContextMapper contextMapper;
 
-    private final DaxStringReferenceMapper messageMapper;
+    private final DaxMessageMapper messageMapper;
 
     private final DaxTagCodec tagCodec;
 
@@ -70,7 +69,7 @@ public class DaxProvider {
     private final DaxParserService parserService;
 
 
-    public DaxProvider(DaxpConfig config){
+    public DaxProvider(DaxConfig config){
         this.config = config;
         this.daxpRules = new DaxpRules();
 
@@ -111,7 +110,7 @@ public class DaxProvider {
     }
 
 
-    public DaxpConfig getConfig() {
+    public DaxConfig getConfig() {
         if (config == null) {
             throw new RuntimeException("Config is NOT READY !!!!");
         }
@@ -150,7 +149,7 @@ public class DaxProvider {
         return coreStrategy;
     }
 
-    public DaxStringReferenceMapper getContextMapper() {
+    public DaxContextMapper getContextMapper() {
         return contextMapper;
     }
 

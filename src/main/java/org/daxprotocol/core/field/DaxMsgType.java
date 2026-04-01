@@ -20,7 +20,7 @@
 
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.codec.DaxTagConst;
 
@@ -30,7 +30,7 @@ public class DaxMsgType extends DaxPair<String> {
     //TODO Message DEPENDENCY from required tags/fields
     //TODO Message respond
     //TODO Add to preferences
-    private static final String daxPrefix = DaxpConfig.DAXP_CONTEXT_TAG_PREFIX+ DaxpConfig.CONTEXT_TAG_SEPARATOR;
+    private static final String daxPrefix = DaxConfig.DAXP_CONTEXT_TAG_PREFIX+ DaxConfig.CONTEXT_TAG_SEPARATOR;
 
     public static final String  DIC_REQ     =  daxPrefix+"DR"; // 	REQ 	Request for a dictionary
     public static final String  DATA_DIC    =  daxPrefix+"DD";  // 	RES 	Dictionary of data types and their attributes

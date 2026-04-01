@@ -1,10 +1,10 @@
 package org.daxprotocol.core.context;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 
 public class DaxContextFactory {
 
-    public static DaxContext createAppContext(DaxpConfig config){
+    public static DaxContext createAppContext(DaxConfig config){
         DaxContext context = new DaxContext();
         context.setId(config.getAppContextId());
         context.setSymbol(config.getAppContextSymbol());
@@ -15,10 +15,10 @@ public class DaxContextFactory {
 
     public static DaxContext createSysContext(){
         DaxContext context = new DaxContext();
-        context.setId(DaxpConfig.DAXP_CONTEXT_ID);
-        context.setSymbol(DaxpConfig.DAXP_CONTEXT_SYMBOL);
-        context.setTagPrefix(DaxpConfig.DAXP_CONTEXT_TAG_PREFIX);
-        context.setDescription(DaxpConfig.DAXP_CONTEXT_DESCRIPTION);
+        context.setId(DaxConfig.DAXP_CONTEXT_ID);
+        context.setSymbol(DaxConfig.DAXP_CONTEXT_SYMBOL);
+        context.setTagPrefix(DaxConfig.DAXP_CONTEXT_TAG_PREFIX);
+        context.setDescription(DaxConfig.DAXP_CONTEXT_DESCRIPTION);
        return context;
     }
 

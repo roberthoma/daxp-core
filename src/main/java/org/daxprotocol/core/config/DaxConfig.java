@@ -22,7 +22,7 @@ package org.daxprotocol.core.config;
 
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
-public final class DaxpConfig {
+public final class DaxConfig {
     /*****************************************************
      *   DAXP Version
      */
@@ -31,7 +31,7 @@ public final class DaxpConfig {
     /*****************************************************
      *  Reserved tags for DAXP
      */
-    public static final int    DAXP_MAX_TAG_ID = 255;
+    public static final int    DAXP_MAX_TAG_ID = 999;
 
     /*****************************************************
      *  DAXP Context
@@ -66,8 +66,8 @@ public final class DaxpConfig {
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
     private int appContextId = 1;
-    public static final int  START_IDX_MSG_MAPPER = 100;
-    public static final int  START_IDX_CTX_MAPPER = 100;
+    public static final int  START_IDX_MSG_MAPPER = 101;
+    public static final int  START_IDX_CTX_MAPPER = 101;
 
     public int getNextContextId() {
         return appContextId + 1;
@@ -120,15 +120,15 @@ public final class DaxpConfig {
         this.defaultEncoding = defaultEncoding;
     }
 
-    public DaxpConfig() {
+    public DaxConfig() {
     }
 
     public CharSequence getContextTafSeparator() {
-        return DaxpConfig.CONTEXT_TAG_SEPARATOR;
+        return DaxConfig.CONTEXT_TAG_SEPARATOR;
     }
 
     public CharSequence getTagListSeparator(){
-        return DaxpConfig.TAG_LIST_SEPARATOR;
+        return DaxConfig.TAG_LIST_SEPARATOR;
     }
 
     //TODO get About  STRING

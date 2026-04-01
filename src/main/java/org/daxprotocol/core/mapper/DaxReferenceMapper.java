@@ -105,8 +105,6 @@ public class DaxReferenceMapper <T>{
      */
     public  boolean isKnownSymbol(T reference) {
         if (reference == null) return false;
-
-//        return referenceToId.containsKey(symbol.toUpperCase());
         return referenceToId.containsKey(reference);
     }
 

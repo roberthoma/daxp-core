@@ -20,9 +20,10 @@
 
 package org.daxprotocol.core.dictionary;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContext;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.mapper.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.*;
@@ -43,9 +44,9 @@ import java.util.Set;
 
 public class DaxDictionary {
 
-    DaxpConfig config;
-    DaxStringReferenceMapper contextMapper;
-    DaxStringReferenceMapper messageMapper;
+    DaxConfig config;
+    DaxContextMapper contextMapper;
+    DaxMessageMapper messageMapper;
 
     /*****************************************************
      *  Map of context referenced by integer
@@ -97,9 +98,9 @@ public class DaxDictionary {
     /******************************************************/
     int appContextId;
 
-    public DaxDictionary(DaxpConfig config,
-                         DaxStringReferenceMapper contextMapper ,
-                         DaxStringReferenceMapper messageMapper
+    public DaxDictionary(DaxConfig config,
+            DaxContextMapper contextMapper ,
+            DaxMessageMapper messageMapper
     )
     {
         System.out.println("Init DaxDictionary...");

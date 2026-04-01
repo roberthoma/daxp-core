@@ -1,6 +1,6 @@
 package org.daxprotocol.core.parsers;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -73,7 +73,7 @@ public class DaxParserTag {
             throw new RuntimeException("NOT correct DaxTag: Input is empty or only whitespace");
         }
 
-        char separator = DaxpConfig.CONTEXT_TAG_SEPARATOR_CHAR; // config.getContextTafSeparator(); // char type
+        char separator = DaxConfig.CONTEXT_TAG_SEPARATOR_CHAR; // config.getContextTafSeparator(); // char type
         int separatorPos = -1;
 
         // 2. Search for the separator only within the trimmed range
@@ -122,8 +122,8 @@ public class DaxParserTag {
         // 5. Context ID resolution logic
         int contextId ;
         if (contextSymbol == null || contextSymbol.isEmpty()) {
-            if( tagId <= DaxpConfig.DAXP_MAX_TAG_ID) {
-                contextId = DaxpConfig.DAXP_CONTEXT_ID;
+            if( tagId <= DaxConfig.DAXP_MAX_TAG_ID) {
+                contextId = DaxConfig.DAXP_CONTEXT_ID;
             }
             else {
                 contextId = msgContextId ;// config.getAppContextId();

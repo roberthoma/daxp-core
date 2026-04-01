@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class DaxSplitterPreamble {
+
     static DaxToolPreamble splitterPreamble = new DaxToolPreamble();
+
     @Test
     void preambleSlitter_test1(){
         String preamble = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|";

@@ -58,8 +58,8 @@ public class DaxpConfigFactory {
 
 
 
-    public static DaxpConfig createConfig(Properties props){
-        DaxpConfig config = new DaxpConfig();
+    public static DaxConfig createConfig(Properties props){
+        DaxConfig config = new DaxConfig();
         String group;
         String parDomain = "org.daxprotocol.core.config.";
 

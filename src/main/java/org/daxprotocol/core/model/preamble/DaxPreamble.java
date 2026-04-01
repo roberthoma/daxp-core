@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.model.preamble;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
 /**
@@ -27,8 +27,7 @@ import org.daxprotocol.core.encoding.DaxCharacterEncoding;
  * how the rest of the message is encoded and parsed.
  */
 public class DaxPreamble {
-//    private char msgPairSeparator;
-    private String protocolVersion = DaxpConfig.PROTOCOL_VERSION;       // V=1
+    private String protocolVersion = DaxConfig.PROTOCOL_VERSION;
     private int msgCnt;                   //CNT  Number of item messages following preamble. Default 1
     private DaxCharacterEncoding encoding;
     private int msgContextId;

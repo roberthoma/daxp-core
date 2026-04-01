@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
@@ -35,7 +35,7 @@ import java.util.Map;
 
 //public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 public class DaxMessageCodec {
-    DaxpConfig       config;
+    DaxConfig config;
     DaxPairCodec     pairCodec;
     DaxPreambleCodec preambleCodec;
     DaxHeadCodec     headCodec;
@@ -43,7 +43,7 @@ public class DaxMessageCodec {
     DaxTrailerCodec  trailerCodec;
     DaxParserService parserService;
     public DaxMessageCodec(
-            DaxpConfig config,
+            DaxConfig config,
             DaxPairCodec pairCodec,
             DaxPreambleCodec preambleCodec,
             DaxHeadCodec headCodec,
@@ -118,10 +118,10 @@ public class DaxMessageCodec {
 
 //        String fisrtTagType = "|9=";
         String strTagType = ""+
-                DaxpConfig.PAIR_SEPARATOR+ DaxTagConst.MSG_TYPE.getTagId()+ DaxpConfig.EQUAL;
+                DaxConfig.PAIR_SEPARATOR+ DaxTagConst.MSG_TYPE.getTagId()+ DaxConfig.EQUAL;
 
         String strTagBlock = ""+
-                DaxpConfig.PAIR_SEPARATOR+ DaxTagConst.BLOCK_INDEX.getTagId()+ DaxpConfig.EQUAL;
+                DaxConfig.PAIR_SEPARATOR+ DaxTagConst.BLOCK_INDEX.getTagId()+ DaxConfig.EQUAL;
 
 
         int fistMsgIdx = msgStr.indexOf(strTagType);

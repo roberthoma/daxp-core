@@ -1,13 +1,13 @@
 package org.daxprotocol.core.parsers;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 
 public class DaxToolPreamble {
 
     public  int getEndOfPreambleIndex(String str) {
         int searchIdx = 0;
 
-        while ((searchIdx = str.indexOf(DaxpConfig.PAIR_SEPARATOR, searchIdx)) != -1) {
+        while ((searchIdx = str.indexOf(DaxConfig.PAIR_SEPARATOR, searchIdx)) != -1) {
             int current = searchIdx + 1;
             boolean foundNine = false;
             boolean invalidPrefix = false;

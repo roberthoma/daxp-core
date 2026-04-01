@@ -1,7 +1,7 @@
 package org.daxprotocol.core.ut.Dax_Messages_DD_Req;
 
 import org.daxprotocol.core.ut.Dax_00_Base_test.DaxTestConfig;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +12,7 @@ public class Dax_message_dic_req extends DaxTestConfig {
 
     @Test
     public void base_message_request(){
-        String reqMsgStr = "DAXP="+ DaxpConfig.PROTOCOL_VERSION +"|EN=UTF-8|CX=CRM|9=$:DR|99=230|";
+        String reqMsgStr = "DAXP="+ DaxConfig.PROTOCOL_VERSION +"|EN=UTF-8|CX=CRM|9=$:DR|99=230|";
         DaxMessageFactory factory = crmProvider.getMessageFactory();
 
         DaxMessage message = factory.createDictionaryReq();

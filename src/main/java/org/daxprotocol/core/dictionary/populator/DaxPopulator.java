@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.dictionary.populator;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
@@ -32,7 +32,7 @@ import org.daxprotocol.core.parsers.DaxParserService;
 
 public class DaxPopulator {
 
-    DaxpConfig               config;
+    DaxConfig config;
     DaxStringReferenceMapper contextMapper;
     DaxParserService parserService;
 
@@ -41,7 +41,7 @@ public class DaxPopulator {
     DaxPopulatorMessage messagePopulator;
 
     DaxPopulatorAnnotation annotationPopulator;
-    public DaxPopulator(DaxpConfig config,
+    public DaxPopulator(DaxConfig config,
                                   DaxStringReferenceMapper contextMapper,
                                   DaxParserService parserService
     ){

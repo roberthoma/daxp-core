@@ -19,16 +19,16 @@
  */
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxPairCodec {
-    DaxpConfig config;
+    DaxConfig config;
     DaxStringReferenceMapper contextMapper;
     DaxTagCodec tagCodec;
-    public DaxPairCodec(DaxpConfig config, DaxStringReferenceMapper contextMapper, DaxTagCodec tagCodec) {
+    public DaxPairCodec(DaxConfig config, DaxStringReferenceMapper contextMapper, DaxTagCodec tagCodec) {
         this.config = config;
         this.contextMapper = contextMapper;
         this.tagCodec = tagCodec;
@@ -39,9 +39,9 @@ public class DaxPairCodec {
             return sb.toString();
         }
         sb.append(tagCodec.encode(tag))
-                .append(DaxpConfig.EQUAL)
+                .append(DaxConfig.EQUAL)
                 .append(value)
-                .append(DaxpConfig.PAIR_SEPARATOR);
+                .append(DaxConfig.PAIR_SEPARATOR);
         return sb.toString() ;
     }
 

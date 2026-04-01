@@ -1,25 +1,22 @@
 package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class DaxParserService_V2 implements DaxParserService{
 
-    DaxpConfig config;
+    DaxConfig config;
     DaxStringReferenceMapper contextMapper;
     DaxParserTools parserTools =  DaxParserTools.getInstance();
     DaxParserTag parserTag ;
 
-    public DaxParserService_V2(DaxpConfig config, DaxContextMapper contextMapper)
+    public DaxParserService_V2(DaxConfig config, DaxContextMapper contextMapper)
      {
         this.config = config;
         this.contextMapper = contextMapper;
@@ -56,8 +53,8 @@ public class DaxParserService_V2 implements DaxParserService{
         List<DaxPair<?>> list = new ArrayList<>();
         if (msg == null || msg.isEmpty()) return list;
 
-        char equalSign = DaxpConfig.EQUAL;
-        char sep = DaxpConfig.PAIR_SEPARATOR;
+        char equalSign = DaxConfig.EQUAL;
+        char sep = DaxConfig.PAIR_SEPARATOR;
 
         int len = msg.length();
         int cursor = 0;
@@ -100,7 +97,7 @@ public class DaxParserService_V2 implements DaxParserService{
                     // 3. Identify Key components (Optional Context : TagId)
                     int colonPos = -1;
                     for (int i = pairStart; i < keyEnd; i++) {
-                        if (msg.charAt(i) == DaxpConfig.CONTEXT_TAG_SEPARATOR_CHAR) {
+                        if (msg.charAt(i) == DaxConfig.CONTEXT_TAG_SEPARATOR_CHAR) {
                             colonPos = i;
                             break;
                         }
@@ -132,8 +129,8 @@ public class DaxParserService_V2 implements DaxParserService{
                         int contextId;
                         if (contextStr == null || contextStr.isEmpty()) {
                             // Default logic: small tags use a specific context, others use msgContextId
-                            contextId = (tagId < DaxpConfig.DAXP_MAX_TAG_ID)
-                                    ? DaxpConfig.DAXP_CONTEXT_ID
+                            contextId = (tagId < DaxConfig.DAXP_MAX_TAG_ID)
+                                    ? DaxConfig.DAXP_CONTEXT_ID
                                     : msgContextId;
                         } else {
                             // Map the context string (e.g., "FIX") to its numeric reference
@@ -172,12 +169,12 @@ public class DaxParserService_V2 implements DaxParserService{
         int pos = 0;
 
         while (pos < length) {
-            if (blockStr.charAt(pos) == DaxpConfig.PAIR_SEPARATOR) {
+            if (blockStr.charAt(pos) == DaxConfig.PAIR_SEPARATOR) {
                 pos++;
                 continue;
             }
 
-            int nextSep = blockStr.indexOf(DaxpConfig.PAIR_SEPARATOR, pos);
+            int nextSep = blockStr.indexOf(DaxConfig.PAIR_SEPARATOR, pos);
             if (nextSep == -1) {
                 nextSep = length;
             }
@@ -187,7 +184,7 @@ public class DaxParserService_V2 implements DaxParserService{
                 continue;
             }
 
-            int eqPos = blockStr.indexOf(DaxpConfig.EQUAL, pos);
+            int eqPos = blockStr.indexOf(DaxConfig.EQUAL, pos);
             if (eqPos == -1 || eqPos >= nextSep) {
                 throw new IllegalArgumentException("Invalid pair: " + blockStr.substring(pos, nextSep));
             }
@@ -195,7 +192,7 @@ public class DaxParserService_V2 implements DaxParserService{
             String cx = "";
             String tagText;
 
-            int colonPos = blockStr.indexOf(DaxpConfig.CONTEXT_TAG_SEPARATOR_CHAR, pos);
+            int colonPos = blockStr.indexOf(DaxConfig.CONTEXT_TAG_SEPARATOR_CHAR, pos);
             if (colonPos != -1 && colonPos < eqPos) {
                 cx = blockStr.substring(pos, colonPos);
                 tagText = blockStr.substring(colonPos + 1, eqPos);
@@ -329,14 +326,14 @@ public class DaxParserService_V2 implements DaxParserService{
         }
 
         int start = 0;
-        int end = tagListStr.indexOf(DaxpConfig.TAG_LIST_SEPARATOR_CHAR);
+        int end = tagListStr.indexOf(DaxConfig.TAG_LIST_SEPARATOR_CHAR);
 
         while (end != -1) {
             String tagStr = tagListStr.substring(start, end).trim();
             result.add(parseDaxTag(tagStr, msgContextId));
 
             start = end + 1;
-            end = tagListStr.indexOf(DaxpConfig.TAG_LIST_SEPARATOR_CHAR, start);
+            end = tagListStr.indexOf(DaxConfig.TAG_LIST_SEPARATOR_CHAR, start);
         }
 
         // Dodanie ostatniego elementu (za ostatnim separatorem)

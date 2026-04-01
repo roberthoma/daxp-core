@@ -24,7 +24,7 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.codec.DaxTagCodec;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.*;
 import org.daxprotocol.core.group.DaxDTO;
 import org.daxprotocol.core.context.DaxContext;
@@ -51,11 +51,11 @@ import static org.daxprotocol.core.codec.DaxTagConst.*;
 
 public class DaxMessageFactory {
 
-    DaxpConfig config;
+    DaxConfig config;
     DaxStringReferenceMapper contextMapper;
     DaxTagCodec tagCodec;
 
-    public DaxMessageFactory(DaxpConfig config, DaxStringReferenceMapper contextMapper, DaxTagCodec tagCodec) {
+    public DaxMessageFactory(DaxConfig config, DaxStringReferenceMapper contextMapper, DaxTagCodec tagCodec) {
         this.config = config;
         this.contextMapper = contextMapper;
         this.tagCodec = tagCodec;
@@ -79,7 +79,7 @@ public class DaxMessageFactory {
         }
 
         return contextMapper.getReference(tag.getContextId())+
-                DaxpConfig.CONTEXT_TAG_SEPARATOR+
+                DaxConfig.CONTEXT_TAG_SEPARATOR+
                 tag.getTagId();
 
     }
@@ -88,12 +88,12 @@ public class DaxMessageFactory {
 
         return daxFields.stream()
                 .map(this::tagEncode)
-                .collect(Collectors.joining(DaxpConfig.TAG_LIST_SEPARATOR));
+                .collect(Collectors.joining(DaxConfig.TAG_LIST_SEPARATOR));
     }
 
     private   String createStringValueListStr(Set<String> stringSet){
 
-        return String.join(DaxpConfig.TAG_LIST_SEPARATOR, stringSet);
+        return String.join(DaxConfig.TAG_LIST_SEPARATOR, stringSet);
     }
 
 

@@ -1,7 +1,7 @@
 package org.daxprotocol.core.dictionary.populator;
 
 import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxEnum;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
@@ -50,7 +50,7 @@ public class DaxPopulatorMessage {
             //TODO refactor : split change do byte after byte reading
             if (blockPairMap.containsKey(DaxTagConst.MESSAGE_RELATED_MSGS)){
                 Arrays.stream(blockPairMap.get(DaxTagConst.MESSAGE_RELATED_MSGS)
-                                .getStrValue().split(String.valueOf(DaxpConfig.TAG_LIST_SEPARATOR)))
+                                .getStrValue().split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
                         .forEach(msgItem::addRelatedMsgType);
             }
 

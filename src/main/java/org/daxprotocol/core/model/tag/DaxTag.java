@@ -20,7 +20,7 @@
 
 package org.daxprotocol.core.model.tag;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import java.util.Objects;
 
 public final class DaxTag {
@@ -48,7 +48,7 @@ public final class DaxTag {
         this.tagId = tagId;
     }
     public static DaxTag newPredefineTag(Integer tag) {
-        return new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,tag);
+        return new DaxTag(DaxConfig.DAXP_CONTEXT_ID,tag);
     }
 
     @Override public boolean equals(Object o) {

@@ -1,19 +1,18 @@
 package org.daxprotocol.core.dictionary.populator;
 
 import org.daxprotocol.core.annotation.DaxpEnum;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxEnum;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.parsers.DaxParserService;
 
 public class DaxPopulatorEnumType {
-    DaxpConfig config;
+    DaxConfig config;
     DaxStringReferenceMapper contextMapper;
 
-   public DaxPopulatorEnumType (DaxpConfig config,
+   public DaxPopulatorEnumType (DaxConfig config,
                                DaxStringReferenceMapper contextMapper
     ){
         this.config        = config;

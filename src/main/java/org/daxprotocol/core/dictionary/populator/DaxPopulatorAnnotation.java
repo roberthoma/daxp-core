@@ -2,7 +2,7 @@ package org.daxprotocol.core.dictionary.populator;
 
 import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.codec.DaxTagConst;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
 import org.daxprotocol.core.field.DaxDataType;
@@ -22,12 +22,12 @@ public class DaxPopulatorAnnotation {
     DaxPopulatorJakartaValidation jakartaPopulator;
     DaxParserService parserService;
     DaxPopulatorEnumType enumPopulator;
-    DaxpConfig config;
+    DaxConfig config;
     DaxStringReferenceMapper contextMapper;
     public DaxPopulatorAnnotation(
             DaxParserService parserService ,
             DaxPopulatorEnumType  enumPopulator,
-            DaxpConfig config,
+            DaxConfig config,
             DaxStringReferenceMapper contextMapper
 
     ){

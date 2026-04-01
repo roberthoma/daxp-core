@@ -7,7 +7,7 @@ import org.daxprotocol.core.ut.Dax_00_Base_test.crm_application.customer.Custome
 import org.daxprotocol.core.ut.Dax_00_Base_test.crm_application.customer.CustomerDaxSchema;
 import org.daxprotocol.core.ut.Dax_00_Base_test.crm_application.customer.CustomerRelation;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
 
     @Test
     void createMsgFromCustomer() {
-        String expectMsg = "DAXP="+DaxpConfig.PROTOCOL_VERSION+"|EN=UTF-8|CX=CRM|" +
+        String expectMsg = "DAXP="+ DaxConfig.PROTOCOL_VERSION+"|EN=UTF-8|CX=CRM|" +
         "9=UCi|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|2085=23|2076=WORKER|2077=Y|"+
                 "99=169|";
         System.out.println("--------------------------------------------------->>>");
@@ -31,7 +31,7 @@ public class Daxp_Annotations_Test01 extends DaxTestConfig {
         DaxMessage message = crmProvider.getMessageFactory().toDaxMessage("UCi", customer);
         String ecMsg = crmProvider.getMessageCodec().encode(message);
 
-        ecMsg= ecMsg.replace(DaxpConfig.PAIR_SEPARATOR,'|');
+        ecMsg= ecMsg.replace(DaxConfig.PAIR_SEPARATOR,'|');
 
         System.out.println("EXPECTED : "+ expectMsg);
         System.out.println("WAS : "+ ecMsg);

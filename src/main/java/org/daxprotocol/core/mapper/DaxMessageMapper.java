@@ -1,11 +1,11 @@
 package org.daxprotocol.core.mapper;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 
 public class DaxMessageMapper extends DaxStringReferenceMapper {
 
     public DaxMessageMapper() {
-        super(DaxpConfig.START_IDX_MSG_MAPPER);
+        super(DaxConfig.START_IDX_MSG_MAPPER);
     }
 
 }

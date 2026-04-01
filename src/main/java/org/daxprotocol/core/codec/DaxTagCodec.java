@@ -20,16 +20,16 @@
 
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxParserService;
 
 public class DaxTagCodec {
-    DaxpConfig config;
+    DaxConfig config;
     DaxStringReferenceMapper contextMapper;
     DaxParserService parserService;
-    public DaxTagCodec(DaxpConfig config,
+    public DaxTagCodec(DaxConfig config,
                        DaxStringReferenceMapper contextMapper,
                        DaxParserService parserService){
       this.config = config;
@@ -39,13 +39,13 @@ public class DaxTagCodec {
 
     public String encode( DaxTag tag){
 
-        if(tag.getContextId() != DaxpConfig.DAXP_CONTEXT_ID &&
+        if(tag.getContextId() != DaxConfig.DAXP_CONTEXT_ID &&
                 (tag.getContextId() != config.getAppContextId()
-           || tag.getTagId() <= DaxpConfig.DAXP_MAX_TAG_ID)
+           || tag.getTagId() <= DaxConfig.DAXP_MAX_TAG_ID)
         )
         {
             return  contextMapper.getReference(tag.getContextId()) +
-                    DaxpConfig.CONTEXT_TAG_SEPARATOR + tag.getTagId();
+                    DaxConfig.CONTEXT_TAG_SEPARATOR + tag.getTagId();
         }
 
 

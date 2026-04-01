@@ -18,24 +18,17 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.codec;
-import org.daxprotocol.core.config.DaxpConfig;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.Set;
 
 public class DaxTagConst {
 
-//    /**
-//     * Preamble tags
-//     * */
-//    public static final String DAXP = "DAXP"; // protocol identifier and version
-//    public static final String TF   = "TF";   // tag format: DEC | HEX
-//    public static final String EN   = "EN";   // encoding: ASCII | UTF8 | UTF16
-//    public static final String CTX  = "CX";   // context: optional  - list FIX, CRM
 
     private static DaxTag daxpSysTag(int tagId){
         //TODO add checking duplication or create factory
-        return new DaxTag(DaxpConfig.DAXP_CONTEXT_ID,tagId);
+        return new DaxTag(DaxConfig.DAXP_CONTEXT_ID,tagId);
 
     }
 
