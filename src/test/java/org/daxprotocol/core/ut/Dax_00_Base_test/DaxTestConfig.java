@@ -30,12 +30,13 @@ public abstract class DaxTestConfig {
                             .createProperties("application_CNT.properties")));
 
 
-            crmProvider.getCoreStrategy().populateFromAnnotations(Customer.class);
-            crmProvider.getCoreStrategy().populateFromAnnotations(Address.class);
-            crmProvider.getCoreStrategy().populateFromAnnotations(District.class);
-            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerDaxSchema.class);
-            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerRelation.class);
-            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerDaxpController.class);
+//
+//            crmProvider.getCoreStrategy().populateFromAnnotations(Customer.class);
+//            crmProvider.getCoreStrategy().populateFromAnnotations(Address.class);
+//            crmProvider.getCoreStrategy().populateFromAnnotations(District.class);
+//            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerDaxSchema.class);
+//            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerRelation.class);
+//            crmProvider.getCoreStrategy().populateFromAnnotations(CustomerDaxpController.class);
 
 
             customerDaxpController = new CustomerDaxpController(crmProvider);

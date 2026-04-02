@@ -23,15 +23,15 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.parsers.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParser;
 
 public class DaxTagCodec {
     DaxConfig config;
     DaxStringReferenceMapper contextMapper;
-    DaxParserService parserService;
+    DaxParser parserService;
     public DaxTagCodec(DaxConfig config,
                        DaxStringReferenceMapper contextMapper,
-                       DaxParserService parserService){
+                       DaxParser parserService){
       this.config = config;
       this.contextMapper = contextMapper;
       this.parserService = parserService;

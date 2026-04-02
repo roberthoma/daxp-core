@@ -2,13 +2,13 @@ package org.daxprotocol.core.ut.Dax_00_10_Parser;
 
 import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxConfigBaseTest;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.parsers.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class DaxParserServiceV1TestBaseTest extends DaxConfigBaseTest {
+public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
 
 
 
@@ -27,7 +27,7 @@ public class DaxParserServiceV1TestBaseTest extends DaxConfigBaseTest {
                 "|7=4|5=INST|100=2120|2121=44-444|2122=Rzeszów|99=177|";
         ;
 
-        DaxParserService parserService = provider.getParserService();
+        DaxParser parserService = provider.getParserService();
 
         List<DaxPair<?>>  pairList = parserService.parsePairs(msgStr,  4 );
 

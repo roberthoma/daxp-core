@@ -84,7 +84,7 @@ public enum DaxCharacterEncoding {
     public Charset toCharset() {
         return Charset.forName(canonicalName);
     }
-
+    //TODO add Dax Exception
     public static Optional<DaxCharacterEncoding> fromName(String name) {
         return Arrays.stream(values())
                 .filter(e -> e.canonicalName.equalsIgnoreCase(name))

@@ -32,11 +32,9 @@ import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTrailerCodec;
-import org.daxprotocol.core.parsers.DaxParserService;
-import org.daxprotocol.core.parsers.DaxParserService_V2;
+import org.daxprotocol.core.parsers.DaxParser;
+import org.daxprotocol.core.parsers.DaxParser_V2;
 import org.daxprotocol.core.parsers.DaxpRules;
-import org.daxprotocol.core.strategy.DaxCoreStrategy;
-import org.daxprotocol.core.strategy.DaxCoreStrategyImpl;
 
 public class DaxProvider {
 
@@ -52,9 +50,7 @@ public class DaxProvider {
 
     private final DaxMessageFactory messageFactory;
 
-    private final DaxPopulator dictionaryPopulator;
-
-    private final DaxCoreStrategy coreStrategy;
+    private final DaxPopulator populator;
 
     private final DaxContextMapper contextMapper;
 
@@ -66,7 +62,7 @@ public class DaxProvider {
 
     private final DaxpRules daxpRules;
 
-    private final DaxParserService parserService;
+    private final DaxParser parserService;
 
 
     public DaxProvider(DaxConfig config){
@@ -87,15 +83,15 @@ public class DaxProvider {
         dictionary.putContext(appContext);
         DaxTagConst.init(dictionary);
 
-        parserService = new DaxParserService_V2(config, contextMapper);
+        parserService = new DaxParser_V2(config, contextMapper, dictionary);
 
 
         tagCodec      = new DaxTagCodec(config, contextMapper, parserService);
         pairCodec     = new DaxPairCodec(config, contextMapper, tagCodec);
         preambleCodec = new DaxPreambleCodec(config, contextMapper);
 
-        DaxHeadCodec headCodec = new DaxHeadCodec(pairCodec);
-        DaxBodyCodec bodyCodec = new DaxBodyCodec(pairCodec);
+        DaxHeadCodec    headCodec    = new DaxHeadCodec(pairCodec);
+        DaxBodyCodec    bodyCodec    = new DaxBodyCodec(pairCodec);
         DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
 
         messageCodec = new DaxMessageCodec(config, pairCodec, preambleCodec,
@@ -105,8 +101,8 @@ public class DaxProvider {
 
         messageConverter     = new DaxMessageConverter(config,contextMapper );
         messageFactory       = new DaxMessageFactory(config, contextMapper, tagCodec);
-        dictionaryPopulator  = new DaxPopulator(config, contextMapper, parserService);
-        coreStrategy         = new DaxCoreStrategyImpl(config, dictionary, dictionaryPopulator);
+        populator = new DaxPopulator(config, contextMapper, parserService, dictionary);
+
 
     }
 
@@ -142,13 +138,10 @@ public class DaxProvider {
         return messageFactory;
     }
 
-    public DaxPopulator getDictionaryPopulator (){
-        return dictionaryPopulator;
+    public DaxPopulator getPopulator(){
+        return populator;
     }
 
-    public DaxCoreStrategy getCoreStrategy() {
-        return coreStrategy;
-    }
 
     public DaxContextMapper getContextMapper() {
         return contextMapper;
@@ -158,7 +151,7 @@ public class DaxProvider {
         return pairCodec;
     }
 
-    public DaxParserService getParserService(){
+    public DaxParser getParserService(){
         return parserService;
     }
 
@@ -166,4 +159,7 @@ public class DaxProvider {
         return tagCodec;
     }
 
+    public DaxPopulator getDaxPopulator() {
+        return populator;
+    }
 }

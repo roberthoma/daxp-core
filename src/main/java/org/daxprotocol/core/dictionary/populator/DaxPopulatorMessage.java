@@ -12,20 +12,22 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.parsers.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParser;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class DaxPopulatorMessage {
-    DaxParserService parserService;
-    public DaxPopulatorMessage(DaxParserService parserService){
+    DaxParser parserService;
+    DaxDictionary daxDic;
+    public DaxPopulatorMessage(DaxParser parserService, DaxDictionary daxDic){
         this.parserService = parserService;
+        this.daxDic =  daxDic;
     }
 
 
-    private void populateFromMsgBlock(DaxDictionary daxDic,int msgContextId , Map<DaxTag, DaxPair<?>> blockPairMap) {
+    private void populateFromMsgBlock(int msgContextId , Map<DaxTag, DaxPair<?>> blockPairMap) {
 
         String blockType =   blockPairMap.get(DaxTagConst.BLOCK_TYPE).getStrValue();
 
@@ -192,10 +194,10 @@ public class DaxPopulatorMessage {
 
     }
 
-    public void populate(DaxDictionary daxDic,  DaxPreamble preamble, DaxMessage message) {
+    public void populate( DaxPreamble preamble, DaxMessage message) {
         int contextId = preamble.getMsgContextId();
         message.getBody().getBlockMap().forEach((integer, integerDaxPairMap) ->
-                populateFromMsgBlock(daxDic, contextId, integerDaxPairMap)
+                populateFromMsgBlock(contextId, integerDaxPairMap)
         );
 
     }

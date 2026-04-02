@@ -28,6 +28,7 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.*;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.context.DaxContext;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
@@ -52,10 +53,10 @@ import static org.daxprotocol.core.codec.DaxTagConst.*;
 public class DaxMessageFactory {
 
     DaxConfig config;
-    DaxStringReferenceMapper contextMapper;
+    DaxContextMapper contextMapper;
     DaxTagCodec tagCodec;
 
-    public DaxMessageFactory(DaxConfig config, DaxStringReferenceMapper contextMapper, DaxTagCodec tagCodec) {
+    public DaxMessageFactory(DaxConfig config, DaxContextMapper contextMapper, DaxTagCodec tagCodec) {
         this.config = config;
         this.contextMapper = contextMapper;
         this.tagCodec = tagCodec;

@@ -1,0 +1,33 @@
+Error Code Pattern (DAXP-XXXX)
+
+I recommend a 4-digit categorized code. This makes it easy to filter logs in Kibana or Grafana.
+Range	Category	Description
+0001–0999	System/Preamble	Failures in the basic protocol structure.
+1000–1999	Dictionary (DD)	Missing tags, unknown IDs, or DTO mismatches.
+2000–2999	Validation (VAL)	Data type errors (e.g., sending "ABC" to an 110=I tag).
+3000–3999	Security/Integrity	Checksum fails or Signature issues.
+
+
+Specific Exception Examples
+Class Name	Code	Trigger
+DAXPPreambleMissingException	DAXP-0001	Message starts with something other than DAXP=.
+DAXPUnknownVersionException	DAXP-0002	v0.1.0 is expected, but v9.9.9 was sent.
+DAXPUnknownTagException	DAXP-1005	Tag 2002 used but not defined in the current SYS.DD.
+DAXPTypeMismatchException	DAXP-2001	Tag defined as Integer (I) but contains text.
+DAXPChecksumException	DAXP-3001	Calculated checksum doesn't match tag 99.
+
+
+
+1. The Global Exception Segmentation
+
+You should split the 4-digit code space into Protocol Reserved and Application Reserved ranges.
+Range	Owner	Purpose
+0000 – 4999	DAXP Core	Reserved for the protocol itself (Preamble, DD, Type Validation).
+5000 – 8999	Application	Reserved for users (e.g., your CRM or Billing app logic).
+9000 – 9999	Experimental	Reserved for temporary or testing purposes.
+
+
+DAXP=v0.1.0|CX=CRM|
+9=DAX_ERR|
+7=1|150=DAXP-5001|151=4|152=Customer ID 123 not found in Sanok DB|
+99=122|

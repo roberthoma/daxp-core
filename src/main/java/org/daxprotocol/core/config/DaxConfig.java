@@ -39,6 +39,7 @@ public final class DaxConfig {
      */
     public static final int    DAXP_CONTEXT_ID          = 0;
     public static final String DAXP_CONTEXT_SYMBOL      = "DAXP";
+    public static final String DAXP_SYMBOL              = "DAXP";
     public static final String DAXP_CONTEXT_DESCRIPTION = "Data & Attribute eXchange Protocol";
     public static final String DAXP_CONTEXT_TAG_PREFIX  = "$" ;
 

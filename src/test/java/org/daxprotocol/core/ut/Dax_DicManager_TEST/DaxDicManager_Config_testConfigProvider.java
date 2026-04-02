@@ -37,7 +37,7 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         DaxProvider providerAfter             =  new DaxProvider(crmProvider.getConfig());
         DaxDictionary dicAfter                = providerAfter.getDictionary();
         DaxMessageCodec messageCodecAfter     = providerAfter.getMessageCodec();
-        DaxPopulator populatorAfter = providerAfter.getDictionaryPopulator();
+        DaxPopulator populatorAfter = providerAfter.getPopulator();
         DaxMessageFactory messageFactoryAfter = providerAfter.getMessageFactory();
         DaxPreambleCodec preambleCodecAfter = providerAfter.getPreambleCodec();
 
@@ -45,7 +45,7 @@ public class DaxDicManager_Config_testConfigProvider extends DaxTestConfig {
         DaxPreamble preamble     = preambleCodecAfter.decode(msgStrOrg);
         DaxMessage messageAfter  = messageCodecAfter.decode(msgStrOrg);
 
-        populatorAfter.populateFromMessage(dicAfter, preamble ,messageAfter);
+        populatorAfter.populateFromMessage(preamble ,messageAfter);
 
         DaxMessage messageDicAfter = messageFactoryAfter.dictionaryToMsg(dicAfter);
 

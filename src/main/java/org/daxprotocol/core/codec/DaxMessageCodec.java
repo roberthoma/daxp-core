@@ -27,7 +27,7 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
-import org.daxprotocol.core.parsers.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class DaxMessageCodec {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-    DaxParserService parserService;
+    DaxParser parserService;
     public DaxMessageCodec(
             DaxConfig config,
             DaxPairCodec pairCodec,
@@ -49,7 +49,7 @@ public class DaxMessageCodec {
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxParserService parserService) {
+            DaxParser parserService) {
       this.pairCodec = pairCodec;
       this.preambleCodec = preambleCodec;
       this.headCodec = headCodec;

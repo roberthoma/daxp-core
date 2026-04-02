@@ -11,16 +11,18 @@ import org.daxprotocol.core.model.tag.DaxTag;
 public class DaxPopulatorEnumType {
     DaxConfig config;
     DaxStringReferenceMapper contextMapper;
-
+    DaxDictionary daxDic;
    public DaxPopulatorEnumType (DaxConfig config,
-                               DaxStringReferenceMapper contextMapper
+                               DaxStringReferenceMapper contextMapper,
+                               DaxDictionary daxDic
     ){
         this.config        = config;
         this.contextMapper = contextMapper;
+        this.daxDic        = daxDic;
     }
 
 
-    public void populate(DaxDictionary daxDic, Class<?> clazz ){
+    public void populate( Class<?> clazz ){
         DaxpEnum groupAtn =  clazz.getAnnotation(DaxpEnum.class);
 
 

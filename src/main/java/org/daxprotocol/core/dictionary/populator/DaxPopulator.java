@@ -22,10 +22,9 @@ package org.daxprotocol.core.dictionary.populator;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.parsers.DaxParserService;
+import org.daxprotocol.core.parsers.DaxParser;
 
 
 //TODO create  service  DaxValidationAttributeManager
@@ -35,8 +34,8 @@ public class DaxPopulator {
 
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxParserService parserService;
-
+    DaxParser parserService;
+    DaxDictionary daxDic;
     DaxPopulatorEnumType enumPopulator;
 
     DaxPopulatorMessage messagePopulator;
@@ -44,31 +43,35 @@ public class DaxPopulator {
     DaxPopulatorAnnotation annotationPopulator;
     public DaxPopulator(DaxConfig config,
                                   DaxContextMapper contextMapper,
-                                  DaxParserService parserService
+                                  DaxParser parserService,
+                                  DaxDictionary daxDic
     ){
         this.config        = config;
         this.contextMapper = contextMapper;
         this.parserService = parserService;
-        enumPopulator = new DaxPopulatorEnumType(config, contextMapper);
+        this.daxDic = daxDic;
+        enumPopulator = new DaxPopulatorEnumType(config, contextMapper, daxDic);
         annotationPopulator = new DaxPopulatorAnnotation(
                                         parserService ,
                                         enumPopulator,
                                         config,
-                                        contextMapper);
+                                        contextMapper,
+                                        daxDic
+                );
 
-        messagePopulator = new DaxPopulatorMessage(parserService);
+        messagePopulator = new DaxPopulatorMessage(parserService, daxDic);
     }
 
 
-    public void populateFromAnnotations(DaxDictionary daxDic, Class<?> clazz){
+    public void populateFromAnnotations( Class<?> clazz){
 
-        annotationPopulator.populate(daxDic, clazz);
+        annotationPopulator.populate(clazz);
     }
 
 //    public void populateFromMessage(DaxDictionary daxDic, DaxMessage message) {
-    public void populateFromMessage(DaxDictionary daxDic, DaxPreamble preamble,  DaxMessage message) {
+    public void populateFromMessage(DaxPreamble preamble,  DaxMessage message) {
 
-        messagePopulator.populate(daxDic, preamble ,message);
+        messagePopulator.populate( preamble ,message);
 
 
     }

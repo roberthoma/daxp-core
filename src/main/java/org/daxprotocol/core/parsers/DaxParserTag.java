@@ -1,6 +1,7 @@
 package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -70,7 +71,7 @@ public class DaxParserTag {
         while (end > start && tagStr.charAt(end - 1) <= ' ') end--;
 
         if (start >= end) {
-            throw new RuntimeException("NOT correct DaxTag: Input is empty or only whitespace");
+            throw new DaxTagParserException("NOT correct DaxTag: Input is empty or only whitespace");
         }
 
         char separator = DaxConfig.CONTEXT_TAG_SEPARATOR_CHAR; // config.getContextTafSeparator(); // char type
@@ -116,7 +117,7 @@ public class DaxParserTag {
         try {
             tagId = parseIntFromSequence(tagStr, tagIdStart, end);
         } catch (NumberFormatException e) {
-            throw new RuntimeException("NOT correct DaxTag: " + tagStr, e);
+            throw new DaxTagParserException("NOT correct DaxTag: " + tagStr, e);
         }
 
         // 5. Context ID resolution logic

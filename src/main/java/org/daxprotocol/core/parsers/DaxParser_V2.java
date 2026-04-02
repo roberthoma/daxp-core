@@ -2,26 +2,32 @@ package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.*;
 
-public class DaxParserService_V2 implements DaxParserService{
+public class DaxParser_V2 implements DaxParser {
 
     DaxConfig config;
     DaxStringReferenceMapper contextMapper;
     DaxParserTools parserTools =  DaxParserTools.getInstance();
     DaxParserTag parserTag ;
+    DaxDictionary daxDic;
+    DaxParserMessage parserMessage;
 
-    public DaxParserService_V2(DaxConfig config, DaxContextMapper contextMapper)
+    public DaxParser_V2(DaxConfig config, DaxContextMapper contextMapper , DaxDictionary daxDic)
      {
         this.config = config;
         this.contextMapper = contextMapper;
-       this.parserTag = new DaxParserTag(contextMapper);
-
+        this.parserTag = new DaxParserTag(contextMapper);
+        this.daxDic = daxDic;
+         parserMessage = new DaxParserMessage( config,contextMapper, parserTag, daxDic);
     }
 
 
@@ -341,6 +347,14 @@ public class DaxParserService_V2 implements DaxParserService{
         result.add(parseDaxTag(lastTagStr, msgContextId));
 
         return result;
+    }
+
+    @Override public DaxPreamble parsePreamble(String msg) {
+        return parserMessage.parsePreamble(msg);
+    }
+
+    @Override public List<DaxMessage> parseMessageList(String msg) {
+        return parserMessage.parseMessageList(msg);
     }
 
 }
