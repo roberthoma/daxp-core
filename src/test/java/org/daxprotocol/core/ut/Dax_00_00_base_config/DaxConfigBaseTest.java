@@ -1,15 +1,20 @@
 package org.daxprotocol.core.ut.Dax_00_00_base_config;
 
 import org.daxprotocol.core.config.DaxpConfigFactory;
+import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.parsers.DaxParserService;
 import org.daxprotocol.core.provider.DaxProvider;
 
 import org.junit.jupiter.api.*;
 
-public class DaxBaseTestConfig {
-    public static DaxProvider provider;
-    public static DaxParserService parser;
-    public static int appContextId;
+public class DaxConfigBaseTest {
+    protected static DaxProvider provider;
+    protected static DaxParserService parser;
+    protected static int appContextId;
+    protected static DaxDictionary dictionary;
+    protected static DaxContextMapper contextMapper;
+
 
     @BeforeAll
     public static void initAll() {
@@ -18,8 +23,11 @@ public class DaxBaseTestConfig {
                     .createConfig(DaxpConfigFactory
                             .createProperties("application_BASE.properties")));
 
-            parser = provider.getParserService();
-            appContextId = provider.getConfig().getAppContextId();
+            parser        = provider.getParserService();
+            appContextId  = provider.getConfig().getAppContextId();
+            dictionary    = provider.getDictionary();
+            contextMapper = provider.getContextMapper();
+
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");

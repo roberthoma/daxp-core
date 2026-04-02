@@ -21,6 +21,7 @@ package org.daxprotocol.core.dictionary.populator;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
@@ -33,7 +34,7 @@ import org.daxprotocol.core.parsers.DaxParserService;
 public class DaxPopulator {
 
     DaxConfig config;
-    DaxStringReferenceMapper contextMapper;
+    DaxContextMapper contextMapper;
     DaxParserService parserService;
 
     DaxPopulatorEnumType enumPopulator;
@@ -42,7 +43,7 @@ public class DaxPopulator {
 
     DaxPopulatorAnnotation annotationPopulator;
     public DaxPopulator(DaxConfig config,
-                                  DaxStringReferenceMapper contextMapper,
+                                  DaxContextMapper contextMapper,
                                   DaxParserService parserService
     ){
         this.config        = config;

@@ -23,6 +23,7 @@ package org.daxprotocol.core.config;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
 public final class DaxConfig {
+
     /*****************************************************
      *   DAXP Version
      */

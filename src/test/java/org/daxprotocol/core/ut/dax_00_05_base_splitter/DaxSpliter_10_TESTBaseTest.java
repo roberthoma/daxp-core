@@ -3,22 +3,23 @@ package org.daxprotocol.core.ut.dax_00_05_base_splitter;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.model.preamble.DaxPreamblePair;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxParserTag;
 import org.daxprotocol.core.parsers.DaxSplitterService;
-import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxBaseTestConfig;
+import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class DaxSpliter2 extends DaxBaseTestConfig {
+public class DaxSpliter_10_TESTBaseTest extends DaxConfigBaseTest {
 
     DaxSplitterService splitterService = new DaxSplitterService();
-    static DaxParserTag tagParser = new DaxParserTag(provider.getContextMapper());
+    DaxParserTag tagParser = new DaxParserTag(provider.getContextMapper());
     DaxContextMapper contextMapper = provider.getContextMapper();
+
+
 
     @Test
     void msgSplitterTest1(){

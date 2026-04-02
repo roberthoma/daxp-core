@@ -34,6 +34,5 @@ public @interface DaxpField {
     String context() default "";   // Empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
     int value();                // It can be define by @DaxpTag
     String uiLabel() default "";
+    String name() default ""; //Use for rename field name , example :used for JSON cast.
 }
-
-// TODO Add references context Symbol and remove DaxpReference

@@ -6,11 +6,13 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
 import org.daxprotocol.core.field.DaxDataType;
-import org.daxprotocol.core.group.DaxDTO;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.dto.DaxDTO;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxParserService;
 import org.daxprotocol.core.tool.DaxLangTool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.lang.reflect.Field;
@@ -19,16 +21,17 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 public class DaxPopulatorAnnotation {
+    private static final Logger logger = LoggerFactory.getLogger(DaxPopulatorAnnotation.class);
     DaxPopulatorJakartaValidation jakartaPopulator;
     DaxParserService parserService;
     DaxPopulatorEnumType enumPopulator;
     DaxConfig config;
-    DaxStringReferenceMapper contextMapper;
+    DaxContextMapper contextMapper;
     public DaxPopulatorAnnotation(
             DaxParserService parserService ,
             DaxPopulatorEnumType  enumPopulator,
             DaxConfig config,
-            DaxStringReferenceMapper contextMapper
+            DaxContextMapper contextMapper
 
     ){
         this.parserService = parserService;
@@ -41,9 +44,6 @@ public class DaxPopulatorAnnotation {
 
     private void populateDaxpField(Field field, DaxDictionary daxDic ,
             DaxTag groupTag
-
-
-
     ){
         String uiLabel="";
         DaxTag tag = DaxTagConst.UNKNOW_TAG;
@@ -241,9 +241,19 @@ public class DaxPopulatorAnnotation {
 //            daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
 //        }
 
+        //TODO  Sprawdzic czy istnieje już Atrybut. zwracać logi.
+
+        logger.info("Data typ for",daxTag.uiLabel());
+
         if (daxTag.dataType().equals("S")) {
             daxDic.putAtrDataType(tag,String.class);
         }
+
+        if (daxTag.clazz() != null) {
+            daxDic.putAtrDataType(tag,daxTag.clazz());
+        }
+
+
 
         if (daxTag.readOnly()) {
             daxDic.putAtrReadOnly(tag,Boolean.TRUE);

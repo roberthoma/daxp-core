@@ -20,6 +20,7 @@
 
 package org.daxprotocol.core.dictionary;
 
+import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -27,7 +28,7 @@ import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.*;
-import org.daxprotocol.core.group.DaxDTO;
+import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 //TODO
@@ -77,15 +79,16 @@ public class DaxDictionary {
      * Key : tagId
      * Value : map of attributes
      * */
-    Map<DaxTag, Map<DaxTag, DaxPair<?>>> attributMap = new HashMap<>();
+    Map<DaxTag, Map<DaxTag, DaxPair<?>>> attributMap = new ConcurrentHashMap<>();
 
 
     /*****************************************************
      *  Group Map // TODO chage to type or schema
      */
-    Map<DaxTag, DaxDTO> dtoMap = new HashMap<>();
-    Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new HashMap<>();
-
+  //  Map<DaxTag, DaxDTO> dtoMap = new HashMap<>();
+//    Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new HashMap<>();
+    Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new ConcurrentHashMap<>();
+    Map<DaxTag, DaxDTO> dtoMap = new ConcurrentHashMap<>();
 
     /*****************************************************
      *  Handler And controller maps
@@ -210,7 +213,7 @@ public class DaxDictionary {
 
       DaxTag tag = new DaxTag(contextId, tagId);
 
-      attributMap.merge(tag, new HashMap<>(Map.of(atrPair.getTag(), atrPair)),
+      attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrPair.getTag(), atrPair)),
                 (eM, nM) ->
                         DaxCollectionTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
 
@@ -301,6 +304,17 @@ public class DaxDictionary {
         tagSet.add(tag);
 
     }
+    //------------------------------------
+    public DaxDataType getAtrDataType(DaxTag tag){
+        if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxTagConst.FIELD_DATA_TYPE)) {
+
+            return DaxDataType.fromCode(attributMap.get(tag).get(DaxTagConst.FIELD_DATA_TYPE).getCharValue());
+        }
+        return null;
+
+    }
+
+
 
 
     public void putHandler(String msgType, Method method, Class<?> clazz) {

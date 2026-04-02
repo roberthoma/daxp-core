@@ -2,11 +2,11 @@ package org.daxprotocol.core.ut.Dax_00_10_Parser;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxBaseTestConfig;
+import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxParserService_tagTest extends DaxBaseTestConfig {
+public class DaxParserService_tagTestBaseTest extends DaxConfigBaseTest {
 
     @Test
     void parseTag10(){

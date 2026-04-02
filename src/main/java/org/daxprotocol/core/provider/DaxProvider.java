@@ -82,12 +82,13 @@ public class DaxProvider {
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
 
-
-        parserService = new DaxParserService_V2(config, contextMapper);
-
         dictionary = new DaxDictionary(config, contextMapper, messageMapper);
         dictionary.putContext(sysContext);
         dictionary.putContext(appContext);
+        DaxTagConst.init(dictionary);
+
+        parserService = new DaxParserService_V2(config, contextMapper);
+
 
         tagCodec      = new DaxTagCodec(config, contextMapper, parserService);
         pairCodec     = new DaxPairCodec(config, contextMapper, tagCodec);

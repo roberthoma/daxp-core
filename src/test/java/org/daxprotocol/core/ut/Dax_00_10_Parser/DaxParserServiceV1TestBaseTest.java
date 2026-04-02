@@ -1,6 +1,6 @@
 package org.daxprotocol.core.ut.Dax_00_10_Parser;
 
-import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxBaseTestConfig;
+import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxConfigBaseTest;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.parsers.DaxParserService;
 import org.junit.jupiter.api.Assertions;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class DaxParserServiceV1Test extends DaxBaseTestConfig {
+public class DaxParserServiceV1TestBaseTest extends DaxConfigBaseTest {
 
 
 

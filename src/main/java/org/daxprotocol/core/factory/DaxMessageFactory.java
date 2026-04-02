@@ -26,7 +26,7 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.*;
-import org.daxprotocol.core.group.DaxDTO;
+import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;

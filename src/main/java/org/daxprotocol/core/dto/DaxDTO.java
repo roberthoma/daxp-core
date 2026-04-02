@@ -1,4 +1,4 @@
-package org.daxprotocol.core.group;
+package org.daxprotocol.core.dto;
 
 import org.daxprotocol.core.model.tag.DaxTag;
 

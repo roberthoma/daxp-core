@@ -1,4 +1,4 @@
-package org.daxprotocol.core.ut.Dax_00_03_preable_tag;
+package org.daxprotocol.core.ut.Dax_00_03_preamble;
 
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import org.junit.jupiter.api.Assertions;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class Tax_Preamble_tag_test {
 
     @Test
-    void preamble_test1(){
+    void preamble_tag_test1(){
 
         Assertions.assertTrue(DaxPreambleTag.contains("DAXP"));
         Assertions.assertTrue(DaxPreambleTag.contains("EN"));

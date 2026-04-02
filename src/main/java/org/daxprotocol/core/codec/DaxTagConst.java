@@ -19,11 +19,14 @@
  */
 package org.daxprotocol.core.codec;
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.Set;
 
 public class DaxTagConst {
+
+    public final DaxTag TAG_TEST = new DaxTag(1,1000);
 
 
     private static DaxTag daxpSysTag(int tagId){
@@ -56,13 +59,13 @@ public class DaxTagConst {
     /**********************************
      * UNKNOW_TAG
      */
-     public static final DaxTag UNKNOW_TAG             = daxpSysTag(-1);;
+     public static final DaxTag UNKNOW_TAG             = daxpSysTag(-1);
 
     /**********************************
      * Body tags
      */
-    public static final DaxTag BLOCK_INDEX             = daxpSysTag(7);;
-    public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);;
+    public static final DaxTag BLOCK_INDEX             = daxpSysTag(7);
+    public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);
 
     // Set of universal tags
 //    F_NAME
@@ -153,6 +156,12 @@ public class DaxTagConst {
      * Trailer tag
      * */
     public static final DaxTag CHECKSUM                = daxpSysTag(99);
+
+
+    public static void init(DaxDictionary dic){
+        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
+        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
+    }
 
 
 }
