@@ -1,0 +1,148 @@
+package org.daxprotocol.core.dispatcher;
+
+import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class DaxHandlerRegistry {
+
+    /*****************************************************
+     *  Handler And controller maps
+     */
+
+    Map<String, Method> handlerMap = new ConcurrentHashMap<>();
+    Map<Class<?>, Object >  daxControllerMap = new ConcurrentHashMap<>();
+
+
+    //TODO  move to DaxHandlerRegisry
+    public void putHandler(String msgType, Method method, Class<?> clazz) {
+        handlerMap.put(msgType, method);
+    }
+
+    public void registerCtrl(Object daxpController) {
+        daxControllerMap.put(daxpController.getClass(), daxpController);
+    }
+
+    public DaxFrame executor(DaxPreamble preamble, List<DaxMessage> reqMsg) {
+
+
+
+        DaxFrame response = new DaxFrame();
+        try {
+            String msgType = reqMsg.get(0).getMsgType();
+            Method method = handlerMap.get(msgType);
+
+            Object obj = daxControllerMap.get(method.getDeclaringClass());
+
+            Object respObj = method.invoke(obj, reqMsg); //TODO change to listo of messages
+
+            // --- THE CHECK ---
+            if (respObj instanceof DaxMessage) {
+                // Single message logic
+                response.addMessage(   (DaxMessage) respObj);
+            }
+            else if (respObj instanceof List) {
+                // List logic (e.g., search results or batch updates)
+                response.addAllMessages(   (List<DaxMessage>) respObj);
+            }
+            else if (respObj == null) {
+                    // Handle void/null returns (e.g., an ACK)
+                    return null;
+                }
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+}
+
+
+/*
+public class DaxHandlerRegistry {
+
+    private final Map<String, Method> handlerMap = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Object> daxControllerMap = new ConcurrentHashMap<>();
+
+    public void putHandler(String msgType, Method method) {
+        handlerMap.put(msgType, method);
+    }
+
+    public void registerCtrl(Object daxpController) {
+        daxControllerMap.put(daxpController.getClass(), daxpController);
+    }
+
+    public DaxMessage executor(DaxMessage reqMsg) {
+        String msgType = reqMsg.getMsgType();
+
+        try {
+            // 1. Check if handler exists
+            Method method = handlerMap.get(msgType);
+            if (method == null) {
+                // Throw our custom "Unknown Tag/Message" exception
+                throw new DAXPDictionaryException(String.format("No handler registered for MsgType: %s", msgType));
+            }
+
+            // 2. Find the instance of the Controller
+            Object controllerInstance = daxControllerMap.get(method.getDeclaringClass());
+            if (controllerInstance == null) {
+                throw new DAXPException("DAXP-0020", "Controller instance not found for method: " + method.getName());
+            }
+
+            // 3. Invoke and Cast
+            Object respObj = method.invoke(controllerInstance, reqMsg);
+
+            if (!(respObj instanceof DaxMessage)) {
+                throw new DAXPException("DAXP-0021", "Handler did not return a DaxMessage object.");
+            }
+
+            return (DaxMessage) respObj;
+
+        } catch (InvocationTargetException e) {
+            // This catches exceptions thrown INSIDE your controller method (Business Logic Errors)
+            Throwable cause = e.getCause();
+            throw new DAXPAppException(5000, "Business Logic Error: " + cause.getMessage(), cause);
+        } catch (Exception e) {
+            // Catch Reflection/System errors
+            throw new DAXPException("DAXP-0099", "Execution failed: " + e.getMessage(), e);
+        }
+    }
+}
+//////////////////////////////////////
+public Object executor(DaxMessage reqMsg) {
+    try {
+        String msgType = reqMsg.getMsgType();
+        Method method = handlerMap.get(msgType);
+        Object obj = daxControllerMap.get(method.getDeclaringClass());
+
+        // Invoke the controller method
+        Object respObj = method.invoke(obj, reqMsg);
+
+        // --- THE CHECK ---
+        if (respObj instanceof DaxMessage) {
+            // Single message logic
+            return (DaxMessage) respObj;
+        }
+        else if (respObj instanceof List) {
+            // List logic (e.g., search results or batch updates)
+            return (List<?>) respObj;
+        }
+        else if (respObj == null) {
+            // Handle void/null returns (e.g., an ACK)
+            return null;
+        }
+
+        throw new DAXPException("DAXP-0022", "Unsupported return type: " + respObj.getClass().getName());
+
+    } catch (Exception e) {
+        throw new DAXPException("DAXP-0099", "Execution failed", e);
+    }
+}
+
+        */

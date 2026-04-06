@@ -37,7 +37,7 @@ public class DaxPreamble {
     }
 
     public void setProtocolVersion(String protocolVersion) {
-        this.protocolVersion = protocolVersion;
+        this.protocolVersion = protocolVersion.toUpperCase().trim();
     }
 
 

@@ -19,6 +19,9 @@
  */
 package org.daxprotocol.core.codec;
 
+import org.daxprotocol.core.exceptions.DaxAppException;
+import org.daxprotocol.core.exceptions.DaxException;
+import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxPair;
 
@@ -61,7 +64,26 @@ public class DaxHeadCodec{
 
 
     public  DaxHead createHead(List<DaxPair<?>> listOfPair) {
+        if(!listOfPair.get(0).getTag().equals(MSG_TYPE)){
+              throw new DaxTagParserException("First pair is not MESSAGE_TYPE");
+
+        }
+
         String msgType = listOfPair.get(0).getStrValue();
+
+
+
+        DaxHead head = new DaxHead(msgType);
+
+        Optional<DaxPair<?>> optBlockCount = listOfPair.stream()
+                .filter(p -> p.getTag().equals(MSG_BLOCK_COUNT) )
+                .findFirst();
+
+        optBlockCount.ifPresent(pair -> head.setBlockCount(pair.getIntegerValue()));
+
+        return head;
+    }
+    public  DaxHead createHead(String msgType,List<DaxPair<?>> listOfPair) {
         DaxHead head = new DaxHead(msgType);
 
         Optional<DaxPair<?>> optBlockCount = listOfPair.stream()

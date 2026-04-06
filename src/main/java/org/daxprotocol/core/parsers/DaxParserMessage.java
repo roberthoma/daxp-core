@@ -1,11 +1,13 @@
 package org.daxprotocol.core.parsers;
 
+import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxMsgParserException;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
+import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -22,14 +24,18 @@ public class DaxParserMessage {
     DaxContextMapper contextMapper;
     DaxDictionary daxDic;
     DaxConfig config;
+    DaxMessageCodec messageCodec;
     public DaxParserMessage(DaxConfig config,
                             DaxContextMapper contextMapper,
                             DaxParserTag tagParser,
-                            DaxDictionary daxDic) {
+                            DaxDictionary daxDic, //,
+                            DaxMessageCodec messageCodec) {
         this.tagParser = tagParser;
         this.contextMapper = contextMapper;
         this.daxDic = daxDic;
         this.config = config;
+        this.messageCodec = messageCodec;
+        //this.messageFactory = messageFactory;
     }
 
     private   List<Integer> getPipeIndices(String str) {
@@ -49,7 +55,8 @@ public class DaxParserMessage {
     }
 
     public DaxPreamble parsePreamble(String msg) {
-        return (DaxPreamble)parse(msg,'P');
+        Object obj = parse(msg,'P');
+        return (DaxPreamble)obj;
     }
 
     @SuppressWarnings("unchecked")
@@ -65,7 +72,7 @@ public class DaxParserMessage {
         List<DaxMessage> messageList = new ArrayList<>();
         String daxpSymbol;
         List<Integer> indList = getPipeIndices(msgStr);
-        List<DaxPair<?>> listOfPair ;
+        List<DaxPair<?>> listOfPair =  new ArrayList<>();
 
         int prevIdx = 0;
         int msgSize = msgStr.length();
@@ -74,11 +81,6 @@ public class DaxParserMessage {
         boolean isPreableParsing = true;
 
         DaxPreamble preamble = new DaxPreamble();
-
-  //     if (workMode == 'M'){
-            listOfPair = new ArrayList<>();
-    //    }
-
 
 
         for (int idx : indList) {
@@ -107,7 +109,7 @@ public class DaxParserMessage {
                     if (DaxPreambleTag.contains(tagStr)) {
                         DaxPreambleTag tag = DaxPreambleTag.fromTag(tagStr);
                         switch (tag) {
-                            case DAXP -> System.out.println("Protocol identified");
+                            case DAXP        -> preamble.setProtocolVersion(valueStr);
                             case ENCODING    -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
                             case MSG_COUNT   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
                             case MSG_CONTEXT -> preamble.setMsgContextId(contextMapper.getReferenceId(valueStr));
@@ -121,24 +123,32 @@ public class DaxParserMessage {
 
                 } else {
 
+                    DaxTag tag = tagParser.parseDaxTag(tagStr, config.getAppContextId());
+
                     if (workMode == 'P'){
                         return preamble;
                     }
-                    isPreableParsing = false; ///Only preamble then finish
+                    isPreableParsing = false;
 
-                    DaxTag tag = tagParser.parseDaxTag(tagStr, config.getAppContextId());
                     if (tag.equals(DaxTagConst.MSG_TYPE))
                     {
                         if (!listOfPair.isEmpty()){
                            //create message from list
                             listOfPair.clear();
                         }
-                        listOfPair.add(new DaxPair<>(tag,valueStr ));
                     }
+                    listOfPair.add(new DaxPair<>(tag,valueStr ));
 
                     if (tag.equals(DaxTagConst.CHECKSUM)){
                         //create message from list
-                        ????
+                        System.out.println("MESSAGE CREATING >>>> :) ");
+
+                        DaxDataType dataType = daxDic.getAtrDataType(tag);
+
+                   //     listOfPair.add(new DaxPair<>(tag,valueStr ));
+
+                        messageList.add(messageCodec.createMsg(listOfPair));
+                        //create message from list
                     }
 
 
@@ -154,7 +164,10 @@ public class DaxParserMessage {
 
         }
         System.out.println("-------------------------------");
-
+        //Only for input string contening preamble "DAXP=v0.1.0|EN=UTF-8|CX=CRM|";
+        if (workMode == 'P'){
+            return preamble;
+        }
         return messageList;
     }
 

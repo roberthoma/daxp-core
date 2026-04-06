@@ -28,13 +28,14 @@ import org.daxprotocol.core.parsers.DaxParser;
 public class DaxTagCodec {
     DaxConfig config;
     DaxStringReferenceMapper contextMapper;
-    DaxParser parserService;
+    //DaxParser parser;
     public DaxTagCodec(DaxConfig config,
-                       DaxStringReferenceMapper contextMapper,
-                       DaxParser parserService){
+                       DaxStringReferenceMapper contextMapper//,
+                       //DaxParser parser
+    ){
       this.config = config;
       this.contextMapper = contextMapper;
-      this.parserService = parserService;
+      //this.parser = parser;
     }
 
     public String encode( DaxTag tag){
@@ -53,8 +54,8 @@ public class DaxTagCodec {
 
     }
 
-    public DaxTag decode(String tagStr, int msgContextId){
-        return parserService.parseDaxTag(tagStr, msgContextId);
-    }
+//    public DaxTag decode(String tagStr, int msgContextId){
+//        return parser.parseDaxTag(tagStr, msgContextId);
+//    }
 
 }

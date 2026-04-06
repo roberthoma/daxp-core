@@ -1,6 +1,6 @@
 package org.daxprotocol.core.parsers;
 
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -11,6 +11,7 @@ import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DaxParser_V2 implements DaxParser {
 
@@ -20,21 +21,25 @@ public class DaxParser_V2 implements DaxParser {
     DaxParserTag parserTag ;
     DaxDictionary daxDic;
     DaxParserMessage parserMessage;
+    DaxMessageCodec messageCodec;
 
-    public DaxParser_V2(DaxConfig config, DaxContextMapper contextMapper , DaxDictionary daxDic)
+    public DaxParser_V2(DaxConfig config, DaxContextMapper contextMapper , DaxDictionary daxDic,
+            DaxMessageCodec messageCodec)
      {
         this.config = config;
         this.contextMapper = contextMapper;
         this.parserTag = new DaxParserTag(contextMapper);
         this.daxDic = daxDic;
-         parserMessage = new DaxParserMessage( config,contextMapper, parserTag, daxDic);
+        this.messageCodec = messageCodec;
+         parserMessage = new DaxParserMessage( config,contextMapper, parserTag, daxDic, messageCodec); //,  messageFactory);
+
     }
 
 
 
-    @Override public DaxPair<?> parsePair(String pairStr, int msgContextId) {
-        return null;
-    }
+//    @Override public DaxPair<?> parsePair(String pairStr, int msgContextId) {
+//        return null;
+//    }
 
     /**
      * Parses a message string into a list of DaxPair objects using high-performance
@@ -48,11 +53,12 @@ public class DaxParser_V2 implements DaxParser {
      * <li>Empty segments (e.g., "||")</li>
      * </ul>
      *
-     * @param msg     The raw input string to parse.
+  //   * @param msg     The raw input string to parse.
      * @param msgContextId The default context ID to use if no context prefix is found
      * and the tag is above the reserved range.
      * @return A list of parsed DaxPair objects.
      */
+/*
     @Override
     public List<DaxPair<?>> parsePairs(String msg,  int msgContextId) {
 
@@ -157,13 +163,13 @@ public class DaxParser_V2 implements DaxParser {
         }
         return list;
     }
-
+*/
     @Override
     public DaxTag parseDaxTag(String tagStr, int msgContextId) {
         return parserTag.parseDaxTag(tagStr,  msgContextId);
     }
     //------------------------------------------------------
-
+/*
     public Map<DaxTag, String> parserBlock(String blockStr) {
         Map<DaxTag, String> result = new HashMap<>();
 
@@ -222,16 +228,17 @@ public class DaxParser_V2 implements DaxParser {
 
         return result;
     }
-
+*/
 
     /**
      * Splits the input text into a list of strings based on a specific tag delimiter.
      * This approach is more memory-efficient than Regex-based split() for large datasets.
      *
-     * @param text The raw protocol data to be parsed.
-     * @param tag  The delimiter tag (e.g., "|7=").
+//     * @param text The raw protocol data to be parsed.
+//     * @param tag  The delimiter tag (e.g., "|7=").
      * @return A list of segments separated by the specified tag.
      */
+/*
     public  List<String> splitByTag(String text, String tag) {
         List<String> result = new ArrayList<>();
 
@@ -314,17 +321,19 @@ public class DaxParser_V2 implements DaxParser {
 
         return result;
     }
+    */
+
     //------------------------
     //TODO refactor
     @Override
-//    public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
-//
-//        return Arrays.stream(tagListStr.split(String.valueOf(DaxpConfig.TAG_LIST_SEPARATOR)))
-//                .map(String::trim)
-//                .map(s ->  parseDaxTag(s,msgContextId))
-//                .collect(Collectors.toList());
-//    }
+    public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
 
+        return Arrays.stream(tagListStr.split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
+                .map(String::trim)
+                .map(s ->  parseDaxTag(s,msgContextId))
+                .collect(Collectors.toList());
+    }
+    /*
     public List<DaxTag> parseDaxTagList(String tagListStr, int msgContextId) {
         List<DaxTag> result = new ArrayList<>();
         if (tagListStr == null || tagListStr.isEmpty()) {
@@ -348,13 +357,22 @@ public class DaxParser_V2 implements DaxParser {
 
         return result;
     }
-
+*/
     @Override public DaxPreamble parsePreamble(String msg) {
         return parserMessage.parsePreamble(msg);
     }
 
-    @Override public List<DaxMessage> parseMessageList(String msg) {
+    @Override
+    public List<DaxMessage> parseMessageList(String msg){
         return parserMessage.parseMessageList(msg);
+    }
+
+    @Override public DaxPreamble decodePreambleFromMap(Map<String, String> params) {
+        return null;
+    }
+
+    @Override public List<DaxMessage> decodeMessageFromMap(Map<String, String> params) {
+        return List.of();
     }
 
 }

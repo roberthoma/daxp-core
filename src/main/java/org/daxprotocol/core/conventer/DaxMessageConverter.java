@@ -22,7 +22,7 @@ package org.daxprotocol.core.conventer;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -31,9 +31,9 @@ import java.lang.reflect.Field;
 public class DaxMessageConverter {
 
     DaxConfig config;
-    DaxStringReferenceMapper contextMapper;
+    DaxContextMapper contextMapper;
 
-    public DaxMessageConverter(DaxConfig config, DaxStringReferenceMapper contextMapper) {
+    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper) {
         this.config = config;
         this.contextMapper = contextMapper;
     }

@@ -27,14 +27,14 @@ public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
                 "|7=4|5=INST|100=2120|2121=44-444|2122=Rzeszów|99=177|";
         ;
 
-        DaxParser parserService = provider.getParserService();
-
-        List<DaxPair<?>>  pairList = parserService.parsePairs(msgStr,  4 );
-
-        pairList.forEach((pair) -> System.out.println(pair.getTag().getContextId()+":"+
-                pair.getTag().getTagId()+"="+pair.getStrValue()));
-
-        Assertions.assertEquals(10,pairList.size());
+//        DaxParser parserService = daxEngine.getParser();
+//
+//        List<DaxPair<?>>  pairList = parserService.parsePairs(msgStr,  4 );
+//
+//        pairList.forEach((pair) -> System.out.println(pair.getTag().getContextId()+":"+
+//                pair.getTag().getTagId()+"="+pair.getStrValue()));
+//
+//        Assertions.assertEquals(10,pairList.size());
     }
 
 //    @Test

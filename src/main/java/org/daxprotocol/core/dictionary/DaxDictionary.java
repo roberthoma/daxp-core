@@ -63,7 +63,7 @@ public class DaxDictionary {
 
 
 
-    Map<Integer, DaxEnumDictionary> enumDictionaryMap = new HashMap<>();
+    Map<Integer, DaxEnumDictionary> enumDictionaryMap = new ConcurrentHashMap<>();
 //    DaxEnumDictionary enumDictionary; //Application enumDic
 
     /*****************************************************
@@ -71,7 +71,7 @@ public class DaxDictionary {
      * Key: Message type
      * */
 
-    Map<Integer, DaxMessageDictionary> messageDicMap = new HashMap<>();;
+    Map<Integer, DaxMessageDictionary> messageDicMap = new ConcurrentHashMap<>();;
     DaxMessageDictionary msgMap;
 
     /*****************************************************
@@ -89,13 +89,6 @@ public class DaxDictionary {
 //    Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new HashMap<>();
     Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new ConcurrentHashMap<>();
     Map<DaxTag, DaxDTO> dtoMap = new ConcurrentHashMap<>();
-
-    /*****************************************************
-     *  Handler And controller maps
-     */
-
-    Map<String, Method> handlerMap = new HashMap<>();
-    Map<Class<?>, Object >  daxControllerMap = new HashMap<>();
 
 
     /******************************************************/
@@ -310,36 +303,11 @@ public class DaxDictionary {
 
             return DaxDataType.fromCode(attributMap.get(tag).get(DaxTagConst.FIELD_DATA_TYPE).getCharValue());
         }
-        return null;
+        return DaxDataType.UNKNOWN;
 
     }
 
 
 
-
-    public void putHandler(String msgType, Method method, Class<?> clazz) {
-        handlerMap.put(msgType, method);
-    }
-
-    public void registerCtrl(Object daxpController) {
-        daxControllerMap.put(daxpController.getClass(), daxpController);
-    }
-
-    public DaxMessage executor(DaxMessage reqMsg) {
-        try {
-            String msgType = reqMsg.getMsgType();
-            Method method = handlerMap.get(msgType);
-
-            Object obj = daxControllerMap.get(method.getDeclaringClass());
-
-            Object respObj = method.invoke(obj, reqMsg);
-
-            return (DaxMessage) respObj;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
 
 }

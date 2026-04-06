@@ -10,7 +10,7 @@ public class DaxPopulatorAnnotationBaseTest extends DaxConfigBaseTest {
 
     @BeforeAll
      static void  initAnnotation(){
-        provider.getDaxPopulator().populateFromAnnotations(Dax_TestBase_Schema.class);
+        daxEngine.populate(Dax_TestBase_Schema.class);
 
         DaxDataType dataType =  dictionary.getAtrDataType(new DaxTag( 1,Dax_TestBase_Schema.TEST_TAG_String));
 

@@ -23,13 +23,12 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpValue;
-import org.daxprotocol.core.codec.DaxTagCodec;
+import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.*;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.field.DaxBlockType;
@@ -55,11 +54,28 @@ public class DaxMessageFactory {
     DaxConfig config;
     DaxContextMapper contextMapper;
     DaxTagCodec tagCodec;
+    DaxMessageCodec messageCodec;
+    DaxHeadCodec     headCodec;
+    DaxBodyCodec     bodyCodec;
+    DaxTrailerCodec  trailerCodec;
 
-    public DaxMessageFactory(DaxConfig config, DaxContextMapper contextMapper, DaxTagCodec tagCodec) {
+    public DaxMessageFactory(DaxConfig config,
+            DaxContextMapper contextMapper,
+            DaxTagCodec tagCodec,
+            DaxMessageCodec messageCodec,
+            DaxHeadCodec headCodec,
+            DaxBodyCodec bodyCodec,
+            DaxTrailerCodec trailerCodec
+
+            ) {
         this.config = config;
         this.contextMapper = contextMapper;
         this.tagCodec = tagCodec;
+        this.messageCodec = messageCodec;
+        this.headCodec = headCodec;
+        this.bodyCodec = bodyCodec;
+        this.trailerCodec = trailerCodec;
+
     }
 
     public DaxMessage createDictionaryReq() {
@@ -399,8 +415,8 @@ public class DaxMessageFactory {
     }
 
     public DaxMessage okMessageType() {
-        DaxMessage message = new DaxMessage(DaxMsgType.OK_RES);
-        return message;
+        return new DaxMessage(DaxMsgType.OK_RES);
+
     }
 
 
@@ -409,6 +425,11 @@ public class DaxMessageFactory {
         message.getBody().nextBlock();
         message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Invalid Message Type"));
         return message;
+    }
+
+    public DaxMessage createMsg(String messageType,List<DaxPair<?>> listOfPair){
+
+        return messageCodec.createMsg(messageType, listOfPair);
     }
 
 }

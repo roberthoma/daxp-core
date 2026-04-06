@@ -25,9 +25,7 @@ import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
-import org.daxprotocol.core.parsers.DaxParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,22 +39,22 @@ public class DaxMessageCodec {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-    DaxParser parserService;
+
     public DaxMessageCodec(
             DaxConfig config,
             DaxPairCodec pairCodec,
             DaxPreambleCodec preambleCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
-            DaxTrailerCodec trailerCodec,
-            DaxParser parserService) {
+            DaxTrailerCodec trailerCodec
+            ) {
       this.pairCodec = pairCodec;
       this.preambleCodec = preambleCodec;
       this.headCodec = headCodec;
       this.bodyCodec = bodyCodec;
       this.trailerCodec = trailerCodec;
       this.config = config;
-      this.parserService = parserService;
+
 
     }
 
@@ -64,6 +62,10 @@ public class DaxMessageCodec {
 
     public String encodeAll(List<DaxMessage> messageList) {
     return " no messss !!!";
+    }
+
+    public String encode(DaxPreamble preamble  ,DaxMessage message) {
+        return null;
     }
         //@Override
     public String encode(DaxMessage message) {
@@ -91,7 +93,7 @@ public class DaxMessageCodec {
         return sb.toString();
     }
 
-   private DaxMessage createMsg(List<DaxPair<?>> listOfPair){
+   public DaxMessage createMsg(List<DaxPair<?>> listOfPair){
        DaxHead head;
        DaxBody body;
        DaxTrailer trailer;
@@ -103,6 +105,18 @@ public class DaxMessageCodec {
 
        return new DaxMessage(head,body,trailer);
    }
+    public DaxMessage createMsg(String msgType,List<DaxPair<?>> listOfPair){
+        DaxHead head;
+        DaxBody body;
+        DaxTrailer trailer;
+
+        head = headCodec.createHead(listOfPair);
+        body = bodyCodec.createBody(head.getBlockCount(), listOfPair) ;
+        trailer = trailerCodec.createTrailer(listOfPair);
+        //todo trailer with check
+
+        return new DaxMessage(head,body,trailer);
+    }
 
 
 //TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPE !!!
@@ -111,87 +125,13 @@ public class DaxMessageCodec {
 
 
 
-    /// ////
     public List<DaxMessage> decodeAll(String msgStr) {
         List<DaxMessage> messageList = new ArrayList<>();
-        DaxPreamble preamble = preambleCodec.decode(msgStr);
 
-//        String fisrtTagType = "|9=";
-        String strTagType = ""+
-                DaxConfig.PAIR_SEPARATOR+ DaxTagConst.MSG_TYPE.getTagId()+ DaxConfig.EQUAL;
-
-        String strTagBlock = ""+
-                DaxConfig.PAIR_SEPARATOR+ DaxTagConst.BLOCK_INDEX.getTagId()+ DaxConfig.EQUAL;
-
-
-        int fistMsgIdx = msgStr.indexOf(strTagType);
-
-        String msgPairsStr = msgStr.substring(fistMsgIdx);
-
-
-    //tmp    List<String> messagesList = parserService.splitByTag(msgPairsStr,strTagType);
-
-        List<List<String>> listOfMsgBlock = new ArrayList<>();
-//tmp
-//        messagesList.forEach(s -> {
-//            int fistBBIdx = s.indexOf(strTagBlock);
-//
-//            if (fistBBIdx==-1){
-//                List<String> sss = new ArrayList<>();
-//                sss.add(s);
-//                listOfMsgBlock.add(sss);
-//            }
-//           else {
-//                //  sss.add(s.substring(0,fistBBIdx));
-//                List<String> sss = new ArrayList<>(parserService.splitByTag(s, strTagBlock));
-//
-//                listOfMsgBlock.add(sss);
-//                //listOfMsgBlock.add(parserService.splitByTag(s, strTagType));
-//           }
-//
-//
-//
-//        });
-
-         //MSG List> Block List> Map of tag  and string value
-        // rebuild "Primitive Obsession"
-
-
-        List<List<Map< DaxTag, String>>> listMsgValue = new ArrayList<>();
-//tmp
-//        listOfMsgBlock.forEach(blockList ->  {
-//                    List<Map< DaxTag, String>> mapTagValueList = new ArrayList<>();
-//                      blockList.forEach(s ->
-//                              mapTagValueList.add( parserService.parserBlock(s))
-//                       );
-//                    listMsgValue.add(mapTagValueList);
-//        }
-//        );
-
-
-     //   Map<DaxTag, String> blockPairMap = parserService.blockParse();
-
-        //tmp
-//        List<DaxPair<?>> listOfPair = parserService.
-//                          parsePairs(msgPairsStr,
-//                                     DaxPatternFactory.compileMessagePairPattern(DaxpConfig.PAIR_SEPARATOR),
-//                                     preamble.getMsgContextId());
-
-        //tmp
-        //List<List<DaxPair<?>>> msgPairList =  parserService.splitMessages(listOfPair);
-
-
-
-
-//tmp
-//        msgPairList.forEach(pairs ->
-//            messageList.add(createMsg(pairs))
-//        );
 
         return messageList;
     }
 
-   // @Override
     public DaxMessage decode(String msg) {
         return decodeAll(msg).get(0);
     }
@@ -202,4 +142,26 @@ public class DaxMessageCodec {
       return preamble.getMsgCnt() ;
     }
 
+//    public DaxPreamble decodePreamble(String body) {
+//        return parser.parsePreamble(body);
+//    }
+//
+//    public List<DaxMessage> decodeMessageList(String body) {
+//        List<DaxMessage> messageList = new ArrayList<>();
+//        List<DaxPair<?>> pairList = parser.parsePairList(body);
+//
+//        //>>>>> todo pairList.forEach(daxPair -> );
+//
+//        return messageList;
+//
+//    }
+//
+//    public DaxPreamble decodePreambleFromMap(Map<String, String> params) {
+//
+//        return null;
+//    }
+//
+//    public List<DaxMessage> decodeMessageFromMap(Map<String, String> params) {
+//        return null;
+//    }
 }

@@ -20,15 +20,15 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxPairCodec {
     DaxConfig config;
-    DaxStringReferenceMapper contextMapper;
+    DaxContextMapper contextMapper;
     DaxTagCodec tagCodec;
-    public DaxPairCodec(DaxConfig config, DaxStringReferenceMapper contextMapper, DaxTagCodec tagCodec) {
+    public DaxPairCodec(DaxConfig config, DaxContextMapper contextMapper, DaxTagCodec tagCodec) {
         this.config = config;
         this.contextMapper = contextMapper;
         this.tagCodec = tagCodec;

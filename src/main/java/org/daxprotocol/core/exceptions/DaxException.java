@@ -5,34 +5,34 @@ package org.daxprotocol.core.exceptions;
  * Uses RuntimeException for flexible error handling in stream processing.
  */
 public abstract class DaxException extends RuntimeException {
-    private final String errorCode;
+    private final String daxErrorCode;
 
     // 1. Basic: Code + Message
-    public DaxException(String errorCode, String message) {
-        super(String.format("[%s] %s", errorCode, message));
-        this.errorCode = errorCode;
+    public DaxException(String daxErrorCode, String message) {
+        super(String.format("[%s] %s", daxErrorCode, message));
+        this.daxErrorCode = daxErrorCode;
     }
 
     // 2. Chaining: Code + Message + Original Cause (e.g., IOException)
-    public DaxException(String errorCode, String message, Throwable cause) {
-        super(String.format("[%s] %s", errorCode, message), cause);
-        this.errorCode = errorCode;
+    public DaxException(String daxErrorCode, String message, Throwable cause) {
+        super(String.format("[%s] %s", daxErrorCode, message), cause);
+        this.daxErrorCode = daxErrorCode;
     }
 
     // 3. Wrapping: Code + Original Cause only
-    public DaxException(String errorCode, Throwable cause) {
-        super(cause != null ? String.format("[%s] %s", errorCode, cause.getMessage()) : "[" + errorCode + "]", cause);
-        this.errorCode = errorCode;
+    public DaxException(String daxErrorCode, Throwable cause) {
+        super(cause != null ? String.format("[%s] %s", daxErrorCode, cause.getMessage()) : "[" + daxErrorCode + "]", cause);
+        this.daxErrorCode = daxErrorCode;
     }
 
     // 4. Advanced: Control over suppression and stack trace
-    protected DaxException(String errorCode, String message, Throwable cause,
+    protected DaxException(String daxErrorCode, String message, Throwable cause,
             boolean enableSuppression, boolean writableStackTrace) {
-        super(String.format("[%s] %s", errorCode, message), cause, enableSuppression, writableStackTrace);
-        this.errorCode = errorCode;
+        super(String.format("[%s] %s", daxErrorCode, message), cause, enableSuppression, writableStackTrace);
+        this.daxErrorCode = daxErrorCode;
     }
 
-    public String getErrorCode() {
-        return errorCode;
+    public String getDaxErrorCode() {
+        return daxErrorCode;
     }
 }
