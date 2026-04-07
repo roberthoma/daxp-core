@@ -13,19 +13,17 @@ public class DaxDispatcher {
     DaxParser parser;
 
     public DaxFrame dispatchRequest(Map<String, String> params, String body) {
-
+        DaxFrame frame ;
         List<DaxMessage> incoming  = null;
         DaxPreamble preamble = null;
 
         if (body != null && !body.isEmpty()) {
-            preamble = parser.parsePreamble(body);
-            incoming = parser.parseMessageList(body);
+            frame = parser.parseFromString(body);
         } else {
-            preamble = parser.decodePreambleFromMap(params);
-            incoming = parser.decodeMessageFromMap(params);
+            frame = parser.parseFromMap(params);
         }
 
-        return handlerRegistry.executor(preamble,incoming );
+        return handlerRegistry.executor(frame);
 
 
     }

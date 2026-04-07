@@ -14,7 +14,7 @@ public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
 
     @Test
     void Parser2BaseTest() {
-        String msgStr = //"DAXP=v0.1.0|EN=UTF-8|CX=CRM" +
+        String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM" +
                 "|9=CDD|6=4" +
                 "|7=1|5=INST|100=2000|2080=Big bike|2001=123|\n2002=Robert|2101=2|FIX:2085=345|2102=3|2075=INDIVIDUAL" +
                 "|7=2|5=INST|100=2101|  2114 =Polna 7|\n ADR:2115=Warszawa|2111=345" +
@@ -29,7 +29,7 @@ public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
 
 //        DaxParser parserService = daxEngine.getParser();
 //
-//        List<DaxPair<?>>  pairList = parserService.parsePairs(msgStr,  4 );
+//        List<DaxPair<?>>  pairList = parserService. parsePairs(msgStr,  4 );
 //
 //        pairList.forEach((pair) -> System.out.println(pair.getTag().getContextId()+":"+
 //                pair.getTag().getTagId()+"="+pair.getStrValue()));

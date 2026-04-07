@@ -68,6 +68,7 @@ public class DaxMessageCodec {
         return null;
     }
         //@Override
+    /*
     public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
         DaxPreamble preamble = new DaxPreamble();
@@ -92,14 +93,14 @@ public class DaxMessageCodec {
 
         return sb.toString();
     }
-
+*/
    public DaxMessage createMsg(List<DaxPair<?>> listOfPair){
        DaxHead head;
        DaxBody body;
        DaxTrailer trailer;
 
        head = headCodec.createHead(listOfPair);
-       body = bodyCodec.createBody(head.getBlockCount(), listOfPair) ;
+       body = bodyCodec.createBody(1, listOfPair) ;
        trailer = trailerCodec.createTrailer(listOfPair);
        //todo trailer with check
 
@@ -121,26 +122,28 @@ public class DaxMessageCodec {
 
 //TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPE !!!
 
-
-
-
-
-    public List<DaxMessage> decodeAll(String msgStr) {
-        List<DaxMessage> messageList = new ArrayList<>();
-
-
-        return messageList;
-    }
-
-    public DaxMessage decode(String msg) {
-        return decodeAll(msg).get(0);
+    public DaxPreambleCodec getPreambleCodec(){
+       return preambleCodec;
     }
 
 
-    public  int getMessageCount(String msgStr){
-        DaxPreamble preamble = preambleCodec.decode(msgStr);
-      return preamble.getMsgCnt() ;
-    }
+
+//    public List<DaxMessage> decodeAll(String msgStr) {
+//        List<DaxMessage> messageList = new ArrayList<>();
+//
+//
+//        return messageList;
+//    }
+//
+//    public DaxMessage decode(String msg) {
+//        return decodeAll(msg).get(0);
+//    }
+
+
+//    public  int getMessageCount(String msgStr){
+//        DaxPreamble preamble = preambleCodec.decode(msgStr);
+//      return preamble.getMsgCnt() ;
+//    }
 
 //    public DaxPreamble decodePreamble(String body) {
 //        return parser.parsePreamble(body);

@@ -1,5 +1,6 @@
 package org.daxprotocol.core.ut.dax_00_05_base_parser;
 
+import org.daxprotocol.core.dispatcher.DaxFrame;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxException;
 import org.daxprotocol.core.model.DaxMessage;
@@ -75,17 +76,11 @@ public class DaxParser_TESTBaseTest extends DaxConfigBaseTest {
                 "9=CDD|7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|99=177|";
 
 
-
-        DaxPreamble preamble ;
-        List<DaxMessage> messageList;
-
+        DaxFrame frame;
         try {
-            preamble    = parser.parsePreamble(msgStr);
-            System.out.println(preambleCodec.encode(preamble));
-            messageList = parser.parseMessageList(msgStr);
-            Assertions.assertEquals (1, messageList.size());
-
-            Assertions.assertEquals ("CDD", messageList.get(0).getMsgType());
+            frame = parser.parseFrame(msgStr);
+            DaxMessage msg = frame.getFirstMessage();
+            Assertions.assertEquals ("CDD", msg.getMsgType());
 
 
         } catch (DaxException e) {

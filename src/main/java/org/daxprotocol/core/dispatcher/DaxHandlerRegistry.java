@@ -1,7 +1,6 @@
 package org.daxprotocol.core.dispatcher;
 
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -27,14 +26,13 @@ public class DaxHandlerRegistry {
         daxControllerMap.put(daxpController.getClass(), daxpController);
     }
 
-    public DaxFrame executor(DaxPreamble preamble, List<DaxMessage> reqMsg) {
-
-
+    public DaxFrame executor( DaxFrame frame){
 
         DaxFrame response = new DaxFrame();
         try {
-            String msgType = reqMsg.get(0).getMsgType();
-            Method method = handlerMap.get(msgType);
+            DaxMessage  reqMsg = frame.getFirstMessage();
+            String msgType = reqMsg.getMsgType();
+            Method method  = handlerMap.get(msgType);
 
             Object obj = daxControllerMap.get(method.getDeclaringClass());
 

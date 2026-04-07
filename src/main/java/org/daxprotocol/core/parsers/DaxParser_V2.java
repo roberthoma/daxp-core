@@ -3,10 +3,10 @@ package org.daxprotocol.core.parsers;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.dispatcher.DaxFrame;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -20,7 +20,7 @@ public class DaxParser_V2 implements DaxParser {
     DaxParserTools parserTools =  DaxParserTools.getInstance();
     DaxParserTag parserTag ;
     DaxDictionary daxDic;
-    DaxParserMessage parserMessage;
+    DaxMessageParser parserMessage;
     DaxMessageCodec messageCodec;
 
     public DaxParser_V2(DaxConfig config, DaxContextMapper contextMapper , DaxDictionary daxDic,
@@ -31,7 +31,8 @@ public class DaxParser_V2 implements DaxParser {
         this.parserTag = new DaxParserTag(contextMapper);
         this.daxDic = daxDic;
         this.messageCodec = messageCodec;
-         parserMessage = new DaxParserMessage( config,contextMapper, parserTag, daxDic, messageCodec); //,  messageFactory);
+
+         parserMessage = new DaxMessageParser( config,contextMapper, parserTag, daxDic, messageCodec); //,  messageFactory);
 
     }
 
@@ -362,10 +363,6 @@ public class DaxParser_V2 implements DaxParser {
         return parserMessage.parsePreamble(msg);
     }
 
-    @Override
-    public List<DaxMessage> parseMessageList(String msg){
-        return parserMessage.parseMessageList(msg);
-    }
 
     @Override public DaxPreamble decodePreambleFromMap(Map<String, String> params) {
         return null;
@@ -373,6 +370,19 @@ public class DaxParser_V2 implements DaxParser {
 
     @Override public List<DaxMessage> decodeMessageFromMap(Map<String, String> params) {
         return List.of();
+    }
+
+    @Override public DaxFrame parseFromString(String body) {
+        return null;
+    }
+
+    @Override public DaxFrame parseFromMap(Map<String, String> params) {
+        return null;
+    }
+
+    @Override
+    public DaxFrame parseFrame(String msgStr) {
+        return parserMessage.parseFrame(msgStr);
     }
 
 }

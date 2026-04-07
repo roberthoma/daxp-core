@@ -22,8 +22,10 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
+import org.daxprotocol.core.exceptions.DaxMsgParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
+import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag_OLD;
 import org.daxprotocol.core.parsers.DaxPatternFactory;
 
@@ -91,23 +93,7 @@ public class DaxPreambleCodec {
 //    public  Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
 //        Map<String, String> map = new HashMap<>();
 //
-//        //Check message is a DAXP
-////        if(!msg.startsWith(DaxpConfig.DAXP_PREAMBLE_PREFIX)){
-//        //TODO Add to protocol rules
-//        if(!msg.startsWith(DaxPreambleTag_OLD.DAXP)){
-//            throw new RuntimeException("It is NOT DAXP message !!!");
-//        }
-//
-//        //TODO Add to protocol rules
-//        int fistMsgIdx = msg.indexOf(String.valueOf(DaxTagConst.MSG_TYPE.getTagId())+ DaxConfig.EQUAL);
-//
-//       // String pream = msg.substring(0,fistMsgIdx);
-//        Matcher m = fistMsgIdx > 0 ? pairPattern.matcher(msg.substring(0,fistMsgIdx)) :
-//                    pairPattern.matcher(msg);
-//
-//        while (m.find()) {
-//            map.put(m.group(1), m.group(2));
-//        }
+
 //        return map;
 //    }
 
@@ -116,31 +102,26 @@ public class DaxPreambleCodec {
     public DaxPreamble decode(String msgStr) {
         DaxPreamble preamble = new DaxPreamble();
 
-//        //TODO  Refactoring with new parser
-//
-//        Pattern pairPattern =  DaxPatternFactory.compilePreamblePairPattern(DaxConfig.PAIR_SEPARATOR);
-//
-//        Map<String, String> map = parsePreamble(msgStr, pairPattern);
-//
-//        preamble.setProtocolVersion(map.getOrDefault(DaxPreambleTag_OLD.DAXP, DaxConfig.PROTOCOL_VERSION));
-//
-//        Optional<DaxCharacterEncoding>  encodingOpt = DaxCharacterEncoding.fromName(
-//                map.getOrDefault(DaxPreambleTag_OLD.ENCODING,config.getDefaultEncoding().getCanonicalName()));
-//
-//        encodingOpt.ifPresent(preamble::setEncoding);
-//
-//        preamble.setMsgCnt(Integer.parseInt(map.getOrDefault(DaxPreambleTag_OLD.MSG_COUNT,"1")));
-//
-//        String context = map.getOrDefault(DaxPreambleTag_OLD.MSG_CONTEXT,
-//                                          map.getOrDefault(DaxPreambleTag_OLD.MSG_SENDER,
-//                                                  contextMapper.getReference(config.getAppContextId())
-//                                          )
-//        );
-//
-//        preamble.setMsgContextId(contextMapper.getReferenceId(context));
         return preamble;
 
     }
+    public boolean isTagPreamble(String tagStr){
+        return  DaxPreambleTag.contains(tagStr);
+    }
+
+    public void decodeTag(String tagStr, String valueStr ,DaxPreamble preamble) {
+        if (!DaxPreambleTag.contains(tagStr)) {
+           throw new DaxMsgParserException("It "+tagStr+ " NOT  preamble tag !!!");
+        }
+            DaxPreambleTag tag = DaxPreambleTag.fromTag(tagStr);
+            switch (tag) {
+                case DAXP        -> preamble.setProtocolVersion(valueStr);
+                case ENCODING    -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
+                case MSG_COUNT   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
+                case MSG_CONTEXT -> preamble.setMsgContextId(contextMapper.getReferenceId(valueStr));
+                //case MSG_SENDER  -> preamble.setSe System.out.println("Sender: " + value);
+            }
+        }
 
 
 }

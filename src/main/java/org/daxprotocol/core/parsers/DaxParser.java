@@ -1,5 +1,6 @@
 package org.daxprotocol.core.parsers;
 
+import org.daxprotocol.core.dispatcher.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
@@ -20,10 +21,16 @@ public interface DaxParser {
 
     DaxPreamble      parsePreamble(String msg);
 
-    List<DaxMessage> parseMessageList(String msg);
+   // List<DaxMessage> parseMessageList(String msg);
 
 
     DaxPreamble decodePreambleFromMap(Map<String, String> params);
 
     List<DaxMessage> decodeMessageFromMap(Map<String, String> params);
+
+    DaxFrame parseFromString(String body);
+
+    DaxFrame parseFromMap(Map<String, String> params);
+
+    DaxFrame parseFrame(String msgStr);
 }

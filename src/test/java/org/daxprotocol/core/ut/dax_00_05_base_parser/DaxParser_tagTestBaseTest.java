@@ -1,4 +1,4 @@
-package org.daxprotocol.core.ut.Dax_00_10_Parser;
+package org.daxprotocol.core.ut.dax_00_05_base_parser;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.exceptions.DaxTagParserException;
