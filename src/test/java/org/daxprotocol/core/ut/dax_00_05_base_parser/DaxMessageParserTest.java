@@ -4,15 +4,12 @@ import org.daxprotocol.core.dispatcher.DaxFrame;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxException;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-public class DaxParser_TESTBaseTest extends DaxConfigBaseTest {
+public class DaxMessageParserTest extends DaxConfigBaseTest {
 
     @Test
     void parsePreambleTest01(){
@@ -67,12 +64,28 @@ public class DaxParser_TESTBaseTest extends DaxConfigBaseTest {
             }
         }
 
+    @Test
+    void parsePreambleTest60(){
+        String msgStr = "DxAXP=v0.1.0|EN=UTF-8|CX=CRM|";
+        DaxPreamble preamble ;
+        try {
+            preamble    = parser.parsePreamble(msgStr);
+            Assertions.assertEquals("V0.1.0",preamble.getProtocolVersion());
+            Assertions.assertEquals(DaxCharacterEncoding.UTF_8, preamble.getEncoding());
+            Assertions.assertEquals(contextMapper.getReferenceId("CRM"), preamble.getMsgContextId());
+        } catch (DaxException e) {
+            System.out.println(e.getDaxErrorCode()+" "+e.getMessage());
+
+            Assertions.fail();
+        }
+    }
+
 
     @Test
     void parsepair_01(){
 
         String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|"+
-             //   "9=CDD|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|99=177|";
+//                "9=CDD|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|99=177|";
                 "9=CDD|7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|99=177|";
 
 

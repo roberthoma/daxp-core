@@ -15,11 +15,15 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.populator.DaxPopulatorAnnotation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DaxMessageParser {
+    private static final Logger logger = LoggerFactory.getLogger(DaxMessageParser.class);
 
     DaxParserTag tagParser;
     DaxContextMapper contextMapper;
@@ -95,6 +99,7 @@ public class DaxMessageParser {
             String tagStr = msgStr.substring(prevIdx, equalChar);
             if (prevIdx == 0) {
                 if (!tagStr.trim().equals(DaxConfig.DAXP_SYMBOL)) {
+                    logger.error("IT IS NOT DAXP MESSAGE : {}", msgStr);
                     throw new DaxMsgParserException("IT IS NOT DAXP MESSAGE !!!");
                 }
             }

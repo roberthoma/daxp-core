@@ -100,7 +100,7 @@ public class DaxMessageCodec {
        DaxTrailer trailer;
 
        head = headCodec.createHead(listOfPair);
-       body = bodyCodec.createBody(1, listOfPair) ;
+       body = bodyCodec.createBody(0, listOfPair) ;
        trailer = trailerCodec.createTrailer(listOfPair);
        //todo trailer with check
 

@@ -4,7 +4,7 @@ import org.daxprotocol.core.parsers.DaxToolPreamble;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxSplitterPreamble {
+public class DaxToolPreambleTest {
 
     static DaxToolPreamble splitterPreamble = new DaxToolPreamble();
 

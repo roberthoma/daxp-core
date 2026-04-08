@@ -17,28 +17,19 @@ public class DaxPopulatorAnnotationBaseTest extends DaxConfigBaseTest {
 
     @Test
      void  checkIntAnnotation (){
-
         DaxDataType dataType =  dictionary.getAtrDataType(new DaxTag( 1,Dax_TestBase_Schema.TEST_TAG_int));
-
         Assertions.assertEquals(DaxDataType.INTEGER,dataType);
-
     }
 
     @Test
     void  checkStringAnnotation (){
-
         DaxDataType dataType =  dictionary.getAtrDataType(new DaxTag( 1,Dax_TestBase_Schema.TEST_TAG_String));
-
         Assertions.assertEquals(DaxDataType.STRING,dataType);
-
     }
     @Test
     void  checkCharAnnotation (){
-
         DaxDataType dataType =  dictionary.getAtrDataType(new DaxTag( 1,Dax_TestBase_Schema.TEST_TAG_char));
-
         Assertions.assertEquals(DaxDataType.CHAR,dataType);
-
     }
 
 }

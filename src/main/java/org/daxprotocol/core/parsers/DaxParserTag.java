@@ -20,7 +20,7 @@ public class DaxParserTag {
      */
     public int parseIntFromSequence(String seq, int start, int end) {
         if (start >= end) {
-            throw new NumberFormatException("Empty tag ID");
+            throw new DaxTagParserException("Empty tag ID");
         }
 
         int num = 0;
@@ -36,11 +36,12 @@ public class DaxParserTag {
                 // (Standard trim-like behavior)
                 continue;
             } else {
-                throw new NumberFormatException("Invalid character: " + c);
+                throw new DaxTagParserException("Invalid character: " + c);
             }
         }
 
-        if (!hasDigits) throw new NumberFormatException("No digits found");
+        if (!hasDigits)
+            throw new DaxTagParserException("No digits found");
         return num;
     }
 
@@ -55,13 +56,13 @@ public class DaxParserTag {
      *
      * @param tagStr The raw tag string to parse.
      * @return A new DaxTag object with mapped contextId and tagId.
-     * @throws RuntimeException if the format is invalid or tagId is not a numerical value.
+     * @throws DaxTagParserException if the format is invalid or tagId is not a numerical value.
      */
 
     public DaxTag parseDaxTag(String tagStr, int msgContextId) {
-        //TODO All exception change to dedicated DaxpException
+
         if (tagStr == null) {
-            throw new RuntimeException("NOT correct DaxTag: Input is null");
+            throw new DaxTagParserException("NOT correct DaxTag: Input is null");
         }
 
         // 1. Trim the entire string without creating a new String object
@@ -74,7 +75,7 @@ public class DaxParserTag {
             throw new DaxTagParserException("NOT correct DaxTag: Input is empty or only whitespace");
         }
 
-        char separator = DaxConfig.CONTEXT_TAG_SEPARATOR_CHAR; // config.getContextTafSeparator(); // char type
+        char separator = DaxConfig.CONTEXT_TAG_SEPARATOR_CHAR;
         int separatorPos = -1;
 
         // 2. Search for the separator only within the trimmed range
@@ -132,6 +133,14 @@ public class DaxParserTag {
         } else {
             contextId = contextMapper.getReferenceId(contextSymbol);
         }
+        if(contextId==DaxConfig.DAXP_CONTEXT_ID
+                && tagId > DaxConfig.DAXP_MAX_TAG_ID)
+        {
+            throw new DaxTagParserException(" Tag "+tagId+" can't be in DAXP context "+
+                                              DaxConfig.DAXP_CONTEXT_TAG_PREFIX  +" !!! ");
+        }
+
+        //6. Is ok return new DaxTag
         return new DaxTag(contextId, tagId);
     }
 

@@ -4,7 +4,7 @@ import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class Tax_Preamble_tag_test {
+public class DaxPreambleTagTest {
 
     @Test
     void preamble_tag_test1(){
@@ -22,7 +22,6 @@ public class Tax_Preamble_tag_test {
 
         Assertions.assertEquals(DaxPreambleTag.DAXP, DaxPreambleTag.fromTag("DAXP"));
         Assertions.assertEquals(DaxPreambleTag.DAXP, DaxPreambleTag.fromTag(" DAXP "));
-
         Assertions.assertEquals(DaxPreambleTag.MSG_CONTEXT, DaxPreambleTag.fromTag(" cx "));
 
     }

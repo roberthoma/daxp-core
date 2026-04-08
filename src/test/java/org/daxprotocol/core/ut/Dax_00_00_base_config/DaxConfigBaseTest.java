@@ -2,6 +2,7 @@ package org.daxprotocol.core.ut.Dax_00_00_base_config;
 
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
+import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -18,6 +19,7 @@ public class DaxConfigBaseTest {
     protected static DaxContextMapper contextMapper;
     protected static DaxMessageCodec messageCodec;
     protected static DaxPreambleCodec preambleCodec;
+    protected static DaxConfig config;
 
     @BeforeAll
     public static void initAll() {
@@ -32,7 +34,7 @@ public class DaxConfigBaseTest {
             contextMapper = daxEngine.getContextMapper();
             messageCodec  = daxEngine.getMessageCodec();
             preambleCodec = daxEngine.getPreambleCodec();
-
+            config        = daxEngine.getConfig();
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");
@@ -50,6 +52,14 @@ public class DaxConfigBaseTest {
     void checkAppContextId(){
         Assertions.assertEquals(1, daxEngine.getConfig().getAppContextId());
     }
+
+    @Test
+    void checkAppTagPrefix(){
+        String appCtx = "XYZ";
+        Assertions.assertEquals(appCtx, config.getAppContextTagPrefix());
+        Assertions.assertEquals(config.getAppContextId(),contextMapper.getReferenceId(appCtx));
+    }
+
 
     @AfterAll
     static void checkContextList(){
