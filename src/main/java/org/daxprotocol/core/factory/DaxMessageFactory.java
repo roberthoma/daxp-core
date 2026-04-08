@@ -356,7 +356,7 @@ public class DaxMessageFactory {
         daxDataEntry.forEach(entry -> {
             if (entry.getClass().isAnnotationPresent(DaxpDTO.class)) {
                 DaxpDTO dtoAnn = entry.getClass().getAnnotation(DaxpDTO.class);
-                DaxTag tag = creatTag("",dtoAnn.tagId());
+                DaxTag tag = creatTag("",dtoAnn.value());
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                 objectToMsgBlock(body.getCurrentIdx(),tag, entry, body);
             }

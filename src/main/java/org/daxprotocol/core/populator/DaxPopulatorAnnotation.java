@@ -130,7 +130,7 @@ public class DaxPopulatorAnnotation {
                     config.getAppContextId():
                     contextMapper.getReferenceId(dto.context());
 
-            dataTypeTag = new DaxTag(contextId ,dto.tagId());
+            dataTypeTag = new DaxTag(contextId ,dto.value());
             daxDic.putAtrDtoDataTypeId(tag,dataTypeTag);
         }
         else {
@@ -277,7 +277,7 @@ public class DaxPopulatorAnnotation {
                                                         clazz.getSimpleName();
 
 
-        DaxTag dtoTag = new DaxTag(config.getAppContextId(), typeAnn.tagId());
+        DaxTag dtoTag = new DaxTag(config.getAppContextId(), typeAnn.value());
         daxDic.putDTO(new DaxDTO(dtoTag, dtoName));
 
         daxDic.putAtrDataType(dtoTag, DaxDataType.DTO.getCode());

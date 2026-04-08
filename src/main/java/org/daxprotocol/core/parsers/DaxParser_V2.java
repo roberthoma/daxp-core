@@ -391,8 +391,8 @@ public class DaxParser_V2 implements DaxParser {
         return List.of();
     }
 
-    @Override public DaxFrame parseFromString(String body) {
-        return null;
+    @Override public DaxFrame parseFromString(String frame) {
+        return parserMessage.parseFrame(frame);
     }
 
     @Override public DaxFrame parseFromMap(Map<String, String> params) {

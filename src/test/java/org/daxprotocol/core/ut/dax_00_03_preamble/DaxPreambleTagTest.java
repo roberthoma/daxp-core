@@ -1,4 +1,4 @@
-package org.daxprotocol.core.ut.Dax_00_03_preamble;
+package org.daxprotocol.core.ut.dax_00_03_preamble;
 
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import org.junit.jupiter.api.Assertions;

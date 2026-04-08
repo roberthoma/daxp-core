@@ -1,10 +1,14 @@
-package org.daxprotocol.core.ut.Dax_00_00_base_config;
+package org.daxprotocol.core.ut.dax_00_00_base_config;
 
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
+import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
+import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
+import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.parsers.DaxParser;
 import org.daxprotocol.core.engine.DaxEngine;
@@ -20,6 +24,12 @@ public class DaxConfigBaseTest {
     protected static DaxMessageCodec messageCodec;
     protected static DaxPreambleCodec preambleCodec;
     protected static DaxConfig config;
+    protected static DaxTagCodec tagCodec;
+    protected static DaxMessageConverter msgConverter;
+    protected static DaxMessageFactory msgFactory;
+    protected static DaxHandlerRegistry handlerRegistry;
+
+
 
     @BeforeAll
     public static void initAll() {
@@ -35,6 +45,10 @@ public class DaxConfigBaseTest {
             messageCodec  = daxEngine.getMessageCodec();
             preambleCodec = daxEngine.getPreambleCodec();
             config        = daxEngine.getConfig();
+            tagCodec      = daxEngine.getTagCodec();
+            msgConverter  = daxEngine.getMessageConverter();
+            msgFactory    = daxEngine.getMessageFactory();
+            handlerRegistry = daxEngine.getHandlerRegistry();
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");

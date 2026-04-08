@@ -27,7 +27,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Documented
 public @interface DaxpDTO {
-    int    tagId();
+    int value();
     String context()     default "";
     String name()        default "";
     String description() default "";

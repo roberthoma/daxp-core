@@ -193,7 +193,11 @@ public class DaxEngine {
         annotationPopulator.populate(clazz);
     }
 
-//    public DaxPopulator getDaxPopulator() {
+    public DaxHandlerRegistry getHandlerRegistry() {
+        return handlerRegistry;
+    }
+
+    //    public DaxPopulator getDaxPopulator() {
 //        return populator;
 //    }
     ////////////////////

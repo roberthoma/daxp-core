@@ -21,21 +21,20 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxParser;
 
 public class DaxTagCodec {
     DaxConfig config;
-    DaxStringReferenceMapper contextMapper;
+    DaxContextMapper contextMapper;
     //DaxParser parser;
     public DaxTagCodec(DaxConfig config,
-                       DaxStringReferenceMapper contextMapper//,
-                       //DaxParser parser
+                       DaxContextMapper contextMapper
     ){
       this.config = config;
       this.contextMapper = contextMapper;
-      //this.parser = parser;
     }
 
     public String encode( DaxTag tag){
