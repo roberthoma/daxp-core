@@ -1,4 +1,4 @@
-package org.daxprotocol.core.ut.Dax_00_30_annotation;
+package org.daxprotocol.core.ut.Dax_10_00_annotation;
 
 import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;

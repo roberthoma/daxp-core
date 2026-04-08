@@ -6,39 +6,35 @@ import org.daxprotocol.core.codec.DaxTagConst;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dispatcher.DaxFrame;
-import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxMsgParserException;
-import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.populator.DaxPopulatorAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaxMessageParser {
-    private static final Logger logger = LoggerFactory.getLogger(DaxMessageParser.class);
+public class DaxFrameParser {
+    private static final Logger logger = LoggerFactory.getLogger(DaxFrameParser.class);
 
-    DaxParserTag tagParser;
+    DaxTagParser tagParser;
     DaxContextMapper contextMapper;
-    DaxDictionary daxDic;
+   // DaxDictionary daxDic;
     DaxConfig config;
     DaxMessageCodec messageCodec;
     DaxPreambleCodec preambleCodec;
-    public DaxMessageParser(DaxConfig config,
+    public DaxFrameParser(DaxConfig config,
                             DaxContextMapper contextMapper,
-                            DaxParserTag tagParser,
+                            DaxTagParser tagParser,
                             DaxDictionary daxDic, //,
                             DaxMessageCodec messageCodec) {
         this.tagParser = tagParser;
         this.contextMapper = contextMapper;
-        this.daxDic = daxDic;
+       // this.daxDic = daxDic;
         this.config = config;
         this.messageCodec = messageCodec;
         this.preambleCodec = messageCodec.getPreambleCodec();
@@ -72,14 +68,14 @@ public class DaxMessageParser {
 
 
     //--------------------------
-    private DaxFrame parse(String msgStr, char workMode) {
+    private DaxFrame parse(String frameStr, char workMode) {
         DaxFrame frame = new DaxFrame();
         List<DaxMessage> messageList = new ArrayList<>();
-        List<Integer> indList = getPipeIndices(msgStr);
+        List<Integer> indList = getPipeIndices(frameStr);
         List<DaxPair<?>> listOfPair =  new ArrayList<>();
 
         int prevIdx = 0;
-        int msgSize = msgStr.length();
+        int msgSize = frameStr.length();
         int inxSize = indList.size();
         int lastIdx = indList.get(inxSize - 1);
         boolean isPreableParsing = true;
@@ -90,20 +86,20 @@ public class DaxMessageParser {
         for (int idx : indList) {
 
 
-            int equalChar = msgStr.substring(prevIdx, idx).indexOf('=') + prevIdx;
+            int equalChar = frameStr.substring(prevIdx, idx).indexOf('=') + prevIdx;
             if (prevIdx > equalChar) {
                 throw new DaxMsgParserException("IT IS ANY INCOMPATIBLE MESSAGE !!!");
             }
 
 
-            String tagStr = msgStr.substring(prevIdx, equalChar);
+            String tagStr = frameStr.substring(prevIdx, equalChar);
             if (prevIdx == 0) {
                 if (!tagStr.trim().equals(DaxConfig.DAXP_SYMBOL)) {
-                    logger.error("IT IS NOT DAXP MESSAGE : {}", msgStr);
+                    logger.error("IT IS NOT DAXP MESSAGE : {}", frameStr);
                     throw new DaxMsgParserException("IT IS NOT DAXP MESSAGE !!!");
                 }
             }
-            String valueStr = msgStr.substring(equalChar + 1, idx);
+            String valueStr = frameStr.substring(equalChar + 1, idx);
             try {
                 if (isPreableParsing && preambleCodec.isTagPreamble(tagStr)) {
                     preambleCodec.decodeTag(tagStr, valueStr ,preamble);
@@ -114,6 +110,7 @@ public class DaxMessageParser {
                     if (workMode == 'P'){
                         break;
                     }
+
                     if (tag.equals(DaxTagConst.MSG_TYPE))
                     {
                         if (!listOfPair.isEmpty()){
@@ -125,6 +122,7 @@ public class DaxMessageParser {
                     if (tag.equals(DaxTagConst.CHECKSUM)){
                         messageList.add(messageCodec.createMsg(listOfPair));
                     }
+
 
                 }
             } catch (Exception e) {

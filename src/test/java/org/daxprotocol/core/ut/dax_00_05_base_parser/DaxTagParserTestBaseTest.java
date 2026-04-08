@@ -7,7 +7,7 @@ import org.daxprotocol.core.ut.Dax_00_00_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxParserTagTestBaseTest extends DaxConfigBaseTest {
+public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
 
     @Test
     void parseTag10(){
