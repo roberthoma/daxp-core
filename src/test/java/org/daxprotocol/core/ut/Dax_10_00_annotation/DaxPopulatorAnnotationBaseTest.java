@@ -2,11 +2,14 @@ package org.daxprotocol.core.ut.Dax_10_00_annotation;
 
 import org.daxprotocol.core.dispatcher.DaxFrame;
 import org.daxprotocol.core.field.DaxDataType;
+import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.ut.dax_00_00_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class DaxPopulatorAnnotationBaseTest extends DaxConfigBaseTest {
 
@@ -15,6 +18,15 @@ public class DaxPopulatorAnnotationBaseTest extends DaxConfigBaseTest {
         daxEngine.populate(DaxpSchema_Base.class);
         daxEngine.populate(DaxDTO_Base.class);
         daxEngine.populate(DaxpController_Base.class);
+
+        handlerRegistry.registerCtrl(new DaxpController_Base());  //Autowire in spring
+
+    }
+
+    @Test
+    void printDictionary(){
+        DaxMessage dicMsg = msgFactory.dictionaryToMsg();
+        System.out.println(messageCodec.encode(dicMsg));
 
     }
 

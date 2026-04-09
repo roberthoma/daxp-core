@@ -68,7 +68,7 @@ public class DaxMessageCodec {
         return null;
     }
         //@Override
-    /*
+
     public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
         DaxPreamble preamble = new DaxPreamble();
@@ -93,7 +93,7 @@ public class DaxMessageCodec {
 
         return sb.toString();
     }
-*/
+
    public DaxMessage createMsg(List<DaxPair<?>> listOfPair){
        DaxHead head;
        DaxBody body;

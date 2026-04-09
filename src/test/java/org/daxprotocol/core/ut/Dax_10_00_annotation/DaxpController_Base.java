@@ -4,6 +4,7 @@ import org.daxprotocol.core.annotation.DaxpController;
 import org.daxprotocol.core.annotation.DaxpHandler;
 import org.daxprotocol.core.dispatcher.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.ut.dax_00_00_base_config.DaxConfigBaseTest;
 
 @DaxpController
@@ -15,7 +16,9 @@ public class DaxpController_Base extends DaxConfigBaseTest {
 
         DaxDTO_Base dtoBase = new DaxDTO_Base("Test string",'H',456);
         DaxFrame frame = new DaxFrame();
-        DaxMessage message = msgFactory.toDaxMessage(DaxpSchema_Base.BASE_DTO_DATA,dtoBase);
+
+        DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame,DaxpSchema_Base.BASE_DTO_DATA,dtoBase);
+        frame.setPreamble(new DaxPreamble());
         frame.addMessage(message);
 
         return frame;

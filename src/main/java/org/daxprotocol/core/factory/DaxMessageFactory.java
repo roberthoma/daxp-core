@@ -26,6 +26,7 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.*;
+import org.daxprotocol.core.dispatcher.DaxFrame;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -58,14 +59,15 @@ public class DaxMessageFactory {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-
+    DaxDictionary dictionary;
     public DaxMessageFactory(DaxConfig config,
             DaxContextMapper contextMapper,
             DaxTagCodec tagCodec,
             DaxMessageCodec messageCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
-            DaxTrailerCodec trailerCodec
+            DaxTrailerCodec trailerCodec,
+            DaxDictionary dictionary
 
             ) {
         this.config = config;
@@ -75,6 +77,7 @@ public class DaxMessageFactory {
         this.headCodec = headCodec;
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
+        this.dictionary = dictionary;
 
     }
 
@@ -246,7 +249,7 @@ public class DaxMessageFactory {
 
 
 
-    public DaxMessage dictionaryToMsg(DaxDictionary dictionary) {
+    public DaxMessage dictionaryToMsg() {
         DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
 
         dictionary.getContextMap().forEach((idCtx, context) ->
@@ -272,7 +275,7 @@ public class DaxMessageFactory {
     }
 
     //TODO reate message with token
-    public DaxMessage toDaxMessage( DaxMessage messageReq , String messageType, Object daxDataEntry ) {
+    public DaxMessage toDaxRespondMessage( DaxFrame messageReq , String messageType, Object daxDataEntry ) {
 
         return  daxDataEntry instanceof List<?> ?
                 toDaxMessageFromList( messageType, (List<Object>) daxDataEntry )

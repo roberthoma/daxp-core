@@ -11,8 +11,6 @@ import static org.daxprotocol.core.ut.Dax_10_00_annotation.DaxpSchema_Base.*;
 public class DaxDTO_Base {
 
 
-
-
     @DaxpField(TEST_TAG_int)
     int anyInt;
 

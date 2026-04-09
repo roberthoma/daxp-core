@@ -1,5 +1,6 @@
 package org.daxprotocol.core.dispatcher;
 
+import org.daxprotocol.core.exceptions.DaxExecutorException;
 import org.daxprotocol.core.model.DaxMessage;
 
 import java.lang.reflect.Method;
@@ -28,7 +29,7 @@ public class DaxHandlerRegistry {
 
     public DaxFrame executor( DaxFrame frame){
 
-        DaxFrame response = new DaxFrame();
+       // DaxFrame response = new DaxFrame();
         try {
             DaxMessage  reqMsg = frame.getFirstMessage();
             String msgType = reqMsg.getMsgType();
@@ -36,25 +37,24 @@ public class DaxHandlerRegistry {
 
             Object obj = daxControllerMap.get(method.getDeclaringClass());
 
-            Object respObj = method.invoke(obj, reqMsg); //TODO change to listo of messages
+            Object respObj = method.invoke(obj, frame); //TODO change to listo of messages
 
-            // --- THE CHECK ---
-            if (respObj instanceof DaxMessage) {
-                // Single message logic
-                response.addMessage(   (DaxMessage) respObj);
-            }
-            else if (respObj instanceof List) {
-                // List logic (e.g., search results or batch updates)
-                response.addAllMessages(   (List<DaxMessage>) respObj);
-            }
-            else if (respObj == null) {
-                    // Handle void/null returns (e.g., an ACK)
-                    return null;
-                }
-            return response;
+//            // --- THE CHECK ---
+//            if (respObj instanceof DaxMessage) {
+//                // Single message logic
+//                response.addMessage(   (DaxMessage) respObj);
+//            }
+//            else if (respObj instanceof List) {
+//                // List logic (e.g., search results or batch updates)
+//                response.addAllMessages(   (List<DaxMessage>) respObj);
+//            }
+//            else if (respObj == null) {
+//                    // Handle void/null returns (e.g., an ACK)
+//                    return null;
+//                }
+            return (DaxFrame) respObj;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new DaxExecutorException(e);
         }
 
     }
