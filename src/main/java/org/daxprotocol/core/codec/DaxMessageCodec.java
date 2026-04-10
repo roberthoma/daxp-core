@@ -71,7 +71,7 @@ public class DaxMessageCodec {
 
     public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
-        DaxPreamble preamble = new DaxPreamble();
+        DaxPreamble preamble = new DaxPreamble();  //todo remove from hire and encode from frame
         preamble.setEncoding(config.getDefaultEncoding());
         preamble.setMsgContextId(config.getAppContextId());
 

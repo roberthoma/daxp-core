@@ -1,4 +1,4 @@
-package org.daxprotocol.core.ut.dax_00_00_base_config;
+package org.daxprotocol.core.unit_test.dax_00_00_base_config;
 
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
@@ -75,13 +75,13 @@ public class DaxConfigBaseTest {
     }
 
 
-    @AfterAll
-    static void checkContextList(){
-        System.out.println("*************************************************");
-        System.out.println("               Context list");
-        System.out.println();
-        daxEngine.getContextMapper().getAllMappings().forEach((s, id) -> System.out.println(s +" id="+id));
-        System.out.println("*************************************************");
-    }
+//    @Test
+//    void checkContextList(){
+//        System.out.println("*************************************************");
+//        System.out.println("               Context list");
+//        System.out.println();
+//        daxEngine.getContextMapper().getAllMappings().forEach((s, id) -> System.out.println(s +" id="+id));
+//        System.out.println("*************************************************");
+//    }
 
 }

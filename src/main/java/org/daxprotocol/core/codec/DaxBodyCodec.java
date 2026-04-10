@@ -62,7 +62,7 @@ public class DaxBodyCodec {
         {
             if (!tag.equals(DaxTagConst.BLOCK_INDEX) &&
                 !tag.equals(DaxTagConst.BLOCK_TYPE) &&
-                ! tag.equals(DaxTagConst.FIELD_ID)
+                !tag.equals(DaxTagConst.FIELD_ID)
             )
             {
                 pairCodec.encode(sb, tag, pair);
@@ -88,9 +88,9 @@ public class DaxBodyCodec {
     public  DaxBody createBody(int blockCount , List<DaxPair<?>> listOfPair){
         DaxBody body = new DaxBody();
 
-        if (blockCount==0) {
+//        if (blockCount==0) {
             body.nextBlock();
-        }
+//        }
         for(DaxPair<?> pair : listOfPair){
             if(pair.getTag().equals(DaxTagConst.CHECKSUM)){
                 break;
@@ -99,9 +99,9 @@ public class DaxBodyCodec {
                 continue;
             }
             if (pair.getTag().equals(DaxTagConst.BLOCK_INDEX)) {
-                if (blockCount==0){
-                    throw new RuntimeException("Body creation Exception : block index and blockCount==0 !!!");
-                }
+//                if (blockCount==0){
+//                    throw new RuntimeException("Body creation Exception : block index and blockCount==0 !!!");
+//                }
                 body.nextBlock();
             }
             body.putPair(pair);

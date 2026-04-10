@@ -1,8 +1,7 @@
 package org.daxprotocol.core.parsers;
 
-import org.daxprotocol.core.dispatcher.DaxFrame;
+import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 

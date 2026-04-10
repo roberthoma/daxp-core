@@ -23,7 +23,7 @@ import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.Set;
-
+//todo rename DaxTagConst to DaxPredefineTags
 public class DaxTagConst {
 
     public final DaxTag TAG_TEST = new DaxTag(1,1000);
@@ -82,6 +82,9 @@ public class DaxTagConst {
     public static final DaxTag FIELD_VALUE_DESCRIPTION = daxpSysTag(105);
     public static final DaxTag FIELD_VALUE_SYMBOL      = daxpSysTag(106);
     public static final DaxTag FIELD_VALUE_PREFIX      = daxpSysTag(107);
+    public static final DaxTag REQ_FIELD_LIST          = daxpSysTag(108);
+
+
 
     public static final DaxTag FIELD_ID_LIST           = daxpSysTag(115);
     public static final DaxTag FIELD_DATA_TYPE         = daxpSysTag(110);

@@ -6,6 +6,7 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
+import org.daxprotocol.core.exceptions.DaxAnnotationException;
 import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -21,8 +22,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-public class DaxPopulatorAnnotation {
-    private static final Logger logger = LoggerFactory.getLogger(DaxPopulatorAnnotation.class);
+public class DaxAnnotationRegister {
+    private static final Logger logger = LoggerFactory.getLogger(DaxAnnotationRegister.class);
     DaxPopulatorJakartaValidation jakartaPopulator;
     DaxParser parserService;
     DaxPopulatorEnumType enumPopulator;
@@ -30,7 +31,7 @@ public class DaxPopulatorAnnotation {
     DaxContextMapper contextMapper;
     DaxDictionary daxDic;
     DaxHandlerRegistry handlerRegistry;
-    public DaxPopulatorAnnotation(
+    public DaxAnnotationRegister(
             DaxParser parserService ,
             DaxPopulatorEnumType  enumPopulator,
             DaxConfig config,
@@ -48,8 +49,8 @@ public class DaxPopulatorAnnotation {
         this.handlerRegistry = handlerRegistry;
     }
 
-    private void populateDaxpField(Field field,
-            DaxTag groupTag
+    private void registerDaxpField(Field field,
+            DaxTag dtoTag
     ){
         String uiLabel="";
         DaxTag tag = DaxTagConst.UNKNOW_TAG;
@@ -139,7 +140,7 @@ public class DaxPopulatorAnnotation {
 
         daxDic.putAtrUiLabel(tag, uiLabel);
 
-        daxDic.putDtoField( groupTag,tag);
+        daxDic.putDtoField( dtoTag,tag);
 
       //  daxDic.putAtrReadOnly( ????);
 
@@ -147,7 +148,7 @@ public class DaxPopulatorAnnotation {
 
     }
 
-    private void populateDaxpValueFromDTO(DaxTag groupTag , Class<?> clazz){
+    private void registerDaxpValueFromDTO(DaxTag dtoTag , Class<?> clazz){
 
 
         for (Method method : clazz.getDeclaredMethods()) {
@@ -172,21 +173,20 @@ public class DaxPopulatorAnnotation {
             //TODO DaxpValue as readonly
             daxDic.putAtrDataType( tag, returnType);
 
-            daxDic.putDtoField( groupTag,tag);
+            daxDic.putDtoField( dtoTag,tag);
         }
 
     }
 
 
 
-    private void populateDaxpMsg(Field field) {
+    private void registerDaxpMsg(Field field) {
         try {
             DaxpMsg msgAnn = field.getAnnotation(DaxpMsg.class);
             String msgValue = (String) field.get(null);
 
             DaxMessageItem mgs = new DaxMessageItem(msgValue, msgAnn.description());
-
-            System.out.println("Zarejestrowano MSG: " + msgValue + " (" + msgAnn.description() + ")");
+            logger.info("Register MSG: {} ( {} )" , msgValue ,msgAnn.description());
 
             Arrays.stream(msgAnn.respMsg()).forEach(mgs::addRelatedMsgType);
 
@@ -196,26 +196,25 @@ public class DaxPopulatorAnnotation {
             daxDic.putMsgItem(mgs);
 
         } catch (IllegalAccessException e) {
-            // Obsłuż wyjątek, jeśli pole nie jest dostępne
-            e.printStackTrace();
+            throw new DaxAnnotationException("IllegalAccessException "+field.getName()) ;
         }
     }
-    private void populateDaxpSchema(Class<?> clazz){
+    private void registerDaxpSchema(Class<?> clazz){
 
         for (Field field : DaxLangTool.allFields(clazz)) {
 //            DaxDictionaryDecoratorService.printDaxFieldInfo(field);
 
             if (field.isAnnotationPresent(DaxpTag.class)) {
-                populateDaxpTag(field);
+                registerDaxpTag(field);
 
             }
             if (field.isAnnotationPresent(DaxpMsg.class)){
-                populateDaxpMsg(field);
+                registerDaxpMsg(field);
             }
         }
     }
 
-    private void populateDaxpTag(Field field) {
+    private void registerDaxpTag(Field field) {
         // (optional but recommended) only accept static int constants
         if (!Modifier.isStatic(field.getModifiers())) return;
 
@@ -249,7 +248,7 @@ public class DaxPopulatorAnnotation {
 
         //TODO  check tah DataType is exist
 
-        logger.info("Data type : {}",daxTag.uiLabel());
+        logger.info("UiLabel : {}",daxTag.uiLabel());
 
         if (daxTag.dataType().equals("S")) {
             daxDic.putAtrDataType(tag,String.class);
@@ -268,11 +267,9 @@ public class DaxPopulatorAnnotation {
         jakartaPopulator.populate(daxDic, field, tag );
 
     }
-    private void populateDTO(Class<?> clazz){
-        //        DaxDictionaryDecoratorService.printDaxGroupInfo(group); // change to logger
+    private void registerDTO(Class<?> clazz){
 
         DaxpDTO typeAnn = clazz.getAnnotation(DaxpDTO.class);
-
         String dtoName = !typeAnn.name().isBlank() ? typeAnn.name() :
                                                         clazz.getSimpleName();
 
@@ -283,22 +280,21 @@ public class DaxPopulatorAnnotation {
         daxDic.putAtrDataType(dtoTag, DaxDataType.DTO.getCode());
 
         for (Field field : DaxLangTool.allFields(clazz)) {
-//            DaxDictionaryDecoratorService.printDaxFieldInfo(field); //TODO logger
             if (field.isAnnotationPresent(DaxpField.class)
                ||field.isAnnotationPresent(DaxpValue.class))
             {
-                populateDaxpField(field, dtoTag);
+                registerDaxpField(field, dtoTag);
             }
 
         }
 
 
-        populateDaxpValueFromDTO(dtoTag, clazz);
+        registerDaxpValueFromDTO(dtoTag, clazz);
 
     }
 
 
-    private void populateController(Class<?> clazz) {
+    private void registerController(Class<?> clazz) {
         for (Method method : clazz.getDeclaredMethods()) {
             DaxpHandler methodAnn = method.getAnnotation(DaxpHandler.class);
             if (methodAnn == null) continue;
@@ -307,17 +303,17 @@ public class DaxPopulatorAnnotation {
     }
 
 
-    public void populate(Class<?> clazz) {
+    public void register(Class<?> clazz) {
         //        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
 
         try {
             if (clazz.isAnnotationPresent(DaxpSchema.class)) {
-                populateDaxpSchema( clazz);
+                registerDaxpSchema( clazz);
                 return;
             }
 
             if (clazz.isAnnotationPresent(DaxpDTO.class)) {
-                populateDTO(clazz);
+                registerDTO(clazz);
                 return;
             }
 
@@ -329,7 +325,7 @@ public class DaxPopulatorAnnotation {
             }
 
             if (clazz.isAnnotationPresent(DaxpController.class)) {
-               populateController(clazz);
+               registerController(clazz);
             }
 
         } catch (Exception e) {

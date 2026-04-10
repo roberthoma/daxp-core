@@ -27,14 +27,9 @@ import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag_OLD;
-import org.daxprotocol.core.parsers.DaxPatternFactory;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.daxprotocol.core.config.DaxConfig.EQUAL;
 import static org.daxprotocol.core.config.DaxConfig.PAIR_SEPARATOR;

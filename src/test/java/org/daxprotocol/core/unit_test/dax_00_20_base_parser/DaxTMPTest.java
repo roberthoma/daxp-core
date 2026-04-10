@@ -1,4 +1,4 @@
-package org.daxprotocol.core.ut.dax_00_05_base_parser;
+package org.daxprotocol.core.unit_test.dax_00_20_base_parser;
 
 import org.junit.jupiter.api.Test;
 

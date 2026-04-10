@@ -1,10 +1,10 @@
 package org.daxprotocol.core.dispatcher;
 
 import org.daxprotocol.core.exceptions.DaxExecutorException;
+import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

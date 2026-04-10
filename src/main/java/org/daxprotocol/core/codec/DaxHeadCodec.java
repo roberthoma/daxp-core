@@ -19,8 +19,6 @@
  */
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.exceptions.DaxAppException;
-import org.daxprotocol.core.exceptions.DaxException;
 import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxPair;

@@ -26,7 +26,7 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.*;
-import org.daxprotocol.core.dispatcher.DaxFrame;
+import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -270,16 +270,27 @@ public class DaxMessageFactory {
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {
 
         return  daxDataEntry instanceof List<?> ?
-            toDaxMessageFromList( messageType, (List<Object>) daxDataEntry )
-          : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
+            toDaxMessageFromList( messageType, (List<Object>) daxDataEntry , null)
+          : toDaxMessageFromList( messageType, List.of(daxDataEntry), null );
     }
 
     //TODO reate message with token
     public DaxMessage toDaxRespondMessage( DaxFrame messageReq , String messageType, Object daxDataEntry ) {
+        Set<DaxTag> tagSet;
 
+        if (messageReq.getFirstMessage().containsField(REQ_FIELD_LIST)) {
+            tagSet = (Set<DaxTag>) (messageReq.getFirstMessage().get(REQ_FIELD_LIST).getValue());
+
+            tagSet.forEach(daxTag -> System.out.println(daxTag.getTagId()));
+
+            return  daxDataEntry instanceof List<?> ?
+                    toDaxMessageFromList( messageType, (List<Object>) daxDataEntry , tagSet)
+                    : toDaxMessageFromList( messageType, List.of(daxDataEntry), tagSet );
+
+        }
         return  daxDataEntry instanceof List<?> ?
-                toDaxMessageFromList( messageType, (List<Object>) daxDataEntry )
-                : toDaxMessageFromList( messageType, List.of(daxDataEntry) );
+                  toDaxMessageFromList( messageType, (List<Object>) daxDataEntry , null)
+                : toDaxMessageFromList( messageType, List.of(daxDataEntry), null );
     }
 
     //TODO move to tool class
@@ -292,8 +303,8 @@ public class DaxMessageFactory {
     }
 
 
-
-    private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry, DaxBody body ){
+//todo add required tagCollection reqTagSet
+    private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry, DaxBody body, Set<DaxTag> reqTagSet ){
         body.putPair(blogIdx,FIELD_ID, blockTag);
         try {
             for (Field field : DaxLangTool.allFields(entry.getClass())) {
@@ -305,11 +316,16 @@ public class DaxMessageFactory {
                     if (field.get(entry) != null){
                         DaxTag tag = creatTag(fieldAnn.context(), fieldAnn.value());
 
+                        if(reqTagSet != null && !reqTagSet.contains(tag)){
+                            continue;
+                        }
+
+
                         if (field.get(entry).getClass().isAnnotationPresent(DaxpDTO.class)){
                             body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                             int nestedIdx = body.getCurrentIdx();
                             body.putPair(blogIdx, new DaxPair<>(tag,nestedIdx+1));
-                            objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body );
+                            objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                         }
                         else {
                             body.putPair(blogIdx,new DaxPair<>(tag, field.get(entry)));
@@ -322,6 +338,13 @@ public class DaxMessageFactory {
                     //   field.setAccessible(true);
                     if (field.get(entry) != null) {
                         DaxTag tag = creatTag(daxValue.context(), daxValue.value());
+
+                        if(reqTagSet != null && !reqTagSet.contains(tag)){
+                            continue;
+                        }
+
+
+
                         body.putPair(blogIdx,new DaxPair<>(tag, field.get(entry)));
                     }
                 }
@@ -338,20 +361,24 @@ public class DaxMessageFactory {
                 DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
                 if (methodAnn == null) continue;
                 Class<?> returnType = method.getReturnType();
-                Object o = method.invoke(entry);
+
                 DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.value());
+                if(reqTagSet != null && !reqTagSet.contains(tag)){
+                    continue;
+                }
+                Object o = method.invoke(entry);
                 body.putPair(blogIdx,new DaxPair<>(tag, o.toString()));
             }
         } catch (Exception e) {
-            //throw new RuntimeException(e);
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
 
     }
 
 
-    private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry ){
+    private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry , Set<DaxTag> reqTagSet){
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
         DaxTrailer trailer = new DaxTrailer();
@@ -361,7 +388,7 @@ public class DaxMessageFactory {
                 DaxpDTO dtoAnn = entry.getClass().getAnnotation(DaxpDTO.class);
                 DaxTag tag = creatTag("",dtoAnn.value());
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
-                objectToMsgBlock(body.getCurrentIdx(),tag, entry, body);
+                objectToMsgBlock(body.getCurrentIdx(),tag, entry, body, reqTagSet);
             }
 
         });

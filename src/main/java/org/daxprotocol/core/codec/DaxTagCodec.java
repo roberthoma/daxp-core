@@ -22,14 +22,11 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.parsers.DaxParser;
 
 public class DaxTagCodec {
     DaxConfig config;
     DaxContextMapper contextMapper;
-    //DaxParser parser;
     public DaxTagCodec(DaxConfig config,
                        DaxContextMapper contextMapper
     ){
@@ -47,14 +44,7 @@ public class DaxTagCodec {
             return  contextMapper.getReference(tag.getContextId()) +
                     DaxConfig.CONTEXT_TAG_SEPARATOR + tag.getTagId();
         }
-
-
         return String.valueOf(tag.getTagId());
-
     }
-
-//    public DaxTag decode(String tagStr, int msgContextId){
-//        return parser.parseDaxTag(tagStr, msgContextId);
-//    }
 
 }

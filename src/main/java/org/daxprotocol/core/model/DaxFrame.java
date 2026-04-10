@@ -1,8 +1,6 @@
-package org.daxprotocol.core.dispatcher;
+package org.daxprotocol.core.model;
 
 import org.daxprotocol.core.codec.DaxMessageCodec;
-import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 
 import java.util.ArrayList;

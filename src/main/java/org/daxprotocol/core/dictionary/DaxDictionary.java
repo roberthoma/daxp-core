@@ -25,14 +25,15 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
-import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.tool.DaxCollectionTool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,6 +46,7 @@ import java.util.concurrent.ConcurrentHashMap;
 // CRM-00234, DAX-23445, $:23455 , crm:33345
 
 public class DaxDictionary {
+    private static final Logger logger = LoggerFactory.getLogger(DaxDictionary.class);
 
     DaxConfig config;
     DaxContextMapper contextMapper;
@@ -291,7 +293,7 @@ public class DaxDictionary {
     public void putTag(DaxTag tag){
 
         if (tagSet.contains(tag)){
-            System.out.println("TAG > "+tag.getTagId() + " ...........  EXIST ............ ");
+            logger.warn("TAG {} EXIST in dictionary ", tag.getTagId());
             //throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
         }
         tagSet.add(tag);

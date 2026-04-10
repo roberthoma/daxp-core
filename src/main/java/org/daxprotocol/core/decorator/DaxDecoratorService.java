@@ -24,7 +24,7 @@ import org.daxprotocol.core.annotation.DaxpDTO;
 
 import java.lang.reflect.Field;
 
-public class DaxDictionaryDecoratorService {
+public class DaxDecoratorService {
 
 
     public static  void printDaxGroupInfo(DaxpDTO group ){

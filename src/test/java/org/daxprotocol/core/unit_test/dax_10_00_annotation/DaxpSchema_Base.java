@@ -1,4 +1,4 @@
-package org.daxprotocol.core.ut.Dax_10_00_annotation;
+package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
 import org.daxprotocol.core.annotation.DaxpMsg;
 import org.daxprotocol.core.annotation.DaxpSchema;
@@ -21,6 +21,8 @@ public class DaxpSchema_Base {
     @DaxpTag( uiLabel = "Ui Test TAG char", clazz = Character.class)
     public static final int TEST_TAG_char            = 5003;
 
+    @DaxpTag( uiLabel = "Ui Test TAG Boolean", clazz = Boolean.class)
+    public static final int TEST_TAG_Boolean            = 5004;
 
 
     @DaxpMsg(description = "Base DTO Request"

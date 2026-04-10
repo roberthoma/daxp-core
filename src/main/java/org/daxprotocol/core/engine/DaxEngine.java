@@ -23,7 +23,7 @@ package org.daxprotocol.core.engine;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
-import org.daxprotocol.core.populator.DaxPopulatorAnnotation;
+import org.daxprotocol.core.populator.DaxAnnotationRegister;
 import org.daxprotocol.core.populator.DaxPopulatorEnumType;
 import org.daxprotocol.core.populator.DaxPopulatorMessage;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
@@ -73,7 +73,7 @@ public class DaxEngine {
 
     DaxPopulatorMessage messagePopulator;
 
-    DaxPopulatorAnnotation annotationPopulator;
+    DaxAnnotationRegister annotationPopulator;
 
     public DaxEngine(DaxConfig config){
         this.config = config;
@@ -111,7 +111,7 @@ public class DaxEngine {
 
         messagePopulator    = new DaxPopulatorMessage( parser, dictionary);
         enumPopulator       = new DaxPopulatorEnumType(config, contextMapper, dictionary);
-        annotationPopulator = new DaxPopulatorAnnotation(
+        annotationPopulator = new DaxAnnotationRegister(
                                                         parser ,
                                                          enumPopulator,
                                                         config,
@@ -190,7 +190,7 @@ public class DaxEngine {
     }
 
     public void populate(Class<?> clazz) {
-        annotationPopulator.populate(clazz);
+        annotationPopulator.register(clazz);
     }
 
     public DaxHandlerRegistry getHandlerRegistry() {

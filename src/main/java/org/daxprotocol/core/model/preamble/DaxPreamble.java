@@ -28,9 +28,9 @@ import org.daxprotocol.core.encoding.DaxCharacterEncoding;
  */
 public class DaxPreamble {
     private String protocolVersion = DaxConfig.PROTOCOL_VERSION;
-    private int msgCnt;                   //CNT  Number of item messages following preamble. Default 1
+    private int msgCnt = -1;                   //CNT  Number of item messages following preamble. Default 1
     private DaxCharacterEncoding encoding;
-    private int msgContextId;
+    private int msgContextId ;
     //TODO Add Token !!!
 
     public DaxPreamble(){
@@ -39,7 +39,6 @@ public class DaxPreamble {
     public void setProtocolVersion(String protocolVersion) {
         this.protocolVersion = protocolVersion.toUpperCase().trim();
     }
-
 
     public void setEncoding(DaxCharacterEncoding encoding) {
         this.encoding = encoding;
@@ -61,10 +60,6 @@ public class DaxPreamble {
         return encoding;
     }
 
-//    public void setPairSeparator(Character pairSeparator) {
-//        this.msgPairSeparator = pairSeparator;
-//    }
-
     public int getMsgContextId(){
         return msgContextId;
     }
@@ -73,8 +68,5 @@ public class DaxPreamble {
         this.msgContextId = contextId;
     }
 
-//    public char getMsgPairSeparator() {
-//        return msgPairSeparator;
-//    }
 
 }

@@ -23,7 +23,7 @@ package org.daxprotocol.core.parsers;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dispatcher.DaxFrame;
+import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.DaxMessage;
@@ -51,7 +51,7 @@ public class DaxParser_V2 implements DaxParser {
         this.daxDic = daxDic;
         this.messageCodec = messageCodec;
 
-         parserMessage = new DaxFrameParser( config,contextMapper, parserTag, daxDic, messageCodec); //,  messageFactory);
+         parserMessage = new DaxFrameParser( config,contextMapper, parserTag, daxDic, messageCodec);
 
     }
 
@@ -353,31 +353,7 @@ public class DaxParser_V2 implements DaxParser {
                 .map(s ->  parseDaxTag(s,msgContextId))
                 .collect(Collectors.toList());
     }
-    /*
-    public List<DaxTag> parseDaxTagList(String tagListStr, int msgContextId) {
-        List<DaxTag> result = new ArrayList<>();
-        if (tagListStr == null || tagListStr.isEmpty()) {
-            return result;
-        }
 
-        int start = 0;
-        int end = tagListStr.indexOf(DaxConfig.TAG_LIST_SEPARATOR_CHAR);
-
-        while (end != -1) {
-            String tagStr = tagListStr.substring(start, end).trim();
-            result.add(parseDaxTag(tagStr, msgContextId));
-
-            start = end + 1;
-            end = tagListStr.indexOf(DaxConfig.TAG_LIST_SEPARATOR_CHAR, start);
-        }
-
-        // Dodanie ostatniego elementu (za ostatnim separatorem)
-        String lastTagStr = tagListStr.substring(start).trim();
-        result.add(parseDaxTag(lastTagStr, msgContextId));
-
-        return result;
-    }
-*/
     @Override public DaxPreamble parsePreamble(String msg) {
         return parserMessage.parsePreamble(msg);
     }

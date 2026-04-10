@@ -88,7 +88,7 @@ public final class DaxMessage {
 //        return body.getPair(0,tag).getStrValue();
 //    }
 
-    public boolean containsField(int tag){
+    public boolean containsField(DaxTag tag){
         return body.getBlock(0).containsKey(tag);
 
     }

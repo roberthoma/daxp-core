@@ -61,8 +61,8 @@ public final class DaxConfig {
     public static final char CONTEXT_TAG_SEPARATOR_CHAR = ':';
 
     /**  Pair separator on the WIRE (binary, non-printable). */
-    //public static char PAIR_SEPARATOR = 0x0001;  // Target on product
-    public static char PAIR_SEPARATOR = '|';       // << ONLY for test
+    public static char PAIR_SEPARATOR = 0x0001;
+    //public static char PAIR_SEPARATOR = '|';       // << ONLY for test
 
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file

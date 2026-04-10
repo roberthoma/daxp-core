@@ -1,5 +1,6 @@
 package org.daxprotocol.core.dispatcher;
 
+import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.parsers.DaxParser;
