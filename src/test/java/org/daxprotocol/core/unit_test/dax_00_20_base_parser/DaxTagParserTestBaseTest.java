@@ -12,14 +12,14 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag10(){
         String tagStr = "9";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,9);
         Assertions.assertEquals(expectedTag ,tag);
     }
     @Test
     void parseTag20(){
         String tagStr = " 8";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,8);
         Assertions.assertEquals(expectedTag ,tag);
     }
@@ -27,7 +27,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag30(){
         String tagStr = " 8 ";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,8);
         Assertions.assertEquals(expectedTag ,tag);
     }
@@ -35,7 +35,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag40(){
         String tagStr = "$:9";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,9);
         Assertions.assertEquals(expectedTag ,tag);
     }
@@ -43,7 +43,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag45(){
         String tagStr = "$:99";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,99);
         Assertions.assertEquals(expectedTag ,tag);
     }
@@ -51,7 +51,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag50(){
         String tagStr = "$ : 9";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,9);
 
         Assertions.assertEquals(expectedTag ,tag);
@@ -59,7 +59,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag51(){
         String tagStr = "$\n : 9";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,9);
 
         Assertions.assertEquals(expectedTag ,tag);
@@ -67,12 +67,12 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag51b(){
         String tagStr = "$:"+(+DaxConfig.DAXP_MAX_TAG_ID+1000);
-        Assertions.assertThrows(DaxTagParserException.class,()->parser.parseDaxTag(tagStr, appContextId));
+        Assertions.assertThrows(DaxTagParserException.class,()->tagParser.parseDaxTag(tagStr, appContextId));
     }
     @Test
     void parseTag51c(){
         String tagStr = "$:"+DaxConfig.DAXP_MAX_TAG_ID;
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,DaxConfig.DAXP_MAX_TAG_ID);
 
         Assertions.assertEquals(expectedTag ,tag);
@@ -81,7 +81,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag52(){
         String tagStr = "X\n : 9";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,9);
         Assertions.assertNotEquals(expectedTag ,tag);
     }
@@ -89,7 +89,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag60(){
         String tagStr = " : 7";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         DaxTag expectedTag  = new DaxTag(DaxConfig.DAXP_CONTEXT_ID,7);
         Assertions.assertEquals(expectedTag ,tag);
     }
@@ -97,13 +97,13 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag70(){
         String tagStr = " w 9";
         Assertions.assertThrows(DaxTagParserException.class, () ->
-                parser.parseDaxTag(tagStr, appContextId));
+                tagParser.parseDaxTag(tagStr, appContextId));
     }
 
     @Test
     void parseTag80(){
         String tagStr = "FIX:9";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         int expContextId = daxEngine.getContextMapper().getReferenceId("FIX");
         DaxTag expectedTag  = new DaxTag(expContextId,9);
 
@@ -112,7 +112,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag90(){
         String tagStr = "CRM:1029";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         int expContextId = daxEngine.getContextMapper().getReferenceId("CRM");
         DaxTag expectedTag  = new DaxTag(expContextId,1029);
 
@@ -122,7 +122,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag100(){
         String tagStr = "$CRM:1029";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         int expContextId = daxEngine.getContextMapper().getReferenceId("CRM");
         DaxTag expectedTag  = new DaxTag(expContextId,1029);
 
@@ -134,7 +134,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag101(){
         String tagStr = "$CRM$:1029";
-        DaxTag tag = parser.parseDaxTag(tagStr, appContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appContextId);
         int expContextId = daxEngine.getContextMapper().getReferenceId("CRM");
         DaxTag expectedTag  = new DaxTag(expContextId,1029);
 
@@ -145,7 +145,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag102(){
         String tagStr = "XYZ:1029";
-        DaxTag tag = parser.parseDaxTag(tagStr, 4); //ContextId = 4 is only for test lower 100
+        DaxTag tag = tagParser.parseDaxTag(tagStr, 4); //ContextId = 4 is only for test lower 100
         int expContextId = daxEngine.getConfig().getAppContextId();
         DaxTag expectedTag  = new DaxTag(expContextId,1029);
 
@@ -158,7 +158,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
         String abcCtx = "ABC";
         int abcContextId = contextMapper.getReferenceId(abcCtx);
         String tagStr = "1029";
-        DaxTag tag = parser.parseDaxTag(tagStr, abcContextId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, abcContextId);
         DaxTag expectedTag  = new DaxTag(abcContextId,1029);
         Assertions.assertEquals(expectedTag ,tag);
         Assertions.assertEquals(abcContextId,tag.getContextId());

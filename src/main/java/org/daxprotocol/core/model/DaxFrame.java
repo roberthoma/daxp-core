@@ -40,4 +40,7 @@ public class DaxFrame {
     public DaxPreamble getPreamble() {
         return preamble;
     }
+    public List<DaxMessage> getAllMessage(){
+       return messageList;
+    }
 }

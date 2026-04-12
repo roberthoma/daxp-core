@@ -12,7 +12,7 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.parsers.DaxParser;
+import org.daxprotocol.core.parsers.DaxTagParser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,10 +20,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DaxPopulatorMessage {
-    DaxParser parserService;
+    DaxTagParser tagParser;
     DaxDictionary daxDic;
-    public DaxPopulatorMessage(DaxParser parserService, DaxDictionary daxDic){
-        this.parserService = parserService;
+    public DaxPopulatorMessage(DaxTagParser tagParser, DaxDictionary daxDic){
+        this.tagParser = tagParser;
         this.daxDic =  daxDic;
     }
 
@@ -31,7 +31,7 @@ public class DaxPopulatorMessage {
 
         return Arrays.stream(tagListStr.split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
                 .map(String::trim)
-                .map(s ->  parserService.parseDaxTag(s,msgContextId))
+                .map(s ->  tagParser.parseDaxTag(s,msgContextId))
                 .collect(Collectors.toList());
     }
     private void populateFromMsgBlock(int msgContextId , Map<DaxTag, DaxPair<?>> blockPairMap) {
@@ -49,7 +49,7 @@ public class DaxPopulatorMessage {
 
             if (blockPairMap.containsKey(DaxTagConst.MESSAGE_TAGS)){
 
-                parserService.parseDaxTagList(
+                tagParser.parseDaxTagList(
                         blockPairMap.get(DaxTagConst.MESSAGE_TAGS)
                                 .getStrValue(), msgContextId)
                         .forEach(msgItem::addReqTag);
@@ -70,7 +70,7 @@ public class DaxPopulatorMessage {
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM)){
 
-            DaxTag enumTag = parserService.parseDaxTag(
+            DaxTag enumTag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxTagConst.ENUM_ID).getStrValue() , msgContextId
             ) ;
 
@@ -97,7 +97,7 @@ public class DaxPopulatorMessage {
         }
 
         if(blockType.equals(DaxBlockType.BLOCK_ENUM_VALUE)){
-            DaxTag enumTag = parserService.parseDaxTag(
+            DaxTag enumTag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxTagConst.ENUM_ID).getStrValue() , msgContextId
             ) ;
 
@@ -116,7 +116,7 @@ public class DaxPopulatorMessage {
 
         if(blockType.equals(DaxBlockType.BLOCK_TAG)){
 
-            DaxTag tag = parserService.parseDaxTag(
+            DaxTag tag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue() , msgContextId
             ) ;
 
@@ -130,7 +130,7 @@ public class DaxPopulatorMessage {
             }
 
             else if(blockPairMap.containsKey(DaxTagConst.DTO_DATA_TYPE_ID)) {
-                DaxTag tag3 = parserService.parseDaxTag(
+                DaxTag tag3 = tagParser.parseDaxTag(
                         blockPairMap.get(DaxTagConst.DTO_DATA_TYPE_ID).getStrValue(), msgContextId);
                 daxDic.putAtrDtoDataTypeId(tag, tag3);
             }
@@ -170,7 +170,7 @@ public class DaxPopulatorMessage {
 
             if(blockPairMap.containsKey(DaxTagConst.ENUM_ID)) {
                 daxDic.putAtrEnumTypeTag(tag,
-                        parserService.parseDaxTag(blockPairMap.get(DaxTagConst.ENUM_ID).getStrValue(), msgContextId)
+                        tagParser.parseDaxTag(blockPairMap.get(DaxTagConst.ENUM_ID).getStrValue(), msgContextId)
                 );
             }
 
@@ -184,7 +184,7 @@ public class DaxPopulatorMessage {
             String groupName = blockPairMap.get(DaxTagConst.GROUP_NAME).getStrValue();
 
             //int groupId = groupMapper.getReferenceId(groupName);
-            DaxTag groupTag = parserService.parseDaxTag(
+            DaxTag groupTag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxTagConst.FIELD_ID).getStrValue(), msgContextId
             ) ;
 
@@ -193,7 +193,7 @@ public class DaxPopulatorMessage {
             DaxDTO group = new DaxDTO(groupTag,groupName);
             daxDic.putDTO(group);
             String fieldIdStrList = blockPairMap.get(DaxTagConst.FIELD_ID_LIST).getStrValue();
-            List<DaxTag> tagList = parserService.parseDaxTagList(fieldIdStrList, msgContextId);
+            List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgContextId);
             tagList.forEach(tag -> daxDic.putDtoField(groupTag, tag));
             return;
         }

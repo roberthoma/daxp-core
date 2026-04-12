@@ -33,7 +33,8 @@ public class DaxPreamble {
     private int msgContextId ;
     //TODO Add Token !!!
 
-    public DaxPreamble(){
+    public DaxPreamble(DaxCharacterEncoding encoding ){
+        this.encoding = encoding;
     }
 
     public void setProtocolVersion(String protocolVersion) {

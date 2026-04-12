@@ -27,11 +27,11 @@ public class DaxpSchema_Base {
 
     @DaxpMsg(description = "Base DTO Request"
     )
-    public static final String BASE_DTO_Req =  "BDR"; // 	REs 	Customer Data
+    public static final String MSG_BASE_DTO_Req =  "BDR"; // 	REs 	Customer Data
 
     @DaxpMsg(description = "Base DTO DATA"
     )
-    public static final String BASE_DTO_DATA =  "BD"; // 	REs 	Customer Data
+    public static final String MSG_BASE_DTO_DATA =  "BD"; // 	REs 	Customer Data
 
 
 }

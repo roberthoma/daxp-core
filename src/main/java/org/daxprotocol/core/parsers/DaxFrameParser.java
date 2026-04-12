@@ -51,12 +51,13 @@ public class DaxFrameParser {
                             DaxContextMapper contextMapper,
                             DaxTagParser tagParser,
                             DaxDictionary daxDic, //,
-                            DaxMessageCodec messageCodec) {
+                            DaxMessageCodec messageCodec,
+            DaxPreambleCodec preambleCodec) {
         this.tagParser = tagParser;
         this.contextMapper = contextMapper;
         this.config = config;
         this.messageCodec = messageCodec;
-        this.preambleCodec = messageCodec.getPreambleCodec();
+        this.preambleCodec = preambleCodec;
     }
 
     private   List<Integer> getPipeIndices(String str) {
@@ -101,7 +102,7 @@ public class DaxFrameParser {
         int lastIdx = indList.get(inxSize - 1);
         boolean isPreableParsing = true;
 
-        DaxPreamble preamble = new DaxPreamble();
+        DaxPreamble preamble = new DaxPreamble(config.getDefaultEncoding());
 
 
         for (int idx : indList) {
@@ -189,4 +190,9 @@ public class DaxFrameParser {
         return frame;
     }
 
+
+
+    public DaxFrame parseFromMap(Map<String, String> params) {
+        throw new RuntimeException("parseFromMap not implemented jet !!!");
+    }
 }

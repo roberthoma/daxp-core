@@ -35,7 +35,6 @@ import java.util.Map;
 public class DaxMessageCodec {
     DaxConfig config;
     DaxPairCodec     pairCodec;
-    DaxPreambleCodec preambleCodec;
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
@@ -43,13 +42,11 @@ public class DaxMessageCodec {
     public DaxMessageCodec(
             DaxConfig config,
             DaxPairCodec pairCodec,
-            DaxPreambleCodec preambleCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec
             ) {
       this.pairCodec = pairCodec;
-      this.preambleCodec = preambleCodec;
       this.headCodec = headCodec;
       this.bodyCodec = bodyCodec;
       this.trailerCodec = trailerCodec;
@@ -64,16 +61,8 @@ public class DaxMessageCodec {
     return " no messss !!!";
     }
 
-    public String encode(DaxPreamble preamble  ,DaxMessage message) {
-        return null;
-    }
-        //@Override
-
     public String encode(DaxMessage message) {
         StringBuilder sb = new StringBuilder();
-        DaxPreamble preamble = new DaxPreamble();  //todo remove from hire and encode from frame
-        preamble.setEncoding(config.getDefaultEncoding());
-        preamble.setMsgContextId(config.getAppContextId());
 
         StringBuilder msgSb = new StringBuilder();
 
@@ -84,8 +73,9 @@ public class DaxMessageCodec {
 
         trailer.setChecksum(DaxCodecService.calculateChecksum(msgSb.toString()));
 
-        sb.append(preambleCodec.encode(preamble))
-                .append(msgSb)
+        //sb.append(preambleCodec.encode(preamble))
+
+                sb.append(msgSb)
                 .append(trailerCodec.encode(trailer));
 
         //TODO create statistics counter
@@ -122,9 +112,6 @@ public class DaxMessageCodec {
 
 //TODO Add validation after creation of DaxMessage. for example message with blocks, without BLOCK_TYPE !!!
 
-    public DaxPreambleCodec getPreambleCodec(){
-       return preambleCodec;
-    }
 
 
 

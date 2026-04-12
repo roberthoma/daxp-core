@@ -10,18 +10,20 @@ import org.daxprotocol.core.unit_test.dax_00_00_base_config.DaxConfigBaseTest;
 @DaxpController
 public class DaxpController_Base extends DaxConfigBaseTest {
 
-    @DaxpHandler(DaxpSchema_Base.BASE_DTO_Req)
-    public DaxFrame getBaseData(DaxFrame incomeFrame){
+//    @DaxpHandler(DaxpSchema_Base.MSG_BASE_DTO_Req)
+//    public DaxFrame getBaseData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
+
+
+    @DaxpHandler(DaxpSchema_Base.MSG_BASE_DTO_Req)
+    public void getBaseData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
 
         DaxDTO_Base dtoBase = new DaxDTO_Base("Test string",'H',456);
-        DaxFrame frame = new DaxFrame();
 
-        DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame,DaxpSchema_Base.BASE_DTO_DATA,dtoBase);
+        DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame,DaxpSchema_Base.MSG_BASE_DTO_DATA,dtoBase);
 
-        frame.setPreamble(new DaxPreamble());
-        frame.addMessage(message);
+        outcomeFrame.addMessage(message);
+        outcomeFrame.addMessage(msgFactory.okMessageType());
 
-        return frame;
     }
 
 }

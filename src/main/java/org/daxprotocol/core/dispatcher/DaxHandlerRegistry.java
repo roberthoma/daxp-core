@@ -27,32 +27,20 @@ public class DaxHandlerRegistry {
         daxControllerMap.put(daxpController.getClass(), daxpController);
     }
 
-    public DaxFrame executor( DaxFrame frame){
+    public void executor( DaxFrame reqFrame, DaxFrame respFrame){
 
-       // DaxFrame response = new DaxFrame();
+
         try {
-            DaxMessage  reqMsg = frame.getFirstMessage();
+            DaxMessage  reqMsg = reqFrame.getFirstMessage();
+
             String msgType = reqMsg.getMsgType();
+
             Method method  = handlerMap.get(msgType);
 
             Object obj = daxControllerMap.get(method.getDeclaringClass());
 
-            Object respObj = method.invoke(obj, frame); //TODO change to listo of messages
+            method.invoke(obj, reqFrame, respFrame);
 
-//            // --- THE CHECK ---
-//            if (respObj instanceof DaxMessage) {
-//                // Single message logic
-//                response.addMessage(   (DaxMessage) respObj);
-//            }
-//            else if (respObj instanceof List) {
-//                // List logic (e.g., search results or batch updates)
-//                response.addAllMessages(   (List<DaxMessage>) respObj);
-//            }
-//            else if (respObj == null) {
-//                    // Handle void/null returns (e.g., an ACK)
-//                    return null;
-//                }
-            return (DaxFrame) respObj;
         } catch (Exception e) {
             throw new DaxExecutorException(e);
         }

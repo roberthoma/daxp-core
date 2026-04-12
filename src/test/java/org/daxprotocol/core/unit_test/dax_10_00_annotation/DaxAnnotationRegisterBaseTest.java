@@ -48,33 +48,39 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
 
     @Test
     void executorTestSimpleReq(){
-        String msgStr = DaxMessageNormalizer.normalize("DAXP=v0.1.0|EN=UTF-8|CX=CRM|9="+DaxpSchema_Base.BASE_DTO_Req+"|99=123|");
-        DaxFrame frameReq = parser.parseFromString(msgStr);
+        String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|9="+DaxpSchema_Base.MSG_BASE_DTO_Req +"|99=123|";
+        String msgStr = DaxMessageNormalizer.normalize(reqMsg);
+        DaxFrame frameReq = frameParser.parseFrame(msgStr);
+        DaxFrame frameResp = new DaxFrame();
 
-        DaxFrame frameResp =  handlerRegistry.executor(frameReq);
+        handlerRegistry.executor(frameReq, frameResp);
         DaxMessage respMsg = frameResp.getFirstMessage();
         String respDataType = respMsg.getMsgType();
-        System.out.println("\n"+DaxMessageDecorator.decorate(
-                          messageCodec.encode(respMsg))+"\n"
-        );
-        Assertions.assertEquals(DaxpSchema_Base.BASE_DTO_DATA, respDataType);
+        Assertions.assertEquals(DaxpSchema_Base.MSG_BASE_DTO_DATA, respDataType);
+
+        System.out.println("\n");
+        System.out.println("REQ > " + reqMsg);
+        System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
     }
 
     @Test
     void executorTestSelectReq(){
-        String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=XYZ|9="+DaxpSchema_Base.BASE_DTO_Req+
+        String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=XYZ|9="+DaxpSchema_Base.MSG_BASE_DTO_Req +
                          "|108=5001;5002|99=123|";
         String msgStr = DaxMessageNormalizer.normalize(reqMsg);
-        DaxFrame frameReq = parser.parseFromString(msgStr);
+        DaxFrame frameReq = frameParser.parseFrame(msgStr);
+        DaxFrame frameResp = new DaxFrame();
 
-        DaxFrame frameResp =  handlerRegistry.executor(frameReq);
+        handlerRegistry.executor(frameReq, frameResp);
+
         DaxMessage respMsg = frameResp.getFirstMessage();
         String respDataType = respMsg.getMsgType();
+        Assertions.assertEquals(DaxpSchema_Base.MSG_BASE_DTO_DATA, respDataType);
 
         System.out.println("\n");
         System.out.println("REQ > " + reqMsg);
-        System.out.println("RES > " + DaxMessageDecorator.decorate( messageCodec.encode(respMsg))+"\n");
-        Assertions.assertEquals(DaxpSchema_Base.BASE_DTO_DATA, respDataType);
+        System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
+
     }
 
 }

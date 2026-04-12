@@ -11,7 +11,7 @@ import org.daxprotocol.core.field.DaxDataType;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.parsers.DaxParser;
+import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.tool.DaxLangTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +25,15 @@ import java.util.Arrays;
 public class DaxAnnotationRegister {
     private static final Logger logger = LoggerFactory.getLogger(DaxAnnotationRegister.class);
     DaxPopulatorJakartaValidation jakartaPopulator;
-    DaxParser parserService;
+    //DaxParser parserService;
+    DaxTagParser tagParser;
     DaxPopulatorEnumType enumPopulator;
     DaxConfig config;
     DaxContextMapper contextMapper;
     DaxDictionary daxDic;
     DaxHandlerRegistry handlerRegistry;
     public DaxAnnotationRegister(
-            DaxParser parserService ,
+            DaxTagParser tagParser ,
             DaxPopulatorEnumType  enumPopulator,
             DaxConfig config,
             DaxContextMapper contextMapper,
@@ -40,7 +41,7 @@ public class DaxAnnotationRegister {
             DaxHandlerRegistry handlerRegistry
 
     ){
-        this.parserService = parserService;
+        this.tagParser = tagParser;
         this.jakartaPopulator = new DaxPopulatorJakartaValidation();
         this.config = config;
         this.contextMapper = contextMapper;
@@ -191,7 +192,7 @@ public class DaxAnnotationRegister {
             Arrays.stream(msgAnn.respMsg()).forEach(mgs::addRelatedMsgType);
 
             Arrays.stream(msgAnn.reqTag()).forEach(tagStr ->
-                    mgs.addReqTag(parserService.parseDaxTag(tagStr, config.getAppContextId())));
+                    mgs.addReqTag(tagParser.parseDaxTag(tagStr, config.getAppContextId())));
 
             daxDic.putMsgItem(mgs);
 

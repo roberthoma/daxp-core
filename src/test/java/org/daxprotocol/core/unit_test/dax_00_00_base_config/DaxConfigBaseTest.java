@@ -1,5 +1,6 @@
 package org.daxprotocol.core.unit_test.dax_00_00_base_config;
 
+import org.daxprotocol.core.codec.DaxFrameCodec;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTagCodec;
@@ -10,14 +11,14 @@ import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.parsers.DaxParser;
 import org.daxprotocol.core.engine.DaxEngine;
 
+import org.daxprotocol.core.parsers.DaxFrameParser;
+import org.daxprotocol.core.parsers.DaxTagParser;
 import org.junit.jupiter.api.*;
 
 public class DaxConfigBaseTest {
     protected static DaxEngine daxEngine;
-    protected static DaxParser parser;
     protected static int appContextId;
     protected static DaxDictionary dictionary;
     protected static DaxContextMapper contextMapper;
@@ -28,6 +29,9 @@ public class DaxConfigBaseTest {
     protected static DaxMessageConverter msgConverter;
     protected static DaxMessageFactory msgFactory;
     protected static DaxHandlerRegistry handlerRegistry;
+    protected static DaxFrameCodec frameCodec;
+    protected static DaxTagParser tagParser;
+    protected static DaxFrameParser frameParser;
 
 
 
@@ -38,7 +42,6 @@ public class DaxConfigBaseTest {
                     .createConfig(DaxpConfigFactory
                             .createProperties("application_BASE.properties")));
 
-            parser        = daxEngine.getParser();
             appContextId  = daxEngine.getConfig().getAppContextId();
             dictionary    = daxEngine.getDictionary();
             contextMapper = daxEngine.getContextMapper();
@@ -49,6 +52,9 @@ public class DaxConfigBaseTest {
             msgConverter  = daxEngine.getMessageConverter();
             msgFactory    = daxEngine.getMessageFactory();
             handlerRegistry = daxEngine.getHandlerRegistry();
+            frameCodec     = daxEngine.getFrameCodec();
+            tagParser      = daxEngine.getTagParser();
+            frameParser         = daxEngine.getFrameParser();
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");

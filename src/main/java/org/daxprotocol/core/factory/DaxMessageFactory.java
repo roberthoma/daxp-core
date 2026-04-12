@@ -275,13 +275,11 @@ public class DaxMessageFactory {
     }
 
     //TODO reate message with token
-    public DaxMessage toDaxRespondMessage( DaxFrame messageReq , String messageType, Object daxDataEntry ) {
+    public DaxMessage toDaxRespondMessage( DaxFrame reqFrame , String messageType, Object daxDataEntry ) {
         Set<DaxTag> tagSet;
 
-        if (messageReq.getFirstMessage().containsField(REQ_FIELD_LIST)) {
-            tagSet = (Set<DaxTag>) (messageReq.getFirstMessage().get(REQ_FIELD_LIST).getValue());
-
-            tagSet.forEach(daxTag -> System.out.println(daxTag.getTagId()));
+        if (reqFrame.getFirstMessage().containsField(REQ_FIELD_LIST)) {
+            tagSet = (Set<DaxTag>) (reqFrame.getFirstMessage().get(REQ_FIELD_LIST).getValue());
 
             return  daxDataEntry instanceof List<?> ?
                     toDaxMessageFromList( messageType, (List<Object>) daxDataEntry , tagSet)
@@ -304,7 +302,9 @@ public class DaxMessageFactory {
 
 
 //todo add required tagCollection reqTagSet
-    private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry, DaxBody body, Set<DaxTag> reqTagSet ){
+    private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry,
+            DaxBody body,
+            Set<DaxTag> reqTagSet ){
         body.putPair(blogIdx,FIELD_ID, blockTag);
         try {
             for (Field field : DaxLangTool.allFields(entry.getClass())) {

@@ -94,12 +94,12 @@ public class DaxPreambleCodec {
 
     /** Decode msgStr format → Preamble object. */
  //   @Override
-    public DaxPreamble decode(String msgStr) {
-        DaxPreamble preamble = new DaxPreamble();
-
-        return preamble;
-
-    }
+//    public DaxPreamble decode(String msgStr) {
+//        DaxPreamble preamble = new DaxPreamble();
+//
+//        return preamble;
+//
+//    }
     public boolean isTagPreamble(String tagStr){
         return  DaxPreambleTag.contains(tagStr);
     }

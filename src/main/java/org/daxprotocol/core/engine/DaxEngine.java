@@ -23,6 +23,8 @@ package org.daxprotocol.core.engine;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
+import org.daxprotocol.core.parsers.DaxFrameParser;
+import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.populator.DaxAnnotationRegister;
 import org.daxprotocol.core.populator.DaxPopulatorEnumType;
 import org.daxprotocol.core.populator.DaxPopulatorMessage;
@@ -35,8 +37,6 @@ import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTrailerCodec;
-import org.daxprotocol.core.parsers.DaxParser;
-import org.daxprotocol.core.parsers.DaxParser_V2;
 import org.daxprotocol.core.parsers.DaxpRules;
 
 public class DaxEngine {
@@ -46,6 +46,7 @@ public class DaxEngine {
     private final DaxPreambleCodec preambleCodec;
 
     private final DaxMessageCodec messageCodec;
+    private final DaxFrameCodec frameCodec;
 
     private final DaxMessageConverter messageConverter;
 
@@ -65,7 +66,9 @@ public class DaxEngine {
 
     private final DaxpRules daxpRules;
 
-    private final DaxParser parser;
+    private final  DaxTagParser tagParser ;
+    private final  DaxFrameParser frameParser ;
+
 
     private DaxHandlerRegistry handlerRegistry;
     private DaxPopulatorEnumType  enumPopulator;
@@ -93,6 +96,8 @@ public class DaxEngine {
         dictionary.putContext(appContext);
         DaxTagConst.init(dictionary);
 
+        tagParser  = new DaxTagParser(contextMapper);
+
         handlerRegistry = new DaxHandlerRegistry();
 
         tagCodec      = new DaxTagCodec     (config, contextMapper); //, parser);
@@ -103,17 +108,18 @@ public class DaxEngine {
         DaxBodyCodec    bodyCodec    = new DaxBodyCodec(pairCodec);
         DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
 
-        messageCodec = new DaxMessageCodec(config, pairCodec, preambleCodec,
+        messageCodec = new DaxMessageCodec(config, pairCodec,
                                            headCodec, bodyCodec, trailerCodec
         );
 
-        parser = new DaxParser_V2(config, contextMapper, dictionary, messageCodec);
+        frameCodec = new DaxFrameCodec(config, preambleCodec, messageCodec);
 
-        messagePopulator    = new DaxPopulatorMessage( parser, dictionary);
+
+
+        messagePopulator    = new DaxPopulatorMessage( tagParser, dictionary);
         enumPopulator       = new DaxPopulatorEnumType(config, contextMapper, dictionary);
-        annotationPopulator = new DaxAnnotationRegister(
-                                                        parser ,
-                                                         enumPopulator,
+        annotationPopulator = new DaxAnnotationRegister(tagParser ,
+                                                        enumPopulator,
                                                         config,
                                                         contextMapper,
                                                         dictionary,
@@ -132,7 +138,12 @@ public class DaxEngine {
         );
 
 
-
+        frameParser =  new DaxFrameParser( config,
+                                                 contextMapper,
+                                                 tagParser,
+                                                 dictionary,
+                                                messageCodec,
+                                                 preambleCodec) ;
 
     }
 
@@ -181,8 +192,8 @@ public class DaxEngine {
         return pairCodec;
     }
 
-    public DaxParser getParser(){
-        return parser;
+    public DaxTagParser getTagParser(){
+        return tagParser;
     }
 
     public DaxTagCodec getTagCodec(){
@@ -195,6 +206,14 @@ public class DaxEngine {
 
     public DaxHandlerRegistry getHandlerRegistry() {
         return handlerRegistry;
+    }
+
+    public DaxFrameCodec getFrameCodec(){
+        return frameCodec;
+    }
+
+    public DaxFrameParser getFrameParser() {
+        return frameParser;
     }
 
     //    public DaxPopulator getDaxPopulator() {

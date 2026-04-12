@@ -25,6 +25,11 @@ import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class DaxTagParser {
 
     DaxContextMapper contextMapper;
@@ -163,5 +168,13 @@ public class DaxTagParser {
         //6. Is ok return new DaxTag
         return new DaxTag(contextId, tagId);
     }
+
+        public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
+
+            return Arrays.stream(tagListStr.split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
+                    .map(String::trim)
+                    .map(s ->  parseDaxTag(s,msgContextId))
+                    .collect(Collectors.toList());
+        }
 
 }

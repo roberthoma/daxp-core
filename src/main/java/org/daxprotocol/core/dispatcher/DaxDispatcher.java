@@ -1,30 +1,27 @@
 package org.daxprotocol.core.dispatcher;
 
 import org.daxprotocol.core.model.DaxFrame;
-import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
-import org.daxprotocol.core.parsers.DaxParser;
+import org.daxprotocol.core.parsers.DaxFrameParser;
 
-import java.util.List;
 import java.util.Map;
 
 public class DaxDispatcher {
     DaxHandlerRegistry handlerRegistry;
-    DaxParser parser;
+    DaxFrameParser frameParser;
 
     public DaxFrame dispatchRequest(Map<String, String> params, String body) {
-        DaxFrame frame ;
-        List<DaxMessage> incoming  = null;
-        DaxPreamble preamble = null;
+        DaxFrame reqFrame ;
+        DaxFrame respFrame = new DaxFrame();
+
 
         if (body != null && !body.isEmpty()) {
-            frame = parser.parseFromString(body);
+            reqFrame = frameParser.parseFrame(body);
         } else {
-            frame = parser.parseFromMap(params);
+            reqFrame = frameParser.parseFromMap(params);
         }
 
-        return handlerRegistry.executor(frame);
-
+        handlerRegistry.executor(reqFrame, respFrame); // calll DaxFrameCodec.encode
+        return  respFrame;
 
     }
 
