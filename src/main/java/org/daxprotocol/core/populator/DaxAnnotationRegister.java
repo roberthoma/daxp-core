@@ -1,7 +1,7 @@
 package org.daxprotocol.core.populator;
 
 import org.daxprotocol.core.annotation.*;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
@@ -54,11 +54,11 @@ public class DaxAnnotationRegister {
             DaxTag dtoTag
     ){
         String uiLabel="";
-        DaxTag tag = DaxTagConst.UNKNOW_TAG;
+        DaxTag tag = DaxCoreTags.UNKNOW_TAG;
         int contextId = -1;
         Class<?> fType = field.getType();
         DaxDataType dataType = DaxDataType.fromClass(fType);
-        DaxTag dataTypeTag = DaxTagConst.UNKNOW_TAG;
+        DaxTag dataTypeTag = DaxCoreTags.UNKNOW_TAG;
 
         if (field.isAnnotationPresent(DaxpField.class)) {
             DaxpField daxField = field.getAnnotation(DaxpField.class);
@@ -88,7 +88,7 @@ public class DaxAnnotationRegister {
 
 
 
-        if(contextId == -1 || tag.equals(DaxTagConst.UNKNOW_TAG)){
+        if(contextId == -1 || tag.equals(DaxCoreTags.UNKNOW_TAG)){
             System.out.println("ERRRRRRRRRRRRRRRRRR>>>>>");
             return;
         }

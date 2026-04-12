@@ -21,12 +21,13 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
 import java.util.List;
 
-import static org.daxprotocol.core.codec.DaxTagConst.*;
+import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 //public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
 public class DaxTrailerCodec {
@@ -51,7 +52,7 @@ public class DaxTrailerCodec {
         DaxTrailer trailer = new DaxTrailer();
 
         for(DaxPair<?> pair : listOfPair) {
-            if (pair.getTag().equals(DaxTagConst.CHECKSUM)) {
+            if (pair.getTag().equals(DaxCoreTags.CHECKSUM)) {
                 trailer.setChecksum(pair.getIntegerValue());
                 break;
             }

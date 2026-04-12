@@ -58,7 +58,7 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
         String respDataType = respMsg.getMsgType();
         Assertions.assertEquals(DaxpSchema_Base.MSG_BASE_DTO_DATA, respDataType);
 
-        System.out.println("\n");
+        System.out.println("-------------------\n");
         System.out.println("REQ > " + reqMsg);
         System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
     }
@@ -77,7 +77,7 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
         String respDataType = respMsg.getMsgType();
         Assertions.assertEquals(DaxpSchema_Base.MSG_BASE_DTO_DATA, respDataType);
 
-        System.out.println("\n");
+        System.out.println("-------------------\n");
         System.out.println("REQ > " + reqMsg);
         System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
 

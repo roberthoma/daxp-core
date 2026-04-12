@@ -26,7 +26,7 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import java.util.List;
 import java.util.Optional;
 
-import static org.daxprotocol.core.codec.DaxTagConst.*;
+import static org.daxprotocol.core.application.DaxCoreTags.*;
 //TODO add logger
 //public class DaxHeadCodec implements DaxCodec<DaxHead> {
 public class DaxHeadCodec{

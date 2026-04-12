@@ -22,7 +22,7 @@ package org.daxprotocol.core.model.body;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairInteger;
 import org.daxprotocol.core.model.pair.DaxPairString;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -98,7 +98,7 @@ public class DaxBody {
 
     public void nextBlock(String blockType){
        nextBlock();
-       putPair(DaxTagConst.BLOCK_TYPE, blockType);
+       putPair(DaxCoreTags.BLOCK_TYPE, blockType);
     }
 
     public DaxPair<?> getPair(int blockIdx, DaxTag tag){

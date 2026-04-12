@@ -22,7 +22,7 @@ package org.daxprotocol.core.field;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 
 public class DaxMsgType extends DaxPair<String> {
 
@@ -37,13 +37,14 @@ public class DaxMsgType extends DaxPair<String> {
     public static final String  CONTEXT_DIC =  daxPrefix+"XD";  // 	RES 	Dictionary of data types and their attributes
 
     public static final String  OK_RES      =  daxPrefix+"OK";  // 	RES 	Error request
-    public static final String  ERR_RES     =  daxPrefix+"ER";  // 	RES 	Error respond
+    public static final String  ERR_RES     =  daxPrefix+"ERR";  // 	RES 	Error respond
     public static final String  DIC_RELOAD  =  daxPrefix+"RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
+    public static final String  DIC_LOG     =  daxPrefix+"LOG";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
 
     // new sys message .. daxp configuration  : set pairSeparator ..
 
     public DaxMsgType(String value) {
-        super(DaxTagConst.MSG_TYPE, value);
+        super(DaxCoreTags.MSG_TYPE, value);
     }
 }
 

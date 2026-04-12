@@ -20,10 +20,10 @@
 package org.daxprotocol.core.field;
 
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 
 public class DaxAtrSizeMax extends DaxPair<Integer> {
     public DaxAtrSizeMax(Integer value) {
-        super(DaxTagConst.ATR_SIZE_MAX, value);
+        super(DaxCoreTags.ATR_SIZE_MAX, value);
     }
 }

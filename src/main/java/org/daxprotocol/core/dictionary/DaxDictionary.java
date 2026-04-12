@@ -20,7 +20,7 @@
 
 package org.daxprotocol.core.dictionary;
 
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -29,7 +29,6 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.field.*;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -301,9 +300,9 @@ public class DaxDictionary {
     }
     //------------------------------------
     public DaxDataType getAtrDataType(DaxTag tag){
-        if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxTagConst.FIELD_DATA_TYPE)) {
+        if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxCoreTags.FIELD_DATA_TYPE)) {
 
-            return DaxDataType.fromCode(attributMap.get(tag).get(DaxTagConst.FIELD_DATA_TYPE).getCharValue());
+            return DaxDataType.fromCode(attributMap.get(tag).get(DaxCoreTags.FIELD_DATA_TYPE).getCharValue());
         }
         return DaxDataType.UNKNOWN;
 

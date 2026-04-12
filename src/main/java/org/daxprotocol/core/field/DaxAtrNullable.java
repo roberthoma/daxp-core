@@ -20,11 +20,11 @@
 package org.daxprotocol.core.field;
 
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 
 public class DaxAtrNullable extends DaxPair<Boolean> {
 
     public DaxAtrNullable(Boolean value) {
-        super(DaxTagConst.ATR_NULLABLE, value);
+        super(DaxCoreTags.ATR_NULLABLE, value);
     }
 }

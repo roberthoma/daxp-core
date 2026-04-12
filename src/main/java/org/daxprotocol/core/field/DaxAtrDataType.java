@@ -20,16 +20,16 @@
 
 package org.daxprotocol.core.field;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 
 public final class DaxAtrDataType extends DaxPair<Character> {
 
     public DaxAtrDataType(Character code) {
-        super(DaxTagConst.FIELD_DATA_TYPE, code);
+        super(DaxCoreTags.FIELD_DATA_TYPE, code);
     }
 
     public DaxAtrDataType(DaxDataType dataType) {
-        super(DaxTagConst.FIELD_DATA_TYPE, dataType != null ? dataType.getCode() : null);
+        super(DaxCoreTags.FIELD_DATA_TYPE, dataType != null ? dataType.getCode() : null);
     }
 
     public DaxAtrDataType(Class<?> clazz) {

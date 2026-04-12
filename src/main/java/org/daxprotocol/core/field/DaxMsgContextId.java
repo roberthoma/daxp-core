@@ -19,12 +19,12 @@
  */
 package org.daxprotocol.core.field;
 
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.pair.DaxPair;
 
 public class DaxMsgContextId extends DaxPair<Integer> {
     public DaxMsgContextId( Integer value) {
-        super(DaxTagConst.MSG_CONTEXT, value);
+        super(DaxCoreTags.MSG_CONTEXT, value);
     }
     @Override
     public String getStrValue() {

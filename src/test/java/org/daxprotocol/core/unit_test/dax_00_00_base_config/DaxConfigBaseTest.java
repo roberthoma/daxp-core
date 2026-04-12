@@ -11,7 +11,7 @@ import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.engine.DaxEngine;
+import org.daxprotocol.core.application.DaxEngine;
 
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;

@@ -17,24 +17,32 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.codec;
+package org.daxprotocol.core.application;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.tag.DaxTag;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
-//todo rename DaxTagConst to DaxPredefineTags
-public class DaxTagConst {
+/**
+ * Predefined DAXP Core tags reserved in range 1..999.
+ * These tags are owned by the DAXP protocol and must not be reused
+ * by application/domain dictionaries.
+ */
+public class DaxCoreTags {
 
     public final DaxTag TAG_TEST = new DaxTag(1,1000);
+    private static final Map<Integer, DaxTag> SYS_TAG_CACHE = new HashMap<>();
 
-
-    private static DaxTag daxpSysTag(int tagId){
-        //TODO add checking duplication or create factory
-        return new DaxTag(DaxConfig.DAXP_CONTEXT_ID,tagId);
-
+    private static DaxTag daxpSysTag(int tagId) {
+        if (SYS_TAG_CACHE.containsKey(tagId)) {
+            throw new IllegalStateException("Duplicate System Tag ID detected: " + tagId);
+        }
+        DaxTag tag = new DaxTag(DaxConfig.DAXP_CONTEXT_ID, tagId);
+        SYS_TAG_CACHE.put(tagId, tag);
+        return tag;
     }
-
     /**
      * Head TAGS
      * */
@@ -106,16 +114,16 @@ public class DaxTagConst {
     public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
     public static final DaxTag ENUM_VALUE_TAG          = daxpSysTag(136);
     //----
-    public static final DaxTag NAMESPACE          = daxpSysTag(144);
-    public static final DaxTag NAMESPACE_DESC     = daxpSysTag(144);
+//    public static final DaxTag NAMESPACE          = daxpSysTag(144);
+//    public static final DaxTag NAMESPACE_DESC     = daxpSysTag(144);
 
 
     //----
     public static final DaxTag GROUP_ID                = daxpSysTag(141);
-    public static final DaxTag GROUP_MASTER_ID         = daxpSysTag(142);
-    public static final DaxTag GROUP_NAME              = daxpSysTag(143);
-    public static final DaxTag GROUP_NAMESPACE         = daxpSysTag(144);
-    public static final DaxTag GROUP_DESCRIPTION       = daxpSysTag(145);
+    //??? public static final DaxTag DTO_MASTER_ID = daxpSysTag(142);
+    public static final DaxTag DTO_NAME = daxpSysTag(143);
+    public static final DaxTag DTO_NAMESPACE         = daxpSysTag(144);
+    public static final DaxTag DTO_DESCRIPTION = daxpSysTag(145);
 
 
     /*****************************
@@ -134,11 +142,11 @@ public class DaxTagConst {
     public static final DaxTag ATR_RANGE_MAX_VALUE = daxpSysTag(162);
     public static final DaxTag ATR_PRECISION       = daxpSysTag(163);
     public static final DaxTag ATR_STEP_SIZE       = daxpSysTag(164);
-    public static final DaxTag ATR_UNIT_ID         = daxpSysTag(166);
-    public static final DaxTag ATR_NULLABLE        = daxpSysTag(165);
-    public static final DaxTag ATR_SIZE_MAX        = daxpSysTag(166);
-    public static final DaxTag ATR_SIZE_MIN        = daxpSysTag(167);
-    public static final DaxTag ATR_READONLY        = daxpSysTag(168);
+    public static final DaxTag ATR_UNIT_ID         = daxpSysTag(165);
+    public static final DaxTag ATR_NULLABLE        = daxpSysTag(166);
+    public static final DaxTag ATR_SIZE_MAX        = daxpSysTag(167);
+    public static final DaxTag ATR_SIZE_MIN        = daxpSysTag(168);
+    public static final DaxTag ATR_READONLY        = daxpSysTag(169);
     /*****************************
      * Attributes of UI
      */

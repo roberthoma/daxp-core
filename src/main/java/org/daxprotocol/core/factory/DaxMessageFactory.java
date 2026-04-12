@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.daxprotocol.core.codec.DaxTagConst.*;
+import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 public class DaxMessageFactory {
 
@@ -131,12 +131,12 @@ public class DaxMessageFactory {
 //            );
 
 
-    private void putGroupToBody(DaxBody body, DaxDTO group, Set<DaxTag> daxFields){
+    private void putDtoToBody(DaxBody body, DaxDTO dto, Set<DaxTag> daxFields){
         body.nextBlock(DaxBlockType.BLOCK_DTO);
-        body.putPair(FIELD_ID, tagEncode(group.getTag()));
-        body.putPair(GROUP_NAME, group.getName());
-        if (!group.getDescription().isBlank() ){
-            body.putPair(GROUP_DESCRIPTION, group.getDescription());
+        body.putPair(FIELD_ID, tagEncode(dto.getTag()));
+        body.putPair(DTO_NAME, dto.getName());
+        if (!dto.getDescription().isBlank() ){
+            body.putPair(DTO_DESCRIPTION, dto.getDescription());
         }
 
         body.putPair(FIELD_ID_LIST, createTagListStr(daxFields));
@@ -241,7 +241,7 @@ public class DaxMessageFactory {
         //-------------------------------------------------------------------------------
 
         dictionary.getDtoMap().forEach((integer, group) ->
-                putGroupToBody(message.getBody(), group, dictionary.getDtoFieldsMap().get(group.getTag())));
+                putDtoToBody(message.getBody(), group, dictionary.getDtoFieldsMap().get(group.getTag())));
 
 
 

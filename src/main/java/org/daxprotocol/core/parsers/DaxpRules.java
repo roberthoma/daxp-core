@@ -1,6 +1,6 @@
 package org.daxprotocol.core.parsers;
 
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -23,10 +23,10 @@ public final class DaxpRules {
     }
 
     public boolean isMessageStart(DaxTag tag) {
-        return tag.equals(DaxTagConst.MSG_TYPE);
+        return tag.equals(DaxCoreTags.MSG_TYPE);
     }
 
     public boolean isMessageEnd(DaxTag tag) {
-        return tag.equals(DaxTagConst.CHECKSUM);
+        return tag.equals(DaxCoreTags.CHECKSUM);
     }
 }

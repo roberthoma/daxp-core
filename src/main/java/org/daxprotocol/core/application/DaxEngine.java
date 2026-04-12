@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.engine;
+package org.daxprotocol.core.application;
 
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
@@ -94,7 +94,7 @@ public class DaxEngine {
         dictionary = new DaxDictionary(config, contextMapper, messageMapper);
         dictionary.putContext(sysContext);
         dictionary.putContext(appContext);
-        DaxTagConst.init(dictionary);
+        DaxCoreTags.init(dictionary);
 
         tagParser  = new DaxTagParser(contextMapper);
 

@@ -21,7 +21,7 @@
 package org.daxprotocol.core.field;
 
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 
 //Type of block application
 public class DaxBlockType extends DaxPair<String> {
@@ -47,6 +47,6 @@ public class DaxBlockType extends DaxPair<String> {
     // it mean Any.Name.Space::Customer
 
     public DaxBlockType(String value) {
-        super(DaxTagConst.BLOCK_TYPE, value);
+        super(DaxCoreTags.BLOCK_TYPE, value);
     }
 }

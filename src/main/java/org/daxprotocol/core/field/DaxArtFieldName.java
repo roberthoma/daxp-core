@@ -21,11 +21,11 @@ package org.daxprotocol.core.field;
 
 
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 
 public class DaxArtFieldName extends DaxPair<String> {
     public DaxArtFieldName(String value) {
-        super(DaxTagConst.FIELD_NAME, value);
+        super(DaxCoreTags.FIELD_NAME, value);
     }
 
 

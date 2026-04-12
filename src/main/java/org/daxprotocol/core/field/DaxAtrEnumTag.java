@@ -21,11 +21,11 @@
 package org.daxprotocol.core.field;
 
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxAtrEnumTag extends DaxPair<DaxTag> {
     public DaxAtrEnumTag(DaxTag tag) {
-        super(DaxTagConst.ENUM_ID, tag);
+        super(DaxCoreTags.ENUM_ID, tag);
     }
 }

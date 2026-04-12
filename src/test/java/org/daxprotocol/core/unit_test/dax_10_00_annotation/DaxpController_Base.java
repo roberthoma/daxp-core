@@ -4,14 +4,10 @@ import org.daxprotocol.core.annotation.DaxpController;
 import org.daxprotocol.core.annotation.DaxpHandler;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.unit_test.dax_00_00_base_config.DaxConfigBaseTest;
 
 @DaxpController
 public class DaxpController_Base extends DaxConfigBaseTest {
-
-//    @DaxpHandler(DaxpSchema_Base.MSG_BASE_DTO_Req)
-//    public DaxFrame getBaseData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
 
 
     @DaxpHandler(DaxpSchema_Base.MSG_BASE_DTO_Req)

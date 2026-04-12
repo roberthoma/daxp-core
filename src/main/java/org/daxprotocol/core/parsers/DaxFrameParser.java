@@ -23,7 +23,7 @@ package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
-import org.daxprotocol.core.codec.DaxTagConst;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.DaxFrame;
@@ -135,7 +135,7 @@ public class DaxFrameParser {
                         break;
                     }
 
-                    if (tag.equals(DaxTagConst.MSG_TYPE))
+                    if (tag.equals(DaxCoreTags.MSG_TYPE))
                     {
                         if (!listOfPair.isEmpty()){
                             listOfPair.clear();
@@ -144,7 +144,7 @@ public class DaxFrameParser {
                     //------------
                     //TODO  move to msgCodec
                     DaxPair<?> pair;
-                    if(tag.equals(DaxTagConst.REQ_FIELD_LIST)){
+                    if(tag.equals(DaxCoreTags.REQ_FIELD_LIST)){
                         Set<DaxTag> daxTagSet =
                                 Arrays.stream(valueStr.split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
                                         .map(String::trim)
@@ -158,7 +158,7 @@ public class DaxFrameParser {
 
                     listOfPair.add(pair);
 
-                    if (tag.equals(DaxTagConst.CHECKSUM)){
+                    if (tag.equals(DaxCoreTags.CHECKSUM)){
                         messageList.add(messageCodec.createMsg(listOfPair));
                     }
 
