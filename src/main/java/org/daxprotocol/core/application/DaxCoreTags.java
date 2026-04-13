@@ -32,7 +32,6 @@ import java.util.Set;
  */
 public class DaxCoreTags {
 
-    public final DaxTag TAG_TEST = new DaxTag(1,1000);
     private static final Map<Integer, DaxTag> SYS_TAG_CACHE = new HashMap<>();
 
     private static DaxTag daxpSysTag(int tagId) {
@@ -78,6 +77,7 @@ public class DaxCoreTags {
     // Set of universal tags
 //    F_NAME
 //    DESCRIPTION
+//    NAME
 //    SYMBOL
 //    STATUS
 

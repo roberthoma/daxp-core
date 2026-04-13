@@ -1,6 +1,7 @@
-package org.daxprotocol.core.populator;
+package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.annotation.*;
+import org.daxprotocol.core.application.DaxCoreController;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
@@ -25,7 +26,6 @@ import java.util.Arrays;
 public class DaxAnnotationRegister {
     private static final Logger logger = LoggerFactory.getLogger(DaxAnnotationRegister.class);
     DaxPopulatorJakartaValidation jakartaPopulator;
-    //DaxParser parserService;
     DaxTagParser tagParser;
     DaxPopulatorEnumType enumPopulator;
     DaxConfig config;
@@ -89,8 +89,7 @@ public class DaxAnnotationRegister {
 
 
         if(contextId == -1 || tag.equals(DaxCoreTags.UNKNOW_TAG)){
-            System.out.println("ERRRRRRRRRRRRRRRRRR>>>>>");
-            return;
+            throw new DaxAnnotationException("RegisterDaxpFieldException "+field.getName()) ;
         }
 
 
@@ -226,7 +225,7 @@ public class DaxAnnotationRegister {
             tagId = field.getInt(null);
         }
         catch (Exception e){
-            e.printStackTrace();
+            throw new DaxAnnotationException("RegisterDaxpTagException "+field.getName()) ;
         }
 
 
@@ -301,11 +300,13 @@ public class DaxAnnotationRegister {
             if (methodAnn == null) continue;
             handlerRegistry.putHandler(methodAnn.value(), method, clazz);
         }
+
+
     }
 
 
     public void register(Class<?> clazz) {
-        //        DaxDictionaryDecoratorService.printDaxScanClass(clazz);
+
 
         try {
             if (clazz.isAnnotationPresent(DaxpSchema.class)) {

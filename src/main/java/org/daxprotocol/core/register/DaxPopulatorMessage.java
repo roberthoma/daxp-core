@@ -1,4 +1,4 @@
-package org.daxprotocol.core.populator;
+package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;

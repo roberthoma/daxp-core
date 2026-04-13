@@ -14,11 +14,12 @@ public class DaxHandlerRegistry {
      *  Handler And controller maps
      */
 
-    Map<String, Method> handlerMap = new ConcurrentHashMap<>();
+    Map<String, Method>     coreHandlerMap   = new ConcurrentHashMap<>();
+    Map<String, Method>     handlerMap       = new ConcurrentHashMap<>();
     Map<Class<?>, Object >  daxControllerMap = new ConcurrentHashMap<>();
 
 
-    //TODO  move to DaxHandlerRegisry
+
     public void putHandler(String msgType, Method method, Class<?> clazz) {
         handlerMap.put(msgType, method);
     }

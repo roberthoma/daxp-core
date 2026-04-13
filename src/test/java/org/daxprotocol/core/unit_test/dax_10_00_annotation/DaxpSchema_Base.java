@@ -17,7 +17,7 @@ public class DaxpSchema_Base {
     @DaxpTag( uiLabel = "Ui Test TAG String", clazz = String.class)
     public static final int TEST_TAG_String            = 5002;
 
-    public String TEST_TAG_char_uiLabel = "Ui Test TAG char";
+
     @DaxpTag( uiLabel = "Ui Test TAG char", clazz = Character.class)
     public static final int TEST_TAG_char            = 5003;
 

@@ -23,6 +23,7 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpValue;
+import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.*;
@@ -35,7 +36,6 @@ import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.field.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
-import org.daxprotocol.core.field.DaxMsgType;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
@@ -82,7 +82,7 @@ public class DaxMessageFactory {
     }
 
     public DaxMessage createDictionaryReq() {
-        return new DaxMessage(DaxMsgType.DIC_REQ);
+        return new DaxMessage(DaxCoreMessages.DIC_REQ);
     }
 
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
@@ -250,7 +250,7 @@ public class DaxMessageFactory {
 
 
     public DaxMessage dictionaryToMsg() {
-        DaxMessage message = new DaxMessage(DaxMsgType.DATA_DIC);
+        DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_DIC);
 
         dictionary.getContextMap().forEach((idCtx, context) ->
                         putContextToBody(message.getBody(), context)
@@ -438,20 +438,20 @@ public class DaxMessageFactory {
 
 
     public DaxMessage errorResourceNotFound() {
-        DaxMessage message = new DaxMessage(DaxMsgType.ERR_RES);
+        DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
         message.getBody().nextBlock();
         message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Resource not found"));
         return message;
     }
 
     public DaxMessage okMessageType() {
-        return new DaxMessage(DaxMsgType.OK_RES);
+        return new DaxMessage(DaxCoreMessages.OK_RES);
 
     }
 
 
     public DaxMessage errorInvalidMessageType() {
-        DaxMessage message = new DaxMessage(DaxMsgType.ERR_RES);
+        DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
         message.getBody().nextBlock();
         message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Invalid Message Type"));
         return message;

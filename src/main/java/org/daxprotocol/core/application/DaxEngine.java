@@ -25,9 +25,9 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.populator.DaxAnnotationRegister;
-import org.daxprotocol.core.populator.DaxPopulatorEnumType;
-import org.daxprotocol.core.populator.DaxPopulatorMessage;
+import org.daxprotocol.core.register.DaxAnnotationRegister;
+import org.daxprotocol.core.register.DaxPopulatorEnumType;
+import org.daxprotocol.core.register.DaxPopulatorMessage;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
@@ -76,7 +76,7 @@ public class DaxEngine {
 
     DaxPopulatorMessage messagePopulator;
 
-    DaxAnnotationRegister annotationPopulator;
+    DaxAnnotationRegister annotationRegister;
 
     public DaxEngine(DaxConfig config){
         this.config = config;
@@ -118,7 +118,7 @@ public class DaxEngine {
 
         messagePopulator    = new DaxPopulatorMessage( tagParser, dictionary);
         enumPopulator       = new DaxPopulatorEnumType(config, contextMapper, dictionary);
-        annotationPopulator = new DaxAnnotationRegister(tagParser ,
+        annotationRegister = new DaxAnnotationRegister(tagParser ,
                                                         enumPopulator,
                                                         config,
                                                         contextMapper,
@@ -144,6 +144,12 @@ public class DaxEngine {
                                                  dictionary,
                                                 messageCodec,
                                                  preambleCodec) ;
+
+        //-----------------
+        //Registration
+        annotationRegister.register(DaxCoreController.class);
+        handlerRegistry.registerCtrl(new DaxCoreController(messageFactory));
+
 
     }
 
@@ -200,8 +206,8 @@ public class DaxEngine {
         return tagCodec;
     }
 
-    public void populate(Class<?> clazz) {
-        annotationPopulator.register(clazz);
+    public void register(Class<?> clazz) {
+        annotationRegister.register(clazz);
     }
 
     public DaxHandlerRegistry getHandlerRegistry() {

@@ -1,4 +1,4 @@
-package org.daxprotocol.core.populator;
+package org.daxprotocol.core.register;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

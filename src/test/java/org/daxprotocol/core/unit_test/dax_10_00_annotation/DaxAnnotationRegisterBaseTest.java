@@ -15,18 +15,11 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
 
     @BeforeAll
      static void  initAnnotation(){
-        daxEngine.populate(DaxpSchema_Base.class);
-        daxEngine.populate(DaxDTO_Base.class);
-        daxEngine.populate(DaxpController_Base.class);
-
+        daxEngine.register(DaxpSchema_Base.class);
+        daxEngine.register(DaxDTO_Base.class);
+        daxEngine.register(DaxpController_Base.class);
         handlerRegistry.registerCtrl(new DaxpController_Base());  //Autowire in spring
 
-    }
-
-    @Test
-    void printDictionary(){
-        DaxMessage dicMsg = msgFactory.dictionaryToMsg();
-        System.out.println("\n"+ DaxMessageDecorator.decorate(messageCodec.encode(dicMsg))+"\n");
     }
 
     @Test
@@ -45,7 +38,6 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
         DaxDataType dataType =  dictionary.getAtrDataType(new DaxTag( appContextId, DaxpSchema_Base.TEST_TAG_char));
         Assertions.assertEquals(DaxDataType.CHAR,dataType);
     }
-
     @Test
     void executorTestSimpleReq(){
         String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|9="+DaxpSchema_Base.MSG_BASE_DTO_Req +"|99=123|";
@@ -66,7 +58,7 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
     @Test
     void executorTestSelectReq(){
         String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=XYZ|9="+DaxpSchema_Base.MSG_BASE_DTO_Req +
-                         "|108=5001;5002|99=123|";
+                "|108=5001;5002|99=123|";
         String msgStr = DaxMessageNormalizer.normalize(reqMsg);
         DaxFrame frameReq = frameParser.parseFrame(msgStr);
         DaxFrame frameResp = new DaxFrame();
@@ -82,5 +74,6 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
         System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
 
     }
+
 
 }

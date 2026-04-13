@@ -1,4 +1,4 @@
-package org.daxprotocol.core.populator;
+package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.annotation.DaxpEnum;
 import org.daxprotocol.core.config.DaxConfig;
