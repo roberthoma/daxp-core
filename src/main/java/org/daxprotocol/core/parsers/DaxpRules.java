@@ -1,5 +1,6 @@
 package org.daxprotocol.core.parsers;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -7,14 +8,14 @@ import org.daxprotocol.core.model.tag.DaxTag;
 public final class DaxpRules {
 
     public int resolveImplicitContext(int tagId, int msgContextId, DaxConfig config) {
-        if (tagId < DaxConfig.DAXP_MAX_TAG_ID) {
-            return DaxConfig.DAXP_CONTEXT_ID;
+        if (tagId < DaxCoreConstants.DAXP_MAX_TAG_ID) {
+            return DaxCoreConstants.DAXP_CONTEXT_ID;
         }
         return msgContextId;
     }
 
     public boolean shouldWriteContextPrefix(int tagContextId, int msgContextId, DaxConfig config) {
-        return tagContextId != DaxConfig.DAXP_CONTEXT_ID
+        return tagContextId != DaxCoreConstants.DAXP_CONTEXT_ID
                 && tagContextId != msgContextId;
     }
 

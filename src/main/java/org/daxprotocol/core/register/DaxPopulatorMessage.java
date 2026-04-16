@@ -1,7 +1,7 @@
 package org.daxprotocol.core.register;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxEnum;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
@@ -29,7 +29,7 @@ public class DaxPopulatorMessage {
 
     public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
 
-        return Arrays.stream(tagListStr.split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
+        return Arrays.stream(tagListStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
                 .map(String::trim)
                 .map(s ->  tagParser.parseDaxTag(s,msgContextId))
                 .collect(Collectors.toList());
@@ -59,7 +59,7 @@ public class DaxPopulatorMessage {
             //TODO refactor : split change do byte after byte reading
             if (blockPairMap.containsKey(DaxCoreTags.MESSAGE_RELATED_MSGS)){
                 Arrays.stream(blockPairMap.get(DaxCoreTags.MESSAGE_RELATED_MSGS)
-                                .getStrValue().split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
+                                .getStrValue().split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
                         .forEach(msgItem::addRelatedMsgType);
             }
 
@@ -125,8 +125,8 @@ public class DaxPopulatorMessage {
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 
 
-            if(blockPairMap.containsKey(DaxCoreTags.FIELD_DATA_TYPE)) {
-                daxDic.putAtrDataType(tag, blockPairMap.get(DaxCoreTags.FIELD_DATA_TYPE).getCharValue());
+            if(blockPairMap.containsKey(DaxCoreTags.DATA_TYPE)) {
+                daxDic.putAtrDataType(tag, blockPairMap.get(DaxCoreTags.DATA_TYPE).getCharValue());
             }
 
             else if(blockPairMap.containsKey(DaxCoreTags.DTO_DATA_TYPE_ID)) {
@@ -192,7 +192,7 @@ public class DaxPopulatorMessage {
 
             DaxDTO group = new DaxDTO(groupTag,groupName);
             daxDic.putDTO(group);
-            String fieldIdStrList = blockPairMap.get(DaxCoreTags.FIELD_ID_LIST).getStrValue();
+            String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
             List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgContextId);
             tagList.forEach(tag -> daxDic.putDtoField(groupTag, tag));
             return;

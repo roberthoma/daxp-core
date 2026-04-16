@@ -1,13 +1,13 @@
 package org.daxprotocol.core.decorator;
 
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.application.DaxCoreConstants;
 
 public class DaxMessageNormalizer {
 
 
     public static String normalize(String msgStr){
 
-        return msgStr.replace('|', DaxConfig.PAIR_SEPARATOR);
+        return msgStr.replace('|', DaxCoreConstants.PAIR_SEPARATOR);
 
     }
 }

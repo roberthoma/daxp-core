@@ -20,14 +20,13 @@
 
 package org.daxprotocol.core.parsers;
 
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DaxTagParser {
@@ -100,7 +99,7 @@ public class DaxTagParser {
             throw new DaxTagParserException("NOT correct DaxTag: Input is empty or only whitespace");
         }
 
-        char separator = DaxConfig.CONTEXT_TAG_SEPARATOR_CHAR;
+        char separator = DaxCoreConstants.CONTEXT_TAG_SEPARATOR_CHAR;
         int separatorPos = -1;
 
         // 2. Search for the separator only within the trimmed range
@@ -149,8 +148,8 @@ public class DaxTagParser {
         // 5. Context ID resolution logic
         int contextId ;
         if (contextSymbol == null || contextSymbol.isEmpty()) {
-            if( tagId <= DaxConfig.DAXP_MAX_TAG_ID) {
-                contextId = DaxConfig.DAXP_CONTEXT_ID;
+            if( tagId <= DaxCoreConstants.DAXP_MAX_TAG_ID) {
+                contextId = DaxCoreConstants.DAXP_CONTEXT_ID;
             }
             else {
                 contextId = msgContextId ;// config.getAppContextId();
@@ -158,11 +157,11 @@ public class DaxTagParser {
         } else {
             contextId = contextMapper.getReferenceId(contextSymbol);
         }
-        if(contextId==DaxConfig.DAXP_CONTEXT_ID
-                && tagId > DaxConfig.DAXP_MAX_TAG_ID)
+        if(contextId== DaxCoreConstants.DAXP_CONTEXT_ID
+                && tagId > DaxCoreConstants.DAXP_MAX_TAG_ID)
         {
             throw new DaxTagParserException(" Tag "+tagId+" can't be in DAXP context "+
-                                              DaxConfig.DAXP_CONTEXT_TAG_PREFIX  +" !!! ");
+                                              DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX  +" !!! ");
         }
 
         //6. Is ok return new DaxTag
@@ -171,7 +170,7 @@ public class DaxTagParser {
 
         public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
 
-            return Arrays.stream(tagListStr.split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
+            return Arrays.stream(tagListStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
                     .map(String::trim)
                     .map(s ->  parseDaxTag(s,msgContextId))
                     .collect(Collectors.toList());

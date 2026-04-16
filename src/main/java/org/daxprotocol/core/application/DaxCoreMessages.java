@@ -1,23 +1,21 @@
 package org.daxprotocol.core.application;
 
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.annotation.DaxpSchema;
 
+@DaxpSchema(context = DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX)
 public class DaxCoreMessages {
 
-    //request : introduce yourself
-    //TODO Message DEPENDENCY from required tags/fields
-    //TODO Message respond
-    //TODO Add to preferences
-    private static final String daxPrefix = DaxConfig.DAXP_CONTEXT_TAG_PREFIX+ DaxConfig.CONTEXT_TAG_SEPARATOR;
+
+    private static final String daxPrefix = DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX+ DaxCoreConstants.CONTEXT_TAG_SEPARATOR;
 
     public static final String  DIC_REQ     =  "DR"; // 	REQ 	Request for a dictionary
-    public static final String  DATA_DIC    =  daxPrefix+"DD";  // 	RES 	Dictionary of data types and their attributes
-    public static final String  CONTEXT_DIC =  daxPrefix+"XD";  // 	RES 	Dictionary of data types and their attributes
+    public static final String  DATA_DIC    =  "DD";  // 	RES 	Dictionary of data types and their attributes
+    public static final String  CONTEXT_DIC =  "XD";  // 	RES 	Dictionary of data types and their attributes
 
-    public static final String  OK_RES      =  daxPrefix+"OK";  // 	RES 	Error request
-    public static final String  ERR_RES     =  daxPrefix+"ERR";  // 	RES 	Error respond
-    public static final String  DIC_RELOAD  =  daxPrefix+"RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
-    public static final String  DIC_LOG     =  daxPrefix+"LOG";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
+    public static final String  OK_RES      =  "OK";  // 	RES 	Error request
+    public static final String  ERR_RES     =  "ERR";  // 	RES 	Error respond
+    public static final String  DIC_RELOAD  =  "RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
+    public static final String  DIC_LOG     =  "LOG";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
 
     // new sys message .. daxp configuration  : set pairSeparator ..
 
@@ -25,6 +23,11 @@ public class DaxCoreMessages {
 }
 
 /*
+    //request : introduce yourself
+    //TODO Message DEPENDENCY from required tags/fields
+    //TODO Message respond
+    //TODO Add to preferences
+
 
 GET	Read (retrieve data)	/customers/123
 POST	Create (new resource)	/orders

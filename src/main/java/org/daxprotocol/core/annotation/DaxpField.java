@@ -31,8 +31,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface DaxpField {
+    String tagStrId() default "";
     String context() default "";   // Empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
-    int value();                   // It can be define by @DaxpTag
+    int value() default 0;                   // It can be define by @DaxpTag
     String uiLabel() default "";
     String name() default "";      //Use for rename field name , example :used for JSON cast.
 }

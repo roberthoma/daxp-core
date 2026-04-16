@@ -20,6 +20,7 @@
 
 package org.daxprotocol.core.codec;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -35,16 +36,33 @@ public class DaxTagCodec {
     }
 
     public String encode( DaxTag tag){
+        if(tag.getContextId() == DaxCoreConstants.DAXP_CONTEXT_ID){
+            return  DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX+
+                    DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
+        }
 
-        if(tag.getContextId() != DaxConfig.DAXP_CONTEXT_ID &&
-                (tag.getContextId() != config.getAppContextId()
-           || tag.getTagId() <= DaxConfig.DAXP_MAX_TAG_ID)
+        if(tag.getContextId() != config.getAppContextId()
+           || tag.getTagId() <= DaxCoreConstants.DAXP_MAX_TAG_ID
         )
         {
             return  contextMapper.getReference(tag.getContextId()) +
-                    DaxConfig.CONTEXT_TAG_SEPARATOR + tag.getTagId();
+                    DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
         }
         return String.valueOf(tag.getTagId());
     }
+
+//    public String encode( DaxTag tag){
+//
+//        if(tag.getContextId() != DaxCoreConstants.DAXP_CONTEXT_ID &&
+//                (tag.getContextId() != config.getAppContextId()
+//                        || tag.getTagId() <= DaxCoreConstants.DAXP_MAX_TAG_ID)
+//        )
+//        {
+//            return  contextMapper.getReference(tag.getContextId()) +
+//                    DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
+//        }
+//        return String.valueOf(tag.getTagId());
+//    }
+
 
 }

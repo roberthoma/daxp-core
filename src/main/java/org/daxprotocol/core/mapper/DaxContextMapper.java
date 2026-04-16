@@ -1,10 +1,10 @@
 package org.daxprotocol.core.mapper;
 
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.application.DaxCoreConstants;
 
 public class DaxContextMapper extends DaxStringReferenceMapper {
     public DaxContextMapper() {
-        super(DaxConfig.START_IDX_CTX_MAPPER);
+        super(DaxCoreConstants.START_IDX_CTX_MAPPER);
     }
 
 

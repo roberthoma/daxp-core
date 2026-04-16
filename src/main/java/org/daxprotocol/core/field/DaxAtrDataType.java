@@ -25,11 +25,11 @@ import org.daxprotocol.core.application.DaxCoreTags;
 public final class DaxAtrDataType extends DaxPair<Character> {
 
     public DaxAtrDataType(Character code) {
-        super(DaxCoreTags.FIELD_DATA_TYPE, code);
+        super(DaxCoreTags.DATA_TYPE, code);
     }
 
     public DaxAtrDataType(DaxDataType dataType) {
-        super(DaxCoreTags.FIELD_DATA_TYPE, dataType != null ? dataType.getCode() : null);
+        super(DaxCoreTags.DATA_TYPE, dataType != null ? dataType.getCode() : null);
     }
 
     public DaxAtrDataType(Class<?> clazz) {

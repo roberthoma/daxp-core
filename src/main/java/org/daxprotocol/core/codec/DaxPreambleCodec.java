@@ -31,8 +31,8 @@ import org.daxprotocol.core.model.preamble.DaxPreambleTag_OLD;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.daxprotocol.core.config.DaxConfig.EQUAL;
-import static org.daxprotocol.core.config.DaxConfig.PAIR_SEPARATOR;
+import static org.daxprotocol.core.application.DaxCoreConstants.EQUAL;
+import static org.daxprotocol.core.application.DaxCoreConstants.PAIR_SEPARATOR;
 
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.

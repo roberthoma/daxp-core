@@ -18,7 +18,6 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.application;
-import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -38,7 +37,7 @@ public class DaxCoreTags {
         if (SYS_TAG_CACHE.containsKey(tagId)) {
             throw new IllegalStateException("Duplicate System Tag ID detected: " + tagId);
         }
-        DaxTag tag = new DaxTag(DaxConfig.DAXP_CONTEXT_ID, tagId);
+        DaxTag tag = new DaxTag(DaxCoreConstants.DAXP_CONTEXT_ID, tagId);
         SYS_TAG_CACHE.put(tagId, tag);
         return tag;
     }
@@ -94,8 +93,8 @@ public class DaxCoreTags {
 
 
 
-    public static final DaxTag FIELD_ID_LIST           = daxpSysTag(115);
-    public static final DaxTag FIELD_DATA_TYPE         = daxpSysTag(110);
+    public static final DaxTag TAG_LIST                = daxpSysTag(115);
+    public static final DaxTag DATA_TYPE               = daxpSysTag(110);
     public static final DaxTag DTO_DATA_TYPE_ID        = daxpSysTag(118);
 //    public static final DaxTag FIELD_ENUM_NAME         = daxpSysTag(111);
 //    public static final DaxTag FIELD_GROUP_ID          = daxpSysTag(120);

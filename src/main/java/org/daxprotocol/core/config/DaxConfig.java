@@ -20,6 +20,7 @@
 
 package org.daxprotocol.core.config;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
 public final class DaxConfig {
@@ -29,47 +30,10 @@ public final class DaxConfig {
      */
     public static final String PROTOCOL_VERSION = "v0.1.0";
 
-    /*****************************************************
-     *  Reserved tags for DAXP
-     */
-    public static final int    DAXP_MAX_TAG_ID = 999;
-
-    /*****************************************************
-     *  DAXP Context
-     */
-    public static final int    DAXP_CONTEXT_ID          = 0;
-    public static final String DAXP_CONTEXT_SYMBOL      = "DAXP";
-    public static final String DAXP_SYMBOL              = "DAXP";
-    public static final String DAXP_CONTEXT_DESCRIPTION = "Data & Attribute eXchange Protocol";
-    public static final String DAXP_CONTEXT_TAG_PREFIX  = "$" ;
-
-
-    /*****************************************************
-     * Separators
-     */
-//    public static final char TAG_LIST_SEPARATOR    = ';';
-//    public static final char VALUE_LIST_SEPARATOR  = ';';
-//    public static final char CONTEXT_TAG_SEPARATOR = ',';
-
-    public static final CharSequence TAG_LIST_SEPARATOR    = ";";
-    public static final char TAG_LIST_SEPARATOR_CHAR    = ';';
-    public static final CharSequence VALUE_LIST_SEPARATOR    = ";";
-    public static final CharSequence CONTEXT_TAG_SEPARATOR = ":";
-
-    /** key=value */
-    public static final char EQUAL = '=';
-    public static final char CONTEXT_TAG_SEPARATOR_CHAR = ':';
-
-    /**  Pair separator on the WIRE (binary, non-printable). */
-    public static char PAIR_SEPARATOR = 0x0001;
-    //public static char PAIR_SEPARATOR = '|';       // << ONLY for test
-
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
     private int appContextId = 1;
-    public static final int  START_IDX_MSG_MAPPER = 101;
-    public static final int  START_IDX_CTX_MAPPER = 101;
 
     public int getNextContextId() {
         return appContextId + 1;
@@ -125,12 +89,12 @@ public final class DaxConfig {
     public DaxConfig() {
     }
 
-    public CharSequence getContextTafSeparator() {
-        return DaxConfig.CONTEXT_TAG_SEPARATOR;
-    }
+//    public CharSequence getContextTafSeparator() {
+//        return DaxConfig.CONTEXT_TAG_SEPARATOR;
+//    }
 
     public CharSequence getTagListSeparator(){
-        return DaxConfig.TAG_LIST_SEPARATOR;
+        return DaxCoreConstants.TAG_LIST_SEPARATOR;
     }
 
     //TODO get About  STRING

@@ -69,7 +69,13 @@ public class DaxAnnotationRegister {
              contextId = daxField.context().isBlank() ?
                     config.getAppContextId():
                     contextMapper.getReferenceId(daxField.context());
-            tag = new DaxTag(contextId ,daxField.value());
+
+            if (!daxField.tagStrId().isBlank()){
+                tag = tagParser.parseDaxTag(daxField.tagStrId(),1);
+            }
+            else {
+                tag = new DaxTag(contextId ,daxField.value());
+            }
 
         }
 
@@ -220,23 +226,42 @@ public class DaxAnnotationRegister {
 
         if (!Modifier.isFinal(field.getModifiers())) return;  //TODO check or set read only
 
-        int tagId = -1;
+        DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
+        field.setAccessible(true);
+
+        Class<?> tagClazz =  field.getType();
+        DaxTag tag;
+
+        System.out.println(tagClazz.toString());
+
+
+
+
         try {
-            tagId = field.getInt(null);
+            if (field.getType() == String.class) {
+               String value = (String)(field.get(null));
+               tag = tagParser.parseDaxTag(value,1);
+            }
+            else {
+                int tagId = -1;
+                tagId = field.getInt(null);
+                //TODO Create DaxContextCodec
+                int contextId = daxTag.context().isBlank() ? config.getAppContextId():
+                        contextMapper.getReferenceId(daxTag.context());
+
+                tag = new DaxTag(contextId ,tagId);
+
+
+            }
         }
         catch (Exception e){
             throw new DaxAnnotationException("RegisterDaxpTagException "+field.getName()) ;
         }
 
 
-        DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
-        field.setAccessible(true);
 
-        int contextId = daxTag.context().isBlank() ? config.getAppContextId():
-                contextMapper.getReferenceId(daxTag.context());
 
-        DaxTag tag = new DaxTag(contextId ,tagId);
-        daxDic.putTag(tag );
+         daxDic.putTag(tag );
 
         if (daxTag.uiLabel()!=null) {
             daxDic.putAtrUiLabel(tag, daxTag.uiLabel());

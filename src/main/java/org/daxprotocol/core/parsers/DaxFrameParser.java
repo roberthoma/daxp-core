@@ -21,6 +21,7 @@
 
 package org.daxprotocol.core.parsers;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.application.DaxCoreTags;
@@ -69,7 +70,7 @@ public class DaxFrameParser {
 
         // Loop through the string and find every occurrence
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == DaxConfig.PAIR_SEPARATOR) {
+            if (str.charAt(i) == DaxCoreConstants.PAIR_SEPARATOR) {
                 indexList.add(i);
             }
         }
@@ -118,7 +119,7 @@ public class DaxFrameParser {
             valueStr = frameStr.substring(equalChar + 1, idx);
 
             if (prevIdx == 0) {
-                if (!tagStr.trim().equals(DaxConfig.DAXP_SYMBOL)) {
+                if (!tagStr.trim().equals(DaxCoreConstants.DAXP_SYMBOL)) {
                     logger.error("IT IS NOT DAXP MESSAGE : {}", frameStr);
                     throw new DaxMsgParserException("IT IS NOT DAXP MESSAGE !!!");
                 }
@@ -146,7 +147,7 @@ public class DaxFrameParser {
                     DaxPair<?> pair;
                     if(tag.equals(DaxCoreTags.REQ_FIELD_LIST)){
                         Set<DaxTag> daxTagSet =
-                                Arrays.stream(valueStr.split(String.valueOf(DaxConfig.TAG_LIST_SEPARATOR)))
+                                Arrays.stream(valueStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
                                         .map(String::trim)
                                         .map(s ->  tagParser.parseDaxTag(s,preamble.getMsgContextId()))
                                         .collect(Collectors.toSet());

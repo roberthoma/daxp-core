@@ -23,6 +23,7 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpValue;
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
@@ -93,27 +94,28 @@ public class DaxMessageFactory {
     }
 
 
-    private String tagEncode(DaxTag tag){
-        if (tag.getContextId() == config.getAppContextId()){
-            return String.valueOf(tag.getTagId());
-        }
-
-        return contextMapper.getReference(tag.getContextId())+
-                DaxConfig.CONTEXT_TAG_SEPARATOR+
-                tag.getTagId();
-
-    }
+//    private String tagEncode(DaxTag tag){
+//
+//        if (tag.getContextId() == config.getAppContextId()){
+//            return String.valueOf(tag.getTagId());
+//        }
+//
+//        return contextMapper.getReference(tag.getContextId())+
+//                DaxConfig.CONTEXT_TAG_SEPARATOR+
+//                tag.getTagId();
+//
+//    }
 
     private   String createTagListStr(Set<DaxTag> daxFields){
 
         return daxFields.stream()
-                .map(this::tagEncode)
-                .collect(Collectors.joining(DaxConfig.TAG_LIST_SEPARATOR));
+                .map(tag ->  tagCodec.encode(tag))
+                .collect(Collectors.joining(DaxCoreConstants.TAG_LIST_SEPARATOR));
     }
 
     private   String createStringValueListStr(Set<String> stringSet){
 
-        return String.join(DaxConfig.TAG_LIST_SEPARATOR, stringSet);
+        return String.join(DaxCoreConstants.TAG_LIST_SEPARATOR, stringSet);
     }
 
 
@@ -133,13 +135,13 @@ public class DaxMessageFactory {
 
     private void putDtoToBody(DaxBody body, DaxDTO dto, Set<DaxTag> daxFields){
         body.nextBlock(DaxBlockType.BLOCK_DTO);
-        body.putPair(FIELD_ID, tagEncode(dto.getTag()));
+        body.putPair(FIELD_ID, tagCodec.encode(dto.getTag()) );
         body.putPair(DTO_NAME, dto.getName());
         if (!dto.getDescription().isBlank() ){
             body.putPair(DTO_DESCRIPTION, dto.getDescription());
         }
 
-        body.putPair(FIELD_ID_LIST, createTagListStr(daxFields));
+        body.putPair(TAG_LIST, createTagListStr(daxFields));
 
 
 
@@ -162,7 +164,7 @@ public class DaxMessageFactory {
                                         DaxTag tag,
                                 DaxEnum daxEnum){
         body.nextBlock(DaxBlockType.BLOCK_ENUM);
-        body.putPair(ENUM_ID, tagEncode(tag));
+        body.putPair(ENUM_ID, tagCodec.encode(tag));
         body.putPair(ENUM_NAME, daxEnum.getName());
         body.putPair(ENUM_DESCRIPTION, daxEnum.getDesc());
 
@@ -175,7 +177,7 @@ public class DaxMessageFactory {
     private void putEnumValuesToBody(DaxBody body, DaxTag tag,Map<String, DaxEnumValue> enumValueMap ){
         enumValueMap.forEach( (s, value) -> {
             body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
-            body.putPair(ENUM_ID, tagEncode(tag));
+            body.putPair(ENUM_ID, tagCodec.encode(tag));
             body.putPair(ENUM_VALUE, value.getValue());
 
             if (!value.getDesc().isBlank()) {

@@ -12,8 +12,8 @@ import java.util.List;
 @Target({ ElementType.METHOD, ElementType.FIELD })
 
 public @interface DaxpMsg {
-//    String messageType();
     String description();
+    String context() default "";
     String uiLabel() default "";
     String[] reqTag() default {};
     String[] respMsg() default {};

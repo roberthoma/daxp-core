@@ -19,6 +19,7 @@
  */
 package org.daxprotocol.core.codec;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -39,9 +40,9 @@ public class DaxPairCodec {
             return sb.toString();
         }
         sb.append(tagCodec.encode(tag))
-                .append(DaxConfig.EQUAL)
+                .append(DaxCoreConstants.EQUAL)
                 .append(value)
-                .append(DaxConfig.PAIR_SEPARATOR);
+                .append(DaxCoreConstants.PAIR_SEPARATOR);
         return sb.toString() ;
     }
 

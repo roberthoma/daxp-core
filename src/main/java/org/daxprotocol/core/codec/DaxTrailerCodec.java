@@ -20,7 +20,7 @@
 
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
@@ -40,9 +40,9 @@ public class DaxTrailerCodec {
     //@Override
     public String encode(DaxTrailer message) {
         StringBuilder sb = new StringBuilder();
-        sb.append(CHECKSUM.getTagId()).append(DaxConfig.EQUAL)
+        sb.append(CHECKSUM.getTagId()).append(DaxCoreConstants.EQUAL)
                 .append(message.getChecksum())
-                .append(DaxConfig.PAIR_SEPARATOR);
+                .append(DaxCoreConstants.PAIR_SEPARATOR);
 
         return sb.toString();
     }

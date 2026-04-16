@@ -1,0 +1,40 @@
+ //request : introduce yourself
+    //TODO Message DEPENDENCY from required tags/fields
+    //TODO Message respond
+    //TODO Add to preferences
+
+
+
+/*
+
+GET	Read (retrieve data)	/customers/123
+POST	Create (new resource)	/orders
+PUT	Replace entire resource	/customers/123
+PATCH	Partially update	/customers/123 (only name)
+DELETE	Delete resource	/customers/123
+CALL - Remote Procedure Call
+   or
+
+CRUD
+- Create
+- Read
+- Update
+- Delete
+
+
+*/
+
+/*
+Description ,
+* */
+
+/*
+$DR
+#HB   – Heartbeat
+@LOG  – Log or trace message
+
+Use the hybrid format:
+SYS.DR, SYS.DD, SYS.ER, SYS.RA for predefined
+and
+CRM.DR, CNT.DD, ORD.ER for user messages.
+*/

@@ -300,9 +300,9 @@ public class DaxDictionary {
     }
     //------------------------------------
     public DaxDataType getAtrDataType(DaxTag tag){
-        if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxCoreTags.FIELD_DATA_TYPE)) {
+        if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxCoreTags.DATA_TYPE)) {
 
-            return DaxDataType.fromCode(attributMap.get(tag).get(DaxCoreTags.FIELD_DATA_TYPE).getCharValue());
+            return DaxDataType.fromCode(attributMap.get(tag).get(DaxCoreTags.DATA_TYPE).getCharValue());
         }
         return DaxDataType.UNKNOWN;
 

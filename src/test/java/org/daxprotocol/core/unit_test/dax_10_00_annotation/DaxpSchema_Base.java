@@ -3,9 +3,14 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import org.daxprotocol.core.annotation.DaxpMsg;
 import org.daxprotocol.core.annotation.DaxpSchema;
 import org.daxprotocol.core.annotation.DaxpTag;
+import org.daxprotocol.core.application.DaxCoreConstants;
 
 @DaxpSchema
 public class DaxpSchema_Base {
+
+   // scheme should keep tags like DaxCoreTags, This same way create messagase
+
+
 
     @DaxpTag( uiLabel = "Ui Base DTO ")
     public static final int TEST_TAG_dto            = 5000;
@@ -25,13 +30,21 @@ public class DaxpSchema_Base {
     public static final int TEST_TAG_Boolean            = 5004;
 
 
-    @DaxpMsg(description = "Base DTO Request"
-    )
+    @DaxpTag( uiLabel = "Ui other CTX Test TAG String", clazz = String.class, context = "FIX")
+    public static final int TEST_CTX_TAG_String            = 5050;
+
+
+    public static final String CTX_FIX= "FIX";
+
+    @DaxpTag( uiLabel = "Ui other CTX Test TAG String", clazz = String.class)
+    public static final String TEST_CTX_TAG_StrVal     = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "5050";
+
+
+    @DaxpMsg(description = "Base DTO Request")
     public static final String MSG_BASE_DTO_Req =  "BDR"; // 	REs 	Customer Data
 
-    @DaxpMsg(description = "Base DTO DATA"
-    )
-    public static final String MSG_BASE_DTO_DATA =  "BD"; // 	REs 	Customer Data
+    @DaxpMsg(description = "Base DTO DATA")
+    public static final String MSG_BASE_DTO_DATA =   "BD"; // 	REs 	Customer Data
 
 
 }
