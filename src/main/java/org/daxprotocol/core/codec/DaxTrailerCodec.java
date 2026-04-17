@@ -37,20 +37,15 @@ public class DaxTrailerCodec {
         this.pairCodec = pairCodec;
     }
 
-    //@Override
-    public String encode(DaxTrailer message) {
+    public String encode(DaxTrailer trailer) {
         StringBuilder sb = new StringBuilder();
-        sb.append(CHECKSUM.getTagId()).append(DaxCoreConstants.EQUAL)
-                .append(message.getChecksum())
-                .append(DaxCoreConstants.PAIR_SEPARATOR);
-
+        pairCodec.encode(sb,CHECKSUM,String.valueOf(trailer.getChecksum()));
         return sb.toString();
     }
 
 
     public DaxTrailer createTrailer(List<DaxPair<?>> listOfPair) {
         DaxTrailer trailer = new DaxTrailer();
-
         for(DaxPair<?> pair : listOfPair) {
             if (pair.getTag().equals(DaxCoreTags.CHECKSUM)) {
                 trailer.setChecksum(pair.getIntegerValue());

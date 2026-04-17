@@ -26,7 +26,6 @@ import org.daxprotocol.core.exceptions.DaxMsgParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
-import org.daxprotocol.core.model.preamble.DaxPreambleTag_OLD;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -64,16 +63,17 @@ public class DaxPreambleCodec {
     /** Encode Preamble object → wire format (string). */
     public String encode(DaxPreamble preamble) {
         Map<String,String> map = new LinkedHashMap<>();
-        map.put(DaxPreambleTag_OLD.ENCODING, preamble.getEncoding().getCanonicalName());
-        map.put(DaxPreambleTag_OLD.MSG_CONTEXT,contextMapper.getReference(preamble.getMsgContextId()));
+        map.put(DaxPreambleTag.ENCODING.getTag(), preamble.getEncoding().getCanonicalName());
+
+        map.put(DaxPreambleTag.MSG_CONTEXT.getTag(),contextMapper.getReference(preamble.getMsgContextId()));
 
         if (preamble.getMsgCnt() > 1){
-            map.put(DaxPreambleTag_OLD.MSG_COUNT, String.valueOf(preamble.getMsgCnt()));
+            map.put(DaxPreambleTag.MSG_COUNT.getTag(), String.valueOf(preamble.getMsgCnt()));
         }
 
 
         StringBuilder sb = new StringBuilder();
-        encode(sb, DaxPreambleTag_OLD.DAXP, preamble.getProtocolVersion() ); //Always first
+        encode(sb, DaxPreambleTag.DAXP.getTag(), preamble.getProtocolVersion() ); //Always first
 
         map.forEach((k, v) -> encode(sb,k,v));
         return sb.toString();

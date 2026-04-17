@@ -23,8 +23,6 @@ public class DaxFrameCodec {
     public String encode(DaxFrame frame){
         StringBuilder sb = new StringBuilder();
 
-        frame.setPreamble(new DaxPreamble(config.getDefaultEncoding()));
-
         sb.append(preambleCodec.encode(frame.getPreamble()));
 
         frame.getAllMessage().forEach(msg -> sb.append(messageCodec.encode(msg)));

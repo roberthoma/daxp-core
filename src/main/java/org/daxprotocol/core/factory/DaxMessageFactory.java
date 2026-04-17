@@ -40,6 +40,7 @@ import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
+import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
@@ -61,6 +62,7 @@ public class DaxMessageFactory {
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
     DaxDictionary dictionary;
+    DaxTagParser tagParser;
     public DaxMessageFactory(DaxConfig config,
             DaxContextMapper contextMapper,
             DaxTagCodec tagCodec,
@@ -68,7 +70,8 @@ public class DaxMessageFactory {
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxDictionary dictionary
+            DaxDictionary dictionary,
+            DaxTagParser tagParser
 
             ) {
         this.config = config;
@@ -79,6 +82,7 @@ public class DaxMessageFactory {
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
         this.dictionary = dictionary;
+        this.tagParser = tagParser;
 
     }
 
@@ -266,7 +270,7 @@ public class DaxMessageFactory {
 
 
 
-    //TODO Check message atributes if  any massage is resoint type then will need message reqwuest
+    //TODO Check message atributes if  any massage is resoint type then will need message request
     // and throw exception
     @SuppressWarnings("unchecked")
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry ) {
@@ -315,8 +319,15 @@ public class DaxMessageFactory {
                     DaxpField fieldAnn = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
 
+                    DaxTag tag;
+
                     if (field.get(entry) != null){
-                        DaxTag tag = creatTag(fieldAnn.context(), fieldAnn.value());
+                        if (!fieldAnn.tagStrId().isBlank()){
+                            tag = tagParser.parseDaxTag(fieldAnn.tagStrId(),config.getAppContextId());
+                        }
+                        else {
+                         tag = creatTag(fieldAnn.context(), fieldAnn.value());
+                        }
 
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
                             continue;

@@ -23,6 +23,7 @@ package org.daxprotocol.core.application;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
+import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.register.DaxAnnotationRegister;
@@ -51,6 +52,8 @@ public class DaxEngine {
     private final DaxMessageConverter messageConverter;
 
     private final DaxDictionary dictionary;
+
+    private final DaxPreambleFactory preambleFactory;
 
     private final DaxMessageFactory messageFactory;
 
@@ -130,11 +133,11 @@ public class DaxEngine {
 
 
 
-
+        preambleFactory = new DaxPreambleFactory(config, preambleCodec);
 
 
         messageFactory       = new DaxMessageFactory(config, contextMapper, tagCodec,  messageCodec,
-                                                     headCodec, bodyCodec, trailerCodec, dictionary
+                                                     headCodec, bodyCodec, trailerCodec, dictionary, tagParser
         );
 
 
@@ -185,11 +188,6 @@ public class DaxEngine {
         return messageFactory;
     }
 
-//    public DaxPopulator getPopulator(){
-//        return populator;
-//    }
-
-
     public DaxContextMapper getContextMapper() {
         return contextMapper;
     }
@@ -220,6 +218,11 @@ public class DaxEngine {
 
     public DaxFrameParser getFrameParser() {
         return frameParser;
+    }
+
+
+    public DaxPreambleFactory getPreambleFactory(){
+        return preambleFactory;
     }
 
     //    public DaxPopulator getDaxPopulator() {

@@ -8,10 +8,6 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 @DaxpSchema
 public class DaxpSchema_Base {
 
-   // scheme should keep tags like DaxCoreTags, This same way create messagase
-
-
-
     @DaxpTag( uiLabel = "Ui Base DTO ")
     public static final int TEST_TAG_dto            = 5000;
 

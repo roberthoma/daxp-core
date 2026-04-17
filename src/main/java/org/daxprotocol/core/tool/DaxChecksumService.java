@@ -1,8 +1,8 @@
-package org.daxprotocol.core.codec;
+package org.daxprotocol.core.tool;
 
 import java.nio.charset.StandardCharsets;
 
-public class DaxCodecService {
+public class DaxChecksumService {
 
 
     public  static int calculateChecksum(String input) {

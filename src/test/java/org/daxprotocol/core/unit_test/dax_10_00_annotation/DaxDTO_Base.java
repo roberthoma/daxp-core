@@ -34,6 +34,7 @@ public class DaxDTO_Base {
         this.anyString = testStr;
         this.anyChar = testChar;
         this.anyBoolean = true;
+        this.fixTestValue = 'X';
 
     }
 }

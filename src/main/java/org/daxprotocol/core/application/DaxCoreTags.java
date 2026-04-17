@@ -169,8 +169,8 @@ public class DaxCoreTags {
 
 
     public static void init(DaxDictionary dic){
-        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
-        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
+//        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
+//        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
     }
 
 

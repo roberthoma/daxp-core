@@ -45,11 +45,11 @@ public class DaxBodyCodec {
        }
 
         if (!blockMap.containsKey(DaxCoreTags.BLOCK_TYPE) ){
-            StringBuilder blostr  = new StringBuilder();
-            blockMap.forEach((daxTag, daxPair) -> blostr.append(daxPair.toString()));
+            StringBuilder blockStr  = new StringBuilder();
+            blockMap.forEach((daxTag, daxPair) -> blockStr.append(daxPair.toString()));
             int excBlockIdx = blockIdx+1;
             throw new RuntimeException("Block Exception : block without BLOCK_TYPE field !!!+ blockIdx"+excBlockIdx
-                    +" block:"+blostr);
+                    +" block:"+blockStr);
         }
 
         DaxPair<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);

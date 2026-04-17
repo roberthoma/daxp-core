@@ -24,12 +24,10 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
+import org.daxprotocol.core.tool.DaxChecksumService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 //public class DaxMessageCodec implements DaxCodec<DaxMessage>{
 public class DaxMessageCodec {
@@ -71,7 +69,7 @@ public class DaxMessageCodec {
 
         DaxTrailer trailer = new DaxTrailer();
 
-        trailer.setChecksum(DaxCodecService.calculateChecksum(msgSb.toString()));
+        trailer.setChecksum(DaxChecksumService.calculateChecksum(msgSb.toString()));
 
         //sb.append(preambleCodec.encode(preamble))
 

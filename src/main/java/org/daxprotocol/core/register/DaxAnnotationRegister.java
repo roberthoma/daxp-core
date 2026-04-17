@@ -71,7 +71,7 @@ public class DaxAnnotationRegister {
                     contextMapper.getReferenceId(daxField.context());
 
             if (!daxField.tagStrId().isBlank()){
-                tag = tagParser.parseDaxTag(daxField.tagStrId(),1);
+                tag = tagParser.parseDaxTag(daxField.tagStrId(),config.getAppContextId());
             }
             else {
                 tag = new DaxTag(contextId ,daxField.value());
@@ -240,7 +240,7 @@ public class DaxAnnotationRegister {
         try {
             if (field.getType() == String.class) {
                String value = (String)(field.get(null));
-               tag = tagParser.parseDaxTag(value,1);
+               tag = tagParser.parseDaxTag(value,config.getAppContextId());
             }
             else {
                 int tagId = -1;
