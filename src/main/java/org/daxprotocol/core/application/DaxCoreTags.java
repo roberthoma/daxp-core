@@ -162,6 +162,9 @@ public class DaxCoreTags {
     public static final DaxTag ERR_FIELD_ID        = daxpSysTag(225);
     public static final DaxTag ERR_DESCRIPTION     = daxpSysTag(226);
 
+
+    //LOG
+
     /******************************
      * Trailer tag
      * */
