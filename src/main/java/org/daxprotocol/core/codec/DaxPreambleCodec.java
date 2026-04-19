@@ -22,7 +22,7 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
-import org.daxprotocol.core.exceptions.DaxMsgParserException;
+import org.daxprotocol.core.exceptions.DaxFrameParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
@@ -65,10 +65,10 @@ public class DaxPreambleCodec {
         Map<String,String> map = new LinkedHashMap<>();
         map.put(DaxPreambleTag.ENCODING.getTag(), preamble.getEncoding().getCanonicalName());
 
-        map.put(DaxPreambleTag.MSG_CONTEXT.getTag(),contextMapper.getReference(preamble.getMsgContextId()));
+        map.put(DaxPreambleTag.MSG_CONTEXT.getTag(),contextMapper.getReference(preamble.getContextId()));
 
         if (preamble.getMsgCnt() > 1){
-            map.put(DaxPreambleTag.MSG_COUNT.getTag(), String.valueOf(preamble.getMsgCnt()));
+            map.put(DaxPreambleTag.MSG_QUANTITY.getTag(), String.valueOf(preamble.getMsgCnt()));
         }
 
 
@@ -106,14 +106,14 @@ public class DaxPreambleCodec {
 
     public void decodeTag(String tagStr, String valueStr ,DaxPreamble preamble) {
         if (!DaxPreambleTag.contains(tagStr)) {
-           throw new DaxMsgParserException("It "+tagStr+ " NOT  preamble tag !!!");
+           throw new DaxFrameParserException("It "+tagStr+ " NOT  preamble tag !!!");
         }
             DaxPreambleTag tag = DaxPreambleTag.fromTag(tagStr);
             switch (tag) {
                 case DAXP        -> preamble.setProtocolVersion(valueStr);
                 case ENCODING    -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
-                case MSG_COUNT   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
-                case MSG_CONTEXT -> preamble.setMsgContextId(contextMapper.getReferenceId(valueStr));
+                case MSG_QUANTITY   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
+                case MSG_CONTEXT -> preamble.setContextId(contextMapper.getReferenceId(valueStr));
                 //case MSG_SENDER  -> preamble.setSe System.out.println("Sender: " + value);
             }
         }

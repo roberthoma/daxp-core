@@ -4,9 +4,10 @@ import org.daxprotocol.core.decorator.DaxMessageNormalizer;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxException;
-import org.daxprotocol.core.exceptions.DaxMsgParserException;
+import org.daxprotocol.core.exceptions.DaxFrameParserException;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.unit_test.dax_00_00_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,14 +16,15 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
 
     @Test
     void parsePreambleTest01(){
-        String msgStr = "DAXP=v1.2.3|EN=UTF-16|CX=FIX|MC=1|9=$:DR|2001=123|99=177|";
+        //Task is parse only PREAMBLE
+        String msgStr = "DAXP=v1.2.3|EN=UTF-16|CX=FIX|MQ=1|9=$:DR|2001=123|99=177|";
         DaxPreamble preamble ;
         try {
             msgStr = DaxMessageNormalizer.normalize(msgStr);
             preamble    = frameParser.parsePreamble(msgStr);
             Assertions.assertEquals("V1.2.3",preamble.getProtocolVersion());
             Assertions.assertEquals(DaxCharacterEncoding.UTF_16, preamble.getEncoding());
-            Assertions.assertEquals(contextMapper.getReferenceId("FIX"), preamble.getMsgContextId());
+            Assertions.assertEquals(contextMapper.getReferenceId("FIX"), preamble.getContextId());
         } catch (DaxException e) {
             System.out.println(e.getDaxErrorCode());
             Assertions.fail();
@@ -31,14 +33,14 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
 
     @Test
     void parsePreambleTest05(){
-        String msgStr = "  DAXP=v0.1.0 |  EN =UTF-8|CX=CRM|MC=1|9=$:DR|2001=123|99=177|";
+        String msgStr = "  DAXP=v0.1.0 |  EN =UTF-8|CX=CRM|MQ=1|9=$:DR|2001=123|99=177|";
         DaxPreamble preamble ;
         try {
             msgStr = DaxMessageNormalizer.normalize(msgStr);
             preamble    = frameParser.parsePreamble(msgStr);
             Assertions.assertEquals("V0.1.0",preamble.getProtocolVersion());
             Assertions.assertEquals(DaxCharacterEncoding.UTF_8, preamble.getEncoding());
-            Assertions.assertEquals(contextMapper.getReferenceId("CRM"), preamble.getMsgContextId());
+            Assertions.assertEquals(contextMapper.getReferenceId("CRM"), preamble.getContextId());
         } catch (DaxException e) {
             System.out.println(e.getDaxErrorCode());
             Assertions.fail();
@@ -47,8 +49,9 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
 
 
     @Test
-    void parsePreambleTest10(){
-        String msgStr = DaxMessageNormalizer.normalize("  DAXP=v0.1.0 |  ExN =UTF-8|CX=CRM|MC=1|9=$:DR|2001=123|99=177|");
+    void parsePreambleTest10_(){
+        String msgStr = DaxMessageNormalizer
+                .normalize("  DAXP=v0.1.0 |  ExN =UTF-8|CX=CRM|MC=1|9=$:DR|2001=123|99=177|");
         Assertions.assertThrows(DaxException.class,()->frameParser.parsePreamble(msgStr));
     }
 
@@ -61,7 +64,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
                 preamble    = frameParser.parsePreamble(msgStr);
                 Assertions.assertEquals("V0.1.0",preamble.getProtocolVersion());
                 Assertions.assertEquals(DaxCharacterEncoding.UTF_8, preamble.getEncoding());
-                Assertions.assertEquals(contextMapper.getReferenceId("CRM"), preamble.getMsgContextId());
+                Assertions.assertEquals(contextMapper.getReferenceId("CRM"), preamble.getContextId());
             } catch (DaxException e) {
                 System.out.println(e.getDaxErrorCode());
                 Assertions.fail();
@@ -72,11 +75,25 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parsePreambleTest60(){
         String msgStr = DaxMessageNormalizer.normalize("DxAXP=v0.1.0|EN=UTF-8|CX=CRM|");
         try {
-            Assertions.assertThrowsExactly(DaxMsgParserException.class,() -> frameParser.parsePreamble(msgStr));
+            Assertions.assertThrowsExactly(DaxFrameParserException.class,() -> frameParser.parsePreamble(msgStr));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             Assertions.fail();
         }
+    }
+
+    @Test
+    void parseFrame_02(){
+        try {
+
+            String msgStr = DaxMessageNormalizer.normalize("DAXP=v0.1.0|EN=UTF-8|CX=CRM|"+
+                    "9=CDD|$:7=1|$:5=INST|$:100=2000|2080=Big bike|2001=123|2002=Robert|$:99=177|");
+            Assertions.assertThrowsExactly(DaxFrameParserException.class, () ->   frameParser.parseFrame(msgStr));
+
+        } catch (Exception e) {
+            Assertions.fail();
+        }
+
     }
 
 
@@ -84,7 +101,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_01(){
 
         String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|"+
-                "9=CDD|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|99=177|";
+                "$:9=CDD|$:5=INST|$:100=2000|2080=Big bike|2001=123|2002=Robert|$:99=177|";
         msgStr = DaxMessageNormalizer.normalize(msgStr);
 
         DaxFrame frame;
@@ -92,26 +109,12 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
             frame = frameParser.parseFrame(msgStr);
             DaxMessage msg = frame.getFirstMessage();
             Assertions.assertEquals ("CDD", msg.getMsgType());
+            DaxTag t2080tag = new DaxTag(contextMapper.getReferenceId("CRM") ,2080);
 
 
-        } catch (DaxException e) {
-            System.out.println(e.getDaxErrorCode());
-            System.out.println(e.getMessage());
-            Assertions.fail();
-        }
-
-    }
-    @Test
-    void parseFrame_02(){
-
-        String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|"+
-                "9=CDD|7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|99=177|";
-        msgStr = DaxMessageNormalizer.normalize(msgStr);
-        DaxFrame frame;
-        try {
-            frame = frameParser.parseFrame(msgStr);
-            DaxMessage msg = frame.getFirstMessage();
-            Assertions.assertEquals ("CDD", msg.getMsgType());
+            Assertions.assertEquals ("Big bike",  msg.getBody()
+                                                              .getBlock(0)
+                                                              .get(t2080tag).getStrValue());
 
 
         } catch (DaxException e) {
@@ -122,34 +125,35 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
 
     }
 
-    @Test
-    void parseFrame_03(){
 
-        String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|MC=1|"+
-                "9=CDD|7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|99=177|";
-        msgStr = DaxMessageNormalizer.normalize(msgStr);
-        DaxFrame frame;
-        try {
-            frame = frameParser.parseFrame(msgStr);
-            DaxMessage msg = frame.getFirstMessage();
-            Assertions.assertEquals ("CDD", msg.getMsgType());
-
-
-        } catch (DaxException e) {
-            System.out.println(e.getDaxErrorCode());
-            System.out.println(e.getMessage());
-            Assertions.fail();
-        }
-
-    }
 
     @Test
     void parseFrame_04(){
 
-        String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|MC=2|"+
-                "9=CDD|" +
-                "7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|99=177|"+
-                "7=2|5=INST|100=2000|2080=Big bike|2001=125|2002=Marzena|99=134|";
+        String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|MQ=1|"+
+                "$:9=CDD|$:7=1|$:5=INST|$:100=2000|2080=Big bike|2001=123|2002=Robert|$:99=177|";
+        msgStr = DaxMessageNormalizer.normalize(msgStr);
+        DaxFrame frame;
+        try {
+            frame = frameParser.parseFrame(msgStr);
+            DaxMessage msg = frame.getFirstMessage();
+            Assertions.assertEquals ("CDD", msg.getMsgType());
+
+
+        } catch (DaxException e) {
+            System.out.println(e.getDaxErrorCode());
+            System.out.println(e.getMessage());
+            Assertions.fail();
+        }
+
+    }
+
+    @Test
+    void parseFrame_05_msg_quantity(){
+
+        String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|MQ=2|"+
+                "$:9=CDD|$:5=INST|$:100=2000|2080=Big bike|2001=123|2002=Robert|$:99=134|"+
+                "$:9=CDD|$:5=INST|$:100=2000|2080=A kuku|2001=334|2002=Ola|$:99=177|";
         msgStr = DaxMessageNormalizer.normalize(msgStr);
         DaxFrame frame;
         try {
@@ -177,7 +181,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
         msgStr = DaxMessageNormalizer.normalize(msgStr);
 
         String finalMsgStr = msgStr;
-        Assertions.assertThrowsExactly(DaxMsgParserException.class,() -> frameParser.parseFrame(finalMsgStr));
+        Assertions.assertThrowsExactly(DaxFrameParserException.class,() -> frameParser.parseFrame(finalMsgStr));
 
     }
 
@@ -190,7 +194,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
                 "7=2|5=INST|100=2000|2080=Big bike|2001=124|2002=Piotr|99=172|"+
                 "7=3|5=INST|100=2000|2080=Big bike|2001=125|2002=Marzena|99=134|"
           );
-        Assertions.assertThrowsExactly(DaxMsgParserException.class,() -> frameParser.parseFrame(msgStr));
+        Assertions.assertThrowsExactly(DaxFrameParserException.class,() -> frameParser.parseFrame(msgStr));
 
     }
 

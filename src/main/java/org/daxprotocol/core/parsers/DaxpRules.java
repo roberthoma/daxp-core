@@ -7,12 +7,12 @@ import org.daxprotocol.core.model.tag.DaxTag;
 
 public final class DaxpRules {
 
-    public int resolveImplicitContext(int tagId, int msgContextId, DaxConfig config) {
-        if (tagId < DaxCoreConstants.DAXP_MAX_TAG_ID) {
-            return DaxCoreConstants.DAXP_CONTEXT_ID;
-        }
-        return msgContextId;
-    }
+//    public int resolveImplicitContext(int tagId, int msgContextId, DaxConfig config) {
+//        if (tagId < DaxCoreConstants.DAXP_MAX_TAG_ID) {
+//            return DaxCoreConstants.DAXP_CONTEXT_ID;
+//        }
+//        return msgContextId;
+//    }
 
     public boolean shouldWriteContextPrefix(int tagContextId, int msgContextId, DaxConfig config) {
         return tagContextId != DaxCoreConstants.DAXP_CONTEXT_ID

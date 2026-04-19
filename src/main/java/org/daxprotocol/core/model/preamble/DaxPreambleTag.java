@@ -5,9 +5,11 @@ import java.util.*;
 public enum DaxPreambleTag {
     DAXP("DAXP"),
     ENCODING("EN"),
-    MSG_COUNT("MC"),
+    MSG_QUANTITY("MQ"),
     MSG_CONTEXT("CX"),
     MSG_SENDER("SN");
+
+    //TODO Ignore no correct
 
     private final String tag;
 

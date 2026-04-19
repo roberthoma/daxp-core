@@ -61,8 +61,8 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
 
     @Test
     void executorTestSelectReq(){
-        String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=XYZ|9="+DaxpSchema_Base.MSG_BASE_DTO_Req +
-                "|$:108=5001;5002|99=123|";
+        String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=XYZ|$:9="+DaxpSchema_Base.MSG_BASE_DTO_Req +
+                "|$:108=5001;5002|$:99=123|";
         String msgStr = DaxMessageNormalizer.normalize(reqMsg);
         DaxFrame frameReq = frameParser.parseFrame(msgStr);
 

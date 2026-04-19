@@ -41,9 +41,7 @@ public class DaxTagCodec {
                     DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
         }
 
-        if(tag.getContextId() != config.getAppContextId()
-           || tag.getTagId() <= DaxCoreConstants.DAXP_MAX_TAG_ID
-        )
+        if(tag.getContextId() != config.getAppContextId())
         {
             return  contextMapper.getReference(tag.getContextId()) +
                     DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
@@ -51,18 +49,6 @@ public class DaxTagCodec {
         return String.valueOf(tag.getTagId());
     }
 
-//    public String encode( DaxTag tag){
-//
-//        if(tag.getContextId() != DaxCoreConstants.DAXP_CONTEXT_ID &&
-//                (tag.getContextId() != config.getAppContextId()
-//                        || tag.getTagId() <= DaxCoreConstants.DAXP_MAX_TAG_ID)
-//        )
-//        {
-//            return  contextMapper.getReference(tag.getContextId()) +
-//                    DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
-//        }
-//        return String.valueOf(tag.getTagId());
-//    }
 
 
 }

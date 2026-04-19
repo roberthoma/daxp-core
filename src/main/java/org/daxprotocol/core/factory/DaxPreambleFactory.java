@@ -15,7 +15,7 @@ public class DaxPreambleFactory {
 
     public DaxPreamble createPreamble(){
         DaxPreamble preamble = new DaxPreamble(config.getDefaultEncoding());
-        preamble.setMsgContextId(config.getAppContextId());
+        preamble.setContextId(config.getAppContextId());
         return preamble;
     }
 

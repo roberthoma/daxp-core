@@ -21,19 +21,18 @@ public class DaxCoreConstants {
     /**  Pair separator on the WIRE (binary, non-printable). */
     public static char PAIR_SEPARATOR = 0x0001;
 
+
+    public static final char CONTEXT_TAG_SEPARATOR = ':';
+    public static final CharSequence TAG_LIST_SEPARATOR    = ";";
+
     //    public static final char TAG_LIST_SEPARATOR    = ';';
 //    public static final char VALUE_LIST_SEPARATOR  = ';';
 //    public static final char CONTEXT_TAG_SEPARATOR = ',';
     public static final char TAG_LIST_SEPARATOR_CHAR    = ';';
 
-    public static final char CONTEXT_TAG_SEPARATOR = ':';
-    public static final CharSequence TAG_LIST_SEPARATOR    = ";";
-
-
     /*****************************************************
      *  Reserved tags for DAXP
      */
-    public static final int  DAXP_MAX_TAG_ID = 999;
     public static final int  START_IDX_MSG_MAPPER = 101;
     public static final int  START_IDX_CTX_MAPPER = 101;
 

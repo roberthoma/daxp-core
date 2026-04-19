@@ -15,7 +15,7 @@ public class DaxHandlerRegistryTest extends DaxConfigBaseTest {
 
     @Test
     void executorTestDictionaryReq(){
-        String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=XYZ|9="+ DaxCoreMessages.DIC_REQ +"|99=123|";
+        String reqMsg = "DAXP=v0.1.0|EN=UTF-8|CX=XYZ|$:9="+ DaxCoreMessages.DIC_REQ +"|$:99=123|";
         String msgStr = DaxMessageNormalizer.normalize(reqMsg);
         DaxFrame frameReq = frameParser.parseFrame(msgStr);
         DaxFrame frameResp = new DaxFrame();
