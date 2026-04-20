@@ -87,7 +87,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
         try {
 
             String msgStr = DaxMessageNormalizer.normalize("DAXP=v0.1.0|EN=UTF-8|CX=CRM|"+
-                    "1=CDD|$:7=1|$:5=INST|$:100=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|");
+                    "1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|");
             Assertions.assertThrowsExactly(DaxFrameParserException.class, () ->   frameParser.parseFrame(msgStr));
 
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_01(){
 
         String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|"+
-                "$:1=CDD|$:5=INST|$:100=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
+                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
         msgStr = DaxMessageNormalizer.normalize(msgStr);
 
         DaxFrame frame;
@@ -131,7 +131,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_04(){
 
         String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|MQ=1|"+
-                "$:1=CDD|$:7=1|$:5=INST|$:100=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
+                "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
         msgStr = DaxMessageNormalizer.normalize(msgStr);
         DaxFrame frame;
         try {
@@ -152,8 +152,8 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_05_msg_quantity(){
 
         String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM|MQ=2|"+
-                "$:1=CDD|$:5=INST|$:100=2000|2080=Big bike|2001=123|2002=Robert|$:9=134|"+
-                "$:1=CDD|$:5=INST|$:100=2000|2080=A kuku|2001=334|2002=Ola|$:9=177|";
+                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=134|"+
+                "$:1=CDD|$:5=INST|$:8=2000|2080=A kuku|2001=334|2002=Ola|$:9=177|";
         msgStr = DaxMessageNormalizer.normalize(msgStr);
         DaxFrame frame;
         try {

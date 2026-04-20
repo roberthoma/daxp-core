@@ -18,25 +18,13 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.attributes;
+
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
 
-public final class DaxAtrDataType extends DaxPair<Character> {
-
-    public DaxAtrDataType(Character code) {
-        super(DaxCoreTags.DATA_TYPE, code);
-    }
-
-    public DaxAtrDataType(DaxDataType dataType) {
-        super(DaxCoreTags.DATA_TYPE, dataType != null ? dataType.getCode() : null);
-    }
-
-    public DaxAtrDataType(Class<?> clazz) {
-        this(DaxDataType.fromClass(clazz));
-    }
-
-    public DaxDataType getDataType() {
-        return DaxDataType.fromCode(getValue());
+public class DaxMsgType extends DaxPair<String> {
+    public DaxMsgType(String value) {
+        super(DaxCoreTags.MSG_TYPE, value);
     }
 }

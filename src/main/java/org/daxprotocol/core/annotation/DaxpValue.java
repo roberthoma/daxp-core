@@ -13,4 +13,5 @@ public @interface DaxpValue {
     String context() default "";   // Empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
     String uiLabel() default "";
     String name() default "";      //Use for rename field name , example :used for JSON cast.
+    String description() default "";
 }

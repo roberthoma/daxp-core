@@ -29,13 +29,13 @@ public final class DaxTag {
     private final int contextId;
     private final int tagId;
 
-    // Prywatny konstruktor - nikt z zewnątrz nie użyje 'new'
+    // Private constructor to prevent external instantiation via 'new'
     private DaxTag(int contextId, int tagId) {
         this.contextId = contextId;
         this.tagId = tagId;
     }
 
-    // Publiczna metoda dla użytkowników
+    // Public factory method for user-defined tags
     public static DaxTag of(int contextId, int tagId) {
         if (contextId <= DaxCoreConstants.DAXP_CONTEXT_ID) {
             throw new DaxTagException("User tags must have contextId > 0");
@@ -43,23 +43,23 @@ public final class DaxTag {
         return new DaxTag(contextId, tagId);
     }
 
-    // Wewnętrzne tagi systemowe dostępne tylko dla protokołu (np. w tym samym pakiece)
+    // Internal system tags reserved for the protocol (e.g., used within the same package)
     public static DaxTag createCoreTag(int tagId) {
         return new DaxTag(DaxCoreConstants.DAXP_CONTEXT_ID, tagId);
     }
 
-
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DaxTag daxTag = (DaxTag) o;
         return contextId == daxTag.contextId && tagId == daxTag.tagId;
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(contextId, tagId);
     }
-
 
     public int getContextId() {
         return contextId;
@@ -68,7 +68,4 @@ public final class DaxTag {
     public int getTagId() {
         return tagId;
     }
-
 }
- //
-

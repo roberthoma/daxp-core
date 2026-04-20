@@ -17,17 +17,15 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.field;
+
+package org.daxprotocol.core.attributes;
 
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
+import org.daxprotocol.core.model.tag.DaxTag;
 
-public class DaxMsgBlockCount extends DaxPair<Integer> {
-    public DaxMsgBlockCount( Integer value) {
-        super(DaxCoreTags.MSG_BLOCK_COUNT, value);
+public class DaxAtrEnumTag extends DaxPair<DaxTag> {
+    public DaxAtrEnumTag(DaxTag tag) {
+        super(DaxCoreTags.ENUM_ID, tag);
     }
-    @Override
-    public String getStrValue() {
-        return String.valueOf(value);
-    };
 }

@@ -17,14 +17,17 @@
  * limitations under the License.
  * ***********************************************************************
  */
-
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.attributes;
 
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
 
-public class DaxMsgType extends DaxPair<String> {
-    public DaxMsgType(String value) {
-        super(DaxCoreTags.MSG_TYPE, value);
+public class DaxMsgBlockQuantity extends DaxPair<Integer> {
+    public DaxMsgBlockQuantity( Integer value) {
+        super(DaxCoreTags.MSG_BLOCK_QUANTITY, value);
     }
+    @Override
+    public String getStrValue() {
+        return String.valueOf(value);
+    };
 }

@@ -17,16 +17,13 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.field;
-
+package org.daxprotocol.core.attributes;
 
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
 
-public class DaxArtFieldName extends DaxPair<String> {
-    public DaxArtFieldName(String value) {
-        super(DaxCoreTags.FIELD_NAME, value);
+public class DaxAtrSizeMin extends DaxPair<Integer> {
+    public DaxAtrSizeMin(Integer value) {
+        super(DaxCoreTags.ATR_SIZE_MIN, value);
     }
-
-
 }

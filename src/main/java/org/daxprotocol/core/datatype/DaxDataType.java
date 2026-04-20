@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.datatype;
 
 import org.daxprotocol.core.annotation.DaxpDTO;
 
@@ -63,10 +63,11 @@ F = Float
 R = Double
 N = Decimal
 P = BigDecimal
-J = JSON
-X = XML
-Q = Regexp
-e = Email
+J = JSON       <= String
+X = XML        <= String
+Q = Regexp     <= String
+V = CSV        <= String
+e = Email      <= String
 M = DayOfMonth
 C = Country
 U = Currency

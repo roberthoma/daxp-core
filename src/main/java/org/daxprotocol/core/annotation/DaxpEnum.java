@@ -11,7 +11,8 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Documented
 public @interface DaxpEnum {
-    int    tagId();
+    String value()       default "";
+    int    tagId()       default -1;
     String context()     default "";
     String name()        default "";
     String description() default "";

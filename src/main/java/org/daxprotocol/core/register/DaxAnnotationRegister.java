@@ -1,14 +1,13 @@
 package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.annotation.*;
-import org.daxprotocol.core.application.DaxCoreController;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
-import org.daxprotocol.core.field.DaxDataType;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -89,17 +88,6 @@ public class DaxAnnotationRegister {
             uiLabel = daxField.uiLabel();
 
             field.setAccessible(true);
-//            //TODO move to tool  class
-//             contextId = daxField.context().isBlank() ?
-//                    config.getAppContextId():
-//                    contextMapper.getReferenceId(daxField.context());
-//
-//            if (!daxField.value().isBlank()){
-//                tag = tagParser.parseDaxTag(daxField.value(),config.getAppContextId());
-//            }
-//            else {
-//                tag = new DaxTag(contextId ,daxField.tagId());
-//            }
 
             tag =  createTagFromAnn(daxField.value(),daxField.context(),  daxField.tagId());
 
@@ -111,18 +99,6 @@ public class DaxAnnotationRegister {
             uiLabel = daxpValue.uiLabel();
 
             field.setAccessible(true);
-//            //TODO move to tool  class
-//            contextId = daxpValue.context().isBlank() ?
-//                    config.getAppContextId():
-//                    contextMapper.getReferenceId(daxpValue.context());
-//
-//            if (!daxpValue.value().isBlank()){
-//                tag = tagParser.parseDaxTag(daxpValue.value(),config.getAppContextId());
-//            }
-//            else {
-//                tag = new DaxTag(contextId ,daxpValue.tagId());
-//            }
-
             tag =  createTagFromAnn(daxpValue.value(),daxpValue.context(),  daxpValue.tagId());
 
 
@@ -384,19 +360,19 @@ public class DaxAnnotationRegister {
         try {
             if (clazz.isAnnotationPresent(DaxpSchema.class)) {
                 registerDaxpSchema( clazz);
-                return;
+//                return;
             }
 
             if (clazz.isAnnotationPresent(DaxpDTO.class)) {
                 registerDTO(clazz);
-                return;
+//                return;
             }
 
             if (clazz.isEnum() ||
                 clazz.isAnnotationPresent(DaxpEnum.class))
             {
                 enumPopulator.populate( clazz);
-                return;
+//                return;
             }
 
             if (clazz.isAnnotationPresent(DaxpController.class)) {

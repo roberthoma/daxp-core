@@ -34,5 +34,6 @@ public @interface  DaxpTag {
     String dataType()  default "";
     boolean readOnly() default false;
     Class<?> clazz() default Void.class;
+    String description() default "";
 }
 

@@ -18,14 +18,13 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.attributes;
 
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.model.tag.DaxTag;
 
-public class DaxAtrEnumTag extends DaxPair<DaxTag> {
-    public DaxAtrEnumTag(DaxTag tag) {
-        super(DaxCoreTags.ENUM_ID, tag);
+public class DaxAtrUiLabel extends DaxPair<String> {
+    public DaxAtrUiLabel(String value) {
+        super(DaxCoreTags.ATR_UI_LABEL, value);
     }
 }

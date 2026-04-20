@@ -17,14 +17,27 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.field;
 
+package org.daxprotocol.core.attributes;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
 
-public class DaxAtrNullable extends DaxPair<Boolean> {
+public final class DaxAtrDataType extends DaxPair<Character> {
 
-    public DaxAtrNullable(Boolean value) {
-        super(DaxCoreTags.ATR_NULLABLE, value);
+    public DaxAtrDataType(Character code) {
+        super(DaxCoreTags.DATA_TYPE, code);
+    }
+
+    public DaxAtrDataType(DaxDataType dataType) {
+        super(DaxCoreTags.DATA_TYPE, dataType != null ? dataType.getCode() : null);
+    }
+
+    public DaxAtrDataType(Class<?> clazz) {
+        this(DaxDataType.fromClass(clazz));
+    }
+
+    public DaxDataType getDataType() {
+        return DaxDataType.fromCode(getValue());
     }
 }

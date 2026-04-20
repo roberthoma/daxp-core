@@ -45,7 +45,7 @@ public class DaxHeadCodec{
 
 
         if (blockCount>1) {
-            pairCodec.encode(sb, MSG_BLOCK_COUNT, String.valueOf(blockCount));
+            pairCodec.encode(sb, MSG_BLOCK_QUANTITY, String.valueOf(blockCount));
         }
 
         return sb.toString();
@@ -74,7 +74,7 @@ public class DaxHeadCodec{
         DaxHead head = new DaxHead(msgType);
 
         Optional<DaxPair<?>> optBlockCount = listOfPair.stream()
-                .filter(p -> p.getTag().equals(MSG_BLOCK_COUNT) )
+                .filter(p -> p.getTag().equals(MSG_BLOCK_QUANTITY) )
                 .findFirst();
 
         optBlockCount.ifPresent(pair -> head.setBlockCount(pair.getIntegerValue()));
@@ -85,7 +85,7 @@ public class DaxHeadCodec{
         DaxHead head = new DaxHead(msgType);
 
         Optional<DaxPair<?>> optBlockCount = listOfPair.stream()
-                .filter(p -> p.getTag().equals(MSG_BLOCK_COUNT) )
+                .filter(p -> p.getTag().equals(MSG_BLOCK_QUANTITY) )
                 .findFirst();
 
         optBlockCount.ifPresent(pair -> head.setBlockCount(pair.getIntegerValue()));

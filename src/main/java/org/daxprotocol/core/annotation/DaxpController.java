@@ -8,9 +8,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 public @interface DaxpController {
-//String contextId default =
-//    String description();
-//    String uiLabel() default "";
-//    String[] reqTag() default {};
-//    String[] respMsg() default {};
 }

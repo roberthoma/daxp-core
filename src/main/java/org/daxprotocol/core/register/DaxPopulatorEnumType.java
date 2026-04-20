@@ -24,10 +24,6 @@ public class DaxPopulatorEnumType {
 
     public void populate( Class<?> clazz ){
         DaxpEnum groupAtn =  clazz.getAnnotation(DaxpEnum.class);
-
-
-        //        DaxDictionaryDecoratorService.printDaxGroupInfo(group);
-
         String enumName = !groupAtn.name().isBlank() ? groupAtn.name() :
                 clazz.getSimpleName();
 
@@ -35,7 +31,6 @@ public class DaxPopulatorEnumType {
         DaxTag enumTag = DaxTag.of(config.getAppContextId(),groupAtn.tagId());
 
         daxDic.putEnum(enumTag, new DaxEnum(enumName,groupAtn.description()) );
-//        daxDic.getEnumDictionary(). putEnum2(enumTag, DaxLangTool.asEnumClass(clazz)  );
 
         Object[] constants = clazz.getEnumConstants();
 
@@ -43,11 +38,6 @@ public class DaxPopulatorEnumType {
             daxDic.putEnumValue(enumTag, new DaxEnumValue(c.toString(),""));
         }
         daxDic.putAtrDataType(enumTag, Enum.class );
-
-
-        System.out.println("Test 123");
-
-//                groupId = groupMapper.getReferenceId(groupAtn.name());
 
     }
 

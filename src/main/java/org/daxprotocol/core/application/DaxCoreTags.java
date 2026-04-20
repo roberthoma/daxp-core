@@ -45,7 +45,7 @@ public class DaxCoreTags {
      * Head TAGS
      * */
     public static final DaxTag MSG_TYPE  = daxpSysTag(1);
-    public static final DaxTag MSG_BLOCK_COUNT = daxpSysTag(6);
+    public static final DaxTag MSG_BLOCK_QUANTITY = daxpSysTag(6);
     public static final DaxTag MSG_ROLE = daxpSysTag(18);
     public static final DaxTag MSG_CONTEXT = daxpSysTag(20); //Default context
 
@@ -53,7 +53,7 @@ public class DaxCoreTags {
     //DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)
 
     private static final Set<DaxTag> headSet = Set.of(MSG_TYPE,
-            MSG_BLOCK_COUNT
+            MSG_BLOCK_QUANTITY
             //new DaxTag(MSG_CONTEXT)
     );
 

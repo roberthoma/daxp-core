@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.attributes;
 
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.pair.DaxPair;

@@ -6,7 +6,7 @@ import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxEnum;
 import org.daxprotocol.core.dictionary.DaxEnumValue;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
-import org.daxprotocol.core.field.DaxBlockType;
+import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.dto.DaxDTO;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;

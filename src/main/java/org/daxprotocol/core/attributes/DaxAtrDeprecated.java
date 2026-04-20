@@ -1,4 +1,4 @@
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.attributes;
 
 //TODO Develop
 public class DaxAtrDeprecated {

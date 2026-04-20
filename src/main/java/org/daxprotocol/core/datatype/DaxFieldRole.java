@@ -1,4 +1,4 @@
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.datatype;
 
 public enum DaxFieldRole {
     ID,

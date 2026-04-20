@@ -17,17 +17,14 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.attributes;
 
-import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.application.DaxCoreTags;
 
-public class DaxMsgContextId extends DaxPair<Integer> {
-    public DaxMsgContextId( Integer value) {
-        super(DaxCoreTags.MSG_CONTEXT, value);
+public class DaxAtrNullable extends DaxPair<Boolean> {
+
+    public DaxAtrNullable(Boolean value) {
+        super(DaxCoreTags.ATR_NULLABLE, value);
     }
-    @Override
-    public String getStrValue() {
-        return String.valueOf(value);
-    };
 }

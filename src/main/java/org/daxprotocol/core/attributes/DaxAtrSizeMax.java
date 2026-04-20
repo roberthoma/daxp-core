@@ -17,13 +17,13 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.field;
+package org.daxprotocol.core.attributes;
 
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
 
-public class DaxAtrGroupId extends DaxPair<Integer> {
-    public DaxAtrGroupId(Integer value) {
-        super(DaxCoreTags.GROUP_ID, value);
+public class DaxAtrSizeMax extends DaxPair<Integer> {
+    public DaxAtrSizeMax(Integer value) {
+        super(DaxCoreTags.ATR_SIZE_MAX, value);
     }
 }

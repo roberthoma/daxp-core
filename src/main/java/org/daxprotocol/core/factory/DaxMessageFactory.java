@@ -34,7 +34,7 @@ import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
-import org.daxprotocol.core.field.DaxBlockType;
+import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.body.DaxBody;
