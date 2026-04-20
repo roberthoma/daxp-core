@@ -9,9 +9,10 @@ public class DaxCoreConstants {
     public static final String DAXP_CONTEXT_TAG_PREFIX  = "$" ;
     public static final String DAXP_SYMBOL              = "DAXP";
     public static final String DAXP_CONTEXT_DESCRIPTION = "Data & Attribute eXchange Protocol";
-    //public static final CharSequence VALUE_LIST_SEPARATOR    = ";";
-//    public static final CharSequence CONTEXT_TAG_SEPARATOR = ":";
-    /** key=value */
+    /*****************************************************
+    *
+    *  key=value
+    * */
     public static final char EQUAL = '=';
 
 
@@ -25,13 +26,16 @@ public class DaxCoreConstants {
     public static final char CONTEXT_TAG_SEPARATOR = ':';
     public static final CharSequence TAG_LIST_SEPARATOR    = ";";
 
-    //    public static final char TAG_LIST_SEPARATOR    = ';';
+//    public static final char TAG_LIST_SEPARATOR    = ';';
 //    public static final char VALUE_LIST_SEPARATOR  = ';';
 //    public static final char CONTEXT_TAG_SEPARATOR = ',';
+//    public static final CharSequence VALUE_LIST_SEPARATOR    = ";";
+//    public static final CharSequence CONTEXT_TAG_SEPARATOR = ":";
+
     public static final char TAG_LIST_SEPARATOR_CHAR    = ';';
 
     /*****************************************************
-     *  Reserved tags for DAXP
+     *     DAXP  mappers
      */
     public static final int  START_IDX_MSG_MAPPER = 101;
     public static final int  START_IDX_CTX_MAPPER = 101;

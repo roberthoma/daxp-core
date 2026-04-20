@@ -63,9 +63,9 @@ public class DaxFrameParser {
         this.preambleCodec = preambleCodec;
     }
 
-    private   List<Integer> getPipeIndices(String str) {
+    private   List<Integer> getSeparatorIndices(String str) {
         if (str == null || str.isEmpty()) {
-            throw new DaxFrameParserException("Message is EMPTY !!!");
+            throw new DaxFrameParserException("Frame is EMPTY !!!");
         }
 
         List<Integer> indexList = new ArrayList<>();
@@ -94,7 +94,7 @@ public class DaxFrameParser {
     private DaxFrame parse(String frameStr, char workMode) {
         DaxFrame frame = new DaxFrame();
         List<DaxMessage> messageList = new ArrayList<>();
-        List<Integer> indList = getPipeIndices(frameStr);
+        List<Integer> indList = getSeparatorIndices(frameStr);
         List<DaxPair<?>> listOfPair =  new ArrayList<>();
         String tagStr;
         String valueStr;

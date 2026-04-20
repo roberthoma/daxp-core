@@ -30,16 +30,8 @@ public final class DaxTag {
         return contextId;
     }
 
-    public void setContextId(int contextId) {
-        this.contextId = contextId;
-    }
-
     public int getTagId() {
         return tagId;
-    }
-
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
     }
 
     public DaxTag(int contextId, int tagId) {
@@ -59,3 +51,33 @@ public final class DaxTag {
     }
 
 }
+
+
+/* TODO create refactoring DaxTag with protection
+public final class DaxTag {
+    private final int contextId; // Dobra praktyka: final, jeśli tagi są niemutowalne
+    private final int tagId;
+
+    // Prywatny konstruktor - nikt z zewnątrz nie użyje 'new'
+    private DaxTag(int contextId, int tagId) {
+        this.contextId = contextId;
+        this.tagId = tagId;
+    }
+
+    // Publiczna metoda dla użytkowników
+    public static DaxTag of(int contextId, int tagId) {
+        if (contextId <= 0) {
+            throw new IllegalArgumentException("User tags must have contextId > 0");
+        }
+        return new DaxTag(contextId, tagId);
+    }
+
+    // Wewnętrzne tagi systemowe dostępne tylko dla protokołu (np. w tym samym pakiece)
+    static DaxTag createSystemTag(int tagId) {
+        return new DaxTag(0, tagId);
+    }
+
+    // Gettery...
+}
+ */
+
