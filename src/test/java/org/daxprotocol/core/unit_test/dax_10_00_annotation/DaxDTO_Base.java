@@ -8,24 +8,24 @@ import org.daxprotocol.core.application.DaxCoreTags;
 
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.*;
 
-@DaxpDTO( DaxpSchema_Base.TEST_TAG_dto)
+@DaxpDTO(tagId = DaxpSchema_Base.TEST_TAG_dto)
 public class DaxDTO_Base {
 
 
-    @DaxpField(TEST_TAG_int)
+    @DaxpField(tagId = TEST_TAG_int)
     int anyInt;
 
-    @DaxpField(TEST_TAG_String)
+    @DaxpField(tagId = TEST_TAG_String)
     String anyString;
 
-    @DaxpField(TEST_TAG_char)
+    @DaxpField(tagId = TEST_TAG_char)
     char anyChar;
 
-    @DaxpField(TEST_TAG_Boolean)
+    @DaxpField(tagId = TEST_TAG_Boolean)
     Boolean anyBoolean;
 
 
-    @DaxpField(tagStrId = TEST_CTX_TAG_StrVal)
+    @DaxpField(TEST_CTX_TAG_StrVal)
     char fixTestValue;
 
     public DaxDTO_Base(String testStr, char testChar, int testInt){

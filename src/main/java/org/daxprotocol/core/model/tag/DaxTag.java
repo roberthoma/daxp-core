@@ -23,8 +23,8 @@ package org.daxprotocol.core.model.tag;
 import java.util.Objects;
 
 public final class DaxTag {
-    int contextId;
-    int tagId;
+    private final int contextId;
+    private final int tagId;
 
     public int getContextId() {
         return contextId;
@@ -55,7 +55,7 @@ public final class DaxTag {
 
 /* TODO create refactoring DaxTag with protection
 public final class DaxTag {
-    private final int contextId; // Dobra praktyka: final, jeśli tagi są niemutowalne
+    private final int contextId;
     private final int tagId;
 
     // Prywatny konstruktor - nikt z zewnątrz nie użyje 'new'

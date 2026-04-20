@@ -50,12 +50,36 @@ public class DaxAnnotationRegister {
         this.handlerRegistry = handlerRegistry;
     }
 
+    private DaxTag createTagFromAnn(
+                            String value,
+                            String context,
+                            int tagId
+    ){
+        DaxTag tag;
+        int contextId = context.isBlank() ?
+                config.getAppContextId():
+                contextMapper.getReferenceId(context);
+
+        if (!value.isBlank()){
+            tag = tagParser.parseDaxTag(value,config.getAppContextId());
+        }
+        else {
+            tag = new DaxTag(contextId ,tagId);
+        }
+
+
+        //TODO check and throw exception
+
+
+        return tag;
+    }
+
     private void registerDaxpField(Field field,
             DaxTag dtoTag
     ){
         String uiLabel="";
         DaxTag tag = DaxCoreTags.UNKNOW_TAG;
-        int contextId = -1;
+//        int contextId = -1;
         Class<?> fType = field.getType();
         DaxDataType dataType = DaxDataType.fromClass(fType);
         DaxTag dataTypeTag = DaxCoreTags.UNKNOW_TAG;
@@ -65,17 +89,20 @@ public class DaxAnnotationRegister {
             uiLabel = daxField.uiLabel();
 
             field.setAccessible(true);
-            //TODO move to tool  class
-             contextId = daxField.context().isBlank() ?
-                    config.getAppContextId():
-                    contextMapper.getReferenceId(daxField.context());
+//            //TODO move to tool  class
+//             contextId = daxField.context().isBlank() ?
+//                    config.getAppContextId():
+//                    contextMapper.getReferenceId(daxField.context());
+//
+//            if (!daxField.value().isBlank()){
+//                tag = tagParser.parseDaxTag(daxField.value(),config.getAppContextId());
+//            }
+//            else {
+//                tag = new DaxTag(contextId ,daxField.tagId());
+//            }
 
-            if (!daxField.tagStrId().isBlank()){
-                tag = tagParser.parseDaxTag(daxField.tagStrId(),config.getAppContextId());
-            }
-            else {
-                tag = new DaxTag(contextId ,daxField.value());
-            }
+            tag =  createTagFromAnn(daxField.value(),daxField.context(),  daxField.tagId());
+
 
         }
 
@@ -84,19 +111,29 @@ public class DaxAnnotationRegister {
             uiLabel = daxpValue.uiLabel();
 
             field.setAccessible(true);
-            //TODO move to tool  class
-            contextId = daxpValue.context().isBlank() ?
-                    config.getAppContextId():
-                    contextMapper.getReferenceId(daxpValue.context());
-            tag = new DaxTag(contextId ,daxpValue.value());
+//            //TODO move to tool  class
+//            contextId = daxpValue.context().isBlank() ?
+//                    config.getAppContextId():
+//                    contextMapper.getReferenceId(daxpValue.context());
+//
+//            if (!daxpValue.value().isBlank()){
+//                tag = tagParser.parseDaxTag(daxpValue.value(),config.getAppContextId());
+//            }
+//            else {
+//                tag = new DaxTag(contextId ,daxpValue.tagId());
+//            }
+
+            tag =  createTagFromAnn(daxpValue.value(),daxpValue.context(),  daxpValue.tagId());
+
+
         }
 
 
 
 
-        if(contextId == -1 || tag.equals(DaxCoreTags.UNKNOW_TAG)){
-            throw new DaxAnnotationException("RegisterDaxpFieldException "+field.getName()) ;
-        }
+//        if(contextId == -1 || tag.equals(DaxCoreTags.UNKNOW_TAG)){
+//            throw new DaxAnnotationException("RegisterDaxpFieldException "+field.getName()) ;
+//        }
 
 
 
@@ -133,11 +170,16 @@ public class DaxAnnotationRegister {
 
         if (dataType.getCode() == DaxDataType.DTO.getCode()){
             DaxpDTO dto = field.getType(). getAnnotation(DaxpDTO.class);
-            int contextId2 = dto.context().isBlank() ?
-                    config.getAppContextId():
-                    contextMapper.getReferenceId(dto.context());
 
-            dataTypeTag = new DaxTag(contextId ,dto.value());
+            //            int contextId2 = dto.context().isBlank() ?
+//                    config.getAppContextId():
+//                    contextMapper.getReferenceId(dto.context());
+
+
+            tag =  createTagFromAnn(dto.value(),dto.context(),  dto.tagId());
+
+            dataTypeTag = new DaxTag( tag.getContextId() ,dto.tagId());
+
             daxDic.putAtrDtoDataTypeId(tag,dataTypeTag);
         }
         else {
@@ -161,12 +203,18 @@ public class DaxAnnotationRegister {
             DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
             if (methodAnn == null) continue;
 
+            DaxTag tag;
 
             int contextId = methodAnn.context().isBlank() ?
                     config.getAppContextId():
                     contextMapper.getReferenceId(methodAnn.context());
 
-            DaxTag tag = new DaxTag(contextId ,methodAnn.value());
+            if (!methodAnn.value().isBlank()){
+                tag = tagParser.parseDaxTag(methodAnn.value(),config.getAppContextId());
+            }
+            else {
+                tag = new DaxTag(contextId ,methodAnn.tagId());
+            }
 
             daxDic.putTag(tag);
 
@@ -299,7 +347,7 @@ public class DaxAnnotationRegister {
                                                         clazz.getSimpleName();
 
 
-        DaxTag dtoTag = new DaxTag(config.getAppContextId(), typeAnn.value());
+        DaxTag dtoTag = new DaxTag(config.getAppContextId(), typeAnn.tagId());
         daxDic.putDTO(new DaxDTO(dtoTag, dtoName));
 
         daxDic.putAtrDataType(dtoTag, DaxDataType.DTO.getCode());

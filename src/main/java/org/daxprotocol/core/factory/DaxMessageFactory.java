@@ -322,11 +322,11 @@ public class DaxMessageFactory {
                     DaxTag tag;
 
                     if (field.get(entry) != null){
-                        if (!fieldAnn.tagStrId().isBlank()){
-                            tag = tagParser.parseDaxTag(fieldAnn.tagStrId(),config.getAppContextId());
+                        if (!fieldAnn.value().isBlank()){
+                            tag = tagParser.parseDaxTag(fieldAnn.value(),config.getAppContextId());
                         }
                         else {
-                         tag = creatTag(fieldAnn.context(), fieldAnn.value());
+                         tag = creatTag(fieldAnn.context(), fieldAnn.tagId());
                         }
 
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
@@ -350,7 +350,7 @@ public class DaxMessageFactory {
                     DaxpValue daxValue = field.getAnnotation(DaxpValue.class);
                     //   field.setAccessible(true);
                     if (field.get(entry) != null) {
-                        DaxTag tag = creatTag(daxValue.context(), daxValue.value());
+                        DaxTag tag = creatTag(daxValue.context(), daxValue.tagId());
 
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
                             continue;
@@ -375,7 +375,7 @@ public class DaxMessageFactory {
                 if (methodAnn == null) continue;
                 Class<?> returnType = method.getReturnType();
 
-                DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.value());
+                DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.tagId());
                 if(reqTagSet != null && !reqTagSet.contains(tag)){
                     continue;
                 }
@@ -399,7 +399,7 @@ public class DaxMessageFactory {
         daxDataEntry.forEach(entry -> {
             if (entry.getClass().isAnnotationPresent(DaxpDTO.class)) {
                 DaxpDTO dtoAnn = entry.getClass().getAnnotation(DaxpDTO.class);
-                DaxTag tag = creatTag("",dtoAnn.value());
+                DaxTag tag = creatTag("",dtoAnn.tagId());
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                 objectToMsgBlock(body.getCurrentIdx(),tag, entry, body, reqTagSet);
             }
