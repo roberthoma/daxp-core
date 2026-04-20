@@ -20,40 +20,11 @@
 
 package org.daxprotocol.core.model.tag;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
+import org.daxprotocol.core.exceptions.DaxTagException;
+
 import java.util.Objects;
 
-public final class DaxTag {
-    private final int contextId;
-    private final int tagId;
-
-    public int getContextId() {
-        return contextId;
-    }
-
-    public int getTagId() {
-        return tagId;
-    }
-
-    public DaxTag(int contextId, int tagId) {
-        this.contextId = contextId;
-        this.tagId = tagId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        DaxTag daxTag = (DaxTag) o;
-        return contextId == daxTag.contextId && tagId == daxTag.tagId;
-    }
-
-    @Override public int hashCode() {
-        return Objects.hash(contextId, tagId);
-    }
-
-}
-
-
-/* TODO create refactoring DaxTag with protection
 public final class DaxTag {
     private final int contextId;
     private final int tagId;
@@ -66,18 +37,38 @@ public final class DaxTag {
 
     // Publiczna metoda dla użytkowników
     public static DaxTag of(int contextId, int tagId) {
-        if (contextId <= 0) {
-            throw new IllegalArgumentException("User tags must have contextId > 0");
+        if (contextId <= DaxCoreConstants.DAXP_CONTEXT_ID) {
+            throw new DaxTagException("User tags must have contextId > 0");
         }
         return new DaxTag(contextId, tagId);
     }
 
     // Wewnętrzne tagi systemowe dostępne tylko dla protokołu (np. w tym samym pakiece)
-    static DaxTag createSystemTag(int tagId) {
-        return new DaxTag(0, tagId);
+    public static DaxTag createCoreTag(int tagId) {
+        return new DaxTag(DaxCoreConstants.DAXP_CONTEXT_ID, tagId);
     }
 
-    // Gettery...
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        DaxTag daxTag = (DaxTag) o;
+        return contextId == daxTag.contextId && tagId == daxTag.tagId;
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(contextId, tagId);
+    }
+
+
+    public int getContextId() {
+        return contextId;
+    }
+
+    public int getTagId() {
+        return tagId;
+    }
+
 }
- */
+ //
 

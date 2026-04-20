@@ -25,18 +25,18 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
 
     @Test
      void  checkIntAnnotation (){
-        DaxDataType dataType =  dictionary.getAtrDataType(new DaxTag( appContextId, DaxpSchema_Base.TEST_TAG_int));
+        DaxDataType dataType =  dictionary.getAtrDataType(DaxTag.of( appContextId, DaxpSchema_Base.TEST_TAG_int));
         Assertions.assertEquals(DaxDataType.INTEGER,dataType);
     }
 
     @Test
     void  checkStringAnnotation (){
-        DaxDataType dataType =  dictionary.getAtrDataType(new DaxTag( appContextId, DaxpSchema_Base.TEST_TAG_String));
+        DaxDataType dataType =  dictionary.getAtrDataType(DaxTag.of( appContextId, DaxpSchema_Base.TEST_TAG_String));
         Assertions.assertEquals(DaxDataType.STRING,dataType);
     }
     @Test
     void  checkCharAnnotation (){
-        DaxDataType dataType =  dictionary.getAtrDataType(new DaxTag( appContextId, DaxpSchema_Base.TEST_TAG_char));
+        DaxDataType dataType =  dictionary.getAtrDataType(DaxTag.of( appContextId, DaxpSchema_Base.TEST_TAG_char));
         Assertions.assertEquals(DaxDataType.CHAR,dataType);
     }
     @Test

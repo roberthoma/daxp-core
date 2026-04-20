@@ -37,7 +37,7 @@ public class DaxCoreTags {
         if (SYS_TAG_CACHE.containsKey(tagId)) {
             throw new IllegalStateException("Duplicate System Tag ID detected: " + tagId);
         }
-        DaxTag tag = new DaxTag(DaxCoreConstants.DAXP_CONTEXT_ID, tagId);
+        DaxTag tag =  DaxTag.createCoreTag (tagId) ;
         SYS_TAG_CACHE.put(tagId, tag);
         return tag;
     }
@@ -80,18 +80,8 @@ public class DaxCoreTags {
 //    SYMBOL
 //    STATUS
 
-    /* TOD create refactoring
-                 "|$:1=CDD|2=4" +
-                "|$:5=1|$:6=INST|$:8=2000|2080=Big bike|2001=123|\n2002=Robert|2101=2|FIX:2085=345|2102=3|2075=INDIVIDUAL" +
-                "|$:5=2|$:6=INST|$:8=2101|  2114 =Polna 7|\n ADR:2115=Warszawa|2111=345" +
-                "|$:5=3|$:6=INST|$:8=2102|2114=Lipińskiego 1000|2115=Sanok|2120=4|2111=3346" +
-                "|$:5=4|$:6=INST|$:8=2120|2121=43-444|2122=Zakopane|99=177|"+
 
-    *
-    * */
-
-
-    public static final DaxTag FIELD_ID                = daxpSysTag(100);
+    public static final DaxTag FIELD_ID                = daxpSysTag(8);
     public static final DaxTag FIELD_NAME              = daxpSysTag(101);
     public static final DaxTag FIELD_STATUS            = daxpSysTag(102);
     public static final DaxTag FIELD_VALUE             = daxpSysTag(103);

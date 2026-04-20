@@ -165,7 +165,9 @@ public class DaxTagParser {
 //        }
 //
         //6. Is ok return new DaxTag
-        return new DaxTag(contextId, tagId);
+        return contextId == DaxCoreConstants.DAXP_CONTEXT_ID
+                ? DaxTag.createCoreTag(tagId):
+                  DaxTag.of(contextId, tagId);
     }
 
         public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){

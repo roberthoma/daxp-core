@@ -205,7 +205,7 @@ public class DaxDictionary {
 
     private void putAttribute(int contextId, int tagId, DaxPair<?> atrPair){
 
-      DaxTag tag = new DaxTag(contextId, tagId);
+      DaxTag tag = DaxTag.of (contextId, tagId);
 
       attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrPair.getTag(), atrPair)),
                 (eM, nM) ->
@@ -222,7 +222,7 @@ public class DaxDictionary {
     // Dedicated attributes
 
     public Map<DaxTag, DaxPair<?>> getFieldAttributeMap(int tagId) {
-        DaxTag tag = new DaxTag(config.getAppContextId(), tagId);
+        DaxTag tag = DaxTag.of(config.getAppContextId(), tagId);
         return attributMap.get( tag);
     }
 

@@ -109,7 +109,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
             frame = frameParser.parseFrame(msgStr);
             DaxMessage msg = frame.getFirstMessage();
             Assertions.assertEquals ("CDD", msg.getMsgType());
-            DaxTag t2080tag = new DaxTag(contextMapper.getReferenceId("CRM") ,2080);
+            DaxTag t2080tag = DaxTag.of(contextMapper.getReferenceId("CRM") ,2080);
 
 
             Assertions.assertEquals ("Big bike",  msg.getBody()

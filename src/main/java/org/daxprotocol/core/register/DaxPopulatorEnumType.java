@@ -32,7 +32,7 @@ public class DaxPopulatorEnumType {
                 clazz.getSimpleName();
 
 
-        DaxTag enumTag = new DaxTag(config.getAppContextId(),groupAtn.tagId());
+        DaxTag enumTag = DaxTag.of(config.getAppContextId(),groupAtn.tagId());
 
         daxDic.putEnum(enumTag, new DaxEnum(enumName,groupAtn.description()) );
 //        daxDic.getEnumDictionary(). putEnum2(enumTag, DaxLangTool.asEnumClass(clazz)  );

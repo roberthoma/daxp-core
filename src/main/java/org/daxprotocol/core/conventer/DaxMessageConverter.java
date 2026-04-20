@@ -50,7 +50,7 @@ public class DaxMessageConverter {
                 int contextId = ann.context().isBlank() ? config.getAppContextId():
                         contextMapper.getReferenceId(ann.context());
 
-                var pair = message.get(new DaxTag( contextId, ann.tagId()));
+                var pair = message.get(DaxTag.of( contextId, ann.tagId()));
                 if (pair==null) continue; // gracefully ignore missing tags or empty
 
                 String raw = pair.getStrValue();
@@ -77,7 +77,7 @@ public class DaxMessageConverter {
 
             int contextId = config.getAppContextId() ;
 
-            DaxTag tag = new DaxTag(contextId , ann.tagId());
+            DaxTag tag = DaxTag.of(contextId , ann.tagId());
             if(! message.getBody().getBlock(0).containsKey(tag)) continue;
 
             var pair = message.get(tag);

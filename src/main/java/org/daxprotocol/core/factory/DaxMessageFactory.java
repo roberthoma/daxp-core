@@ -303,7 +303,7 @@ public class DaxMessageFactory {
         int contextId = context.isBlank() ?
                 config.getAppContextId():
                 contextMapper.getReferenceId(context);
-        return new DaxTag(contextId ,tagId);
+        return DaxTag.of(contextId ,tagId);
     }
 
 
@@ -375,7 +375,7 @@ public class DaxMessageFactory {
                 if (methodAnn == null) continue;
                 Class<?> returnType = method.getReturnType();
 
-                DaxTag tag = new DaxTag(config.getAppContextId(),methodAnn.tagId());
+                DaxTag tag = DaxTag.of(config.getAppContextId(),methodAnn.tagId());
                 if(reqTagSet != null && !reqTagSet.contains(tag)){
                     continue;
                 }

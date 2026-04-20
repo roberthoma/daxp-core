@@ -64,7 +64,7 @@ public class DaxAnnotationRegister {
             tag = tagParser.parseDaxTag(value,config.getAppContextId());
         }
         else {
-            tag = new DaxTag(contextId ,tagId);
+            tag = DaxTag.of(contextId ,tagId);
         }
 
 
@@ -148,7 +148,7 @@ public class DaxAnnotationRegister {
     //                        String typeName = !typeAtn.name().isBlank() ? typeAtn.name() :
     //                                field.getClass().getSimpleName();
 
-                DaxTag typeTag = new DaxTag(config.getAppContextId(),enumAtn.tagId());
+                DaxTag typeTag = DaxTag.of(config.getAppContextId(),enumAtn.tagId());
                 daxDic.putAtrEnumTypeTag(tag, typeTag);
                 System.out.println("is Enum ");
 
@@ -178,7 +178,7 @@ public class DaxAnnotationRegister {
 
             tag =  createTagFromAnn(dto.value(),dto.context(),  dto.tagId());
 
-            dataTypeTag = new DaxTag( tag.getContextId() ,dto.tagId());
+            dataTypeTag = DaxTag.of( tag.getContextId() ,dto.tagId());
 
             daxDic.putAtrDtoDataTypeId(tag,dataTypeTag);
         }
@@ -213,7 +213,7 @@ public class DaxAnnotationRegister {
                 tag = tagParser.parseDaxTag(methodAnn.value(),config.getAppContextId());
             }
             else {
-                tag = new DaxTag(contextId ,methodAnn.tagId());
+                tag = DaxTag.of(contextId ,methodAnn.tagId());
             }
 
             daxDic.putTag(tag);
@@ -297,7 +297,7 @@ public class DaxAnnotationRegister {
                 int contextId = daxTag.context().isBlank() ? config.getAppContextId():
                         contextMapper.getReferenceId(daxTag.context());
 
-                tag = new DaxTag(contextId ,tagId);
+                tag = DaxTag.of(contextId ,tagId);
 
 
             }
@@ -347,7 +347,7 @@ public class DaxAnnotationRegister {
                                                         clazz.getSimpleName();
 
 
-        DaxTag dtoTag = new DaxTag(config.getAppContextId(), typeAnn.tagId());
+        DaxTag dtoTag = DaxTag.of(config.getAppContextId(), typeAnn.tagId());
         daxDic.putDTO(new DaxDTO(dtoTag, dtoName));
 
         daxDic.putAtrDataType(dtoTag, DaxDataType.DTO.getCode());
