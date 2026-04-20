@@ -44,7 +44,7 @@ public class DaxCoreTags {
     /**
      * Head TAGS
      * */
-    public static final DaxTag MSG_TYPE  = daxpSysTag(9);
+    public static final DaxTag MSG_TYPE  = daxpSysTag(1);
     public static final DaxTag MSG_BLOCK_COUNT = daxpSysTag(6);
     public static final DaxTag MSG_ROLE = daxpSysTag(18);
     public static final DaxTag MSG_CONTEXT = daxpSysTag(20); //Default context
@@ -178,7 +178,7 @@ public class DaxCoreTags {
     /******************************
      * Trailer tag
      * */
-    public static final DaxTag CHECKSUM                = daxpSysTag(99);
+    public static final DaxTag CHECKSUM                = daxpSysTag(9);
 
 
     public static void init(DaxDictionary dic){

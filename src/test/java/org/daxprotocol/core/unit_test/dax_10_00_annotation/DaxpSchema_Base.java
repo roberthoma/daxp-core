@@ -33,7 +33,7 @@ public class DaxpSchema_Base {
     public static final String CTX_FIX= "FIX";
 
     @DaxpTag( uiLabel = "Ui other CTX Test TAG String", clazz = String.class)
-    public static final String TEST_CTX_TAG_StrVal     = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "5050";
+    public static final String TEST_CTX_TAG_StrVal     = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "51";
 
 
     @DaxpMsg(description = "Base DTO Request")
