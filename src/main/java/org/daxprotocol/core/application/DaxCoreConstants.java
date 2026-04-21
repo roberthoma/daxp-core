@@ -26,6 +26,10 @@ public class DaxCoreConstants {
     public static final char CONTEXT_TAG_SEPARATOR = ':';
     public static final CharSequence TAG_LIST_SEPARATOR    = ";";
 
+    public static final char DECIMAL_SEPARATOR    = '.';
+
+
+
 //    public static final char TAG_LIST_SEPARATOR    = ';';
 //    public static final char VALUE_LIST_SEPARATOR  = ';';
 //    public static final char CONTEXT_TAG_SEPARATOR = ',';

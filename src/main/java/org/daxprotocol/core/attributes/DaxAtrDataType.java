@@ -23,9 +23,9 @@ import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
 
-public final class DaxAtrDataType extends DaxPair<Character> {
+public final class DaxAtrDataType extends DaxPair<String> {
 
-    public DaxAtrDataType(Character code) {
+    public DaxAtrDataType(String code) {
         super(DaxCoreTags.DATA_TYPE, code);
     }
 

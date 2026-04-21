@@ -73,22 +73,49 @@ C = Country
 U = Currency
 E = Enum
 K = Tag
-O = DTO
+R = DTO
+
+https://www.onixs.biz/fix-dictionary/4.4/index.html#String
+
+STR = String
+INT = Integer
+BLN = Boolean
+LDD = LocalDate
+LDT = LocalDateTime
+F = Float
+DBL = Double
+N = Decimal
+P = BigDecimal
+JSON = JSON       <= String
+XML = XML        <= String
+REGX = Regexp     <= String
+CVS = CSV        <= String
+EMAIL = Email      <= String
+DAY = DayOfMonth
+CNR = Country
+CURR = Currency
+ENUM = Enum
+TAG = Tag
+DTO = DTO
+
+Percentage
+ 	Price
 
 
 * */
 public enum DaxDataType {
-    INTEGER('I'),
-    LONG('L'),
-    STRING('S'),
-    BOOLEAN('B'),
-    CHAR('C'),
-    ENUM('E'),
-    DATE('D'),
-    DTO('O'),
-    UNKNOWN('?');
+    INTEGER("Integer"),
+    LONG("Long"),
+    STRING("String"),
+    BOOLEAN("Boolean"),
+    DOUBLE("Double"),
+    CHAR("Char"),
+    ENUM("Enum"),
+    DATE("Date"),
+    DTO("DTO"),
+    UNKNOWN("UNKNOWN");
 
-    private final char code;
+    private final String code;
 
     private static final Map<Class<?>, DaxDataType> TYPE_MAP = Map.of(
             String.class, STRING,
@@ -98,26 +125,27 @@ public enum DaxDataType {
             long.class, LONG,
             Boolean.class, BOOLEAN,
             boolean.class, BOOLEAN,
+            Double.class, DOUBLE,
             Character.class, CHAR,
-            char.class, CHAR,
-            Enum.class, ENUM
+            char.class, CHAR
+            //Enum.class, ENUM
     );
 
-    DaxDataType(char code) {
+    DaxDataType(String code) {
         this.code = code;
     }
 
-    public char getCode() {
+    public String getCode() {
         return code;
     }
 
-    public static DaxDataType fromCode(Character code) {
+    public static DaxDataType fromCode(String code) {
         if (code == null) {
             return null;
         }
 
         for (DaxDataType type : values()) {
-            if (type.code == code) {
+            if (type.code.equals(code)) {
                 return type;
             }
         }

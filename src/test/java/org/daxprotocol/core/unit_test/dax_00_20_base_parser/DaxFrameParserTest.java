@@ -199,3 +199,4 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     }
 
 }
+

@@ -241,7 +241,7 @@ public class DaxDictionary {
     };
 
 
-    public void putAtrDataType(DaxTag tag,  Character c){
+    public void putAtrDataType(DaxTag tag,  String c){
         putAttribute(tag, new DaxAtrDataType(c));
     };
 
@@ -303,7 +303,7 @@ public class DaxDictionary {
     public DaxDataType getAtrDataType(DaxTag tag){
         if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxCoreTags.DATA_TYPE)) {
 
-            return DaxDataType.fromCode(attributMap.get(tag).get(DaxCoreTags.DATA_TYPE).getCharValue());
+            return DaxDataType.fromCode(attributMap.get(tag).get(DaxCoreTags.DATA_TYPE).getStrValue());
         }
         return DaxDataType.UNKNOWN;
 

@@ -126,7 +126,7 @@ public class DaxPopulatorMessage {
 
 
             if(blockPairMap.containsKey(DaxCoreTags.DATA_TYPE)) {
-                daxDic.putAtrDataType(tag, blockPairMap.get(DaxCoreTags.DATA_TYPE).getCharValue());
+                daxDic.putAtrDataType(tag, blockPairMap.get(DaxCoreTags.DATA_TYPE).getStrValue());
             }
 
             else if(blockPairMap.containsKey(DaxCoreTags.DTO_DATA_TYPE_ID)) {
