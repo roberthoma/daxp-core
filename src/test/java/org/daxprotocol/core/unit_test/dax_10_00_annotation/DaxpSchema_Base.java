@@ -10,36 +10,36 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 @DaxpSchema
 public class DaxpSchema_Base {
 
-    @DaxpTag( uiLabel = "Ui Base DTO ")
+    @DaxpTag( description = "Ui Base DTO ")
     public static final int TEST_TAG_dto            = 5000;
 
 
-    @DaxpTag( uiLabel = "Ui Test TAG int", clazz = Integer.class)
+    @DaxpTag( description = "Ui Test TAG int", clazz = Integer.class)
     public static final int TEST_TAG_int            = 5001;
 
     @NotNull
     @Size(min = 2 ,max = 120)
-    @DaxpTag( uiLabel = "Ui Test TAG String", clazz = String.class)
+    @DaxpTag( description = "Ui Test TAG String", clazz = String.class)
     public static final int TEST_TAG_String            = 5002;
 
 
-    @DaxpTag( uiLabel = "Ui Test TAG char", clazz = Character.class)
+    @DaxpTag( description = "Ui Test TAG char", clazz = Character.class)
     public static final int TEST_TAG_char            = 5003;
 
-    @DaxpTag( uiLabel = "Ui Test TAG Boolean", clazz = Boolean.class)
+    @DaxpTag( description = "Ui Test TAG Boolean", clazz = Boolean.class)
     public static final int TEST_TAG_Boolean            = 5004;
 
 
-    @DaxpTag( uiLabel = "Ui other CTX Test TAG String", clazz = String.class, context = "FIX")
+    @DaxpTag( description = "Ui other CTX Test TAG String", clazz = String.class, context = "FIX")
     public static final int TEST_CTX_TAG_String            = 5050;
 
 
     public static final String CTX_FIX= "FIX";
 
-    @DaxpTag( uiLabel = "Ui other CTX Test TAG String", clazz = String.class)
+    @DaxpTag( description = "Ui other CTX Test TAG String", clazz = String.class)
     public static final String TEST_CTX_TAG_StrVal     = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "51";
 
-    @DaxpTag( uiLabel = "Test enum value", clazz = Enum.class)
+    @DaxpTag( description = "Test enum value", clazz = Enum.class)
     public static final int TEST_ENUM_VALUE     = 5032;
 
 
@@ -54,6 +54,6 @@ public class DaxpSchema_Base {
     @DaxpTag(description = "Test enum")
     public static final  int TEST_ENUM_1 = 6001;
 
-    @DaxpTag( uiLabel = "Ui SUB Base DTO ")
+    @DaxpTag( description = "Ui SUB Base DTO ")
     public static final int TEST_TAG_SUB_DTO = 8000;
 }

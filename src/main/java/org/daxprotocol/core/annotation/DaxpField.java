@@ -34,7 +34,6 @@ public @interface DaxpField {
     String value() default "";      //context plus tagId "FIX:53"
     int tagId() default -1;                   // It can be define by @DaxpTag
     String context() default "";   // Empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
-    String uiLabel() default "";
     String name() default "";      //Use for rename field name , example :used for JSON cast.
     String description() default "";
 }

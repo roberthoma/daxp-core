@@ -11,7 +11,7 @@ public class DaxSubDTO {
     @DaxpField("8002")
     private String value2;
 
-    @DaxpField(value = "FIX:8003",uiLabel = "Fix label")
+    @DaxpField(value = "FIX:8003",description = "Fix label")
     private Double dd;
 
     public void setValue_1(int value_1) {

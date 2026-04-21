@@ -14,7 +14,6 @@ import java.util.List;
 public @interface DaxpMsg {
     String description();
     String context() default "";
-    String uiLabel() default "";
     String[] reqTag() default {};
     String[] respMsg() default {};
 

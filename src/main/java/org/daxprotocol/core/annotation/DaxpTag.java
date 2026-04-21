@@ -30,7 +30,6 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD })
 public @interface  DaxpTag {
     String context() default ""; //>>>> empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
-    String uiLabel() default "";
     String dataType()  default "";
     boolean readOnly() default false;
     Class<?> clazz() default Void.class;

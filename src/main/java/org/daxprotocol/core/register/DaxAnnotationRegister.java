@@ -76,7 +76,6 @@ public class DaxAnnotationRegister {
     private void registerDaxpField(Field field,
             DaxTag dtoTag
     ){
-        String uiLabel="";
         DaxTag tag = DaxCoreTags.UNKNOW_TAG;
 //        int contextId = -1;
         Class<?> fType = field.getType();
@@ -85,7 +84,6 @@ public class DaxAnnotationRegister {
 
         if (field.isAnnotationPresent(DaxpField.class)) {
             DaxpField daxField = field.getAnnotation(DaxpField.class);
-            uiLabel = daxField.uiLabel();
 
             field.setAccessible(true);
 
@@ -96,7 +94,6 @@ public class DaxAnnotationRegister {
 
         if (field.isAnnotationPresent(DaxpValue.class)) {
             DaxpValue daxpValue = field.getAnnotation(DaxpValue.class);
-            uiLabel = daxpValue.uiLabel();
 
             field.setAccessible(true);
             tag =  createTagFromAnn(daxpValue.value(),daxpValue.context(),  daxpValue.tagId());
@@ -162,7 +159,6 @@ public class DaxAnnotationRegister {
             daxDic.putAtrDataType(tag,dataType.getCode());
         }
 
-        daxDic.putAtrUiLabel(tag, uiLabel);
 
         daxDic.putDtoField( dtoTag,tag);
 
@@ -287,9 +283,9 @@ public class DaxAnnotationRegister {
 
          daxDic.putTag(tag );
 
-        if (daxTag.uiLabel()!=null) {
-            daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
-        }
+//        if (daxTag.uiLabel()!=null) {
+//            daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
+//        }
 
 //        if (daxTag.uiLabel()!=null) {
 //            daxDic.putAtrUiLabel(tag, daxTag.uiLabel());
@@ -297,7 +293,7 @@ public class DaxAnnotationRegister {
 
         //TODO  check tah DataType is exist
 
-        logger.info("UiLabel : {}",daxTag.uiLabel());
+        logger.info("UiLabel : {}",daxTag.description());
 
         if (daxTag.dataType().equals("S")) {
             daxDic.putAtrDataType(tag,String.class);
