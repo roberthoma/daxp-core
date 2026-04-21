@@ -1,4 +1,4 @@
-package org.daxprotocol.core.unit_test.dax_00_00_base_config;
+package org.daxprotocol.core.unit_test.dax_00_01_base_config;
 
 import org.daxprotocol.core.codec.DaxFrameCodec;
 import org.daxprotocol.core.codec.DaxMessageCodec;

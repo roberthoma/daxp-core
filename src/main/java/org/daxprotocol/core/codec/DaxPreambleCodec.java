@@ -35,7 +35,7 @@ import static org.daxprotocol.core.application.DaxCoreConstants.PAIR_SEPARATOR;
 
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.
- * Format example: DAXP=v0.0.1|E=UTF-8\n
+ * Format example: DAXP|V=v0.0.1|E=UTF-8\n
  */
 //public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 public class DaxPreambleCodec {
@@ -80,26 +80,6 @@ public class DaxPreambleCodec {
     }
 
 
-//    public  Map<String, String> parsePreamble(String msg) {
-//        Pattern pattern = DaxPatternFactory.compilePreamblePairPattern(DaxConfig.PAIR_SEPARATOR);
-//        return parsePreamble(msg, pattern);
-//    }
-
-//    public  Map<String, String> parsePreamble(String msg, Pattern pairPattern) {
-//        Map<String, String> map = new HashMap<>();
-//
-
-//        return map;
-//    }
-
-    /** Decode msgStr format → Preamble object. */
- //   @Override
-//    public DaxPreamble decode(String msgStr) {
-//        DaxPreamble preamble = new DaxPreamble();
-//
-//        return preamble;
-//
-//    }
     public boolean isTagPreamble(String tagStr){
         return  DaxPreambleTag.contains(tagStr);
     }
@@ -110,7 +90,7 @@ public class DaxPreambleCodec {
         }
             DaxPreambleTag tag = DaxPreambleTag.fromTag(tagStr);
             switch (tag) {
-                case DAXP        -> preamble.setProtocolVersion(valueStr);
+                case VERSION      -> preamble.setProtocolVersion(valueStr);
                 case ENCODING    -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
                 case MSG_QUANTITY   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
                 case MSG_CONTEXT -> preamble.setContextId(contextMapper.getReferenceId(valueStr));

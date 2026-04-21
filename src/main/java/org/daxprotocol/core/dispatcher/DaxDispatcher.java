@@ -53,7 +53,7 @@ public ResponseEntity<String> dispose(Map<String, String> params, String body) {
         // 3. Logic: Return the response in DAXP format
         return ResponseEntity.ok()
                 .header("Content-Type", "text/plain; charset=UTF-8")
-                .body(response.toDaxString()); // Returns DAXP=v...|...99=...
+                .body(response.toDaxString()); // Returns DAXP|V=v...|...99=...
 
     } catch (DAXPException e) {
         // Handle your DAXP-XXXX exceptions here!

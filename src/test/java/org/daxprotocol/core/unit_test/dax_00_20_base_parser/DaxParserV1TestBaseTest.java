@@ -1,6 +1,6 @@
 package org.daxprotocol.core.unit_test.dax_00_20_base_parser;
 
-import org.daxprotocol.core.unit_test.dax_00_00_base_config.DaxConfigBaseTest;
+import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Test;
 
 public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
@@ -9,7 +9,7 @@ public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
 
     @Test
     void Parser2BaseTest() {
-        String msgStr = "DAXP=v0.1.0|EN=UTF-8|CX=CRM" +
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM" +
                 "|$:1=CDD|2=4" +
                 "|$:5=1|$:6=INST|$:8=2000|2080=Big bike|2001=123|\n2002=Robert|2101=2|FIX:2085=345|2102=3|2075=INDIVIDUAL" +
                 "|$:5=2|$:6=INST|$:8=2101|  2114 =Polna 7|\n ADR:2115=Warszawa|2111=345" +

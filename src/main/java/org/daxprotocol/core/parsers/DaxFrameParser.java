@@ -50,6 +50,8 @@ public class DaxFrameParser {
     DaxConfig config;
     DaxMessageCodec messageCodec;
     DaxPreambleCodec preambleCodec;
+
+    char[] separators = {'|','^',0x0001};
     public DaxFrameParser(DaxConfig config,
                             DaxContextMapper contextMapper,
                             DaxTagParser tagParser,
@@ -63,7 +65,16 @@ public class DaxFrameParser {
         this.preambleCodec = preambleCodec;
     }
 
-    private   List<Integer> getSeparatorIndices(String str) {
+    public static int findFirstSeparator(String input, char[] separators) {
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            for (char sep : separators) {
+                if (c == sep) return i; // Found the first separator
+            }
+        }
+        return -1;
+    }
+    private   List<Integer> getSeparatorIndices(String str, char pairSeparator) {
         if (str == null || str.isEmpty()) {
             throw new DaxFrameParserException("Frame is EMPTY !!!");
         }
@@ -72,7 +83,7 @@ public class DaxFrameParser {
 
         // Loop through the string and find every occurrence
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == DaxCoreConstants.PAIR_SEPARATOR) {
+            if (str.charAt(i) == pairSeparator ) {
                 indexList.add(i);
             }
         }
@@ -94,7 +105,21 @@ public class DaxFrameParser {
     private DaxFrame parse(String frameStr, char workMode) {
         DaxFrame frame = new DaxFrame();
         List<DaxMessage> messageList = new ArrayList<>();
-        List<Integer> indList = getSeparatorIndices(frameStr);
+        char pairSeparator ; //= DaxCoreConstants.PAIR_SEPARATOR;
+        int sepPos = findFirstSeparator(frameStr, separators);
+
+        if (sepPos > 0){
+               pairSeparator = frameStr.charAt(sepPos);
+        }
+        else {
+                                logger.error("1> IT IS NOT DAXP MESSAGE : {}", frameStr);
+                    throw new DaxFrameParserException("IT IS NOT DAXP MESSAGE !!!");
+
+        }
+
+      //  frameStr = frameStr.substring(5);
+
+        List<Integer> indList = getSeparatorIndices(frameStr, pairSeparator);
         List<DaxPair<?>> listOfPair =  new ArrayList<>();
         String tagStr;
         String valueStr;
@@ -108,13 +133,23 @@ public class DaxFrameParser {
         boolean isChecksumLast = true;
 
         DaxPreamble preamble = new DaxPreamble();
-
+        preamble.setPairSeparator(pairSeparator);
 
         for (int idx : indList) {
 
+            if (prevIdx == 0) {
+                if (!frameStr.substring(prevIdx, idx).trim().equals(DaxCoreConstants.DAXP_SYMBOL)) {
+                    logger.error("IT IS NOT DAXP MESSAGE : {}", frameStr);
+                    throw new DaxFrameParserException("IT IS NOT DAXP MESSAGE !!!");
+                }
+                prevIdx = idx + 1;
+                continue;
+            }
+
+
 
             int equalChar = frameStr.substring(prevIdx, idx).indexOf('=') + prevIdx;
-            if (prevIdx > equalChar) {
+            if ( prevIdx > equalChar) {
                 throw new DaxFrameParserException("IT IS ANY INCOMPATIBLE MESSAGE !!!");
             }
 
@@ -125,12 +160,6 @@ public class DaxFrameParser {
             sum += DaxChecksumService.calculateSum(tagStr);
             sum += DaxChecksumService.calculateSum(valueStr);
 
-            if (prevIdx == 0) {
-                if (!tagStr.equals(DaxCoreConstants.DAXP_SYMBOL)) {
-                    logger.error("IT IS NOT DAXP MESSAGE : {}", frameStr);
-                    throw new DaxFrameParserException("IT IS NOT DAXP MESSAGE !!!");
-                }
-            }
 
             try {
                 if (isPreableParsing && preambleCodec.isTagPreamble(tagStr)) {

@@ -27,15 +27,25 @@ import org.daxprotocol.core.encoding.DaxCharacterEncoding;
  * how the rest of the message is encoded and parsed.
  */
 public class DaxPreamble {
-    private String protocolVersion = DaxConfig.PROTOCOL_VERSION;
+
+    private char pairSeparator;
+    private String protocolVersion =  DaxConfig.PROTOCOL_VERSION;
     private int msgCnt = -1;  //quantity                 //CNT  Number of item messages following preamble. Default 1
     private DaxCharacterEncoding encoding;
     private int contextId = -1;
     //TODO Add Token !!!
 
-    public DaxPreamble( ){
-        ;
+    public DaxPreamble(){
     }
+
+    public void setPairSeparator(char pairSeparator) {
+        this.pairSeparator = pairSeparator;
+    }
+
+    public char getPairSeparator() {
+        return pairSeparator;
+    }
+
     public DaxPreamble(DaxCharacterEncoding encoding ){
         this.encoding = encoding;
     }

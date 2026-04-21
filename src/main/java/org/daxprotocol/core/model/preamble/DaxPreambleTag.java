@@ -4,6 +4,7 @@ import java.util.*;
 
 public enum DaxPreambleTag {
     DAXP("DAXP"),
+    VERSION("V"),
     ENCODING("EN"),
     MSG_QUANTITY("MQ"),
     MSG_CONTEXT("CX"),

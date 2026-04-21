@@ -4,7 +4,7 @@ import org.daxprotocol.core.annotation.DaxpController;
 import org.daxprotocol.core.annotation.DaxpHandler;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.unit_test.dax_00_00_base_config.DaxConfigBaseTest;
+import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
 
 @DaxpController
 public class DaxpControllerTest extends DaxConfigBaseTest {
