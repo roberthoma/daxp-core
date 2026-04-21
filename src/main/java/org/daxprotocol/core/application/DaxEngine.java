@@ -23,6 +23,7 @@ package org.daxprotocol.core.application;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
+import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
@@ -81,6 +82,9 @@ public class DaxEngine {
 
     DaxAnnotationRegister annotationRegister;
 
+    DaxDispatcher dispatcher;
+
+
     public DaxEngine(DaxConfig config){
         this.config = config;
         this.daxpRules = new DaxpRules();
@@ -118,7 +122,6 @@ public class DaxEngine {
         frameCodec = new DaxFrameCodec(config, preambleCodec, messageCodec);
 
 
-
         messagePopulator    = new DaxPopulatorMessage( tagParser, dictionary);
         enumPopulator       = new DaxPopulatorEnumType(config, contextMapper, dictionary);
         annotationRegister = new DaxAnnotationRegister(tagParser ,
@@ -145,13 +148,14 @@ public class DaxEngine {
                                                  contextMapper,
                                                  tagParser,
                                                  dictionary,
-                                                messageCodec,
+                                                 messageFactory,
                                                  preambleCodec) ;
 
         //-----------------
         //Registration
         annotationRegister.register(DaxCoreController.class);
         handlerRegistry.registerCtrl(new DaxCoreController(messageFactory));
+        dispatcher = new DaxDispatcher(preambleFactory);
 
 
     }
@@ -223,6 +227,10 @@ public class DaxEngine {
 
     public DaxPreambleFactory getPreambleFactory(){
         return preambleFactory;
+    }
+
+    public DaxDispatcher getDispatcher() {
+        return dispatcher;
     }
 
     //    public DaxPopulator getDaxPopulator() {

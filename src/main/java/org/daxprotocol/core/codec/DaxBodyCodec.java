@@ -37,11 +37,11 @@ public class DaxBodyCodec {
     }
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
-                                      int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap)
+                                      int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap, char pairSeparator)
     {
         if (isBlogIdx) {
 
-            pairCodec.encode(sb, DaxCoreTags.BLOCK_INDEX, String.valueOf(blockIdx+1));
+            pairCodec.encode(sb, DaxCoreTags.BLOCK_INDEX, String.valueOf(blockIdx+1), pairSeparator);
        }
 
         if (!blockMap.containsKey(DaxCoreTags.BLOCK_TYPE) ){
@@ -53,10 +53,10 @@ public class DaxBodyCodec {
         }
 
         DaxPair<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);
-        pairCodec.encode(sb, DaxCoreTags.BLOCK_TYPE, blockType.getStrValue());
+        pairCodec.encode(sb, DaxCoreTags.BLOCK_TYPE, blockType.getStrValue(), pairSeparator);
 
         if (blockMap.containsKey(DaxCoreTags.FIELD_ID) ){
-            pairCodec.encode(sb, DaxCoreTags.FIELD_ID, blockMap.get(DaxCoreTags.FIELD_ID));
+            pairCodec.encode(sb, DaxCoreTags.FIELD_ID, blockMap.get(DaxCoreTags.FIELD_ID), pairSeparator);
         }
 
         blockMap.forEach((tag, pair) ->
@@ -66,20 +66,20 @@ public class DaxBodyCodec {
                 !tag.equals(DaxCoreTags.FIELD_ID)
             )
             {
-                pairCodec.encode(sb, tag, pair);
+                pairCodec.encode(sb, tag, pair, pairSeparator);
             }
         });
     }
 
     //@Override
-    public String encode(DaxBody body) {
+    public String encode(DaxBody body,char pairSeparator) {
         boolean isBlockPair = body.getBlockCount() > 1;
 
         StringBuilder sb = new StringBuilder();
 
         body.getBlockMap()
             .forEach((idx, map) ->
-                encodeBodyBlock(sb,isBlockPair,idx, map)
+                encodeBodyBlock(sb,isBlockPair,idx, map, pairSeparator)
         );
 
         return sb.toString();

@@ -20,6 +20,7 @@
 package org.daxprotocol.core.codec;
 
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxFrameParserException;
@@ -48,14 +49,14 @@ public class DaxPreambleCodec {
         this.contextMapper = contextMapper;
     }
 
-    private  void encode(StringBuilder sb, String tag, String value ) {
+    private  void encode(StringBuilder sb, String tag, String value , char pairSeparator) {
         if (value.isBlank()){
             return ;
         }
         sb.append(tag)
                 .append(EQUAL)
                 .append(value)
-                .append(PAIR_SEPARATOR);
+                .append(pairSeparator);
     }
 
 
@@ -73,9 +74,11 @@ public class DaxPreambleCodec {
 
 
         StringBuilder sb = new StringBuilder();
-        encode(sb, DaxPreambleTag.DAXP.getTag(), preamble.getProtocolVersion() ); //Always first
+        sb.append(DaxCoreConstants.DAXP_CONTEXT_SYMBOL)
+          .append(preamble.getPairSeparator());
+        encode(sb, DaxPreambleTag.VERSION.getTag(), preamble.getProtocolVersion() ,preamble.getPairSeparator()); //Always first
 
-        map.forEach((k, v) -> encode(sb,k,v));
+        map.forEach((k, v) -> encode(sb,k,v,preamble.getPairSeparator()));
         return sb.toString();
     }
 

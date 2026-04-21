@@ -471,8 +471,32 @@ public class DaxMessageFactory {
     }
 
     public DaxMessage createMsg(String messageType,List<DaxPair<?>> listOfPair){
+        DaxHead head;
+        DaxBody body;
+        DaxTrailer trailer;
 
-        return messageCodec.createMsg(messageType, listOfPair);
+        head = headCodec.createHead(listOfPair);
+        body = bodyCodec.createBody(head.getBlockCount(), listOfPair) ;
+        trailer = trailerCodec.createTrailer(listOfPair);
+        //todo trailer with check
+
+        return new DaxMessage(head,body,trailer);
+        //return messageCodec.createMsg(messageType, listOfPair);
     }
+
+    public DaxMessage createMsg(List<DaxPair<?>> listOfPair){
+        DaxHead head;
+        DaxBody body;
+        DaxTrailer trailer;
+
+        head = headCodec.createHead(listOfPair);
+        body = bodyCodec.createBody(0, listOfPair) ;
+        trailer = trailerCodec.createTrailer(listOfPair);
+        //todo trailer with check
+
+        return new DaxMessage(head,body,trailer);
+    }
+
+
 
 }

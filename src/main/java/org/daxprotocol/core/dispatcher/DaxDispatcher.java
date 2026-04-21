@@ -1,5 +1,6 @@
 package org.daxprotocol.core.dispatcher;
 
+import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 
@@ -8,6 +9,10 @@ import java.util.Map;
 public class DaxDispatcher {
     DaxHandlerRegistry handlerRegistry;
     DaxFrameParser frameParser;
+    DaxPreambleFactory preambleFactory;
+    public DaxDispatcher(DaxPreambleFactory preambleFactory){
+        this.preambleFactory = preambleFactory;
+    }
 
     public DaxFrame dispatchRequest(Map<String, String> params, String body) {
         DaxFrame reqFrame ;
@@ -19,8 +24,10 @@ public class DaxDispatcher {
         } else {
             reqFrame = frameParser.parseFromMap(params);
         }
+        DaxFrame frameResp = new DaxFrame();
+        frameResp.setPreamble(preambleFactory.createRespPreamble(reqFrame));
 
-        handlerRegistry.executor(reqFrame, respFrame); // calll DaxFrameCodec.encode
+        handlerRegistry.executor(reqFrame, respFrame);
         return  respFrame;
 
     }

@@ -37,9 +37,9 @@ public class DaxTrailerCodec {
         this.pairCodec = pairCodec;
     }
 
-    public String encode(DaxTrailer trailer) {
+    public String encode(DaxTrailer trailer, char pairSeparator) {
         StringBuilder sb = new StringBuilder();
-        pairCodec.encode(sb,CHECKSUM,String.valueOf(trailer.getChecksum()));
+        pairCodec.encode(sb,CHECKSUM,String.valueOf(trailer.getChecksum()),pairSeparator);
         return sb.toString();
     }
 

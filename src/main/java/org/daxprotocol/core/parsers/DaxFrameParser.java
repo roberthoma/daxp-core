@@ -28,6 +28,7 @@ import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
+import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.exceptions.DaxFrameParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -48,7 +49,7 @@ public class DaxFrameParser {
     DaxTagParser tagParser;
     DaxContextMapper contextMapper;
     DaxConfig config;
-    DaxMessageCodec messageCodec;
+    DaxMessageFactory messageFactory;
     DaxPreambleCodec preambleCodec;
 
     char[] separators = {'|','^',0x0001};
@@ -56,16 +57,17 @@ public class DaxFrameParser {
                             DaxContextMapper contextMapper,
                             DaxTagParser tagParser,
                             DaxDictionary daxDic, //,
-                            DaxMessageCodec messageCodec,
+//                            DaxMessageCodec messageCodec,
+            DaxMessageFactory messageFactory,
             DaxPreambleCodec preambleCodec) {
         this.tagParser = tagParser;
         this.contextMapper = contextMapper;
         this.config = config;
-        this.messageCodec = messageCodec;
+        this.messageFactory = messageFactory;
         this.preambleCodec = preambleCodec;
     }
 
-    public static int findFirstSeparator(String input, char[] separators) {
+    private int findFirstSeparator(String input, char[] separators) {
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
             for (char sep : separators) {
@@ -117,7 +119,6 @@ public class DaxFrameParser {
 
         }
 
-      //  frameStr = frameStr.substring(5);
 
         List<Integer> indList = getSeparatorIndices(frameStr, pairSeparator);
         List<DaxPair<?>> listOfPair =  new ArrayList<>();
@@ -210,7 +211,7 @@ public class DaxFrameParser {
                         if(checksum!=Integer.parseInt(valueStr)){
                             logger.error("BAD CHECKSUM {} ,  correct is {} .", valueStr, checksum);
                         }
-                        messageList.add(messageCodec.createMsg(listOfPair));
+                        messageList.add(messageFactory.createMsg(listOfPair));
                         sum = 0;
                         isChecksumLast = true;
                     }

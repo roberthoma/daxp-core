@@ -2,6 +2,7 @@ package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 
 public class DaxPreambleFactory {
@@ -19,4 +20,10 @@ public class DaxPreambleFactory {
         return preamble;
     }
 
+    public DaxPreamble createRespPreamble(DaxFrame frameReq) {
+        DaxPreamble preamble = new DaxPreamble(config.getDefaultEncoding());
+        preamble.setContextId(config.getAppContextId());
+        preamble.setPairSeparator(frameReq.getPreamble().getPairSeparator());
+        return preamble;
+    }
 }

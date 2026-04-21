@@ -8,6 +8,7 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.conventer.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
@@ -34,6 +35,7 @@ public class DaxConfigBaseTest {
     protected static DaxTagParser tagParser;
     protected static DaxFrameParser frameParser;
     protected static DaxPreambleFactory preambleFactory;
+    protected static DaxDispatcher dispatcher;
 
 
     @BeforeAll
@@ -57,6 +59,7 @@ public class DaxConfigBaseTest {
             tagParser       = daxEngine.getTagParser();
             frameParser     = daxEngine.getFrameParser();
             preambleFactory = daxEngine.getPreambleFactory();
+            dispatcher      = daxEngine.getDispatcher();
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");

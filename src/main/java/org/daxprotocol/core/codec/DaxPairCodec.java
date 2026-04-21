@@ -35,18 +35,18 @@ public class DaxPairCodec {
         this.tagCodec = tagCodec;
     }
 
-    public   String encode(StringBuilder sb, DaxTag tag, String value ) {
+    public   String encode(StringBuilder sb, DaxTag tag, String value , char pairSeparator) {
         if (value.isBlank()){
             return sb.toString();
         }
         sb.append(tagCodec.encode(tag))
                 .append(DaxCoreConstants.EQUAL)
                 .append(value)
-                .append(DaxCoreConstants.PAIR_SEPARATOR);
+                .append(pairSeparator);
         return sb.toString() ;
     }
 
-    public   String encode(StringBuilder sb, DaxTag tag, DaxPair<?> pair ) {
+    public   String encode(StringBuilder sb, DaxTag tag, DaxPair<?> pair, char pairSeparator ) {
         String value;
         if (pair.getValue() instanceof DaxTag){
             value = tagCodec.encode((DaxTag)pair.getValue());
@@ -54,6 +54,6 @@ public class DaxPairCodec {
         else {
             value = pair.getStrValue();
         }
-        return encode(sb,tag,value );
+        return encode(sb,tag,value ,pairSeparator );
     }
 }

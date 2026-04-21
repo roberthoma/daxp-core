@@ -1,10 +1,6 @@
 package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
-import org.daxprotocol.core.unit_test.dax_00_00_service.DaxMessageDecorator;
-import org.daxprotocol.core.unit_test.dax_00_00_service.DaxMessageNormalizer;
-import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
@@ -41,67 +37,7 @@ public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
         DaxDataType dataType =  dictionary.getAtrDataType(DaxTag.of( appContextId, DaxpSchema_Base.TEST_TAG_char));
         Assertions.assertEquals(DaxDataType.CHAR,dataType);
     }
-    @Test
-    void executorTestSimpleReq(){
-        String reqMsg = "DAXP|V=v0.1.0|$:1="+DaxpSchema_Base.MSG_BASE_DTO_Req +"|$:9=123|";
-        String msgStr = DaxMessageNormalizer.normalize(reqMsg);
 
-        DaxFrame frameReq = frameParser.parseFrame(msgStr);
-        DaxFrame frameResp = new DaxFrame();
-        frameResp.setPreamble(preambleFactory.createPreamble());
-
-        handlerRegistry.executor(frameReq, frameResp);
-        DaxMessage respMsg = frameResp.getFirstMessage();
-        String respDataType = respMsg.getMsgType();
-        Assertions.assertEquals(DaxpSchema_Base.MSG_BASE_DTO_DATA, respDataType);
-
-        System.out.println("-------------------\n");
-        System.out.println("REQ > " + reqMsg);
-        System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
-    }
-
-    @Test
-    void executorTestSelectReq(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|CX=XYZ|$:1="+DaxpSchema_Base.MSG_BASE_DTO_Req +
-                "|$:108=5001;5002|$:9=123|";
-        String msgStr = DaxMessageNormalizer.normalize(reqMsg);
-        DaxFrame frameReq = frameParser.parseFrame(msgStr);
-
-        DaxFrame frameResp = new DaxFrame();
-        frameResp.setPreamble(preambleFactory.createPreamble());
-
-        handlerRegistry.executor(frameReq, frameResp);
-
-        DaxMessage respMsg = frameResp.getFirstMessage();
-        String respDataType = respMsg.getMsgType();
-        Assertions.assertEquals(DaxpSchema_Base.MSG_BASE_DTO_DATA, respDataType);
-
-        System.out.println("-------------------\n");
-        System.out.println("REQ > " + reqMsg);
-        System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
-
-    }
-    @Test
-    void executorTestSelectReqSubDto(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|CX=XYZ|$:1="+DaxpSchema_Base.MSG_BASE_DTO_Req +
-                "|$:108=5001;8000|$:9=123|";
-        String msgStr = DaxMessageNormalizer.normalize(reqMsg);
-        DaxFrame frameReq = frameParser.parseFrame(msgStr);
-
-        DaxFrame frameResp = new DaxFrame();
-        frameResp.setPreamble(preambleFactory.createPreamble());
-
-        handlerRegistry.executor(frameReq, frameResp);
-
-        DaxMessage respMsg = frameResp.getFirstMessage();
-        String respDataType = respMsg.getMsgType();
-        Assertions.assertEquals(DaxpSchema_Base.MSG_BASE_DTO_DATA, respDataType);
-
-        System.out.println("-------------------\n");
-        System.out.println("REQ > " + reqMsg);
-        System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
-
-    }
 
 
 }

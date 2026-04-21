@@ -22,10 +22,10 @@ public class DaxFrameCodec {
 
     public String encode(DaxFrame frame){
         StringBuilder sb = new StringBuilder();
+        DaxPreamble preamble = frame.getPreamble();
+        sb.append(preambleCodec.encode(preamble));
 
-        sb.append(preambleCodec.encode(frame.getPreamble()));
-
-        frame.getAllMessage().forEach(msg -> sb.append(messageCodec.encode(msg)));
+        frame.getAllMessage().forEach(msg -> sb.append(messageCodec.encode(msg, preamble)));
 
 
         return sb.toString();
