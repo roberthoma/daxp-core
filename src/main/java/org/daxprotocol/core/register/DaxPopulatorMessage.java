@@ -58,9 +58,11 @@ public class DaxPopulatorMessage {
 
             //TODO refactor : split change do byte after byte reading
             if (blockPairMap.containsKey(DaxCoreTags.MESSAGE_RELATED_MSGS)){
+
                 Arrays.stream(blockPairMap.get(DaxCoreTags.MESSAGE_RELATED_MSGS)
                                 .getStrValue().split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
                         .forEach(msgItem::addRelatedMsgType);
+
             }
 
             daxDic.putMsgItem(msgItem);

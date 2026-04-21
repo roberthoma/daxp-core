@@ -1,6 +1,5 @@
 package org.daxprotocol.core.unit_test.dax_00_00_service;
 
-import org.daxprotocol.core.application.DaxCoreConstants;
 
 public class DaxMessageDecorator {
 

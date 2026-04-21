@@ -89,13 +89,6 @@ public final class DaxConfig {
     public DaxConfig() {
     }
 
-//    public CharSequence getContextTafSeparator() {
-//        return DaxConfig.CONTEXT_TAG_SEPARATOR;
-//    }
-
-    public CharSequence getTagListSeparator(){
-        return DaxCoreConstants.TAG_LIST_SEPARATOR;
-    }
 
     //TODO get About  STRING
     //TODO get configuration String

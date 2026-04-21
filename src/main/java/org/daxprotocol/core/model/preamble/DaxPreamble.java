@@ -19,6 +19,7 @@
  */
 package org.daxprotocol.core.model.preamble;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
@@ -28,7 +29,7 @@ import org.daxprotocol.core.encoding.DaxCharacterEncoding;
  */
 public class DaxPreamble {
 
-    private char pairSeparator;
+    private char pairSeparator = DaxCoreConstants.DEFAULT_PAIR_SEPARATOR;
     private String protocolVersion =  DaxConfig.PROTOCOL_VERSION;
     private int msgCnt = -1;  //quantity                 //CNT  Number of item messages following preamble. Default 1
     private DaxCharacterEncoding encoding;

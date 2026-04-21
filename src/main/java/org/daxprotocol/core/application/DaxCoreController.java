@@ -17,12 +17,9 @@ public class DaxCoreController {
 
 
     @DaxpHandler(DaxCoreMessages.DIC_REQ)
-    public void getBaseData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
-
-      //  DaxDTO_Base dtoBase = new DaxDTO_Base("Test string",'H',456);
+    public void getDictionaryData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
 
         DaxMessage message = messageFactory.dictionaryToMsg();
-
         outcomeFrame.addMessage(message);
 
     }

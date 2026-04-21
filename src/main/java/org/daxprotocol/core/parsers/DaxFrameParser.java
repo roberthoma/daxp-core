@@ -22,7 +22,6 @@
 package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
-import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
@@ -52,12 +51,11 @@ public class DaxFrameParser {
     DaxMessageFactory messageFactory;
     DaxPreambleCodec preambleCodec;
 
-    char[] separators = {'|','^',0x0001};
+    //char[] separators = { DaxCoreConstants.DEFAULT_PAIR_SEPARATOR,'|','^','#'};
     public DaxFrameParser(DaxConfig config,
                             DaxContextMapper contextMapper,
                             DaxTagParser tagParser,
-                            DaxDictionary daxDic, //,
-//                            DaxMessageCodec messageCodec,
+                            DaxDictionary daxDic,
             DaxMessageFactory messageFactory,
             DaxPreambleCodec preambleCodec) {
         this.tagParser = tagParser;
@@ -108,7 +106,7 @@ public class DaxFrameParser {
         DaxFrame frame = new DaxFrame();
         List<DaxMessage> messageList = new ArrayList<>();
         char pairSeparator ; //= DaxCoreConstants.PAIR_SEPARATOR;
-        int sepPos = findFirstSeparator(frameStr, separators);
+        int sepPos = findFirstSeparator(frameStr, DaxCoreConstants.ALLOWED_PAIR_SEPARATORS);
 
         if (sepPos > 0){
                pairSeparator = frameStr.charAt(sepPos);

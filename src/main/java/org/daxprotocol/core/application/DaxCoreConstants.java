@@ -20,8 +20,8 @@ public class DaxCoreConstants {
      *                Separators
      */
     /**  Pair separator on the WIRE (binary, non-printable). */
-    public static char PAIR_SEPARATOR = 0x0001;
-
+    public static char DEFAULT_PAIR_SEPARATOR = 0x0001;
+    public static char[] ALLOWED_PAIR_SEPARATORS = { DEFAULT_PAIR_SEPARATOR,'|','^','#'};
 
     public static final char CONTEXT_TAG_SEPARATOR = ':';
     public static final CharSequence TAG_LIST_SEPARATOR    = ";";

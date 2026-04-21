@@ -254,7 +254,7 @@ public class DaxMessageFactory {
     }
 
 
-
+    //TODO Develop selective tags
     public DaxMessage dictionaryToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_DIC);
 
