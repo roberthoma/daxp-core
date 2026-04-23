@@ -141,10 +141,6 @@ public class DaxPopulatorMessage {
             }
 
 
-            if(blockPairMap.containsKey(DaxCoreTags.ATR_UI_LABEL)) {
-                daxDic.putAtrUiLabel(tag, blockPairMap.get(DaxCoreTags.ATR_UI_LABEL).getStrValue());
-
-            }
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_NULLABLE)) {
                 daxDic.putAtrNullable(tag,

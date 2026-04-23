@@ -41,36 +41,27 @@ public class DaxCoreTags {
         SYS_TAG_CACHE.put(tagId, tag);
         return tag;
     }
-    /**
-     * Head TAGS
-     * */
-    public static final DaxTag MSG_TYPE  = daxpSysTag(1);
-    public static final DaxTag MSG_BLOCK_QUANTITY = daxpSysTag(6);
-    public static final DaxTag MSG_ROLE = daxpSysTag(18);
-    public static final DaxTag MSG_CONTEXT = daxpSysTag(20); //Default context
 
     //TODO Create predefine sys DaxTag
     //DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)
 
-    private static final Set<DaxTag> headSet = Set.of(MSG_TYPE,
-            MSG_BLOCK_QUANTITY
-            //new DaxTag(MSG_CONTEXT)
-    );
-
-
-    public static boolean isHeadTag(DaxTag tag){
-        return headSet.contains(tag);
-    }
 
     /**********************************
      * UNKNOW_TAG
      */
      public static final DaxTag UNKNOW_TAG             = daxpSysTag(-1);
 
+    /**
+     * Head TAGS
+     * */
+    public static final DaxTag MSG_TYPE  = daxpSysTag(1);
+    public static final DaxTag MSG_ROLE = daxpSysTag(2);
+    public static final DaxTag MSG_BLOCK_QUANTITY = daxpSysTag(3);
+
     /**********************************
      * Body tags
      */
-    public static final DaxTag BLOCK_INDEX             = daxpSysTag(7);
+    public static final DaxTag BLOCK_INDEX             = daxpSysTag(4);
     public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);
 
     // Set of universal tags
@@ -79,9 +70,9 @@ public class DaxCoreTags {
 //    NAME
 //    SYMBOL
 //    STATUS
+//    DirectBuffer ddd;
 
-
-    public static final DaxTag FIELD_ID                = daxpSysTag(8);
+    public static final DaxTag FIELD_ID                = daxpSysTag(6);
     public static final DaxTag FIELD_NAME              = daxpSysTag(101);
     public static final DaxTag FIELD_STATUS            = daxpSysTag(102);
     public static final DaxTag FIELD_VALUE             = daxpSysTag(103);
@@ -94,12 +85,10 @@ public class DaxCoreTags {
 
 
     public static final DaxTag TAG_LIST                = daxpSysTag(115);
-    public static final DaxTag DATA_TYPE               = daxpSysTag(110);
+    public static final DaxTag DATA_TYPE               = daxpSysTag(7);
     public static final DaxTag DTO_DATA_TYPE_ID        = daxpSysTag(118);
-//    public static final DaxTag FIELD_ENUM_NAME         = daxpSysTag(111);
-//    public static final DaxTag FIELD_GROUP_ID          = daxpSysTag(120);
+    public static final DaxTag DTO_REF_BLOCK_INST      = daxpSysTag(119);
 
-    //------
     public static final DaxTag FIELD_ROLE         = daxpSysTag(122);
 
 
@@ -113,15 +102,13 @@ public class DaxCoreTags {
     public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
     public static final DaxTag ENUM_VALUE_TAG          = daxpSysTag(136);
     //----
-//    public static final DaxTag NAMESPACE          = daxpSysTag(144);
+    //    public static final DaxTag NAMESPACE          = daxpSysTag(144);
 //    public static final DaxTag NAMESPACE_DESC     = daxpSysTag(144);
 
 
     //----
-    public static final DaxTag GROUP_ID                = daxpSysTag(141);
-    //??? public static final DaxTag DTO_MASTER_ID = daxpSysTag(142);
-    public static final DaxTag DTO_NAME = daxpSysTag(143);
-    public static final DaxTag DTO_NAMESPACE         = daxpSysTag(144);
+    public static final DaxTag DTO_NAME        = daxpSysTag(143);
+    public static final DaxTag DTO_NAMESPACE   = daxpSysTag(144);
     public static final DaxTag DTO_DESCRIPTION = daxpSysTag(145);
 
 
@@ -146,13 +133,14 @@ public class DaxCoreTags {
     public static final DaxTag ATR_SIZE_MAX        = daxpSysTag(167);
     public static final DaxTag ATR_SIZE_MIN        = daxpSysTag(168);
     public static final DaxTag ATR_READONLY        = daxpSysTag(169);
+
     /*****************************
      * Attributes of UI
      */
-    public static final DaxTag ATR_UI_ITEM_TYPE    = daxpSysTag(208);
-    public static final DaxTag ATR_UI_LABEL        = daxpSysTag(209);
-    public static final DaxTag ATR_UI_DESCRIPTION  = daxpSysTag(210);
-    public static final DaxTag ATR_UI_IS_EDITABLE  = daxpSysTag(220);
+    //    public static final DaxTag ATR_UI_ITEM_TYPE    = daxpSysTag(208);
+    //    public static final DaxTag ATR_UI_LABEL        = daxpSysTag(209);
+    //    public static final DaxTag ATR_UI_DESCRIPTION  = daxpSysTag(210);
+    //    public static final DaxTag ATR_UI_IS_EDITABLE  = daxpSysTag(220);
 
     /*****************************
      * Errors

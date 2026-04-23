@@ -9,17 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class DaxAnnotationRegisterBaseTest extends DaxConfigBaseTest {
 
-    @BeforeAll
-     static void  initAnnotation(){
-        daxEngine.register(DaxpSchema_Base.class);
-        daxEngine.register(DaxDTO_Base.class);
-        daxEngine.register(DaxpControllerTest.class);
-        daxEngine.register(DaxEnumSample.class);
-        daxEngine.register(DaxSubDTO.class);
 
-        handlerRegistry.registerCtrl(new DaxpControllerTest());  //Autowire in spring
-
-    }
 
     @Test
      void  checkIntAnnotation (){

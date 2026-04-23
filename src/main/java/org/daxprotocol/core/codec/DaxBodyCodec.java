@@ -25,6 +25,8 @@ import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 //public class DaxBodyCodec implements DaxCodec<DaxBody> {
 public class DaxBodyCodec {
@@ -85,6 +87,17 @@ public class DaxBodyCodec {
         return sb.toString();
     }
 
+    //todo refactor. move to head codec
+    private  final Set<DaxTag> headSet = Set.of(MSG_TYPE,
+            MSG_BLOCK_QUANTITY
+            //new DaxTag(MSG_CONTEXT)
+    );
+
+
+    public boolean isHeadTag(DaxTag tag){
+        return headSet.contains(tag);
+    }
+
 
     public  DaxBody createBody(int blockCount , List<DaxPair<?>> listOfPair){
         DaxBody body = new DaxBody();
@@ -96,7 +109,7 @@ public class DaxBodyCodec {
             if(pair.getTag().equals(DaxCoreTags.CHECKSUM)){
                 break;
             }
-            if (DaxCoreTags.isHeadTag(pair.getTag())){
+            if (isHeadTag(pair.getTag())){
                 continue;
             }
             if (pair.getTag().equals(DaxCoreTags.BLOCK_INDEX)) {

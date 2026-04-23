@@ -333,11 +333,16 @@ public class DaxMessageFactory {
                             continue;
                         }
 
-
+                        //TODO add refenrens to other oblck using prefix like @ or #....
                         if (field.get(entry).getClass().isAnnotationPresent(DaxpDTO.class)){
                             body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                             int nestedIdx = body.getCurrentIdx();
-                            body.putPair(blogIdx, new DaxPair<>(tag,nestedIdx+1));
+
+//                            body.putPair(blogIdx, new DaxPair<>(tag,nestedIdx+1));
+                            body.putPair(blogIdx, new DaxPair<>(DTO_REF_BLOCK_INST, tagCodec.encode(tag)
+                                    +"@"
+                                    +(nestedIdx+1)));
+
                             objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                         }
                         else {

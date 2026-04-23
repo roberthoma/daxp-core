@@ -24,9 +24,10 @@ import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
 
 //Type of block application
+// TODO refactoring to ENUM
 public class DaxBlockType extends DaxPair<String> {
 
-    public static final String BLOCK_DTO         = "O";
+    public static final String BLOCK_DTO         = "R";
     public static final String BLOCK_MESSAGE     = "M";
     public static final String BLOCK_CONTEXT     = "X";
     public static final String BLOCK_INSTANCE    = "I";  // Group Instance (one record/row of values matching a Group Definition)

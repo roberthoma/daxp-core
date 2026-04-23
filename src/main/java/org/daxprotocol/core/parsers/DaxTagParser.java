@@ -148,34 +148,24 @@ public class DaxTagParser {
         // 5. Context ID resolution logic
         int contextId ;
         if (contextSymbol == null || contextSymbol.isEmpty()) {
-//            if( tagId <= DaxCoreConstants.DAXP_MAX_TAG_ID) {
-//                contextId = DaxCoreConstants.DAXP_CONTEXT_ID;
-//            }
-//            else {
-                contextId = msgContextId ;// config.getAppContextId();
-//            }
+            contextId = msgContextId ; // config.getAppContextId();
         } else {
             contextId = contextMapper.getReferenceId(contextSymbol);
         }
-//        if(contextId== DaxCoreConstants.DAXP_CONTEXT_ID
-//        )
-//        {
-//            throw new DaxTagParserException(" Tag "+tagId+" can't be in DAXP context "+
-//                                              DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX  +" !!! ");
-//        }
-//
+
         //6. Is ok return new DaxTag
         return contextId == DaxCoreConstants.DAXP_CONTEXT_ID
                 ? DaxTag.createCoreTag(tagId):
                   DaxTag.of(contextId, tagId);
     }
 
-        public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
+    public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
 
-            return Arrays.stream(tagListStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
-                    .map(String::trim)
-                    .map(s ->  parseDaxTag(s,msgContextId))
-                    .collect(Collectors.toList());
-        }
+//TODO refactor : remove split
+        return Arrays.stream(tagListStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
+                .map(String::trim)
+                .map(s ->  parseDaxTag(s,msgContextId))
+                .collect(Collectors.toList());
+    }
 
 }

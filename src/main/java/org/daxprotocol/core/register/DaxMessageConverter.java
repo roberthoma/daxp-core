@@ -18,10 +18,12 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.conventer;
+package org.daxprotocol.core.register;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxDecodeService;
+import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -32,11 +34,16 @@ public class DaxMessageConverter {
 
     DaxConfig config;
     DaxContextMapper contextMapper;
-
-    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper) {
+    DaxDictionary dictionary;
+    DaxTagCodec tagCodec;
+    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxDictionary dictionary,
+            DaxTagCodec tagCodec) {
         this.config = config;
         this.contextMapper = contextMapper;
+        this.dictionary = dictionary;
+        this.tagCodec = tagCodec;
     }
+
 
     public <T> T createFromMessage(DaxMessage message, Class<T> targetClass) {
         try {
@@ -50,8 +57,20 @@ public class DaxMessageConverter {
                 int contextId = ann.context().isBlank() ? config.getAppContextId():
                         contextMapper.getReferenceId(ann.context());
 
+         //TODO  read from all block ..
+
+//                if (!ann.value().isBlank()){
+//                    ?????
+//                }
+
                 var pair = message.get(DaxTag.of( contextId, ann.tagId()));
+
+                //a jeeli jest przez value - string
                 if (pair==null) continue; // gracefully ignore missing tags or empty
+
+                //TODO HERE createFromMessage >>> recursive call method
+
+
 
                 String raw = pair.getStrValue();
                 Object converted = DaxDecodeService.convert(raw, f.getType());  // if not ..convert from dictionary

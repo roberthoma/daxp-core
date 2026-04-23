@@ -24,15 +24,19 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.parsers.DaxTagParser;
 
 public class DaxTagCodec {
     DaxConfig config;
     DaxContextMapper contextMapper;
+    DaxTagParser tagParser;
     public DaxTagCodec(DaxConfig config,
-                       DaxContextMapper contextMapper
+                       DaxContextMapper contextMapper,
+                       DaxTagParser tagParser
     ){
       this.config = config;
       this.contextMapper = contextMapper;
+      this.tagParser = tagParser;
     }
 
     public String encode( DaxTag tag){
@@ -49,6 +53,24 @@ public class DaxTagCodec {
         return String.valueOf(tag.getTagId());
     }
 
+    public DaxTag decode(
+            String value,
+            String context,
+            int tagId
+    ){
+        DaxTag tag;
+        int contextId = context.isBlank() ?
+                config.getAppContextId():
+                contextMapper.getReferenceId(context);
 
+        if (!value.isBlank()){
+            tag = tagParser.parseDaxTag(value,config.getAppContextId());
+        }
+        else {
+            tag = DaxTag.of(contextId ,tagId);
+        }
+
+        return tag;
+    }
 
 }

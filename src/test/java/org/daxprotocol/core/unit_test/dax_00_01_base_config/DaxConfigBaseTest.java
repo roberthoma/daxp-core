@@ -6,7 +6,7 @@ import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
-import org.daxprotocol.core.conventer.DaxMessageConverter;
+import org.daxprotocol.core.register.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
@@ -17,6 +17,7 @@ import org.daxprotocol.core.application.DaxEngine;
 
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
+import org.daxprotocol.core.unit_test.dax_10_00_annotation.*;
 import org.junit.jupiter.api.*;
 
 public class DaxConfigBaseTest {
@@ -36,6 +37,7 @@ public class DaxConfigBaseTest {
     protected static DaxFrameParser frameParser;
     protected static DaxPreambleFactory preambleFactory;
     protected static DaxDispatcher dispatcher;
+
 
 
     @BeforeAll
@@ -61,6 +63,7 @@ public class DaxConfigBaseTest {
             preambleFactory = daxEngine.getPreambleFactory();
             dispatcher      = daxEngine.getDispatcher();
 
+
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");
             System.out.println(" Description  = "+ daxEngine.getConfig().getAppContextDescription());
@@ -68,6 +71,16 @@ public class DaxConfigBaseTest {
             System.out.println(" Tag Prefix   = "+ daxEngine.getConfig().getAppContextTagPrefix());
             System.out.println(" Context Id   = "+ daxEngine.getConfig().getAppContextId());
             System.out.println("*******************************************");
+
+            //------------
+            daxEngine.register(DaxpSchema_Base.class);
+            daxEngine.register(DaxDTO_Base.class);
+            daxEngine.register(DaxpControllerTest.class);
+            daxEngine.register(DaxEnumSample.class);
+            daxEngine.register(DaxSubDTO.class);
+
+            handlerRegistry.registerCtrl(new DaxpControllerTest());  //Autowire in spring
+
 
         }
     }

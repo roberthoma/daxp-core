@@ -36,6 +36,8 @@ public class DaxDecodeService {
         CONVERTERS.put(Boolean.class, Boolean::valueOf);
         CONVERTERS.put(double.class, Double::parseDouble);
         CONVERTERS.put(Double.class, Double::valueOf);
+        CONVERTERS.put(Character.class, c->c.charAt(0));
+        CONVERTERS.put(char.class, c->c.charAt(0));
 
         // add more as needed (char, BigDecimal, enums, etc.)
     }

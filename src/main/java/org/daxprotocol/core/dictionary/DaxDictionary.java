@@ -250,10 +250,6 @@ public class DaxDictionary {
 //    };
 
 
-    public void putAtrUiLabel(DaxTag tag,  String uiLabel){
-        if (uiLabel.isBlank()) return;
-        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrUiLabel(uiLabel));
-    }
 
     public void putAtrSizeMax(DaxTag tag,  Integer max){
         putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMax(max));

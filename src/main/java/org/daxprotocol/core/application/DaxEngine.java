@@ -32,14 +32,13 @@ import org.daxprotocol.core.register.DaxPopulatorEnumType;
 import org.daxprotocol.core.register.DaxPopulatorMessage;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.conventer.DaxMessageConverter;
+import org.daxprotocol.core.register.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTrailerCodec;
-import org.daxprotocol.core.parsers.DaxpRules;
 
 public class DaxEngine {
 
@@ -58,8 +57,6 @@ public class DaxEngine {
 
     private final DaxMessageFactory messageFactory;
 
- //   private final DaxPopulator populator;
-
     private final DaxContextMapper contextMapper;
 
     private final DaxMessageMapper messageMapper;
@@ -68,13 +65,12 @@ public class DaxEngine {
 
     private final DaxPairCodec pairCodec;
 
-    private final DaxpRules daxpRules;
-
     private final  DaxTagParser tagParser ;
+
     private final  DaxFrameParser frameParser ;
 
-
     private DaxHandlerRegistry handlerRegistry;
+
     private DaxPopulatorEnumType  enumPopulator;
 
 
@@ -84,10 +80,11 @@ public class DaxEngine {
 
     DaxDispatcher dispatcher;
 
+    //TODO move tagParser to tagCodec
+
 
     public DaxEngine(DaxConfig config){
         this.config = config;
-        this.daxpRules = new DaxpRules();
 
         DaxContext appContext = DaxContextFactory.createAppContext(config);
         DaxContext sysContext = DaxContextFactory.createSysContext();
@@ -107,7 +104,7 @@ public class DaxEngine {
 
         handlerRegistry = new DaxHandlerRegistry();
 
-        tagCodec      = new DaxTagCodec     (config, contextMapper); //, parser);
+        tagCodec      = new DaxTagCodec     (config, contextMapper, tagParser );
         pairCodec     = new DaxPairCodec    (config, contextMapper, tagCodec);
         preambleCodec = new DaxPreambleCodec(config, contextMapper);
 
@@ -131,7 +128,7 @@ public class DaxEngine {
                                                         dictionary,
                                                         handlerRegistry);
 
-        messageConverter     = new DaxMessageConverter(config,contextMapper );
+        messageConverter     = new DaxMessageConverter(config,contextMapper , dictionary, tagCodec);
 
 
 
@@ -232,59 +229,5 @@ public class DaxEngine {
     public DaxDispatcher getDispatcher() {
         return dispatcher;
     }
-
-    //    public DaxPopulator getDaxPopulator() {
-//        return populator;
-//    }
-    ////////////////////
-
-//    daxEngine.register(clazz);
-
- //   daxEngine.getAllTypeAnnotationClass()
-//            .forEach(annClass ->
-//                scanner.addIncludeFilter(new AnnotationTypeFilter(annClass))
-//        );
-
-
-
-//        @PostMapping("/post") // GetMapping
-//        public ResponseEntity<String> postMessage(@RequestParam(required = false) Map<String, String> params,
-//                @RequestBody(required = false) String body)
-//        {
-//            return msgDisposeExe(params, body);
-//        }
-
-
-        ////////////////////////////
-        // IN SPRINg boot application
-//        public ResponseEntity<String> dispose(Map<String, String> params, String body) {
-//            try {
-//                // 1. Logic: Decide if we parse the Body (DAXP Message) or Params
-//                DaxMessage incoming = null;
-//
-//                if (body != null && !body.isEmpty()) {
-//                    incoming = this.parser.parse(body); // Handles <SOH> or |
-//                } else {
-//                    incoming = this.parser.fromMap(params);  <<<<<<<<<
-//                }
-//
-//                // 2. Logic: Find the Handler (The "Registered" method)
-//                // You mentioned: "registered method by handler"
-//                DaxResponse response = this.handlerRegistry.execute(incoming);
-//
-//                // 3. Logic: Return the response in DAXP format
-//                return ResponseEntity.ok()
-//                        .header("Content-Type", "text/plain; charset=UTF-8")
-//                        .body(response.toDaxString()); // Returns DAXP|V=v...|...99=...
-//
-//            } catch (DAXPException e) {
-//                // Handle your DAXP-XXXX exceptions here!
-//                return ResponseEntity.status(400)
-//                        .body(this.errorGenerator.buildError(e));
-//            }
-//        }
-//
-        ////////////
-
 
 }

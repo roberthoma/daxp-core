@@ -32,7 +32,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
 
     @Test
     void executorTestSimpleReq(){
-        String reqMsg = "DAXP#V=v0.1.0#$:1="+DaxpSchema_Base.MSG_BASE_DTO_Req +"#$:9=123#";
+        String reqMsg = "DAXP|V=v0.1.0|$:1="+DaxpSchema_Base.MSG_BASE_DTO_Req +"|$:9=123|";
 
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
