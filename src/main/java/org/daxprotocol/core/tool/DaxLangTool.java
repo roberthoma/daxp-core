@@ -43,5 +43,7 @@ public class DaxLangTool {
         return enumClass;
     }
 
+    //TODO All fields to MAP
+
 }
 

@@ -29,6 +29,8 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DaxMessageConverter {
 
@@ -44,6 +46,9 @@ public class DaxMessageConverter {
         this.tagCodec = tagCodec;
     }
 
+///idea : create map <tag, field> and next by messa f
+///
+     Map<DaxTag, Field> fieldMap = new HashMap<>();
 
     public <T> T createFromMessage(DaxMessage message, Class<T> targetClass) {
         try {
@@ -63,7 +68,9 @@ public class DaxMessageConverter {
 //                    ?????
 //                }
 
-                var pair = message.get(DaxTag.of( contextId, ann.tagId()));
+                DaxTag tag = tagCodec.decode(ann.value(),ann.context(),ann.tagId());
+
+                var pair = message.get(tag);
 
                 //a jeeli jest przez value - string
                 if (pair==null) continue; // gracefully ignore missing tags or empty

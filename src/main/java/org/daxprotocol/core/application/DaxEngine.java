@@ -126,7 +126,8 @@ public class DaxEngine {
                                                         config,
                                                         contextMapper,
                                                         dictionary,
-                                                        handlerRegistry);
+                                                        handlerRegistry,
+                tagCodec);
 
         messageConverter     = new DaxMessageConverter(config,contextMapper , dictionary, tagCodec);
 

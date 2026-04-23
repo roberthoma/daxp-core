@@ -56,4 +56,7 @@ public class DaxpSchema_Base {
 
     @DaxpTag( description = "Ui SUB Base DTO ")
     public static final int TEST_TAG_SUB_DTO = 8000;
+
+    @DaxpTag( description = "Ui SUB Base DTO ")
+    public static final int TEST_SUB_DTO_1 =  5077;
 }

@@ -2,6 +2,7 @@ package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreTags;
+import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dictionary.DaxMessageItem;
@@ -21,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.List;
 
 public class DaxAnnotationRegister {
     private static final Logger logger = LoggerFactory.getLogger(DaxAnnotationRegister.class);
@@ -31,13 +33,15 @@ public class DaxAnnotationRegister {
     DaxContextMapper contextMapper;
     DaxDictionary daxDic;
     DaxHandlerRegistry handlerRegistry;
+    DaxTagCodec tagCodec;
     public DaxAnnotationRegister(
             DaxTagParser tagParser ,
             DaxPopulatorEnumType  enumPopulator,
             DaxConfig config,
             DaxContextMapper contextMapper,
             DaxDictionary daxDic,
-            DaxHandlerRegistry handlerRegistry
+            DaxHandlerRegistry handlerRegistry,
+            DaxTagCodec tagCodec
 
     ){
         this.tagParser = tagParser;
@@ -47,31 +51,10 @@ public class DaxAnnotationRegister {
         this.enumPopulator = enumPopulator;
         this.daxDic = daxDic;
         this.handlerRegistry = handlerRegistry;
+        this.tagCodec = tagCodec;
     }
 
-    private DaxTag createTagFromAnn(
-                            String value,
-                            String context,
-                            int tagId
-    ){
-        DaxTag tag;
-        int contextId = context.isBlank() ?
-                config.getAppContextId():
-                contextMapper.getReferenceId(context);
 
-        if (!value.isBlank()){
-            tag = tagParser.parseDaxTag(value,config.getAppContextId());
-        }
-        else {
-            tag = DaxTag.of(contextId ,tagId);
-        }
-
-
-        //TODO check and throw exception
-
-
-        return tag;
-    }
 
     private void registerDaxpField(Field field,
             DaxTag dtoTag
@@ -82,12 +65,14 @@ public class DaxAnnotationRegister {
         DaxDataType dataType = DaxDataType.fromClass(fType);
         DaxTag dataTypeTag = DaxCoreTags.UNKNOW_TAG;
 
+        System.out.println("registerDaxpField > field name:"+ field.getName());
+
         if (field.isAnnotationPresent(DaxpField.class)) {
             DaxpField daxField = field.getAnnotation(DaxpField.class);
 
             field.setAccessible(true);
 
-            tag =  createTagFromAnn(daxField.value(),daxField.context(),  daxField.tagId());
+            tag =  tagCodec.decode(daxField.value(),daxField.context(),  daxField.tagId());
 
 
         }
@@ -96,7 +81,7 @@ public class DaxAnnotationRegister {
             DaxpValue daxpValue = field.getAnnotation(DaxpValue.class);
 
             field.setAccessible(true);
-            tag =  createTagFromAnn(daxpValue.value(),daxpValue.context(),  daxpValue.tagId());
+            tag =  tagCodec.decode(daxpValue.value(),daxpValue.context(),  daxpValue.tagId());
 
 
         }
@@ -144,16 +129,12 @@ public class DaxAnnotationRegister {
         if (dataType.getCode() == DaxDataType.DTO.getCode()){
             DaxpDTO dto = field.getType(). getAnnotation(DaxpDTO.class);
 
-            //            int contextId2 = dto.context().isBlank() ?
-//                    config.getAppContextId():
-//                    contextMapper.getReferenceId(dto.context());
 
-
-            tag =  createTagFromAnn(dto.value(),dto.context(),  dto.tagId());
+            tag =  tagCodec.decode(dto.value(),dto.context(),  dto.tagId());
 
             dataTypeTag = DaxTag.of( tag.getContextId() ,dto.tagId());
 
-            daxDic.putAtrDtoDataTypeId(tag,dataTypeTag);
+  //          daxDic.putAtrDtoDataTypeId(tag,dataTypeTag);
         }
         else {
             daxDic.putAtrDataType(tag,dataType.getCode());
@@ -324,7 +305,9 @@ public class DaxAnnotationRegister {
 
         daxDic.putAtrDataType(dtoTag, DaxDataType.DTO.getCode());
 
-        for (Field field : DaxLangTool.allFields(clazz)) {
+        List<Field> allFields = DaxLangTool.allFields(clazz);
+
+        for (Field field : allFields) {
             if (field.isAnnotationPresent(DaxpField.class)
                ||field.isAnnotationPresent(DaxpValue.class))
             {

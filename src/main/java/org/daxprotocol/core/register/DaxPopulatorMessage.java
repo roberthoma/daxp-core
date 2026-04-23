@@ -17,7 +17,6 @@ import org.daxprotocol.core.parsers.DaxTagParser;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DaxPopulatorMessage {
     DaxTagParser tagParser;
@@ -27,13 +26,6 @@ public class DaxPopulatorMessage {
         this.daxDic =  daxDic;
     }
 
-    public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
-
-        return Arrays.stream(tagListStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
-                .map(String::trim)
-                .map(s ->  tagParser.parseDaxTag(s,msgContextId))
-                .collect(Collectors.toList());
-    }
     private void populateFromMsgBlock(int msgContextId , Map<DaxTag, DaxPair<?>> blockPairMap) {
 
         String blockType =   blockPairMap.get(DaxCoreTags.BLOCK_TYPE).getStrValue();

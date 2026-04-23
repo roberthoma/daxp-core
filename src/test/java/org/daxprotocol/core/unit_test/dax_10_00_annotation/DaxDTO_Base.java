@@ -4,6 +4,10 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import org.daxprotocol.core.annotation.DaxpDTO;
 import org.daxprotocol.core.annotation.DaxpField;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.*;
 
 @DaxpDTO(tagId = DaxpSchema_Base.TEST_TAG_dto)
@@ -30,8 +34,28 @@ public class DaxDTO_Base {
     DaxEnumSample enumValue;
 
     //@DaxpField("5077")
-    @DaxpField(tagId = 5077)
+    @DaxpField(tagId = TEST_SUB_DTO_1 )
     DaxSubDTO  subDTO;
+
+    @DaxpField(tagId = 5078)
+    DaxSubDTO  subDTO2;
+
+
+    /// Collection test
+
+    @DaxpField(tagId = 5082)
+    List<String> stringList;
+
+    @DaxpField(tagId = 5083)
+    Map<Integer,String>  stringMap;
+
+    @DaxpField(tagId = 5089)
+    Set<String> stringSet;
+
+    @DaxpField(tagId = 5090)
+    Set<Integer> integerSet;
+
+
 
     public int getAnyInt() {
         return anyInt;
@@ -76,6 +100,7 @@ public class DaxDTO_Base {
         this.fixTestValue = 'X';
         this.enumValue = DaxEnumSample.ENUM_VALUE1;
         this.subDTO = new DaxSubDTO(14,"testSubDTO",12.34);
+        this.subDTO2 = new DaxSubDTO(34,"testSubDTO2",74.56);
 
 
     }

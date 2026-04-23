@@ -10,6 +10,8 @@ public enum DaxPreambleTag {
     MSG_CONTEXT("CX"),
     MSG_SENDER("SN");
 
+
+
     //TODO Ignore no correct
 
     private final String tag;
