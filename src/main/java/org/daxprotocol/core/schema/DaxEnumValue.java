@@ -17,19 +17,32 @@
  * limitations under the License.
  * ***********************************************************************
  */
+package org.daxprotocol.core.schema;
 
-package org.daxprotocol.core.annotation;
+public class DaxEnumValue {
 
-import java.lang.annotation.*;
-import static java.lang.annotation.ElementType.TYPE;
+    String value;
+    String desc;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ TYPE })
-@Documented
-public @interface DaxpDTO {
-    String value() default "";
-    int    tagId() default -1;
-    String context() default "";
-    String name() default "";
-    String description() default "";
+    public DaxEnumValue(String value, String desc) {
+        this.value = value;
+        this.desc = desc;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
 }

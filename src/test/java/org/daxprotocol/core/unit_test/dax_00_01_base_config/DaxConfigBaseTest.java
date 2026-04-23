@@ -7,7 +7,7 @@ import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.register.DaxMessageConverter;
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.schema.DaxSchemaRegister;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.*;
 public class DaxConfigBaseTest {
     protected static DaxEngine daxEngine;
     protected static int appContextId;
-    protected static DaxDictionary dictionary;
+    protected static DaxSchemaRegister dictionary;
     protected static DaxContextMapper contextMapper;
     protected static DaxMessageCodec messageCodec;
     protected static DaxPreambleCodec preambleCodec;
@@ -48,7 +48,7 @@ public class DaxConfigBaseTest {
                             .createProperties("application_BASE.properties")));
 
             appContextId    = daxEngine.getConfig().getAppContextId();
-            dictionary      = daxEngine.getDictionary();
+            dictionary      = daxEngine.getSchema();
             contextMapper   = daxEngine.getContextMapper();
             messageCodec    = daxEngine.getMessageCodec();
             preambleCodec   = daxEngine.getPreambleCodec();

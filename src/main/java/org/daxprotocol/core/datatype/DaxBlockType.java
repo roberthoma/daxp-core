@@ -27,13 +27,13 @@ import org.daxprotocol.core.application.DaxCoreTags;
 // TODO refactoring to ENUM
 public class DaxBlockType extends DaxPair<String> {
 
-    public static final String BLOCK_DTO         = "R";
+    public static final String BLOCK_ENTITY      = "E";
     public static final String BLOCK_MESSAGE     = "M";
     public static final String BLOCK_CONTEXT     = "X";
     public static final String BLOCK_INSTANCE    = "I";  // Group Instance (one record/row of values matching a Group Definition)
     public static final String BLOCK_TAG         = "T";
-    public static final String BLOCK_ENUM        = "E";  // N
-    public static final String BLOCK_ENUM_VALUE  = "V";
+    public static final String BLOCK_DICTIONARY  = "D";  // N
+    public static final String BLOCK_DIC_VALUE   = "V";
 
 //    public static final String BLOCK_LIST        = "L";   // List of tags
 //    public static final DaxTag  TAG = new DaxTag(DaxTagConst.BLOCK_TYPE);

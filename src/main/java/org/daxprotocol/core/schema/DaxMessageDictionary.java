@@ -1,10 +1,7 @@
-package org.daxprotocol.core.dictionary;
-
-import org.daxprotocol.core.model.tag.DaxTag;
+package org.daxprotocol.core.schema;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class DaxMessageDictionary {
      int contextId;

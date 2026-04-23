@@ -4,12 +4,12 @@ import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxMessageItem;
+import org.daxprotocol.core.schema.DaxSchemaRegister;
+import org.daxprotocol.core.schema.DaxMessageItem;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.dto.DaxDTO;
+import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxTagParser;
@@ -24,22 +24,22 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 
-public class DaxAnnotationRegister {
-    private static final Logger logger = LoggerFactory.getLogger(DaxAnnotationRegister.class);
+public class DaxSchemaBuilder {
+    private static final Logger logger = LoggerFactory.getLogger(DaxSchemaBuilder.class);
     DaxPopulatorJakartaValidation jakartaPopulator;
     DaxTagParser tagParser;
     DaxPopulatorEnumType enumPopulator;
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxDictionary daxDic;
+    DaxSchemaRegister daxDic;
     DaxHandlerRegistry handlerRegistry;
     DaxTagCodec tagCodec;
-    public DaxAnnotationRegister(
+    public DaxSchemaBuilder(
             DaxTagParser tagParser ,
             DaxPopulatorEnumType  enumPopulator,
             DaxConfig config,
             DaxContextMapper contextMapper,
-            DaxDictionary daxDic,
+            DaxSchemaRegister daxDic,
             DaxHandlerRegistry handlerRegistry,
             DaxTagCodec tagCodec
 
@@ -126,8 +126,8 @@ public class DaxAnnotationRegister {
 //        daxDic.putAtrDataType(tag,dataType.getCode());
 
 
-        if (dataType.getCode() == DaxDataType.DTO.getCode()){
-            DaxpDTO dto = field.getType(). getAnnotation(DaxpDTO.class);
+        if (dataType.getCode() == DaxDataType.ENTITY.getCode()){
+            DaxpEntity dto = field.getType(). getAnnotation(DaxpEntity.class);
 
 
             tag =  tagCodec.decode(dto.value(),dto.context(),  dto.tagId());
@@ -237,7 +237,6 @@ public class DaxAnnotationRegister {
 
 
 
-
         try {
             if (field.getType() == String.class) {
                String value = (String)(field.get(null));
@@ -293,17 +292,17 @@ public class DaxAnnotationRegister {
         jakartaPopulator.populate(daxDic, field, tag );
 
     }
-    private void registerDTO(Class<?> clazz){
+    private void registerEntity(Class<?> clazz){
 
-        DaxpDTO typeAnn = clazz.getAnnotation(DaxpDTO.class);
+        DaxpEntity typeAnn = clazz.getAnnotation(DaxpEntity.class);
         String dtoName = !typeAnn.name().isBlank() ? typeAnn.name() :
                                                         clazz.getSimpleName();
 
 
         DaxTag dtoTag = DaxTag.of(config.getAppContextId(), typeAnn.tagId());
-        daxDic.putDTO(new DaxDTO(dtoTag, dtoName));
+        daxDic.putEntity(new DaxEntity(dtoTag, dtoName));
 
-        daxDic.putAtrDataType(dtoTag, DaxDataType.DTO.getCode());
+        daxDic.putAtrDataType(dtoTag, DaxDataType.ENTITY.getCode());
 
         List<Field> allFields = DaxLangTool.allFields(clazz);
 
@@ -333,7 +332,7 @@ public class DaxAnnotationRegister {
     }
 
 
-    public void register(Class<?> clazz) {
+    public void scanAndRegister(Class<?> clazz) {
 
 
         try {
@@ -342,8 +341,8 @@ public class DaxAnnotationRegister {
 //                return;
             }
 
-            if (clazz.isAnnotationPresent(DaxpDTO.class)) {
-                registerDTO(clazz);
+            if (clazz.isAnnotationPresent(DaxpEntity.class)) {
+                registerEntity(clazz);
 //                return;
             }
 

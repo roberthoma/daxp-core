@@ -2,19 +2,19 @@ package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.annotation.DaxpEnum;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxEnum;
-import org.daxprotocol.core.dictionary.DaxEnumValue;
+import org.daxprotocol.core.schema.DaxSchemaRegister;
+import org.daxprotocol.core.schema.DaxEnum;
+import org.daxprotocol.core.schema.DaxEnumValue;
 import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxPopulatorEnumType {
     DaxConfig config;
     DaxStringReferenceMapper contextMapper;
-    DaxDictionary daxDic;
+    DaxSchemaRegister daxDic;
    public DaxPopulatorEnumType (DaxConfig config,
                                DaxStringReferenceMapper contextMapper,
-                               DaxDictionary daxDic
+                               DaxSchemaRegister daxDic
     ){
         this.config        = config;
         this.contextMapper = contextMapper;

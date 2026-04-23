@@ -18,12 +18,12 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.application;
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.schema.DaxSchemaRegister;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
 /**
  * Predefined DAXP Core tags reserved in range 1..999.
  * These tags are owned by the DAXP protocol and must not be reused
@@ -83,7 +83,6 @@ public class DaxCoreTags {
     public static final DaxTag REQ_FIELD_LIST          = daxpSysTag(108);
 
 
-
     public static final DaxTag TAG_LIST                = daxpSysTag(115);
     public static final DaxTag DATA_TYPE               = daxpSysTag(7);
     public static final DaxTag DTO_DATA_TYPE_ID        = daxpSysTag(118);
@@ -111,6 +110,9 @@ public class DaxCoreTags {
     public static final DaxTag DTO_NAMESPACE   = daxpSysTag(144);
     public static final DaxTag DTO_DESCRIPTION = daxpSysTag(145);
 
+    //----------
+    //Use in multi message transaction , tag is head item
+    public static final DaxTag MSG_TRANSACTION_ID          = daxpSysTag(150);
 
     /*****************************
      * Attributes
@@ -133,6 +135,9 @@ public class DaxCoreTags {
     public static final DaxTag ATR_SIZE_MAX        = daxpSysTag(167);
     public static final DaxTag ATR_SIZE_MIN        = daxpSysTag(168);
     public static final DaxTag ATR_READONLY        = daxpSysTag(169);
+    public static final DaxTag ATR_IS_DEPRECATED   = daxpSysTag(170);
+
+    //TODO
 
     /*****************************
      * Attributes of UI
@@ -159,7 +164,7 @@ public class DaxCoreTags {
     public static final DaxTag CHECKSUM                = daxpSysTag(9);
 
 
-    public static void init(DaxDictionary dic){
+    public static void init(DaxSchemaRegister dic){
 //        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
 //        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
     }

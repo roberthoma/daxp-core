@@ -27,13 +27,13 @@ import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.register.DaxAnnotationRegister;
+import org.daxprotocol.core.register.DaxSchemaBuilder;
 import org.daxprotocol.core.register.DaxPopulatorEnumType;
 import org.daxprotocol.core.register.DaxPopulatorMessage;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.register.DaxMessageConverter;
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.schema.DaxSchemaRegister;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -51,7 +51,7 @@ public class DaxEngine {
 
     private final DaxMessageConverter messageConverter;
 
-    private final DaxDictionary dictionary;
+    private final DaxSchemaRegister schema;
 
     private final DaxPreambleFactory preambleFactory;
 
@@ -76,7 +76,7 @@ public class DaxEngine {
 
     DaxPopulatorMessage messagePopulator;
 
-    DaxAnnotationRegister annotationRegister;
+    DaxSchemaBuilder annotationRegister;
 
     DaxDispatcher dispatcher;
 
@@ -95,10 +95,10 @@ public class DaxEngine {
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
 
-        dictionary = new DaxDictionary(config, contextMapper, messageMapper);
-        dictionary.putContext(sysContext);
-        dictionary.putContext(appContext);
-        DaxCoreTags.init(dictionary);
+        schema = new DaxSchemaRegister(config, contextMapper, messageMapper);
+        schema.putContext(sysContext);
+        schema.putContext(appContext);
+        DaxCoreTags.init(schema);
 
         tagParser  = new DaxTagParser(contextMapper);
 
@@ -119,17 +119,17 @@ public class DaxEngine {
         frameCodec = new DaxFrameCodec(config, preambleCodec, messageCodec);
 
 
-        messagePopulator    = new DaxPopulatorMessage( tagParser, dictionary);
-        enumPopulator       = new DaxPopulatorEnumType(config, contextMapper, dictionary);
-        annotationRegister = new DaxAnnotationRegister(tagParser ,
+        messagePopulator    = new DaxPopulatorMessage( tagParser, schema);
+        enumPopulator       = new DaxPopulatorEnumType(config, contextMapper, schema);
+        annotationRegister = new DaxSchemaBuilder(tagParser ,
                                                         enumPopulator,
                                                         config,
                                                         contextMapper,
-                                                        dictionary,
+                schema,
                                                         handlerRegistry,
                 tagCodec);
 
-        messageConverter     = new DaxMessageConverter(config,contextMapper , dictionary, tagCodec);
+        messageConverter     = new DaxMessageConverter(config,contextMapper , schema, tagCodec);
 
 
 
@@ -138,20 +138,20 @@ public class DaxEngine {
 
 
         messageFactory       = new DaxMessageFactory(config, contextMapper, tagCodec,  messageCodec,
-                                                     headCodec, bodyCodec, trailerCodec, dictionary, tagParser
+                                                     headCodec, bodyCodec, trailerCodec, schema, tagParser
         );
 
 
         frameParser =  new DaxFrameParser( config,
                                                  contextMapper,
                                                  tagParser,
-                                                 dictionary,
+                schema,
                                                  messageFactory,
                                                  preambleCodec) ;
 
         //-----------------
         //Registration
-        annotationRegister.register(DaxCoreController.class);
+        annotationRegister.scanAndRegister(DaxCoreController.class);
         handlerRegistry.registerCtrl(new DaxCoreController(messageFactory));
         dispatcher = new DaxDispatcher(preambleFactory);
 
@@ -179,11 +179,11 @@ public class DaxEngine {
         return messageConverter;
     }
 
-    public DaxDictionary getDictionary() {
-        if(dictionary == null){
+    public DaxSchemaRegister getSchema() {
+        if(schema == null){
             throw new RuntimeException("Dictionary is NOT READY !!!!");
         }
-        return dictionary;
+        return schema;
     }
 
     public DaxMessageFactory getMessageFactory() {
@@ -207,7 +207,7 @@ public class DaxEngine {
     }
 
     public void register(Class<?> clazz) {
-        annotationRegister.register(clazz);
+        annotationRegister.scanAndRegister(clazz);
     }
 
     public DaxHandlerRegistry getHandlerRegistry() {

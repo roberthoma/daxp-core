@@ -20,7 +20,7 @@
 
 package org.daxprotocol.core.datatype;
 
-import org.daxprotocol.core.annotation.DaxpDTO;
+import org.daxprotocol.core.annotation.DaxpEntity;
 
 import java.util.Date;
 import java.util.Map;
@@ -96,7 +96,7 @@ CNR = Country
 CURR = Currency
 ENUM = Enum
 TAG = Tag
-DTO = DTO
+Entity = ENT
 
 Percentage
  	Price
@@ -112,7 +112,7 @@ public enum DaxDataType {
     CHAR("Char"),
     ENUM("Enum"),
     DATE("Date"),
-    DTO("DTO"),
+    ENTITY("ENTITY"),
     UNKNOWN("UNKNOWN");
 
     private final String code;
@@ -162,8 +162,8 @@ public enum DaxDataType {
             return ENUM;
         }
 
-        if (clazz.isAnnotationPresent(DaxpDTO.class)) {
-            return DTO;
+        if (clazz.isAnnotationPresent(DaxpEntity.class)) {
+            return ENTITY;
         }
 
         if (Date.class.isAssignableFrom(clazz)) {

@@ -2,12 +2,12 @@ package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.dictionary.DaxDictionary;
-import org.daxprotocol.core.dictionary.DaxEnum;
-import org.daxprotocol.core.dictionary.DaxEnumValue;
-import org.daxprotocol.core.dictionary.DaxMessageItem;
+import org.daxprotocol.core.schema.DaxSchemaRegister;
+import org.daxprotocol.core.schema.DaxEnum;
+import org.daxprotocol.core.schema.DaxEnumValue;
+import org.daxprotocol.core.schema.DaxMessageItem;
 import org.daxprotocol.core.datatype.DaxBlockType;
-import org.daxprotocol.core.dto.DaxDTO;
+import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
@@ -20,8 +20,8 @@ import java.util.Map;
 
 public class DaxPopulatorMessage {
     DaxTagParser tagParser;
-    DaxDictionary daxDic;
-    public DaxPopulatorMessage(DaxTagParser tagParser, DaxDictionary daxDic){
+    DaxSchemaRegister daxDic;
+    public DaxPopulatorMessage(DaxTagParser tagParser, DaxSchemaRegister daxDic){
         this.tagParser = tagParser;
         this.daxDic =  daxDic;
     }
@@ -62,7 +62,7 @@ public class DaxPopulatorMessage {
             return;
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_ENUM)){
+        if(blockType.equals(DaxBlockType.BLOCK_DICTIONARY)){
 
             DaxTag enumTag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxCoreTags.ENUM_ID).getStrValue() , msgContextId
@@ -90,7 +90,7 @@ public class DaxPopulatorMessage {
             return;
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_ENUM_VALUE)){
+        if(blockType.equals(DaxBlockType.BLOCK_DIC_VALUE)){
             DaxTag enumTag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxCoreTags.ENUM_ID).getStrValue() , msgContextId
             ) ;
@@ -126,7 +126,7 @@ public class DaxPopulatorMessage {
             else if(blockPairMap.containsKey(DaxCoreTags.DTO_DATA_TYPE_ID)) {
                 DaxTag tag3 = tagParser.parseDaxTag(
                         blockPairMap.get(DaxCoreTags.DTO_DATA_TYPE_ID).getStrValue(), msgContextId);
-                daxDic.putAtrDtoDataTypeId(tag, tag3);
+                daxDic.putAtrEntityDataTypeId(tag, tag3);
             }
             else{
                 System.out.println("No data type !!!!!! ");
@@ -170,7 +170,7 @@ public class DaxPopulatorMessage {
 
 
 
-        if(blockType.equals(DaxBlockType.BLOCK_DTO)){
+        if(blockType.equals(DaxBlockType.BLOCK_ENTITY)){
             String groupName = blockPairMap.get(DaxCoreTags.DTO_NAME).getStrValue();
 
             //int groupId = groupMapper.getReferenceId(groupName);
@@ -180,8 +180,8 @@ public class DaxPopulatorMessage {
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
 
-            DaxDTO group = new DaxDTO(groupTag,groupName);
-            daxDic.putDTO(group);
+            DaxEntity group = new DaxEntity(groupTag,groupName);
+            daxDic.putEntity(group);
             String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
             List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgContextId);
             tagList.forEach(tag -> daxDic.putDtoField(groupTag, tag));

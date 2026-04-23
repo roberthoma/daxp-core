@@ -23,7 +23,7 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.schema.DaxSchemaRegister;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -36,9 +36,9 @@ public class DaxMessageConverter {
 
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxDictionary dictionary;
+    DaxSchemaRegister dictionary;
     DaxTagCodec tagCodec;
-    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxDictionary dictionary,
+    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxSchemaRegister dictionary,
             DaxTagCodec tagCodec) {
         this.config = config;
         this.contextMapper = contextMapper;

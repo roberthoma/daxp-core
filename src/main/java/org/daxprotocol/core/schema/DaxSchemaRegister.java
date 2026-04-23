@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.schema;
 
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
@@ -28,7 +28,7 @@ import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.attributes.*;
-import org.daxprotocol.core.dto.DaxDTO;
+import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 import org.slf4j.Logger;
@@ -45,8 +45,8 @@ import java.util.concurrent.ConcurrentHashMap;
 // dictionary od exception by context
 // CRM-00234, DAX-23445, $:23455 , crm:33345
 
-public class DaxDictionary {
-    private static final Logger logger = LoggerFactory.getLogger(DaxDictionary.class);
+public class DaxSchemaRegister {
+    private static final Logger logger = LoggerFactory.getLogger(DaxSchemaRegister.class);
 
     DaxConfig config;
     DaxContextMapper contextMapper;
@@ -90,13 +90,13 @@ public class DaxDictionary {
   //  Map<DaxTag, DaxDTO> dtoMap = new HashMap<>();
 //    Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new HashMap<>();
     Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new ConcurrentHashMap<>();
-    Map<DaxTag, DaxDTO> dtoMap = new ConcurrentHashMap<>();
+    Map<DaxTag, DaxEntity> dtoMap = new ConcurrentHashMap<>();
 
 
     /******************************************************/
     int appContextId;
 
-    public DaxDictionary(DaxConfig config,
+    public DaxSchemaRegister(DaxConfig config,
             DaxContextMapper contextMapper ,
             DaxMessageMapper messageMapper
     )
@@ -174,18 +174,18 @@ public class DaxDictionary {
     //**********************************************************************
     // Groups
 
-    public void putDTO(DaxDTO group){
+    public void putEntity(DaxEntity entity){
 
-        dtoMap.put(group.getTag(),group);
+        dtoMap.put(entity.getTag(),entity);
 
     }
 
-    public Map<DaxTag, DaxDTO> getDtoMap() {
+    public Map<DaxTag, DaxEntity> getDtoMap() {
         return dtoMap;
     }
 
 
-    public Map<DaxTag, Set<DaxTag>> getDtoFieldsMap(){
+    public Map<DaxTag, Set<DaxTag>> getEntityFieldsMap(){
         return dtoFieldsMap;
     }
 
@@ -280,7 +280,7 @@ public class DaxDictionary {
     }
 
 
-    public void putAtrDtoDataTypeId(DaxTag tag, DaxTag dataTypeTag) {
+    public void putAtrEntityDataTypeId(DaxTag tag, DaxTag dataTypeTag) {
         putAttribute(tag, new DaxAtrDtoDataTypeId(dataTypeTag));
     }
 

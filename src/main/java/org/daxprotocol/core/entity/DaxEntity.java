@@ -1,17 +1,17 @@
-package org.daxprotocol.core.dto;
+package org.daxprotocol.core.entity;
 
 import org.daxprotocol.core.model.tag.DaxTag;
 
 //public class DaxGroup implements DaxStringReference {
 //TODO change to scheme
-public class DaxDTO {
+public class DaxEntity {
     DaxTag tag;
     String name;
     String namespace = "";
     String description = "";
 
 
-    public DaxDTO(DaxTag tag, String name) {
+    public DaxEntity(DaxTag tag, String name) {
         this.tag = tag;
         this.name = name;
     }

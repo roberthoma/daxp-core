@@ -21,15 +21,15 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpDTO;
+import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.dictionary.*;
+import org.daxprotocol.core.schema.*;
 import org.daxprotocol.core.model.DaxFrame;
-import org.daxprotocol.core.dto.DaxDTO;
+import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -61,7 +61,7 @@ public class DaxMessageFactory {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-    DaxDictionary dictionary;
+    DaxSchemaRegister dictionary;
     DaxTagParser tagParser;
     public DaxMessageFactory(DaxConfig config,
             DaxContextMapper contextMapper,
@@ -70,7 +70,7 @@ public class DaxMessageFactory {
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxDictionary dictionary,
+            DaxSchemaRegister dictionary,
             DaxTagParser tagParser
 
             ) {
@@ -137,8 +137,8 @@ public class DaxMessageFactory {
 //            );
 
 
-    private void putDtoToBody(DaxBody body, DaxDTO dto, Set<DaxTag> daxFields){
-        body.nextBlock(DaxBlockType.BLOCK_DTO);
+    private void putDtoToBody(DaxBody body, DaxEntity dto, Set<DaxTag> daxFields){
+        body.nextBlock(DaxBlockType.BLOCK_ENTITY);
         body.putPair(FIELD_ID, tagCodec.encode(dto.getTag()) );
         body.putPair(DTO_NAME, dto.getName());
         if (!dto.getDescription().isBlank() ){
@@ -167,7 +167,7 @@ public class DaxMessageFactory {
     private void putEnumToBlock(DaxBody body,
                                         DaxTag tag,
                                 DaxEnum daxEnum){
-        body.nextBlock(DaxBlockType.BLOCK_ENUM);
+        body.nextBlock(DaxBlockType.BLOCK_DICTIONARY);
         body.putPair(ENUM_ID, tagCodec.encode(tag));
         body.putPair(ENUM_NAME, daxEnum.getName());
         body.putPair(ENUM_DESCRIPTION, daxEnum.getDesc());
@@ -180,7 +180,7 @@ public class DaxMessageFactory {
     }
     private void putEnumValuesToBody(DaxBody body, DaxTag tag,Map<String, DaxEnumValue> enumValueMap ){
         enumValueMap.forEach( (s, value) -> {
-            body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
+            body.nextBlock(DaxBlockType.BLOCK_DIC_VALUE);
             body.putPair(ENUM_ID, tagCodec.encode(tag));
             body.putPair(ENUM_VALUE, value.getValue());
 
@@ -225,29 +225,29 @@ public class DaxMessageFactory {
     //TODO  create multi message with context dictionary values
 
 
-    private void dictionaryToMsg(DaxDictionary dictionary, DaxMessage message)
+    private void dictionaryToMsg(DaxSchemaRegister schemaRegister, DaxMessage message)
     {
-        dictionary.getMsgMap().forEach((s, messageDicItem) ->
+        schemaRegister.getMsgMap().forEach((s, messageDicItem) ->
                 putMsgItem(message.getBody(),messageDicItem)
                 );
 
 
-//        dictionary.getContextMap().forEach((i, context) ->
-//                enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(i)));
+//        schemaRegister.getContextMap().forEach((i, context) ->
+//                enumDictionaryToMsg(message.getBody(),schemaRegister.getEnumDictionary(i)));
 
-        enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(1));
+        enumDictionaryToMsg(message.getBody(),schemaRegister.getEnumDictionary(1));
 
         //----------------------------------------------------------------------------------
         // TODO create attributes by tags !!!!!
-        dictionary.getAttributMap().forEach((tag, atrMap) ->
+        schemaRegister.getAttributMap().forEach((tag, atrMap) ->
                 putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );
 
-        //     dictionary.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
+        //     schemaRegister.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
         //-------------------------------------------------------------------------------
 
-        dictionary.getDtoMap().forEach((integer, group) ->
-                putDtoToBody(message.getBody(), group, dictionary.getDtoFieldsMap().get(group.getTag())));
+        schemaRegister.getDtoMap().forEach((integer, entity) ->
+                putDtoToBody(message.getBody(), entity, schemaRegister.getEntityFieldsMap().get(entity.getTag())));
 
 
 
@@ -334,7 +334,7 @@ public class DaxMessageFactory {
                         }
 
                         //TODO add refenrens to other oblck using prefix like @ or #....
-                        if (field.get(entry).getClass().isAnnotationPresent(DaxpDTO.class)){
+                        if (field.get(entry).getClass().isAnnotationPresent(DaxpEntity.class)){
                             body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                             int nestedIdx = body.getCurrentIdx();
 
@@ -402,8 +402,8 @@ public class DaxMessageFactory {
         DaxTrailer trailer = new DaxTrailer();
 
         daxDataEntry.forEach(entry -> {
-            if (entry.getClass().isAnnotationPresent(DaxpDTO.class)) {
-                DaxpDTO dtoAnn = entry.getClass().getAnnotation(DaxpDTO.class);
+            if (entry.getClass().isAnnotationPresent(DaxpEntity.class)) {
+                DaxpEntity dtoAnn = entry.getClass().getAnnotation(DaxpEntity.class);
                 DaxTag tag = creatTag("",dtoAnn.tagId());
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                 objectToMsgBlock(body.getCurrentIdx(),tag, entry, body, reqTagSet);
