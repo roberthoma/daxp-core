@@ -57,7 +57,7 @@ public class DaxSchemaBuilder {
 
 
     private void registerDaxpField(Field field,
-            DaxTag dtoTag
+            DaxTag entityTag
     ){
         DaxTag tag = DaxCoreTags.UNKNOW_TAG;
 //        int contextId = -1;
@@ -80,7 +80,7 @@ public class DaxSchemaBuilder {
         if (field.isAnnotationPresent(DaxpValue.class)) {
             DaxpValue daxpValue = field.getAnnotation(DaxpValue.class);
 
-            field.setAccessible(true);
+           // field.setAccessible(true);
             tag =  tagCodec.decode(daxpValue.value(),daxpValue.context(),  daxpValue.tagId());
 
 
@@ -125,23 +125,24 @@ public class DaxSchemaBuilder {
 
 //        daxDic.putAtrDataType(tag,dataType.getCode());
 
+//
+//        if (dataType.getCode() == DaxDataType.ENTITY.getCode()){
+//            DaxpEntity entityAnn = field.getType(). getAnnotation(DaxpEntity.class);
+//
+//            DaxTag ennSubTag = tagCodec.decode(entityAnn.value(),entityAnn.context(),  entityAnn.tagId());
+//
+//            //tag =  tagCodec.decode(entityAnn.value(),entityAnn.context(),  entityAnn.tagId());
+//
+//            dataTypeTag = DaxTag.of( tag.getContextId() ,entityAnn.tagId());
+//
+//            daxDic.putAtrEntityDataTypeId(tag,dataTypeTag);
+//        }
+//        else {
+//            daxDic.putAtrDataType(tag,dataType.getCode());
+//        }
 
-        if (dataType.getCode() == DaxDataType.ENTITY.getCode()){
-            DaxpEntity dto = field.getType(). getAnnotation(DaxpEntity.class);
 
-
-            tag =  tagCodec.decode(dto.value(),dto.context(),  dto.tagId());
-
-            dataTypeTag = DaxTag.of( tag.getContextId() ,dto.tagId());
-
-  //          daxDic.putAtrDtoDataTypeId(tag,dataTypeTag);
-        }
-        else {
-            daxDic.putAtrDataType(tag,dataType.getCode());
-        }
-
-
-        daxDic.putDtoField( dtoTag,tag);
+        daxDic.putEntityField( entityTag,tag);
 
       //  daxDic.putAtrReadOnly( ????);
 
@@ -180,7 +181,7 @@ public class DaxSchemaBuilder {
             //TODO DaxpValue as readonly
             daxDic.putAtrDataType( tag, returnType);
 
-            daxDic.putDtoField( dtoTag,tag);
+            daxDic.putEntityField( dtoTag,tag);
         }
 
     }

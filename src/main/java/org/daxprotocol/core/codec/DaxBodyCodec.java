@@ -32,14 +32,17 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxBodyCodec {
 
     DaxPairCodec pairCodec;
+    DaxTagCodec tagCodec;
 
-
-    public DaxBodyCodec(DaxPairCodec pairCodec) {
+    public DaxBodyCodec(DaxPairCodec pairCodec, DaxTagCodec tagCodec) {
         this.pairCodec = pairCodec;
+        this.tagCodec = tagCodec;
     }
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
-                                      int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap, char pairSeparator)
+                                      int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
+                                      Map<DaxTag, Integer> tagBlockRefMap,
+                                     char pairSeparator)
     {
         if (isBlogIdx) {
 
@@ -71,6 +74,16 @@ public class DaxBodyCodec {
                 pairCodec.encode(sb, tag, pair, pairSeparator);
             }
         });
+
+        tagBlockRefMap.forEach((tag, i)
+                -> pairCodec.encode(sb, DaxCoreTags.REFERENCE_BLOCK,
+                                     new DaxPair<>(DaxCoreTags.REFERENCE_BLOCK,
+                                             tagCodec.encode(tag)+"@"+i)
+                , pairSeparator));
+
+
+
+
     }
 
     //@Override
@@ -81,8 +94,8 @@ public class DaxBodyCodec {
 
         body.getBlockMap()
             .forEach((idx, map) ->
-                encodeBodyBlock(sb,isBlockPair,idx, map, pairSeparator)
-        );
+                encodeBodyBlock(sb,isBlockPair,idx, map, body.getTagBlockRefMap(idx), pairSeparator)
+                        );
 
         return sb.toString();
     }

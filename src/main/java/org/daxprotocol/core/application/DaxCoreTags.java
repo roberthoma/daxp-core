@@ -85,8 +85,8 @@ public class DaxCoreTags {
 
     public static final DaxTag TAG_LIST                = daxpSysTag(115);
     public static final DaxTag DATA_TYPE               = daxpSysTag(7);
-    public static final DaxTag DTO_DATA_TYPE_ID        = daxpSysTag(118);
-    public static final DaxTag DTO_REF_BLOCK_INST      = daxpSysTag(119);
+    public static final DaxTag ENTITY_DATA_TYPE_ID     = daxpSysTag(118);
+    public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(119);
 
     public static final DaxTag FIELD_ROLE         = daxpSysTag(122);
 
@@ -106,9 +106,9 @@ public class DaxCoreTags {
 
 
     //----
-    public static final DaxTag DTO_NAME        = daxpSysTag(143);
+    public static final DaxTag ENTITY_NAME = daxpSysTag(143);
     public static final DaxTag DTO_NAMESPACE   = daxpSysTag(144);
-    public static final DaxTag DTO_DESCRIPTION = daxpSysTag(145);
+    public static final DaxTag ENTITY_DESCRIPTION = daxpSysTag(145);
 
     //----------
     //Use in multi message transaction , tag is head item

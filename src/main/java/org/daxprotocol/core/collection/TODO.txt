@@ -1,0 +1,63 @@
+Uniwersalne typy kolekcji
+
+Zasada
+
+Kolekcja w DAXP opisuje relację logiczną,
+nie strukturę pamięci.
+
+✅ Proponowane typy kolekcji
+
+Plain Text
+
+Single
+List
+Set
+Map
+Tuple
+
+Pokaż więcej wierszy
+
+🔹 Znaczenie semantyczne
+
+Single
+    dokładnie jedna wartość
+    domyślność dla pól
+
+List
+    uporządkowana kolekcja
+    duplikaty dozwolone
+
+mapuje się na:
+    array
+    list
+    vector
+
+Set
+    nieuporządkowana
+    unikalne elementy
+
+semantyka > struktura
+
+Map
+    klucz → wartość
+    klucz ma własny typ
+
+
+klucz nie musi być stringiem
+
+Tuple
+
+    uporządkowany zbiór różnych typów
+    struktura pozycyjna
+
+✅ bardzo przydatne do:
+
+    wyników
+    sygnatur
+    interfejsów dynamicznych
+
+
+
+
+
+

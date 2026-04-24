@@ -85,12 +85,10 @@ public class DaxSchemaRegister {
 
 
     /*****************************************************
-     *  Group Map // TODO chage to type or schema
+     *  Entity Map //
      */
-  //  Map<DaxTag, DaxDTO> dtoMap = new HashMap<>();
-//    Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new HashMap<>();
-    Map<DaxTag, Set<DaxTag>> dtoFieldsMap = new ConcurrentHashMap<>();
-    Map<DaxTag, DaxEntity> dtoMap = new ConcurrentHashMap<>();
+    Map<DaxTag, Set<DaxTag>> entityFieldsMap = new ConcurrentHashMap<>();
+    Map<DaxTag, DaxEntity> entityMap = new ConcurrentHashMap<>();
 
 
     /******************************************************/
@@ -101,7 +99,7 @@ public class DaxSchemaRegister {
             DaxMessageMapper messageMapper
     )
     {
-        System.out.println("Init DaxDictionary...");
+        logger.info("Init DaxSchemaRegister...");
         appContextId = config.getAppContextId();
         this.config = config;
 
@@ -176,17 +174,17 @@ public class DaxSchemaRegister {
 
     public void putEntity(DaxEntity entity){
 
-        dtoMap.put(entity.getTag(),entity);
+        entityMap.put(entity.getTag(),entity);
 
     }
 
-    public Map<DaxTag, DaxEntity> getDtoMap() {
-        return dtoMap;
+    public Map<DaxTag, DaxEntity> getEntityMap() {
+        return entityMap;
     }
 
 
     public Map<DaxTag, Set<DaxTag>> getEntityFieldsMap(){
-        return dtoFieldsMap;
+        return entityFieldsMap;
     }
 
 
@@ -196,8 +194,8 @@ public class DaxSchemaRegister {
 
     //TODO chek exist of fields in group,
     //TODO check recursions
-    public void putDtoField(DaxTag dtoTag, DaxTag tag) {
-        dtoFieldsMap.merge(dtoTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
+    public void putEntityField(DaxTag entityTag, DaxTag tag) {
+        entityFieldsMap.merge(entityTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
                 DaxCollectionTool.addAndReturnSet(daxTags, tag) );
     }
 
@@ -281,7 +279,7 @@ public class DaxSchemaRegister {
 
 
     public void putAtrEntityDataTypeId(DaxTag tag, DaxTag dataTypeTag) {
-        putAttribute(tag, new DaxAtrDtoDataTypeId(dataTypeTag));
+        putAttribute(tag, new DaxAtrEntityDataTypeId(dataTypeTag));
     }
 
     // put DaxAtrDeprecated

@@ -33,6 +33,9 @@ public class DaxBody {
 
     Map<Integer,Map<DaxTag, DaxPair<?>>> blockMap = new HashMap<>();
 
+
+    Map<Integer,Map<DaxTag, Integer>> blockRefMap = new HashMap<>();
+
     int blockIdx = -1;
 
     private void checkBlockCounterBeforePut(){
@@ -93,6 +96,7 @@ public class DaxBody {
     public void nextBlock(){
         blockIdx = blockMap.size();
         blockMap.put(blockIdx,new HashMap<>());
+        blockRefMap.put(blockIdx,new HashMap<>());
 
     }
 
@@ -109,7 +113,17 @@ public class DaxBody {
          return blockMap;
     }
 
+
     public int getCurrentIdx(){
         return blockIdx;
     }
+
+    public void putTagBlockReference(int blogIdx, DaxTag tag, int refBlockIdx) {
+        blockRefMap.get(blogIdx).put(tag,refBlockIdx);
+    }
+
+    public Map<DaxTag, Integer> getTagBlockRefMap(int blogIdx) {
+        return blockRefMap.get(blogIdx);
+    }
+
 }

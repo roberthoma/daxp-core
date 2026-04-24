@@ -11,7 +11,7 @@ import java.util.Set;
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.*;
 
 @DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_dto)
-public class DaxDTO_Base {
+public class DaxAnyTestEnity {
 
 
     @DaxpField(tagId = TEST_TAG_int)
@@ -31,7 +31,7 @@ public class DaxDTO_Base {
     char fixTestValue;
 
     @DaxpField(tagId = TEST_ENUM_VALUE)
-    DaxEnumSample enumValue;
+    DaxAnyTestEnum enumValue;
 
     //@DaxpField("5077")
     @DaxpField(tagId = TEST_SUB_DTO_1 )
@@ -77,7 +77,7 @@ public class DaxDTO_Base {
         return fixTestValue;
     }
 
-    public DaxEnumSample getEnumValue() {
+    public DaxAnyTestEnum getEnumValue() {
         return enumValue;
     }
 
@@ -85,20 +85,20 @@ public class DaxDTO_Base {
         return subDTO;
     }
 
-    public DaxDTO_Base(){
+    public DaxAnyTestEnity(){
 //        this.fixTestValue = 'X';
 //        this.enumValue = DaxEnumSample.ENUM_VALUE1;
 //        this.subDTO = new DaxSubDTO(14,"testSubDTO",12.34);
 
     }
-    public DaxDTO_Base(String testStr, char testChar, int testInt){
+    public DaxAnyTestEnity(String testStr, char testChar, int testInt){
 
         this.anyInt = testInt;
         this.anyString = testStr;
         this.anyChar = testChar;
         this.anyBoolean = true;
         this.fixTestValue = 'X';
-        this.enumValue = DaxEnumSample.ENUM_VALUE1;
+        this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
         this.subDTO = new DaxSubDTO(14,"testSubDTO",12.34);
         this.subDTO2 = new DaxSubDTO(34,"testSubDTO2",74.56);
 

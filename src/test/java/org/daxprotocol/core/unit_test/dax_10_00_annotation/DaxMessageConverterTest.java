@@ -1,12 +1,10 @@
 package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
-import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.unit_test.dax_00_00_service.DaxMessageDecorator;
 import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class DaxMessageConverterTest extends DaxConfigBaseTest {
@@ -28,7 +26,7 @@ public class DaxMessageConverterTest extends DaxConfigBaseTest {
         System.out.println("-------------------\n");
         System.out.println("REQ > " + reqMsg);
         System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
-        DaxDTO_Base dtoBase = msgConverter.createFromMessage(frameResp.getFirstMessage(),DaxDTO_Base.class);
+        DaxAnyTestEnity dtoBase = msgConverter.createFromMessage(frameResp.getFirstMessage(), DaxAnyTestEnity.class);
         System.out.println(" dtoBase.anyString >>>"+ dtoBase.anyString);
     }
 

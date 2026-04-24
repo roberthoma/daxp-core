@@ -123,9 +123,9 @@ public class DaxPopulatorMessage {
                 daxDic.putAtrDataType(tag, blockPairMap.get(DaxCoreTags.DATA_TYPE).getStrValue());
             }
 
-            else if(blockPairMap.containsKey(DaxCoreTags.DTO_DATA_TYPE_ID)) {
+            else if(blockPairMap.containsKey(DaxCoreTags.ENTITY_DATA_TYPE_ID)) {
                 DaxTag tag3 = tagParser.parseDaxTag(
-                        blockPairMap.get(DaxCoreTags.DTO_DATA_TYPE_ID).getStrValue(), msgContextId);
+                        blockPairMap.get(DaxCoreTags.ENTITY_DATA_TYPE_ID).getStrValue(), msgContextId);
                 daxDic.putAtrEntityDataTypeId(tag, tag3);
             }
             else{
@@ -171,7 +171,7 @@ public class DaxPopulatorMessage {
 
 
         if(blockType.equals(DaxBlockType.BLOCK_ENTITY)){
-            String groupName = blockPairMap.get(DaxCoreTags.DTO_NAME).getStrValue();
+            String groupName = blockPairMap.get(DaxCoreTags.ENTITY_NAME).getStrValue();
 
             //int groupId = groupMapper.getReferenceId(groupName);
             DaxTag groupTag = tagParser.parseDaxTag(
@@ -184,7 +184,7 @@ public class DaxPopulatorMessage {
             daxDic.putEntity(group);
             String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
             List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgContextId);
-            tagList.forEach(tag -> daxDic.putDtoField(groupTag, tag));
+            tagList.forEach(tag -> daxDic.putEntityField(groupTag, tag));
             return;
         }
 

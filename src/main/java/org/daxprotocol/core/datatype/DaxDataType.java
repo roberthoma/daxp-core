@@ -101,6 +101,7 @@ Entity = ENT
 Percentage
  	Price
 
+Boolean, Integer, Integer64, Decimal, Float, String, Binary, Date, Time, DateTime, Duration, UUID
 
 * */
 public enum DaxDataType {

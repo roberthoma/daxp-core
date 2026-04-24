@@ -137,12 +137,12 @@ public class DaxMessageFactory {
 //            );
 
 
-    private void putDtoToBody(DaxBody body, DaxEntity dto, Set<DaxTag> daxFields){
+    private void putEntityToBody(DaxBody body, DaxEntity dto, Set<DaxTag> daxFields){
         body.nextBlock(DaxBlockType.BLOCK_ENTITY);
         body.putPair(FIELD_ID, tagCodec.encode(dto.getTag()) );
-        body.putPair(DTO_NAME, dto.getName());
+        body.putPair(ENTITY_NAME, dto.getName());
         if (!dto.getDescription().isBlank() ){
-            body.putPair(DTO_DESCRIPTION, dto.getDescription());
+            body.putPair(ENTITY_DESCRIPTION, dto.getDescription());
         }
 
         body.putPair(TAG_LIST, createTagListStr(daxFields));
@@ -246,8 +246,8 @@ public class DaxMessageFactory {
         //     schemaRegister.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
         //-------------------------------------------------------------------------------
 
-        schemaRegister.getDtoMap().forEach((integer, entity) ->
-                putDtoToBody(message.getBody(), entity, schemaRegister.getEntityFieldsMap().get(entity.getTag())));
+        schemaRegister.getEntityMap().forEach((tag, entity) ->
+                putEntityToBody(message.getBody(), entity, schemaRegister.getEntityFieldsMap().get(entity.getTag())));
 
 
 
@@ -338,10 +338,10 @@ public class DaxMessageFactory {
                             body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                             int nestedIdx = body.getCurrentIdx();
 
-//                            body.putPair(blogIdx, new DaxPair<>(tag,nestedIdx+1));
-                            body.putPair(blogIdx, new DaxPair<>(DTO_REF_BLOCK_INST, tagCodec.encode(tag)
-                                    +"@"
-                                    +(nestedIdx+1)));
+
+
+
+                            body.putTagBlockReference(blogIdx, tag, (nestedIdx+1));
 
                             objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                         }
