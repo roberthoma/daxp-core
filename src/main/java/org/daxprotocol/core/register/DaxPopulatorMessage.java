@@ -2,10 +2,10 @@ package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.schema.DaxSchemaRegister;
-import org.daxprotocol.core.schema.DaxEnum;
-import org.daxprotocol.core.schema.DaxEnumValue;
-import org.daxprotocol.core.schema.DaxMessageItem;
+import org.daxprotocol.core.context.DaxContextRegister;
+import org.daxprotocol.core.context.DaxEnum;
+import org.daxprotocol.core.context.DaxEnumValue;
+import org.daxprotocol.core.context.DaxMessageItem;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.DaxMessage;
@@ -20,8 +20,8 @@ import java.util.Map;
 
 public class DaxPopulatorMessage {
     DaxTagParser tagParser;
-    DaxSchemaRegister daxDic;
-    public DaxPopulatorMessage(DaxTagParser tagParser, DaxSchemaRegister daxDic){
+    DaxContextRegister daxDic;
+    public DaxPopulatorMessage(DaxTagParser tagParser, DaxContextRegister daxDic){
         this.tagParser = tagParser;
         this.daxDic =  daxDic;
     }
@@ -37,7 +37,7 @@ public class DaxPopulatorMessage {
             }
 
             DaxMessageItem msgItem = new DaxMessageItem(
-                    blockPairMap.get(DaxCoreTags.FIELD_VALUE).getStrValue(),msgDesc);
+                    blockPairMap.get(DaxCoreTags.ENTRY_VALUE).getStrValue(),msgDesc);
 
             if (blockPairMap.containsKey(DaxCoreTags.MESSAGE_TAGS)){
 
@@ -62,16 +62,16 @@ public class DaxPopulatorMessage {
             return;
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_DICTIONARY)){
+        if(blockType.equals(DaxBlockType.BLOCK_COLLECTION)){
 
             DaxTag enumTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.ENUM_ID).getStrValue() , msgContextId
+                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgContextId
             ) ;
 
             daxDic.putTag( enumTag);
 
 
-            String name = blockPairMap.get(DaxCoreTags.ENUM_NAME).getStrValue();
+            String name = blockPairMap.get(DaxCoreTags.ENTRY_NAME).getStrValue();
             String desc = "";
             if (blockPairMap.containsKey(DaxCoreTags.ENUM_DESCRIPTION)){
                 desc = blockPairMap.get(DaxCoreTags.ENUM_DESCRIPTION).getStrValue();
@@ -90,13 +90,13 @@ public class DaxPopulatorMessage {
             return;
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_DIC_VALUE)){
+        if(blockType.equals(DaxBlockType.BLOCK_VALUE)){
             DaxTag enumTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.ENUM_ID).getStrValue() , msgContextId
+                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgContextId
             ) ;
 
             String valueDesc = "";
-            String value  = blockPairMap.get(DaxCoreTags.ENUM_VALUE).getStrValue();
+            String value  = blockPairMap.get(DaxCoreTags.COLLECTION_VALUE).getStrValue();
 
             if (blockPairMap.containsKey(DaxCoreTags.ENUM_VALUE_DESCRIPTION)) {
                 valueDesc = blockPairMap.get(DaxCoreTags.ENUM_VALUE_DESCRIPTION).getStrValue();
@@ -111,7 +111,7 @@ public class DaxPopulatorMessage {
         if(blockType.equals(DaxBlockType.BLOCK_TAG)){
 
             DaxTag tag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.FIELD_ID).getStrValue() , msgContextId
+                    blockPairMap.get(DaxCoreTags.ENTRY_ID).getStrValue() , msgContextId
             ) ;
 
             daxDic.putTag( tag);
@@ -120,7 +120,11 @@ public class DaxPopulatorMessage {
 
 
             if(blockPairMap.containsKey(DaxCoreTags.DATA_TYPE)) {
-                daxDic.putAtrDataType(tag, blockPairMap.get(DaxCoreTags.DATA_TYPE).getStrValue());
+
+                //TODO make validator nad filter
+                //daxDic.putAtrDataType(tag, blockPairMap.get(DaxCoreTags.DATA_TYPE).getStrValue());
+
+
             }
 
             else if(blockPairMap.containsKey(DaxCoreTags.ENTITY_DATA_TYPE_ID)) {
@@ -158,9 +162,9 @@ public class DaxPopulatorMessage {
                 );
             }
 
-            if(blockPairMap.containsKey(DaxCoreTags.ENUM_ID)) {
+            if(blockPairMap.containsKey(DaxCoreTags.COLLECTION_ID)) {
                 daxDic.putAtrEnumTypeTag(tag,
-                        tagParser.parseDaxTag(blockPairMap.get(DaxCoreTags.ENUM_ID).getStrValue(), msgContextId)
+                        tagParser.parseDaxTag(blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue(), msgContextId)
                 );
             }
 
@@ -175,7 +179,7 @@ public class DaxPopulatorMessage {
 
             //int groupId = groupMapper.getReferenceId(groupName);
             DaxTag groupTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.FIELD_ID).getStrValue(), msgContextId
+                    blockPairMap.get(DaxCoreTags.ENTRY_ID).getStrValue(), msgContextId
             ) ;
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();

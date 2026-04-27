@@ -33,11 +33,11 @@ public final class DaxAtrDataType extends DaxPair<String> {
         super(DaxCoreTags.DATA_TYPE, dataType != null ? dataType.getCode() : null);
     }
 
-    public DaxAtrDataType(Class<?> clazz) {
-        this(DaxDataType.fromClass(clazz));
-    }
-
-    public DaxDataType getDataType() {
-        return DaxDataType.fromCode(getValue());
-    }
+//    public DaxAtrDataType(Class<?> clazz) {
+//        this(DaxDataType.fromClass(clazz));
+//    }
+//
+//    public DaxDataType_OLD getDataType() {
+//        return DaxDataType_OLD.fromCode(getValue());
+//    }
 }

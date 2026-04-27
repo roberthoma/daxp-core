@@ -1,0 +1,44 @@
+Uporządkowane zestawienie typów DAXP z podziałem na warstwy:
+1. Rdzeń (Core Types) - Podstawy binarne i matematyczne
+
+Są to typy atomowe, które parser Javy i Oracle muszą obsługiwać natywnie.
+Kod DAXP	Nazwa	Java Type	Oracle Type	Opis
+STR	String	String	VARCHAR2 / CLOB	Standardowy tekst (UTF-8).
+INT	Integer	int / Integer	NUMBER(9,0)	Liczba całkowita 32-bit.
+LNG	Long	long / Long	NUMBER(18,0)	Liczba całkowita 64-bit.
+DBL	Double	double / Double	BINARY_DOUBLE	Zmiennoprzecinkowy (szybki).
+DEC	Decimal	BigDecimal	NUMBER	Stałoprzecinkowy (precyzyjny - np. finanse).
+BLN	Boolean	boolean	CHAR(1) ('Y'/'N')	Prawda / Fałsz.
+2. Czas i Kalendarz (Temporal Types)
+
+Standaryzacja daty i czasu jest kluczowa dla uniknięcia problemów ze strefami czasowymi.
+Kod DAXP	Nazwa	Java Type	Oracle Type	Uwagi
+LDD	LocalDate	LocalDate	DATE	Sama data (YYYY-MM-DD).
+LDT	LocalDateTime	LocalDateTime	TIMESTAMP	Data i czas.
+DAY	DayOfMonth	int	NUMBER(2)	Wartość 1-31.
+DUR	Duration	Duration	INTERVAL	Odstęp czasu.
+3. Specjalizowane (Specialized Strings)
+
+Technicznie to String, ale z nałożoną logiką walidacji lub strukturą wewnętrzną.
+Kod DAXP	Nazwa	Logika / Walidacja	Przykład
+JSON	JSON	Parser JSON (Jackson/Gson)	{"id":1}
+XML	XML	Parser XML (JAXB)	<node>...</node>
+CSV	CSV	Parser strumieniowy (Twoja optymalizacja)	val1;val2;val3
+REGX	Regexp	java.util.regex.Pattern	[A-Z]{2}\d{3}
+EML	Email	Walidacja formatu e-mail	test@daxp.io
+4. Standardy Międzynarodowe (International Standards)
+
+Zgodne z modelem FIX i normami ISO.
+Kod DAXP	Nazwa	Standard	Java Mapping
+CNR	Country	ISO 3166	String (2 lub 3 znaki, np. "PL")
+CUR	Currency	ISO 4217	String (3 znaki, np. "PLN", "USD")
+5. Struktury DAXP (Structural Types)
+
+Typy definiujące zachowanie silnika protokołu.
+Kod DAXP	Nazwa	Opis
+ENT	Entity	Obiekt/Encja (Twoja podstawowa struktura).
+COL	Collection	Twoja uniwersalna kolekcja C z atrybutami.
+ENUM	Enum	Typ wyliczeniowy (Słownik).
+TAG	Tag	Referencja do innego taga/pola wewnątrz ramki.
+
+

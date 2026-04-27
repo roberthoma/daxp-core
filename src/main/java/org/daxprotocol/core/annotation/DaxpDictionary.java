@@ -10,7 +10,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ TYPE })
 @Documented
-public @interface DaxpEnum {
+public @interface DaxpDictionary {
     String value()       default "";
     int    tagId()       default -1;
     String context()     default "";

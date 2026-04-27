@@ -1,0 +1,90 @@
+/*
+TODO Extend for
+- email
+- BigDecimal
+- LocalDate
+- LocalDateTime
+- JSON
+- XML
+- DayOfMonth
+- Country 	-  String field (see definition of "String" above) representing a country using ISO 3166
+- Currency - String field (see definition of "String" above) representing a currency type using ISO 4217 Currency <15> code (3 character) values.
+like FIX protocol
+-Regexp
+
+- String
+- Integer
+- Double
+- Float
+- boolean
+
+From java
+primitive type → int, long, boolean
+class type → String, Customer
+interface type → List, Serializable
+enum type → OrderStatus
+record type → CustomerDto
+annotation type → @Override
+array type → String[]
+
+
+S = String
+I = Integer
+B = Boolean
+D = LocalDate
+T = LocalDateTime
+F = Float
+R = Double
+N = Decimal
+P = BigDecimal
+J = JSON       <= String
+X = XML        <= String
+Q = Regexp     <= String
+V = CSV        <= String
+e = Email      <= String
+M = DayOfMonth
+C = Country
+U = Currency
+E = Enum
+K = Tag
+R = DTO
+
+https://www.onixs.biz/fix-dictionary/4.4/index.html#String
+
+STR = String
+INT = Integer
+BLN = Boolean
+LDD = LocalDate
+LDT = LocalDateTime
+F = Float
+DBL = Double
+N = Decimal
+P = BigDecimal
+JSON = JSON       <= String
+XML = XML        <= String
+REGX = Regexp     <= String
+CVS = CSV        <= String
+EMAIL = Email      <= String
+DAY = DayOfMonth
+CNR = Country
+CURR = Currency
+ENUM = Enum
+TAG = Tag
+Entity = ENT
+
+Percentage
+ 	Price
+
+Boolean, Integer, Integer64, Decimal, Float, String, Binary, Date, Time, DateTime, Duration, UUID
+
+NUMBER (ogólny)	BigDecimal	DEC (Decimal)
+NUMBER(9)	Integer	INT (Integer)
+NUMBER(18)	Long	LNG (Long)
+BINARY_FLOAT	float	FLT (Float)
+BINARY_DOUBLE	double	DBL (Double)
+
+STRING
+CHAR
+...
+
+* */

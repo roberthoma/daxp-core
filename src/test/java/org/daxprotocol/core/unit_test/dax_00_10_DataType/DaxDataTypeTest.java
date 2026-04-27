@@ -1,0 +1,61 @@
+package org.daxprotocol.core.unit_test.dax_00_10_DataType;
+
+import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.datatype.DaxDataTypeCodec;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import static org.daxprotocol.core.application.DaxCoreTags.*;
+public class DaxDataTypeTest extends DaxConfigBaseTest {
+
+
+
+    @Test
+    void classNullToUnknow() {
+
+        DaxDataType classType =  dataTypeCodec.decodeClass(null);
+        Assertions.assertEquals(DaxDataType.UNKNOWN.getCode(),classType.getCode());
+    }
+
+
+    @Test
+    void classStringToSTR() {
+
+        DaxDataType classType =  dataTypeCodec.decodeClass(String.class);
+        Assertions.assertEquals(DaxDataType.STRING.getCode(),classType.getCode());
+    }
+
+
+    @Test
+    void mapCollectionList() {
+        Map<DaxTag, DaxPair<?>> tagPairMap = new HashMap<>();
+        Map<DaxTag, DaxPair<?>> tagPairMapOut ;
+
+        tagPairMap.put(DATA_TYPE, new DaxPair<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
+        tagPairMap.put(COLLECTION_ALLOW_DUPLICATES, new DaxPair<>(COLLECTION_ALLOW_DUPLICATES,true));
+
+        Class<?> clazz =  dataTypeCodec.decode(tagPairMap);
+        Assertions.assertEquals(List.class, clazz);
+
+        tagPairMapOut = dataTypeCodec.encode(List.class);
+
+        tagPairMapOut.forEach((tag, daxPair) ->
+                System.out.println(tagCodec.encode(tag)  +"="+  daxPair.getStrValue()));
+
+
+      //  Assertions.assertEquals(tagPairMap, tagPairMapOut);
+
+
+    }
+
+
+
+
+
+}

@@ -26,8 +26,8 @@ public class DaxMessageConverterTest extends DaxConfigBaseTest {
         System.out.println("-------------------\n");
         System.out.println("REQ > " + reqMsg);
         System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
-        DaxAnyTestEnity dtoBase = msgConverter.createFromMessage(frameResp.getFirstMessage(), DaxAnyTestEnity.class);
-        System.out.println(" dtoBase.anyString >>>"+ dtoBase.anyString);
+        DaxAnyTestEnity entity = msgConverter.createFromMessage(frameResp.getFirstMessage(), DaxAnyTestEnity.class);
+        System.out.println(" dtoBase.anyString >>>"+ entity.anyString);
     }
 
 }

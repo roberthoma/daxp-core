@@ -1,0 +1,24 @@
+COLLECTION
+
+Aby to było spójne, Twoje tagi atrybutów ($:21, :22, itd.) powinny działać jak przełączniki (switches):
+Tag	Atrybut	Opis (Logic)	Odpowiednik w programowaniu
+
+$:21	Allow Duplicates	True (default) / False	False zamienia kolekcję w Set
+$:22	Has Keys	Wskazuje, że element składa się z pary Key=Value	Zamienia kolekcję w Map
+$:23	Ordered	Czy kolejność wstawiania ma znaczenie?	True to List, False to Bag
+$:24	Navigable	Czy element zna swojego sąsiada (następnik/poprzednik)?	Tworzy Linked List lub Graph
+$:25	Is Dictionary	Czy ta kolekcja służy jako źródło prawdy dla innych pól?	Twoje LOV / Dictionary
+
+
+
+COLLECTION ITEM
+
+Tag	Nazwa techniczna (Ang.)	Opis
+$:31    Key
+$:31    Value
+$:31	Next	Wskaźnik na następny element (Successor).
+$:32	Prev (Previous)	Wskaźnik na poprzedni element (Predecessor).
+
+
+
+

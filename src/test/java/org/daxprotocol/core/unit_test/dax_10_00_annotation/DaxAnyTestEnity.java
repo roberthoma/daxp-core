@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.*;
 
-@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_dto)
+@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_ENTITY)
 public class DaxAnyTestEnity {
 
 
@@ -19,6 +19,11 @@ public class DaxAnyTestEnity {
 
     @DaxpField(tagId = TEST_TAG_String)
     String anyString;
+
+    @Deprecated
+    @DaxpField(tagId = TEST_TAG_Deprecated_String)
+    String anyDeprecatedString;
+
 
     @DaxpField(tagId = TEST_TAG_char)
     char anyChar;
@@ -39,6 +44,9 @@ public class DaxAnyTestEnity {
 
     @DaxpField(tagId = 5078)
     DaxSubDTO  subDTO2;
+
+
+
 
 
     /// Collection test
@@ -101,6 +109,8 @@ public class DaxAnyTestEnity {
         this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
         this.subDTO = new DaxSubDTO(14,"testSubDTO",12.34);
         this.subDTO2 = new DaxSubDTO(34,"testSubDTO2",74.56);
+
+        stringList = List.of("strVal1","strVal2","strVal3","strVal1");
 
 
     }

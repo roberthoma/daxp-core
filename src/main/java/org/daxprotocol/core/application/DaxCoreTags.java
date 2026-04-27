@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.application;
-import org.daxprotocol.core.schema.DaxSchemaRegister;
+import org.daxprotocol.core.context.DaxContextRegister;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class DaxCoreTags {
 
     private static DaxTag daxpSysTag(int tagId) {
         if (SYS_TAG_CACHE.containsKey(tagId)) {
-            throw new IllegalStateException("Duplicate System Tag ID detected: " + tagId);
+            throw new IllegalStateException("Duplicate DAXP TAG ID detected: " + tagId);
         }
         DaxTag tag =  DaxTag.createCoreTag (tagId) ;
         SYS_TAG_CACHE.put(tagId, tag);
@@ -63,39 +63,39 @@ public class DaxCoreTags {
      */
     public static final DaxTag BLOCK_INDEX             = daxpSysTag(4);
     public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);
+    public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(8);
 
-    // Set of universal tags
-//    F_NAME
-//    DESCRIPTION
-//    NAME
-//    SYMBOL
-//    STATUS
-//    DirectBuffer ddd;
 
-    public static final DaxTag FIELD_ID                = daxpSysTag(6);
-    public static final DaxTag FIELD_NAME              = daxpSysTag(101);
-    public static final DaxTag FIELD_STATUS            = daxpSysTag(102);
-    public static final DaxTag FIELD_VALUE             = daxpSysTag(103);
-    public static final DaxTag FIELD_VALUE_DEFAULT     = daxpSysTag(104);
+    ///Universal tag
+    public static final DaxTag ENTRY_ID = daxpSysTag(6);
+    public static final DaxTag ENTRY_NAME = daxpSysTag(101);
+    public static final DaxTag ENTRY_STATUS            = daxpSysTag(102);
+    public static final DaxTag ENTRY_VALUE = daxpSysTag(103);
+    public static final DaxTag ENTRY_VALUE_DEFAULT     = daxpSysTag(104);
     public static final DaxTag FIELD_VALUE_DESCRIPTION = daxpSysTag(105);
     public static final DaxTag FIELD_VALUE_SYMBOL      = daxpSysTag(106);
     public static final DaxTag FIELD_VALUE_PREFIX      = daxpSysTag(107);
     public static final DaxTag REQ_FIELD_LIST          = daxpSysTag(108);
 
 
+    public static final DaxTag FIELD_OWNER_ID          = daxpSysTag(110);
+
+
     public static final DaxTag TAG_LIST                = daxpSysTag(115);
     public static final DaxTag DATA_TYPE               = daxpSysTag(7);
     public static final DaxTag ENTITY_DATA_TYPE_ID     = daxpSysTag(118);
-    public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(119);
+
+    public static final DaxTag REFERENCE_ENTITY         = daxpSysTag(15);
+
 
     public static final DaxTag FIELD_ROLE         = daxpSysTag(122);
 
 
 
-    public static final DaxTag ENUM_ID                 = daxpSysTag(129);
+    public static final DaxTag COLLECTION_ID = daxpSysTag(129);
     public static final DaxTag ENUM_NAME               = daxpSysTag(130);
     public static final DaxTag ENUM_DESCRIPTION        = daxpSysTag(131);
-    public static final DaxTag ENUM_VALUE              = daxpSysTag(132);
+    public static final DaxTag COLLECTION_VALUE = daxpSysTag(132);
     public static final DaxTag ENUM_VALUE_DESCRIPTION  = daxpSysTag(133);
     public static final DaxTag ENUM_VALUE_SYMBOL       = daxpSysTag(134);
     public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
@@ -137,6 +137,18 @@ public class DaxCoreTags {
     public static final DaxTag ATR_READONLY        = daxpSysTag(169);
     public static final DaxTag ATR_IS_DEPRECATED   = daxpSysTag(170);
 
+
+
+
+    public static final DaxTag COLLECTION_ALLOW_DUPLICATES = daxpSysTag(210);
+    public static final DaxTag COLLECTION_HAS_KEYS = daxpSysTag(211);
+    public static final DaxTag COLLECTION_ORDERED = daxpSysTag(212);
+    public static final DaxTag COLLECTION_NAVIGABLE = daxpSysTag(213);
+    public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
+
+
+
+
     //TODO
 
     /*****************************
@@ -164,7 +176,7 @@ public class DaxCoreTags {
     public static final DaxTag CHECKSUM                = daxpSysTag(9);
 
 
-    public static void init(DaxSchemaRegister dic){
+    public static void init(DaxContextRegister dic){
 //        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
 //        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
     }

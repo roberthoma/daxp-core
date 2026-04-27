@@ -25,7 +25,7 @@ import org.daxprotocol.core.application.DaxCoreTags;
 
 public class DaxArtFieldName extends DaxPair<String> {
     public DaxArtFieldName(String value) {
-        super(DaxCoreTags.FIELD_NAME, value);
+        super(DaxCoreTags.ENTRY_NAME, value);
     }
 
 

@@ -26,6 +26,6 @@ import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxAtrEnumTag extends DaxPair<DaxTag> {
     public DaxAtrEnumTag(DaxTag tag) {
-        super(DaxCoreTags.ENUM_ID, tag);
+        super(DaxCoreTags.COLLECTION_ID, tag);
     }
 }

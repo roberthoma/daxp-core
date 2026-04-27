@@ -5,3 +5,15 @@ New Attributes like
 defaultValue : null,
 
 stepSize : 1,
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+COLLECTION
+
+Jak to zapisać w DAXP (Atrybuty)?
+
+Zgodnie z Twoim modelem atrybutowym, mógłbyś to nazwać następująco:
+Tag	Nazwa techniczna (Ang.)	Opis
+$:23	Next	Wskaźnik na następny element (Successor).
+$:24	Prev (Previous)	Wskaźnik na poprzedni element (Predecessor).
+$:26	IsBidirectional	Flaga: czy kolekcja wspiera nawigację w obie strony.

@@ -1,0 +1,17 @@
+public class DaxEntity {
+    private final int id; // Wartość z $:4
+    private final Map<Integer, Object> fields = new HashMap<>();
+    private final Map<Integer, DaxDataType> types = new HashMap<>();
+
+    public DaxEntity(int id) { this.id = id; }
+
+    public void setField(int tag, Object value, DaxDataType type) {
+        fields.put(tag, value);
+        types.put(tag, type);
+    }
+
+    // Przykład: pobierasz wartość i od razu wiesz, że to BigDecimal
+    public BigDecimal getDecimal(int tag) {
+        return (BigDecimal) fields.get(tag);
+    }
+}

@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.schema;
+package org.daxprotocol.core.context;
 
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxCollectionTool;

@@ -18,12 +18,12 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.schema;
+package org.daxprotocol.core.context;
 
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -45,8 +45,8 @@ import java.util.concurrent.ConcurrentHashMap;
 // dictionary od exception by context
 // CRM-00234, DAX-23445, $:23455 , crm:33345
 
-public class DaxSchemaRegister {
-    private static final Logger logger = LoggerFactory.getLogger(DaxSchemaRegister.class);
+public class DaxContextRegister {
+    private static final Logger logger = LoggerFactory.getLogger(DaxContextRegister.class);
 
     DaxConfig config;
     DaxContextMapper contextMapper;
@@ -63,6 +63,10 @@ public class DaxSchemaRegister {
      */
     Set<DaxTag> tagSet = new HashSet<>();
 
+    /*****************************************************
+     * Entity tags, key is tag of entity
+     */
+    Map<DaxTag,  Set<DaxTag>> entityTagSet = new HashMap<>();
 
 
     Map<Integer, DaxEnumDictionary> enumDictionaryMap = new ConcurrentHashMap<>();
@@ -84,6 +88,9 @@ public class DaxSchemaRegister {
     Map<DaxTag, Map<DaxTag, DaxPair<?>>> attributMap = new ConcurrentHashMap<>();
 
 
+    //TODO
+    //Add dedicated attributes for field used by Entity
+
     /*****************************************************
      *  Entity Map //
      */
@@ -94,9 +101,10 @@ public class DaxSchemaRegister {
     /******************************************************/
     int appContextId;
 
-    public DaxSchemaRegister(DaxConfig config,
+    public DaxContextRegister(DaxConfig config,
             DaxContextMapper contextMapper ,
-            DaxMessageMapper messageMapper
+            DaxMessageMapper messageMapper ,
+            DaxDataTypeCodec dataTypeCodec
     )
     {
         logger.info("Init DaxSchemaRegister...");
@@ -202,19 +210,12 @@ public class DaxSchemaRegister {
     //**********************************************************************
     // Attributes
 
-    private void putAttribute(int contextId, int tagId, DaxPair<?> atrPair){
 
-      DaxTag tag = DaxTag.of (contextId, tagId);
-
-      attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrPair.getTag(), atrPair)),
+    public void putAttribute(DaxTag tag, DaxPair<?> atrPair){
+        attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrPair.getTag(), atrPair)),
                 (eM, nM) ->
                         DaxCollectionTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
 
-    }
-
-
-    public void putAttribute(DaxTag tag, DaxPair<?> atrPair){
-        putAttribute(tag.getContextId(), tag.getTagId(), atrPair);
     }
 
     //**********************************************************************
@@ -234,43 +235,42 @@ public class DaxSchemaRegister {
 //        putAttribute(tagId, new DaxAtrDataType(clazz));
 //    };
 
-    public void putAtrDataType(DaxTag tag,  Class<?> clazz){
-        putAttribute(tag, new DaxAtrDataType(clazz));
+    public void putAtrDataType(DaxTag tag, Map<DaxTag, DaxPair<?>> pairMap){
+        pairMap.forEach((atrTag, atrPair) ->
+        putAttribute(tag, atrPair));
+
     };
-
-
-    public void putAtrDataType(DaxTag tag,  String c){
-        putAttribute(tag, new DaxAtrDataType(c));
-    };
-
-//    public void putAtrDataType(DaxTag tag,  DaxAtrDataType dataType){
-//        putAttribute(tag, dataType);
+//
+//    public void putAtrDataType(DaxTag tag, DaxDataType dataType){
+//        putAttribute(tag, new DaxAtrDataType(dataType));
 //    };
 
 
 
+
+
+
     public void putAtrSizeMax(DaxTag tag,  Integer max){
-        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMax(max));
+        putAttribute(tag, new DaxAtrSizeMax(max));
     }
 
 
     public void putAtrSizeMin(DaxTag tag,  Integer min){
-        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrSizeMin(min));
+        putAttribute(tag, new DaxAtrSizeMin(min));
     }
 
 
 
     public void putAtrNullable(DaxTag tag,  Boolean able){
-        putAttribute(tag.getContextId(),tag.getTagId(), new DaxAtrNullable(able));
+        putAttribute(tag, new DaxAtrNullable(able));
     }
 
     public void putAtrReadOnly(DaxTag tag, Boolean able) {
-        putAttribute(tag.getContextId(),tag.getTagId(), new DaxArtReadOnly(able));
+        putAttribute(tag,  new DaxArtReadOnly(able));
     }
 
     public void putAtrReadOnly(DaxTag tag, char able) {
-        putAttribute(tag.getContextId(),tag.getTagId(), new DaxArtReadOnly(able=='Y'? Boolean.TRUE:
-                Boolean.FALSE));
+        putAttribute(tag, new DaxArtReadOnly(able=='Y'? Boolean.TRUE:Boolean.FALSE));
     }
 
     public void putAtrEnumTypeTag(DaxTag tag, DaxTag enumTag) {
@@ -278,11 +278,22 @@ public class DaxSchemaRegister {
     }
 
 
+
+    public void putAtrFieldName(DaxTag tag, String name) {
+        putAttribute(tag, new DaxArtFieldName(name));
+    }
+
+
+
+
     public void putAtrEntityDataTypeId(DaxTag tag, DaxTag dataTypeTag) {
         putAttribute(tag, new DaxAtrEntityDataTypeId(dataTypeTag));
     }
 
-    // put DaxAtrDeprecated
+
+    public void putAtrDeprecated(DaxTag tag) {
+        putAttribute(tag, new DaxAtrDeprecated(true));
+    }
 
     public void putTag(DaxTag tag){
 
@@ -294,14 +305,14 @@ public class DaxSchemaRegister {
 
     }
     //------------------------------------
-    public DaxDataType getAtrDataType(DaxTag tag){
-        if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxCoreTags.DATA_TYPE)) {
-
-            return DaxDataType.fromCode(attributMap.get(tag).get(DaxCoreTags.DATA_TYPE).getStrValue());
-        }
-        return DaxDataType.UNKNOWN;
-
-    }
+//    public Class<?> getAtrDataType(DaxTag tag){
+//        if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxCoreTags.DATA_TYPE)) {
+//
+//            return DaxDataType_OLD.fromCode(attributMap.get(tag).get(DaxCoreTags.DATA_TYPE).getStrValue());
+//        }
+//        return DaxDataType_OLD.UNKNOWN;
+//
+//    }
 
 
 

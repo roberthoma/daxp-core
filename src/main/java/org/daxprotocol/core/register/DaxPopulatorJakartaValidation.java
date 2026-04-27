@@ -2,7 +2,7 @@ package org.daxprotocol.core.register;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.schema.DaxSchemaRegister;
+import org.daxprotocol.core.context.DaxContextRegister;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Field;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class DaxPopulatorJakartaValidation {
 
-    public void populate(DaxSchemaRegister daxDic, Field field , DaxTag tag){
+    public void populate(DaxContextRegister daxDic, Field field , DaxTag tag){
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName()
                         .startsWith("jakarta.validation"));

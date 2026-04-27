@@ -27,7 +27,7 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.schema.*;
+import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.context.DaxContext;
@@ -61,7 +61,7 @@ public class DaxMessageFactory {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-    DaxSchemaRegister dictionary;
+    DaxContextRegister dictionary;
     DaxTagParser tagParser;
     public DaxMessageFactory(DaxConfig config,
             DaxContextMapper contextMapper,
@@ -70,7 +70,7 @@ public class DaxMessageFactory {
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxSchemaRegister dictionary,
+            DaxContextRegister dictionary,
             DaxTagParser tagParser
 
             ) {
@@ -92,23 +92,12 @@ public class DaxMessageFactory {
 
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
         body.nextBlock(DaxBlockType.BLOCK_TAG);
-        body.putPair(FIELD_ID,tagCodec.encode(tag));
+        body.putPair(ENTRY_ID,tagCodec.encode(tag));
 
         map.forEach((i, pair) -> body.putPair(pair));
     }
 
 
-//    private String tagEncode(DaxTag tag){
-//
-//        if (tag.getContextId() == config.getAppContextId()){
-//            return String.valueOf(tag.getTagId());
-//        }
-//
-//        return contextMapper.getReference(tag.getContextId())+
-//                DaxConfig.CONTEXT_TAG_SEPARATOR+
-//                tag.getTagId();
-//
-//    }
 
     private   String createTagListStr(Set<DaxTag> daxFields){
 
@@ -137,12 +126,12 @@ public class DaxMessageFactory {
 //            );
 
 
-    private void putEntityToBody(DaxBody body, DaxEntity dto, Set<DaxTag> daxFields){
+    private void putEntityToBody(DaxBody body, DaxEntity entity, Set<DaxTag> daxFields){
         body.nextBlock(DaxBlockType.BLOCK_ENTITY);
-        body.putPair(FIELD_ID, tagCodec.encode(dto.getTag()) );
-        body.putPair(ENTITY_NAME, dto.getName());
-        if (!dto.getDescription().isBlank() ){
-            body.putPair(ENTITY_DESCRIPTION, dto.getDescription());
+        body.putPair(ENTRY_ID, tagCodec.encode(entity.getTag()) );
+        body.putPair(ENTITY_NAME, entity.getName());
+        if (!entity.getDescription().isBlank() ){
+            body.putPair(ENTITY_DESCRIPTION, entity.getDescription());
         }
 
         body.putPair(TAG_LIST, createTagListStr(daxFields));
@@ -167,9 +156,9 @@ public class DaxMessageFactory {
     private void putEnumToBlock(DaxBody body,
                                         DaxTag tag,
                                 DaxEnum daxEnum){
-        body.nextBlock(DaxBlockType.BLOCK_DICTIONARY);
-        body.putPair(ENUM_ID, tagCodec.encode(tag));
-        body.putPair(ENUM_NAME, daxEnum.getName());
+        body.nextBlock(DaxBlockType.BLOCK_COLLECTION);
+        body.putPair(COLLECTION_ID, tagCodec.encode(tag));
+        body.putPair(ENTRY_NAME, daxEnum.getName());
         body.putPair(ENUM_DESCRIPTION, daxEnum.getDesc());
 
 //TODO put list o enum value if description is empty
@@ -180,9 +169,9 @@ public class DaxMessageFactory {
     }
     private void putEnumValuesToBody(DaxBody body, DaxTag tag,Map<String, DaxEnumValue> enumValueMap ){
         enumValueMap.forEach( (s, value) -> {
-            body.nextBlock(DaxBlockType.BLOCK_DIC_VALUE);
-            body.putPair(ENUM_ID, tagCodec.encode(tag));
-            body.putPair(ENUM_VALUE, value.getValue());
+            body.nextBlock(DaxBlockType.BLOCK_VALUE);
+            body.putPair(COLLECTION_ID, tagCodec.encode(tag));
+            body.putPair(COLLECTION_VALUE, value.getValue());
 
             if (!value.getDesc().isBlank()) {
                 body.putPair(ENUM_VALUE_DESCRIPTION, value.getDesc());
@@ -205,7 +194,7 @@ public class DaxMessageFactory {
 
     private void putMsgItem(DaxBody body,  DaxMessageItem msgItem){
         body.nextBlock(DaxBlockType.BLOCK_MESSAGE);
-        body.putPair(FIELD_VALUE, msgItem.getMsgType());
+        body.putPair(ENTRY_VALUE, msgItem.getMsgType());
         body.putPair(FIELD_VALUE_DESCRIPTION, msgItem.getMsgDesc());
 
         body.putPair(MESSAGE_TAGS, createTagListStr(msgItem.getMsgFields()));
@@ -225,7 +214,7 @@ public class DaxMessageFactory {
     //TODO  create multi message with context dictionary values
 
 
-    private void dictionaryToMsg(DaxSchemaRegister schemaRegister, DaxMessage message)
+    private void schemaToMsg(DaxContextRegister schemaRegister, DaxMessage message)
     {
         schemaRegister.getMsgMap().forEach((s, messageDicItem) ->
                 putMsgItem(message.getBody(),messageDicItem)
@@ -255,14 +244,14 @@ public class DaxMessageFactory {
 
 
     //TODO Develop selective tags
-    public DaxMessage dictionaryToMsg() {
+    public DaxMessage schemaToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_DIC);
 
         dictionary.getContextMap().forEach((idCtx, context) ->
                         putContextToBody(message.getBody(), context)
                 );
 
-        dictionaryToMsg(dictionary,message );
+        schemaToMsg(dictionary,message );
 
         message.finish();
         return message;
@@ -311,7 +300,7 @@ public class DaxMessageFactory {
     private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry,
             DaxBody body,
             Set<DaxTag> reqTagSet ){
-        body.putPair(blogIdx,FIELD_ID, blockTag);
+        body.putPair(blogIdx, ENTRY_ID, blockTag);
         try {
             for (Field field : DaxLangTool.allFields(entry.getClass())) {
                 //----------------------------------------

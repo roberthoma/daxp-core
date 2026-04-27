@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD })
 public @interface DaxpHandler {
     String value();
-    String context() default "";
+//    String context() default "";
 }
 
     /*

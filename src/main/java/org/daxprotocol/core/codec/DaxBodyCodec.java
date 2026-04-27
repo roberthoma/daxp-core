@@ -18,6 +18,7 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.codec;
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -60,15 +61,15 @@ public class DaxBodyCodec {
         DaxPair<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);
         pairCodec.encode(sb, DaxCoreTags.BLOCK_TYPE, blockType.getStrValue(), pairSeparator);
 
-        if (blockMap.containsKey(DaxCoreTags.FIELD_ID) ){
-            pairCodec.encode(sb, DaxCoreTags.FIELD_ID, blockMap.get(DaxCoreTags.FIELD_ID), pairSeparator);
+        if (blockMap.containsKey(DaxCoreTags.ENTRY_ID) ){
+            pairCodec.encode(sb, DaxCoreTags.ENTRY_ID, blockMap.get(DaxCoreTags.ENTRY_ID), pairSeparator);
         }
 
         blockMap.forEach((tag, pair) ->
         {
             if (!tag.equals(DaxCoreTags.BLOCK_INDEX) &&
                 !tag.equals(DaxCoreTags.BLOCK_TYPE) &&
-                !tag.equals(DaxCoreTags.FIELD_ID)
+                !tag.equals(DaxCoreTags.ENTRY_ID)
             )
             {
                 pairCodec.encode(sb, tag, pair, pairSeparator);
@@ -78,7 +79,7 @@ public class DaxBodyCodec {
         tagBlockRefMap.forEach((tag, i)
                 -> pairCodec.encode(sb, DaxCoreTags.REFERENCE_BLOCK,
                                      new DaxPair<>(DaxCoreTags.REFERENCE_BLOCK,
-                                             tagCodec.encode(tag)+"@"+i)
+                                             tagCodec.encode(tag)+ DaxCoreConstants.REFERENCE_AT_BLOCK_CHAR +i)
                 , pairSeparator));
 
 

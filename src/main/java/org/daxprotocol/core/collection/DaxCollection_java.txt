@@ -1,0 +1,69 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * DAXP Universal Collection (C)
+ * A self-configuring container based on DAXP attributes.
+ */
+public class DaxCollection<T> {
+    // Identity & Type
+    private String collectionId;
+    private final DaxDataType dataType = DaxDataType.COLLECTION;
+
+    // Attributes (Switches)
+    private boolean allowDuplicates = true; // $:21
+    private boolean hasKeys = false;        // $:22
+    private boolean ordered = false;        // $:23
+    private boolean navigable = false;      // $:24
+    private boolean dictionary = false;      // $:25
+    private boolean isCsvStream = false;    // $:28
+
+    // Internal Storage
+    private final List<T> items = new ArrayList<>();
+    private final Map<Object, T> lookupMap = new HashMap<>();
+
+    /**
+     * Configure collection using DAXP Attribute Tags
+     */
+    public void setAttribute(String tag, String value) {
+        switch (tag) {
+            case "$:21": this.allowDuplicates = "T".equalsIgnoreCase(value); break;
+            case "$:22": this.hasKeys = "T".equalsIgnoreCase(value); break;
+            case "$:23": this.ordered = "T".equalsIgnoreCase(value); break;
+            case "$:24": this.navigable = "T".equalsIgnoreCase(value); break;
+            case "$:25": this.dictionary = "T".equalsIgnoreCase(value); break;
+            case "$:28": this.isCsvStream = "T".equalsIgnoreCase(value); break;
+        }
+    }
+
+    public void add(T item) {
+        if (!allowDuplicates && items.contains(item)) return;
+
+        items.add(item);
+
+        // If it's a dictionary or keyed, we need a way to index it
+        // (Assuming T has a method to provide its ID/Key)
+        if (hasKeys || dictionary) {
+            // lookupMap.put(extractKey(item), item);
+        }
+    }
+
+    /**
+     * Serializes collection header and attributes back to DAXP Frame
+     */
+    public String toDaxHeader() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("$:5=C"); // Type: Collection
+        if (!allowDuplicates) sb.append("|$:21=F");
+        if (hasKeys)          sb.append("|$:22=T");
+        if (ordered)          sb.append("|$:23=T");
+        if (navigable)        sb.append("|$:24=T");
+        if (dictionary)       sb.append("|$:25=T");
+        if (isCsvStream)      sb.append("|$:28=T");
+        return sb.toString();
+    }
+
+    // Getters for logic handling
+    public List<T> getItems() { return Collections.unmodifiableList(items); }
+    public boolean isCsv() { return isCsvStream; }
+}

@@ -25,7 +25,7 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.schema.DaxSchemaRegister;
+import org.daxprotocol.core.context.DaxContextRegister;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxFrame;
@@ -55,7 +55,7 @@ public class DaxFrameParser {
     public DaxFrameParser(DaxConfig config,
                             DaxContextMapper contextMapper,
                             DaxTagParser tagParser,
-                            DaxSchemaRegister daxDic,
+                            DaxContextRegister daxDic,
             DaxMessageFactory messageFactory,
             DaxPreambleCodec preambleCodec) {
         this.tagParser = tagParser;

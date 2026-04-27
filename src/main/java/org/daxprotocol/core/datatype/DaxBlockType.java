@@ -32,20 +32,14 @@ public class DaxBlockType extends DaxPair<String> {
     public static final String BLOCK_CONTEXT     = "X";
     public static final String BLOCK_INSTANCE    = "I";  // Group Instance (one record/row of values matching a Group Definition)
     public static final String BLOCK_TAG         = "T";
-    public static final String BLOCK_DICTIONARY  = "D";  // N
-    public static final String BLOCK_DIC_VALUE   = "V";
+    public static final String BLOCK_FIELD       = "F";
+    public static final String BLOCK_COLLECTION  = "C";   // Definition of collection : Name , Allow duplication , has key ....
+    public static final String BLOCK_VALUE       = "V";   // for example Collection value
+
 
 //    public static final String BLOCK_LIST        = "L";   // List of tags
 //    public static final DaxTag  TAG = new DaxTag(DaxTagConst.BLOCK_TYPE);
-//    public static final String BLOCK_FIELD_LIST  = "F";
 
-
-    //TODO join !!!
-    // 7=13|5=G|143=Customer|141=35|  and >>>
-    //  7=23|5=F|115=2001,2002,FIX:53,2005,2073,2074,2075,2076,2077|141=35|
-    // replace 141 by 144 GROUP_NAMESPACE
-    // 7=13|5=G|143=Customer|115=2001,2002,FIX:53,2005,2073,2074,2075,2076,2077|144=Any.Name.Space|
-    // it mean Any.Name.Space::Customer
 
     public DaxBlockType(String value) {
         super(DaxCoreTags.BLOCK_TYPE, value);

@@ -21,6 +21,8 @@
 
 package org.daxprotocol.core.annotation;
 
+import org.daxprotocol.core.datatype.DaxDataType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -30,9 +32,9 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD })
 public @interface  DaxpTag {
     String context() default ""; //>>>> empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
-    String dataType()  default "";
+//    DaxDataType dataType()  default "";
     boolean readOnly() default false;
-    Class<?> clazz() default Void.class;
     String description() default "";
+    Class<?> clazz() default Void.class;
 }
 

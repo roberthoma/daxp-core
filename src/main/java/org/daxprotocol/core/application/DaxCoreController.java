@@ -19,7 +19,7 @@ public class DaxCoreController {
     @DaxpHandler(DaxCoreMessages.DIC_REQ)
     public void getDictionaryData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
 
-        DaxMessage message = messageFactory.dictionaryToMsg();
+        DaxMessage message = messageFactory.schemaToMsg();
         outcomeFrame.addMessage(message);
 
     }

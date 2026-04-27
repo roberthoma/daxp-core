@@ -1,176 +1,90 @@
-/************************************************************************
- * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 DAXPARC Robert Homa
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at:
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ***********************************************************************
- */
-
 package org.daxprotocol.core.datatype;
-
 import org.daxprotocol.core.annotation.DaxpEntity;
+import org.daxprotocol.core.model.tag.DaxTag;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-/*
-TODO Extend for
-- email
-- BigDecimal
-- LocalDate
-- LocalDateTime
-- JSON
-- XML
-- DayOfMonth
-- Country 	-  String field (see definition of "String" above) representing a country using ISO 3166
-- Currency - String field (see definition of "String" above) representing a currency type using ISO 4217 Currency <15> code (3 character) values.
-like FIX protocol
--Regexp
 
-- String
-- Integer
-- Double
-- Float
-- boolean
-
-From java
-primitive type → int, long, boolean
-class type → String, Customer
-interface type → List, Serializable
-enum type → OrderStatus
-record type → CustomerDto
-annotation type → @Override
-array type → String[]
-
-
-S = String
-I = Integer
-B = Boolean
-D = LocalDate
-T = LocalDateTime
-F = Float
-R = Double
-N = Decimal
-P = BigDecimal
-J = JSON       <= String
-X = XML        <= String
-Q = Regexp     <= String
-V = CSV        <= String
-e = Email      <= String
-M = DayOfMonth
-C = Country
-U = Currency
-E = Enum
-K = Tag
-R = DTO
-
-https://www.onixs.biz/fix-dictionary/4.4/index.html#String
-
-STR = String
-INT = Integer
-BLN = Boolean
-LDD = LocalDate
-LDT = LocalDateTime
-F = Float
-DBL = Double
-N = Decimal
-P = BigDecimal
-JSON = JSON       <= String
-XML = XML        <= String
-REGX = Regexp     <= String
-CVS = CSV        <= String
-EMAIL = Email      <= String
-DAY = DayOfMonth
-CNR = Country
-CURR = Currency
-ENUM = Enum
-TAG = Tag
-Entity = ENT
-
-Percentage
- 	Price
-
-Boolean, Integer, Integer64, Decimal, Float, String, Binary, Date, Time, DateTime, Duration, UUID
-
-* */
+/**
+ * DAXP Data Types Definition
+ * Based on the universal mapping between Oracle Database and Java.
+ */
 public enum DaxDataType {
-    INTEGER("Integer"),
-    LONG("Long"),
-    STRING("String"),
-    BOOLEAN("Boolean"),
-    DOUBLE("Double"),
-    CHAR("Char"),
-    ENUM("Enum"),
-    DATE("Date"),
-    ENTITY("ENTITY"),
-    UNKNOWN("UNKNOWN");
+    // 1. Core Types
+    STRING("STR", "Standard text "), //, String.class),
+    INTEGER("INT", "32-bit signed integer (Oracle NUMBER(9,0))"), //, Integer.class),
+    LONG("LNG", "64-bit signed integer (Oracle NUMBER(18,0))"), //, Long.class),
+    DOUBLE("DBL", "Binary floating point (Oracle BINARY_DOUBLE)"), //, Double.class),
+    DECIMAL("DEC", "Precise fixed-point decimal (Oracle NUMBER)"), //, BigDecimal.class),
+    BOOLEAN("BLN", "Boolean value (Oracle CHAR(1) Y/N)"), //, Boolean.class),
+
+    // 2. Temporal Types
+    LOCAL_DATE("LDD", "Date without time (YYYY-MM-DD)"), //, LocalDate.class),
+    LOCAL_DATE_TIME("LDT", "Date and time (TIMESTAMP)"), //, LocalDateTime.class),
+    DAY_OF_MONTH("DAY", "Day of month value (1-31)"), //, Integer.class),
+    DURATION("DUR", "Time interval/duration"), //, Duration.class),
+
+    // 3. Specialized Strings
+    JSON("JSON", "JavaScript Object Notation structured string"), //, String.class),
+    XML("XML", "eXtensible Markup Language structured string"), //, String.class),
+    CSV("CSV", "Comma Separated Values stream"), //, String.class),
+    REGEXP("REGX", "Regular expression pattern"), //, String.class),
+    EMAIL("EML", "Email address validation format"), //, String.class),
+
+    // 4. International Standards
+    COUNTRY("CNR", "ISO 3166 Country code (2 or 3 chars)"), //, String.class),
+    CURRENCY("CUR", "ISO 4217 Currency code (3 chars)"), //, String.class),
+
+    // 5. Structural Types
+    ENTITY("ENT", "DAXP Entity / Object structure"), //, null),
+    COLLECTION("COL", "Universal DAXP Collection (C) with attributes"), //, null),
+    TAG("TAG", "Reference to another tag/field within the frame"), //, DaxTag.class),
+
+    UNKNOWN("UNKNOWN", "Unknown");
+
 
     private final String code;
-
-    private static final Map<Class<?>, DaxDataType> TYPE_MAP = Map.of(
-            String.class, STRING,
-            Integer.class, INTEGER,
-            int.class, INTEGER,
-            Long.class, LONG,
-            long.class, LONG,
-            Boolean.class, BOOLEAN,
-            boolean.class, BOOLEAN,
-            Double.class, DOUBLE,
-            Character.class, CHAR,
-            char.class, CHAR
-            //Enum.class, ENUM
-    );
-
-    DaxDataType(String code) {
-        this.code = code;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public static DaxDataType fromCode(String code) {
-        if (code == null) {
-            return null;
-        }
-
+    private final String description;
+    /**
+     * Determines the DAXP type based on a Java Object.
+     * Useful when serializing from Java to DAXP.
+     */
+     // Reverse lookup map for performance
+    private static final Map<String, DaxDataType> CODE_LOOKUP = new HashMap<>();
+    static {
         for (DaxDataType type : values()) {
-            if (type.code.equals(code)) {
-                return type;
-            }
+            CODE_LOOKUP.put(type.code, type);
         }
-
-        return UNKNOWN;
     }
 
-    public static DaxDataType fromClass(Class<?> clazz) {
-        if (clazz == null) {
-            return UNKNOWN;
-        }
 
-        if (clazz.isEnum()) {
-            return ENUM;
-        }
+    DaxDataType(String code, String description){ //, Class<?> javaType) {
+        this.code = code;
+        this.description = description;
+    }
 
-        if (clazz.isAnnotationPresent(DaxpEntity.class)) {
-            return ENTITY;
-        }
 
-        if (Date.class.isAssignableFrom(clazz)) {
-            return DATE;
-        }
+    public String getCode() { return code; }
+    public String getDescription() { return description; }
 
-        return TYPE_MAP.getOrDefault(clazz, UNKNOWN);
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s (%s)", code, name(), description);
+    }
+
+    /**
+     * Finds DaxDataType by its 3-letter code.
+     * @param code e.g. "INT", "STR"
+     * @return DaxDataType or null if not found
+     */
+    public static DaxDataType fromCode(String code) {
+        if (code == null) return null;
+        return CODE_LOOKUP.get(code.toUpperCase());
     }
 }

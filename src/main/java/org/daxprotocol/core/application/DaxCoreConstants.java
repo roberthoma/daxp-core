@@ -14,6 +14,7 @@ public class DaxCoreConstants {
     *  key=value
     * */
     public static final char EQUAL = '=';
+    public static final char REFERENCE_AT_BLOCK_CHAR = '@';
 
 
     /*****************************************************

@@ -41,7 +41,7 @@ public  class DaxPair<T>{
         return value;
     }
 
-
+//Move to data type decode
     public String getStrValue() {
         if (value instanceof Boolean){
             return ((Boolean)value)? "Y" : "N";

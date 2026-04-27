@@ -20,10 +20,10 @@
 
 package org.daxprotocol.core.register;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.codec.DaxDecodeService;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.schema.DaxSchemaRegister;
+import org.daxprotocol.core.context.DaxContextRegister;
+import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -36,14 +36,18 @@ public class DaxMessageConverter {
 
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxSchemaRegister dictionary;
+    DaxContextRegister dictionary;
     DaxTagCodec tagCodec;
-    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxSchemaRegister dictionary,
-            DaxTagCodec tagCodec) {
+    DaxDataTypeCodec dataTypeCodec;
+    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxContextRegister dictionary,
+            DaxTagCodec tagCodec,
+            DaxDataTypeCodec dataTypeCodec
+            ) {
         this.config = config;
         this.contextMapper = contextMapper;
         this.dictionary = dictionary;
         this.tagCodec = tagCodec;
+        this.dataTypeCodec = dataTypeCodec;
     }
 
 ///idea : create map <tag, field> and next by messa f
@@ -80,7 +84,7 @@ public class DaxMessageConverter {
 
 
                 String raw = pair.getStrValue();
-                Object converted = DaxDecodeService.convert(raw, f.getType());  // if not ..convert from dictionary
+                Object converted = dataTypeCodec.convert(raw, f.getType());  // if not ..convert from dictionary
 
                 f.setAccessible(true);
                 f.set(instance, converted);
@@ -111,7 +115,7 @@ public class DaxMessageConverter {
             if (pair==null) continue; // gracefully ignore missing tags or empty
 
             String raw = pair.getStrValue();
-            Object converted = DaxDecodeService.convert(raw, f.getType());  // if not ..convert from dictionary
+            Object converted = dataTypeCodec.convert(raw, f.getType());  // if not ..convert from dictionary
 
             f.setAccessible(true);
             f.set(obj, converted);
