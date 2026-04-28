@@ -31,6 +31,7 @@ import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.value.DaxValueString;
 import org.daxprotocol.core.datatype.DaxBlockType;
@@ -39,6 +40,7 @@ import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
+import org.daxprotocol.core.model.value.DaxValueTag;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.register.*;
 import org.daxprotocol.core.tool.DaxLangTool;
@@ -92,9 +94,9 @@ public class DaxMessageFactory {
 
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxValue<?>> map){
         body.nextBlock(DaxBlockType.BLOCK_TAG);
-        body.putPair(ENTRY_ID,tagCodec.encode(tag));
+        body.putPair(ENTRY_ID, new DaxValueTag(tag));
 
-        map.forEach((i, pair) -> body.putPair(pair));
+        map.forEach((i, pair) -> body.putPair(tag , pair));
     }
 
 
@@ -335,7 +337,7 @@ public class DaxMessageFactory {
                             objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                         }
                         else {
-                            body.putPair(blogIdx,new DaxValue<>(tag, field.get(entry)));
+                            body.putPair(blogIdx,tag, new DaxValue<>(field.get(entry)));
                         }
                     }
                     continue;
@@ -374,7 +376,7 @@ public class DaxMessageFactory {
                     continue;
                 }
                 Object o = method.invoke(entry);
-                body.putPair(blogIdx,new DaxValue<>(tag, o.toString()));
+                body.putPair(blogIdx,tag,new DaxValueString(o.toString()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -418,7 +420,7 @@ public class DaxMessageFactory {
         DaxTrailer trailer = new DaxTrailer();
 
         body.nextBlock();
-        pairMap.forEach((daxTag, daxPair) -> body.putPair(daxPair));
+        pairMap.forEach(body::putPair);
 
         return new DaxMessage(head,body,trailer);
 
@@ -435,7 +437,7 @@ public class DaxMessageFactory {
 
         pairMapList.forEach(pairMap ->{
                     body.nextBlock();
-                    pairMap.forEach((daxTag, daxPair) -> body.putPair(daxPair));
+                    pairMap.forEach(body::putPair);
                 }
                 );
 
@@ -447,7 +449,7 @@ public class DaxMessageFactory {
     public DaxMessage errorResourceNotFound() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
         message.getBody().nextBlock();
-        message.getBody().putPair(new DaxValueString(ERR_DESCRIPTION,"Resource not found"));
+        message.getBody().putPair(ERR_DESCRIPTION,new DaxValueString("Resource not found"));
         return message;
     }
 
@@ -460,11 +462,11 @@ public class DaxMessageFactory {
     public DaxMessage errorInvalidMessageType() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
         message.getBody().nextBlock();
-        message.getBody().putPair(new DaxValueString(ERR_DESCRIPTION,"Invalid Message Type"));
+        message.getBody().putPair(ERR_DESCRIPTION,new DaxValueString("Invalid Message Type"));
         return message;
     }
 
-    public DaxMessage createMsg(String messageType,List<DaxValue<?>> listOfPair){
+    public DaxMessage createMsg(String messageType,List<DaxPair> listOfPair){
         DaxHead head;
         DaxBody body;
         DaxTrailer trailer;
@@ -478,7 +480,7 @@ public class DaxMessageFactory {
         //return messageCodec.createMsg(messageType, listOfPair);
     }
 
-    public DaxMessage createMsg(List<DaxValue<?>> listOfPair){
+    public DaxMessage createMsg(List<DaxPair> listOfPair){
         DaxHead head;
         DaxBody body;
         DaxTrailer trailer;

@@ -33,9 +33,14 @@ import java.util.Map;
 public class DaxCoreTags {
 
     private static final Map<Integer, DaxTag> SYS_TAG_CACHE = new HashMap<>();
+    private static final Map<Integer, DaxDataType> SYS_TAG_DATATYPE = new HashMap<>();
 
     private static DaxTag daxpSysTag(int tagId) {
        return daxpSysTag(tagId, DaxDataType.UNKNOWN) ;
+    }
+
+    private static DaxDataType getDataType(DaxTag tag){
+        return SYS_TAG_DATATYPE.get(tag.getTagId());
     }
 
     private static DaxTag daxpSysTag(int tagId, DaxDataType dataType) {
@@ -44,6 +49,7 @@ public class DaxCoreTags {
         }
         DaxTag tag =  DaxTag.createCoreTag (tagId) ;
         SYS_TAG_CACHE.put(tagId, tag);
+        SYS_TAG_DATATYPE.put(tagId, dataType);
         return tag;
     }
 
@@ -59,23 +65,23 @@ public class DaxCoreTags {
     /**
      * Head TAGS
      * */
-    public static final DaxTag MSG_TYPE  = daxpSysTag(1);
+    public static final DaxTag MSG_TYPE  = daxpSysTag(1,DaxDataType.MESSAGE_TYPE);
     public static final DaxTag MSG_ROLE = daxpSysTag(2);
-    public static final DaxTag MSG_BLOCK_QUANTITY = daxpSysTag(3);
+    public static final DaxTag MSG_BLOCK_QUANTITY = daxpSysTag(3, DaxDataType.QUANTITY);
 
     /**********************************
      * Body tags
      */
-    public static final DaxTag BLOCK_INDEX             = daxpSysTag(4);
+    public static final DaxTag BLOCK_INDEX             = daxpSysTag(4, DaxDataType.QUANTITY);
     public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);
     public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(8);
 
 
     ///Universal tag
-    public static final DaxTag ENTRY_ID = daxpSysTag(6);
-    public static final DaxTag ENTRY_NAME = daxpSysTag(101);
+    public static final DaxTag ENTRY_ID                = daxpSysTag(6);
+    public static final DaxTag ENTRY_NAME              = daxpSysTag(101);
     public static final DaxTag ENTRY_STATUS            = daxpSysTag(102);
-    public static final DaxTag ENTRY_VALUE = daxpSysTag(103);
+    public static final DaxTag ENTRY_VALUE             = daxpSysTag(103);
     public static final DaxTag ENTRY_VALUE_DEFAULT     = daxpSysTag(104);
     public static final DaxTag FIELD_VALUE_DESCRIPTION = daxpSysTag(105);
     public static final DaxTag FIELD_VALUE_SYMBOL      = daxpSysTag(106);

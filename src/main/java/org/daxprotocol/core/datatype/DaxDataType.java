@@ -45,6 +45,10 @@ public enum DaxDataType {
     COLLECTION("COL", "Universal DAXP Collection (C) with attributes"), //, null),
     TAG("TAG", "Reference to another tag/field within the frame"), //, DaxTag.class),
 
+    MESSAGE_TYPE("MSG","Message type"),
+
+    QUANTITY("QNT", "Quantity"),
+
     UNKNOWN("UNKNOWN", "Unknown");
 
 

@@ -3,6 +3,9 @@ package org.daxprotocol.core.datatype;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.model.value.DaxValueBoolean;
+import org.daxprotocol.core.model.value.DaxValueDataType;
+import org.daxprotocol.core.model.value.DaxValueString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -73,18 +76,18 @@ public class DaxDataTypeCodec {
         Map<DaxTag, DaxValue<?>> map = new HashMap<>();
 
         if (clazz == List.class){
-            map.put(DATA_TYPE, new DaxValue<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
-            map.put(COLLECTION_ALLOW_DUPLICATES, new DaxValue<>(COLLECTION_ALLOW_DUPLICATES,true));
+            map.put(DATA_TYPE, new DaxValueString(DaxDataType.COLLECTION.getCode()));
+            map.put(COLLECTION_ALLOW_DUPLICATES, new DaxValueBoolean(true));
             return map;
         }
 
         if (clazz.isEnum()){
-            map.put(DATA_TYPE, new DaxValue<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
-            map.put(COLLECTION_HAS_KEYS, new DaxValue<>(COLLECTION_HAS_KEYS,true));
+            map.put(DATA_TYPE, new DaxValueDataType(DaxDataType.COLLECTION));
+            map.put(COLLECTION_HAS_KEYS, new DaxValueBoolean(true));
             return map;
         }
 
-        map.put(DATA_TYPE, new DaxValue<>(DATA_TYPE,decodeClass(clazz).getCode()));
+        map.put(DATA_TYPE, new DaxValueDataType(DaxDataType.fromCode(  decodeClass(clazz).getCode())));
 
         return map;
     }
@@ -146,7 +149,7 @@ public class DaxDataTypeCodec {
 
     public Map<DaxTag, DaxValue<?>> encode(DaxDataType daxDataType) {
         Map<DaxTag, DaxValue<?>> map = new HashMap<>();
-        map.put(DATA_TYPE, new DaxValue<>(DATA_TYPE, daxDataType.getCode()));
+        map.put(DATA_TYPE, new DaxValueDataType( daxDataType));
 
         return map;
     }

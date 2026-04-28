@@ -23,7 +23,7 @@ import org.daxprotocol.core.datatype.DaxDataType;
 
 public class DaxValueString extends DaxValue<String> {
     public DaxValueString(String value){
-        super(DaxDataType.STRING, value);
+        super( value);
     }
 
 }

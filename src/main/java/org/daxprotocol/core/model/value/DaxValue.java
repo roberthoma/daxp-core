@@ -21,21 +21,16 @@ package org.daxprotocol.core.model.value;
 
 import org.daxprotocol.core.datatype.DaxDataType;
 
-public  class DaxValue<T>{
-    DaxDataType dataType;
+public abstract class DaxValue<T>{
     protected T value;
 
-    public DaxValue(DaxDataType dataType, T value){
-        this.dataType = dataType;
+    public DaxValue( T value){
         this.value = value;
     }
 
     public Class<?> getClazz(){
         return value.getClass();
     };
-    public DaxDataType getDataType(){
-        return dataType;
-    }
     public T getValue(){
         return value;
     }
@@ -61,12 +56,12 @@ public  class DaxValue<T>{
 //    public String toString(){
 //        return tag.toString() + DaxCoreConstants.EQUAL +getStrValue() ; //TODO  DaxCodecSymbol.PAIR_SEPARATOR;
 //    }
-
+//
     public Integer getIntegerValue() {
         return Integer.valueOf((String) value);
     }
-
-
+//
+//
     public Boolean getBooleanValue() {
         if( value instanceof Character) {
             return (Character) value == 'Y' ? Boolean.TRUE : Boolean.FALSE;

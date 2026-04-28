@@ -21,6 +21,7 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.application.DaxCoreTags;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
@@ -43,11 +44,11 @@ public class DaxTrailerCodec {
     }
 
 
-    public DaxTrailer createTrailer(List<DaxValue<?>> listOfPair) {
+    public DaxTrailer createTrailer(List<DaxPair> listOfPair) {
         DaxTrailer trailer = new DaxTrailer();
-        for(DaxValue<?> pair : listOfPair) {
+        for(DaxPair pair : listOfPair) {
             if (pair.getTag().equals(DaxCoreTags.CHECKSUM)) {
-                trailer.setChecksum(pair.getIntegerValue());
+                trailer.setChecksum(pair.getValue().getIntegerValue());
                 break;
             }
         }

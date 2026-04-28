@@ -25,6 +25,8 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.DaxValueString;
 import org.daxprotocol.core.register.DaxRegister;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -119,7 +121,7 @@ public class DaxFrameParser {
 
 
         List<Integer> indList = getSeparatorIndices(frameStr, pairSeparator);
-        List<DaxValue<?>> listOfPair =  new ArrayList<>();
+        List<DaxPair> listOfPair =  new ArrayList<>();
         String tagStr;
         String valueStr;
         int sum = 0;
@@ -187,17 +189,17 @@ public class DaxFrameParser {
                     }
                     //------------
                     //TODO  move to msgCodec and develop
-                    DaxValue<?> pair;
+                    DaxPair pair;
                     if(tag.equals(DaxCoreTags.REQ_FIELD_LIST)){
                         Set<DaxTag> daxTagSet =
                                 Arrays.stream(valueStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
                                         .map(String::trim)
                                         .map(s ->  tagParser.parseDaxTag(s,preamble.getContextId()))
                                         .collect(Collectors.toSet());
-                        pair = new DaxValue<Set<DaxTag>>(tag,daxTagSet);
+                        pair = new DaxPair(tag,daxTagSet);
                     }
                     else {
-                        pair = new DaxValue<>(tag,valueStr );
+                        pair = new DaxPair(tag, new DaxValueString( valueStr ));
                     }
 
                     listOfPair.add(pair);

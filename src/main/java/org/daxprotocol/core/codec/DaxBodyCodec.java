@@ -21,8 +21,10 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.body.DaxBody;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.model.value.DaxValueString;
 
 import java.util.List;
 import java.util.Map;
@@ -52,7 +54,7 @@ public class DaxBodyCodec {
 
         if (!blockMap.containsKey(DaxCoreTags.BLOCK_TYPE) ){
             StringBuilder blockStr  = new StringBuilder();
-            blockMap.forEach((daxTag, daxPair) -> blockStr.append(daxPair.toString()));
+            blockMap.forEach((daxTag, value) -> blockStr.append(value.toString()));
             int excBlockIdx = blockIdx+1;
             throw new RuntimeException("Block Exception : block without BLOCK_TYPE field !!!+ blockIdx"+excBlockIdx
                     +" block:"+blockStr);
@@ -78,8 +80,8 @@ public class DaxBodyCodec {
 
         tagBlockRefMap.forEach((tag, i)
                 -> pairCodec.encode(sb, DaxCoreTags.REFERENCE_BLOCK,
-                                     new DaxValue<>(DaxCoreTags.REFERENCE_BLOCK,
-                                             tagCodec.encode(tag)+ DaxCoreConstants.REFERENCE_AT_BLOCK_CHAR +i)
+                                     new DaxValueString(
+                                             tagCodec.encode(tag) + DaxCoreConstants.REFERENCE_AT_BLOCK_CHAR +i)
                 , pairSeparator));
 
 
@@ -113,13 +115,13 @@ public class DaxBodyCodec {
     }
 
 
-    public  DaxBody createBody(int blockCount , List<DaxValue<?>> listOfPair){
+    public  DaxBody createBody(int blockCount , List<DaxPair> listOfPair){
         DaxBody body = new DaxBody();
 
 //        if (blockCount==0) {
             body.nextBlock();
 //        }
-        for(DaxValue<?> pair : listOfPair){
+        for(DaxPair pair : listOfPair){
             if(pair.getTag().equals(DaxCoreTags.CHECKSUM)){
                 break;
             }

@@ -19,11 +19,10 @@
  */
 package org.daxprotocol.core.model.value;
 
-import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxValueTag extends DaxValue<DaxTag> {
-    public DaxValueTag(DaxTag tag, DaxTag value) {
-        super(DaxDataType.TAG, value);
+    public DaxValueTag(DaxTag value) {
+        super(value);
     }
 }

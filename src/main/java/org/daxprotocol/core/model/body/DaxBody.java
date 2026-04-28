@@ -19,11 +19,10 @@
  */
 package org.daxprotocol.core.model.body;
 
-import org.daxprotocol.core.model.value.DaxValue;
-import org.daxprotocol.core.model.value.DaxValueInteger;
-import org.daxprotocol.core.model.value.DaxValueString;
+import org.daxprotocol.core.datatype.DaxBlockType;
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.*;
 import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.model.value.DaxValueTag;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
@@ -56,6 +55,12 @@ public class DaxBody {
         checkBlockCounterBeforePut();
         blockMap.get(blockIdx).put(tag,value);
     }
+    //------------------------------
+    public void putPair(DaxPair pair){
+        checkBlockCounterBeforePut();
+        blockMap.get(blockIdx).put(pair.getTag(),pair.getValue());
+    }
+    //------------------------------
 
     public void putPair(int blkIdx ,DaxTag tag, DaxValue<?> value){
         checkBlockCounterBeforePut();
@@ -74,11 +79,11 @@ public class DaxBody {
 
     public void putPair(DaxTag tag, DaxTag tagValue){
         checkBlockCounterBeforePut();
-        blockMap.get(blockIdx).put(tag,new DaxValueTag(tag, tagValue));
+        blockMap.get(blockIdx).put(tag,new DaxValueTag(tagValue));
     }
     public void putPair(int blkIdx , DaxTag tag, DaxTag tagValue){
         checkBlockCounterBeforePut();
-        blockMap.get(blkIdx).put(tag,new DaxValueTag(tag, tagValue));
+        blockMap.get(blkIdx).put(tag,new DaxValueTag(tagValue));
     }
     //----------------------------
 
@@ -100,9 +105,9 @@ public class DaxBody {
 
     }
 
-    public void nextBlock(String blockType){
+    public void nextBlock(DaxBlockType blockType){
        nextBlock();
-       putPair(DaxCoreTags.BLOCK_TYPE, blockType);
+       putPair(DaxCoreTags.BLOCK_TYPE, new DaxValueCharacter(blockType.getCode()));
     }
 
     public DaxValue<?> getPair(int blockIdx, DaxTag tag){
