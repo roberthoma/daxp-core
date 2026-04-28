@@ -4,8 +4,6 @@ import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.context.DaxContextRegister;
-import org.daxprotocol.core.context.DaxMessageItem;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
@@ -29,23 +27,23 @@ import java.util.List;
 
 //TODO Controlling reusing double tag in this same entity
 
-public class DaxContextBuilder {
-    private static final Logger logger = LoggerFactory.getLogger(DaxContextBuilder.class);
+public class DaxRegisterBuilder {
+    private static final Logger logger = LoggerFactory.getLogger(DaxRegisterBuilder.class);
     DaxPopulatorJakartaValidation jakartaPopulator;
     DaxTagParser tagParser;
     DaxPopulatorEnumType enumPopulator;
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxContextRegister register;
+    DaxRegister register;
     DaxHandlerRegistry handlerRegistry;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
-    public DaxContextBuilder(
+    public DaxRegisterBuilder(
             DaxTagParser tagParser ,
             DaxPopulatorEnumType  enumPopulator,
             DaxConfig config,
             DaxContextMapper contextMapper,
-            DaxContextRegister register,
+            DaxRegister register,
             DaxHandlerRegistry handlerRegistry,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec

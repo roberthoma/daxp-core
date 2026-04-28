@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.application;
-import org.daxprotocol.core.context.DaxContextRegister;
+import org.daxprotocol.core.register.DaxRegister;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
@@ -176,7 +176,7 @@ public class DaxCoreTags {
     public static final DaxTag CHECKSUM                = daxpSysTag(9);
 
 
-    public static void init(DaxContextRegister dic){
+    public static void init(DaxRegister dic){
 //        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
 //        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
     }

@@ -1,9 +1,9 @@
-package org.daxprotocol.core.context;
+package org.daxprotocol.core.register;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaxMessageDictionary {
+public class DaxMessageRegister {
      int contextId;
     /*****************************************************
      * Dictionary of messages type, required and respond tags
@@ -15,7 +15,7 @@ public class DaxMessageDictionary {
     // MSG ContextId, mapperId ,
     Map<Integer, Map<Integer, DaxMessageItem> > msgMap2 = new HashMap<>();
 
-    public DaxMessageDictionary(Integer contextId){
+    public DaxMessageRegister(Integer contextId){
         this.contextId = contextId;
     }
 

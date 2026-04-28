@@ -22,7 +22,6 @@ package org.daxprotocol.core.register;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.context.DaxContextRegister;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
@@ -36,10 +35,10 @@ public class DaxMessageConverter {
 
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxContextRegister dictionary;
+    DaxRegister dictionary;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
-    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxContextRegister dictionary,
+    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxRegister dictionary,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec
             ) {

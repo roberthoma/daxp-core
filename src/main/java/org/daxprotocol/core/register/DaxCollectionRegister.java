@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.context;
+package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxCollectionTool;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 
 //TODO move back to dictionary
-public class DaxEnumDictionary {
+public class DaxCollectionRegister {
     Integer contextId;
 
     /*****************************************************
@@ -50,7 +50,7 @@ public class DaxEnumDictionary {
     Map<DaxTag, Map<String, DaxEnumValue>> enumValueMap = new HashMap<>();
 
 
-    public DaxEnumDictionary(Integer contextId){
+    public DaxCollectionRegister(Integer contextId){
         this.contextId = contextId;
     }
 

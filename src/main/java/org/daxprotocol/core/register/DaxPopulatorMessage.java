@@ -2,10 +2,6 @@ package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.context.DaxContextRegister;
-import org.daxprotocol.core.context.DaxEnum;
-import org.daxprotocol.core.context.DaxEnumValue;
-import org.daxprotocol.core.context.DaxMessageItem;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.DaxMessage;
@@ -20,8 +16,8 @@ import java.util.Map;
 
 public class DaxPopulatorMessage {
     DaxTagParser tagParser;
-    DaxContextRegister daxDic;
-    public DaxPopulatorMessage(DaxTagParser tagParser, DaxContextRegister daxDic){
+    DaxRegister daxDic;
+    public DaxPopulatorMessage(DaxTagParser tagParser, DaxRegister daxDic){
         this.tagParser = tagParser;
         this.daxDic =  daxDic;
     }

@@ -2,7 +2,7 @@ package org.daxprotocol.core.context;
 
 import org.daxprotocol.core.mapper.DaxReference;
 
-public class DaxContext implements DaxReference {
+public class DaxContext implements DaxReference<String> {
     private int id;
     private String tagPrefix;
     private String symbol;

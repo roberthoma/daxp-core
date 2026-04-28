@@ -18,11 +18,10 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.context;
+package org.daxprotocol.core.register;
 
-import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -43,10 +42,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //TODO
 // dictionary od exception by context
-// CRM-00234, DAX-23445, $:23455 , crm:33345
+// CRM:00234, DAX:23445, $:23455 , crm:33345
 
-public class DaxContextRegister {
-    private static final Logger logger = LoggerFactory.getLogger(DaxContextRegister.class);
+public class DaxRegister {
+    private static final Logger logger = LoggerFactory.getLogger(DaxRegister.class);
 
     DaxConfig config;
     DaxContextMapper contextMapper;
@@ -69,7 +68,7 @@ public class DaxContextRegister {
     Map<DaxTag,  Set<DaxTag>> entityTagSet = new HashMap<>();
 
 
-    Map<Integer, DaxEnumDictionary> enumDictionaryMap = new ConcurrentHashMap<>();
+    Map<Integer, DaxCollectionRegister> collectionRegMap = new ConcurrentHashMap<>();
 //    DaxEnumDictionary enumDictionary; //Application enumDic
 
     /*****************************************************
@@ -77,8 +76,8 @@ public class DaxContextRegister {
      * Key: Message type
      * */
 
-    Map<Integer, DaxMessageDictionary> messageDicMap = new ConcurrentHashMap<>();;
-    DaxMessageDictionary msgMap;
+    Map<Integer, DaxMessageRegister> messageDicMap = new ConcurrentHashMap<>();;
+    DaxMessageRegister msgMap;
 
     /*****************************************************
      *Map of tag attributes
@@ -101,7 +100,7 @@ public class DaxContextRegister {
     /******************************************************/
     int appContextId;
 
-    public DaxContextRegister(DaxConfig config,
+    public DaxRegister(DaxConfig config,
             DaxContextMapper contextMapper ,
             DaxMessageMapper messageMapper ,
             DaxDataTypeCodec dataTypeCodec
@@ -114,9 +113,9 @@ public class DaxContextRegister {
         this.contextMapper = contextMapper;
         this.messageMapper = messageMapper;
 
-        enumDictionaryMap.put(appContextId, new DaxEnumDictionary(appContextId) );
+        collectionRegMap.put(appContextId, new DaxCollectionRegister(appContextId) );
 
-        msgMap = new DaxMessageDictionary(appContextId);
+        msgMap = new DaxMessageRegister(appContextId);
         messageDicMap.put(appContextId,msgMap);
 
 
@@ -150,28 +149,28 @@ public class DaxContextRegister {
     //**********************************************************************
     // Enums
 
-    public DaxEnumDictionary getEnumDictionary(int contextId){
-        return enumDictionaryMap.get(contextId);
+    public DaxCollectionRegister getEnumDictionary(int contextId){
+        return collectionRegMap.get(contextId);
     }
 
     public void putEnum(DaxTag tag, DaxEnum daxEnum){
-        enumDictionaryMap.get(tag.getContextId()).putEnum(tag, daxEnum);
+        collectionRegMap.get(tag.getContextId()).putEnum(tag, daxEnum);
 
     }
 
 
     public Map<DaxTag, DaxEnum>  getEnumMap(int contextId) {
-        return enumDictionaryMap.get(contextId).getEnumMap();
+        return collectionRegMap.get(contextId).getEnumMap();
     }
 
     public void putEnumValue(DaxTag tag, DaxEnumValue value){
-        enumDictionaryMap.get(tag.getContextId()).putEnumValue (tag, value);
+        collectionRegMap.get(tag.getContextId()).putEnumValue (tag, value);
     }
 
 
 
     public Map<DaxTag, Map<String, DaxEnumValue>> getEnumValueMap(DaxTag tag) {
-        return enumDictionaryMap.get(tag.getContextId()).getValueMap();
+        return collectionRegMap.get(tag.getContextId()).getValueMap();
     }
 
 
@@ -217,6 +216,12 @@ public class DaxContextRegister {
                         DaxCollectionTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
 
     }
+//    public void putAttribute(DaxTag tag, DaxTag atrTag,  DaxValue<?> atrValue){
+//        attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrTag, atrPair)),
+//                (eM, nM) ->
+//                        DaxCollectionTool.putAndReturnMap(eM, atrTag, atrPair));
+//
+//    }
 
     //**********************************************************************
     // Dedicated attributes
@@ -240,6 +245,7 @@ public class DaxContextRegister {
         putAttribute(tag, atrPair));
 
     };
+
 //
 //    public void putAtrDataType(DaxTag tag, DaxDataType dataType){
 //        putAttribute(tag, new DaxAtrDataType(dataType));

@@ -2,21 +2,18 @@ package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.annotation.DaxpDictionary;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.context.DaxContextRegister;
-import org.daxprotocol.core.context.DaxEnum;
-import org.daxprotocol.core.context.DaxEnumValue;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
-import org.daxprotocol.core.mapper.DaxStringReferenceMapper;
+import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxPopulatorEnumType {
     DaxConfig config;
-    DaxStringReferenceMapper contextMapper;
-    DaxContextRegister daxDic;
+    DaxContextMapper contextMapper;
+    DaxRegister daxDic;
     DaxDataTypeCodec dataTypeCodec;
    public DaxPopulatorEnumType (DaxConfig config,
-                               DaxStringReferenceMapper contextMapper,
-                               DaxContextRegister daxDic,
+                               DaxContextMapper contextMapper,
+                               DaxRegister daxDic,
            DaxDataTypeCodec dataTypeCodec
     ){
         this.config        = config;
@@ -43,7 +40,7 @@ public class DaxPopulatorEnumType {
         }
 
         daxDic.putAtrDataType(enumTag,dataTypeCodec.encode(Enum.class) );
-
+        System.out.println("test dic");
     }
 
 }

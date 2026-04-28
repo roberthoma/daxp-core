@@ -17,7 +17,7 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.context;
+package org.daxprotocol.core.register;
 
 public class DaxEnum {
     int contextId;

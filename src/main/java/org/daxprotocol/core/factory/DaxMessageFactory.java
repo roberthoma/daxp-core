@@ -27,7 +27,6 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.context.DaxContext;
@@ -41,6 +40,7 @@ import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.parsers.DaxTagParser;
+import org.daxprotocol.core.register.*;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
@@ -61,7 +61,7 @@ public class DaxMessageFactory {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-    DaxContextRegister dictionary;
+    DaxRegister dictionary;
     DaxTagParser tagParser;
     public DaxMessageFactory(DaxConfig config,
             DaxContextMapper contextMapper,
@@ -70,7 +70,7 @@ public class DaxMessageFactory {
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxContextRegister dictionary,
+            DaxRegister dictionary,
             DaxTagParser tagParser
 
             ) {
@@ -181,7 +181,7 @@ public class DaxMessageFactory {
 
     }
 
-    private void enumDictionaryToMsg(DaxBody body,DaxEnumDictionary enumDictionary){
+    private void enumDictionaryToMsg(DaxBody body, DaxCollectionRegister enumDictionary){
 
         enumDictionary.getEnumMap().forEach((daxTag, daxEnum) ->
         { putEnumToBlock(body,daxTag,daxEnum);
@@ -214,7 +214,7 @@ public class DaxMessageFactory {
     //TODO  create multi message with context dictionary values
 
 
-    private void schemaToMsg(DaxContextRegister schemaRegister, DaxMessage message)
+    private void schemaToMsg(DaxRegister schemaRegister, DaxMessage message)
     {
         schemaRegister.getMsgMap().forEach((s, messageDicItem) ->
                 putMsgItem(message.getBody(),messageDicItem)
