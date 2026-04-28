@@ -21,9 +21,6 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.body.DaxBody;
-import org.daxprotocol.core.model.head.DaxHead;
-import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.tool.DaxChecksumService;

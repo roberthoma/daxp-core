@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.model;
 
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -77,7 +77,7 @@ public final class DaxMessage {
         return trailer.getChecksum();
     }
 
-    public DaxPair<?> get(DaxTag tag) {
+    public DaxValue<?> get(DaxTag tag) {
        return body.getPair(0,tag);
     }
 //    public DaxPair<?> get(int tag) {

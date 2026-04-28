@@ -20,14 +20,16 @@
 
 package org.daxprotocol.core.register;
 
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.attributes.*;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.entity.DaxEntity;
+import org.daxprotocol.core.model.value.DaxValueBoolean;
+import org.daxprotocol.core.model.value.DaxValueInteger;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 import org.slf4j.Logger;
@@ -80,11 +82,12 @@ public class DaxRegister {
     DaxMessageRegister msgMap;
 
     /*****************************************************
-     *Map of tag attributes
+     * Map of tag attributes
      * Key : tagId
      * Value : map of attributes
      * */
-    Map<DaxTag, Map<DaxTag, DaxPair<?>>> attributMap = new ConcurrentHashMap<>();
+     Map<DaxTag, Map<DaxTag, Object>> attributMap = new ConcurrentHashMap<>();
+//    Map<DaxTag, Map<DaxTag, DaxValue<?>>> attributMap = new ConcurrentHashMap<>();
 
 
     //TODO
@@ -94,6 +97,7 @@ public class DaxRegister {
      *  Entity Map //
      */
     Map<DaxTag, Set<DaxTag>> entityFieldsMap = new ConcurrentHashMap<>();
+
     Map<DaxTag, DaxEntity> entityMap = new ConcurrentHashMap<>();
 
 
@@ -210,28 +214,34 @@ public class DaxRegister {
     // Attributes
 
 
-    public void putAttribute(DaxTag tag, DaxPair<?> atrPair){
-        attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrPair.getTag(), atrPair)),
-                (eM, nM) ->
-                        DaxCollectionTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
-
-    }
-//    public void putAttribute(DaxTag tag, DaxTag atrTag,  DaxValue<?> atrValue){
-//        attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrTag, atrPair)),
+//    public void putAttribute(DaxTag tag, DaxValue<?> atrPair){
+//        attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrPair.getTag(), atrPair)),
 //                (eM, nM) ->
-//                        DaxCollectionTool.putAndReturnMap(eM, atrTag, atrPair));
+//                        DaxCollectionTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
 //
 //    }
+//    public void putAttribute(DaxTag tag, DaxTag atrTag,  DaxValue<?> atrValue){
+//        attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrTag, atrValue)),
+//                (eM, nM) ->
+//                        DaxCollectionTool.putAndReturnMap(eM, atrTag, atrValue));
+//
+//    }
+    public void putAttribute(DaxTag tag, DaxTag atrTag,  Object atrValue){
+        attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrTag, atrValue)),
+                (eM, nM) ->
+                        DaxCollectionTool.putAndReturnMap(eM, atrTag, atrValue));
+
+    }
 
     //**********************************************************************
     // Dedicated attributes
 
-    public Map<DaxTag, DaxPair<?>> getFieldAttributeMap(int tagId) {
+    public Map<DaxTag, DaxValue<?>> getFieldAttributeMap(int tagId) {
         DaxTag tag = DaxTag.of(config.getAppContextId(), tagId);
         return attributMap.get( tag);
     }
 
-    public Map<DaxTag, Map<DaxTag, DaxPair<?>>> getAttributMap(){
+    public Map<DaxTag, Map<DaxTag, DaxValue<?>>> getAttributMap(){
         return attributMap;
     }
 
@@ -240,7 +250,7 @@ public class DaxRegister {
 //        putAttribute(tagId, new DaxAtrDataType(clazz));
 //    };
 
-    public void putAtrDataType(DaxTag tag, Map<DaxTag, DaxPair<?>> pairMap){
+    public void putAtrDataType(DaxTag tag, Map<DaxTag, DaxValue<?>> pairMap){
         pairMap.forEach((atrTag, atrPair) ->
         putAttribute(tag, atrPair));
 
@@ -257,22 +267,22 @@ public class DaxRegister {
 
 
     public void putAtrSizeMax(DaxTag tag,  Integer max){
-        putAttribute(tag, new DaxAtrSizeMax(max));
+        putAttribute(tag, new DaxValueInteger(max));
     }
 
 
     public void putAtrSizeMin(DaxTag tag,  Integer min){
-        putAttribute(tag, new DaxAtrSizeMin(min));
+        putAttribute(tag, new DaxValueInteger(min));
     }
 
 
 
     public void putAtrNullable(DaxTag tag,  Boolean able){
-        putAttribute(tag, new DaxAtrNullable(able));
+        putAttribute(tag, ,new DaxAtrNullable(able));
     }
 
     public void putAtrReadOnly(DaxTag tag, Boolean able) {
-        putAttribute(tag,  new DaxArtReadOnly(able));
+        putAttribute(tag, DaxCoreTags.ATR_READONLY , able);
     }
 
     public void putAtrReadOnly(DaxTag tag, char able) {
@@ -284,12 +294,9 @@ public class DaxRegister {
     }
 
 
-
     public void putAtrFieldName(DaxTag tag, String name) {
         putAttribute(tag, new DaxArtFieldName(name));
     }
-
-
 
 
     public void putAtrEntityDataTypeId(DaxTag tag, DaxTag dataTypeTag) {
@@ -298,7 +305,7 @@ public class DaxRegister {
 
 
     public void putAtrDeprecated(DaxTag tag) {
-        putAttribute(tag, new DaxAtrDeprecated(true));
+        putAttribute(tag, DaxCoreTags.ATR_IS_DEPRECATED,new DaxValueBoolean(true));
     }
 
     public void putTag(DaxTag tag){

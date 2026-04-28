@@ -1,8 +1,7 @@
 package org.daxprotocol.core.unit_test.dax_00_10_DataType;
 
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.datatype.DaxDataTypeCodec;
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
@@ -34,11 +33,11 @@ public class DaxDataTypeTest extends DaxConfigBaseTest {
 
     @Test
     void mapCollectionList() {
-        Map<DaxTag, DaxPair<?>> tagPairMap = new HashMap<>();
-        Map<DaxTag, DaxPair<?>> tagPairMapOut ;
+        Map<DaxTag, DaxValue<?>> tagPairMap = new HashMap<>();
+        Map<DaxTag, DaxValue<?>> tagPairMapOut ;
 
-        tagPairMap.put(DATA_TYPE, new DaxPair<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
-        tagPairMap.put(COLLECTION_ALLOW_DUPLICATES, new DaxPair<>(COLLECTION_ALLOW_DUPLICATES,true));
+        tagPairMap.put(DATA_TYPE, new DaxValue<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
+        tagPairMap.put(COLLECTION_ALLOW_DUPLICATES, new DaxValue<>(COLLECTION_ALLOW_DUPLICATES,true));
 
         Class<?> clazz =  dataTypeCodec.decode(tagPairMap);
         Assertions.assertEquals(List.class, clazz);

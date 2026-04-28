@@ -17,15 +17,13 @@
  * limitations under the License.
  * ***********************************************************************
  */
+package org.daxprotocol.core.model.value;
 
-package org.daxprotocol.core.attributes;
-
-import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
 
-public class DaxAtrEntityDataTypeId extends DaxPair<DaxTag> {
-    public DaxAtrEntityDataTypeId(DaxTag tag) {
-        super(DaxCoreTags.ENTITY_DATA_TYPE_ID, tag);
+public class DaxValueTag extends DaxValue<DaxTag> {
+    public DaxValueTag(DaxTag tag, DaxTag value) {
+        super(DaxDataType.TAG, value);
     }
 }

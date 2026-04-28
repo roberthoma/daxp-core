@@ -5,7 +5,7 @@ import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxTagParser;
@@ -22,7 +22,7 @@ public class DaxPopulatorMessage {
         this.daxDic =  daxDic;
     }
 
-    private void populateFromMsgBlock(int msgContextId , Map<DaxTag, DaxPair<?>> blockPairMap) {
+    private void populateFromMsgBlock(int msgContextId , Map<DaxTag, DaxValue<?>> blockPairMap) {
 
         String blockType =   blockPairMap.get(DaxCoreTags.BLOCK_TYPE).getStrValue();
 

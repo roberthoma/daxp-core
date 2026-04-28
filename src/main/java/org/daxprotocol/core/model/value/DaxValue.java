@@ -17,25 +17,24 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.model.pair;
+package org.daxprotocol.core.model.value;
 
-import org.daxprotocol.core.application.DaxCoreConstants;
-import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.datatype.DaxDataType;
 
-public  class DaxPair<T>{
-    DaxTag tag;
+public  class DaxValue<T>{
+    DaxDataType dataType;
     protected T value;
 
-    public DaxPair(DaxTag tag, T value){
-        this.tag = tag;
+    public DaxValue(DaxDataType dataType, T value){
+        this.dataType = dataType;
         this.value = value;
     }
 
     public Class<?> getClazz(){
         return value.getClass();
     };
-    public DaxTag getTag(){
-        return tag;
+    public DaxDataType getDataType(){
+        return dataType;
     }
     public T getValue(){
         return value;
@@ -58,18 +57,15 @@ public  class DaxPair<T>{
         this.value = value;
     }
 
-    @Override
-    public String toString(){
-        return tag.toString() + DaxCoreConstants.EQUAL +getStrValue() ; //TODO  DaxCodecSymbol.PAIR_SEPARATOR;
-    }
+//    @Override
+//    public String toString(){
+//        return tag.toString() + DaxCoreConstants.EQUAL +getStrValue() ; //TODO  DaxCodecSymbol.PAIR_SEPARATOR;
+//    }
 
     public Integer getIntegerValue() {
         return Integer.valueOf((String) value);
     }
 
-    public DaxTag getTagValue() {
-        return (DaxTag) value;
-    }
 
     public Boolean getBooleanValue() {
         if( value instanceof Character) {

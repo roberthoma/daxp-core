@@ -20,28 +20,28 @@
 
 package org.daxprotocol.core.datatype;
 
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.application.DaxCoreTags;
 
 //Type of block application
 // TODO refactoring to ENUM
-public class DaxBlockType extends DaxPair<String> {
+public class DaxBlockType extends DaxValue<String> {
 
-    public static final String BLOCK_ENTITY      = "E";
-    public static final String BLOCK_MESSAGE     = "M";
-    public static final String BLOCK_CONTEXT     = "X";
-    public static final String BLOCK_INSTANCE    = "I";  // Group Instance (one record/row of values matching a Group Definition)
-    public static final String BLOCK_TAG         = "T";
-    public static final String BLOCK_FIELD       = "F";
-    public static final String BLOCK_COLLECTION  = "C";   // Definition of collection : Name , Allow duplication , has key ....
-    public static final String BLOCK_VALUE       = "V";   // for example Collection value
+    public static final char BLOCK_ENTITY      = 'E';
+    public static final char BLOCK_MESSAGE     = 'M';
+    public static final char BLOCK_CONTEXT     = 'X';
+    public static final char BLOCK_INSTANCE    = 'I';  // Group Instance (one record/row of values matching a Group Definition)
+    public static final char BLOCK_TAG         = 'T';
+    public static final char BLOCK_FIELD       = 'F';
+    public static final char BLOCK_COLLECTION  = 'C';   // Definition of collection : Name , Allow duplication , has key ....
+    public static final char BLOCK_VALUE       = 'V';   // for example Collection value
 
 
 //    public static final String BLOCK_LIST        = "L";   // List of tags
 //    public static final DaxTag  TAG = new DaxTag(DaxTagConst.BLOCK_TYPE);
 
 
-    public DaxBlockType(String value) {
+    public DaxBlockType(char value) {
         super(DaxCoreTags.BLOCK_TYPE, value);
     }
 }

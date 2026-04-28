@@ -22,7 +22,7 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxPairCodec {
@@ -46,7 +46,7 @@ public class DaxPairCodec {
         return sb.toString() ;
     }
 
-    public   String encode(StringBuilder sb, DaxTag tag, DaxPair<?> pair, char pairSeparator ) {
+    public   String encode(StringBuilder sb, DaxTag tag, DaxValue<?> pair, char pairSeparator ) {
         String value;
         if (pair.getValue() instanceof DaxTag){
             value = tagCodec.encode((DaxTag)pair.getValue());

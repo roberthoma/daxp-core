@@ -21,8 +21,7 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.model.head.DaxHead;
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.preamble.DaxPreamble;
+import org.daxprotocol.core.model.value.DaxValue;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +61,7 @@ public class DaxHeadCodec{
 
 
 
-    public  DaxHead createHead(List<DaxPair<?>> listOfPair) {
+    public  DaxHead createHead(List<DaxValue<?>> listOfPair) {
         if(!listOfPair.get(0).getTag().equals(MSG_TYPE)){
               throw new DaxTagParserException("First pair is not MESSAGE_TYPE");
 
@@ -74,7 +73,7 @@ public class DaxHeadCodec{
 
         DaxHead head = new DaxHead(msgType);
 
-        Optional<DaxPair<?>> optBlockCount = listOfPair.stream()
+        Optional<DaxValue<?>> optBlockCount = listOfPair.stream()
                 .filter(p -> p.getTag().equals(MSG_BLOCK_QUANTITY) )
                 .findFirst();
 
@@ -82,10 +81,10 @@ public class DaxHeadCodec{
 
         return head;
     }
-    public  DaxHead createHead(String msgType,List<DaxPair<?>> listOfPair) {
+    public  DaxHead createHead(String msgType,List<DaxValue<?>> listOfPair) {
         DaxHead head = new DaxHead(msgType);
 
-        Optional<DaxPair<?>> optBlockCount = listOfPair.stream()
+        Optional<DaxValue<?>> optBlockCount = listOfPair.stream()
                 .filter(p -> p.getTag().equals(MSG_BLOCK_QUANTITY) )
                 .findFirst();
 

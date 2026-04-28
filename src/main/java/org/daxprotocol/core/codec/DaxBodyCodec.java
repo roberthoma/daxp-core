@@ -21,7 +21,7 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.body.DaxBody;
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class DaxBodyCodec {
     }
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
-                                      int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
+                                      int blockIdx ,Map<DaxTag, DaxValue<?>> blockMap,
                                       Map<DaxTag, Integer> tagBlockRefMap,
                                      char pairSeparator)
     {
@@ -58,7 +58,7 @@ public class DaxBodyCodec {
                     +" block:"+blockStr);
         }
 
-        DaxPair<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);
+        DaxValue<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);
         pairCodec.encode(sb, DaxCoreTags.BLOCK_TYPE, blockType.getStrValue(), pairSeparator);
 
         if (blockMap.containsKey(DaxCoreTags.ENTRY_ID) ){
@@ -78,7 +78,7 @@ public class DaxBodyCodec {
 
         tagBlockRefMap.forEach((tag, i)
                 -> pairCodec.encode(sb, DaxCoreTags.REFERENCE_BLOCK,
-                                     new DaxPair<>(DaxCoreTags.REFERENCE_BLOCK,
+                                     new DaxValue<>(DaxCoreTags.REFERENCE_BLOCK,
                                              tagCodec.encode(tag)+ DaxCoreConstants.REFERENCE_AT_BLOCK_CHAR +i)
                 , pairSeparator));
 
@@ -113,13 +113,13 @@ public class DaxBodyCodec {
     }
 
 
-    public  DaxBody createBody(int blockCount , List<DaxPair<?>> listOfPair){
+    public  DaxBody createBody(int blockCount , List<DaxValue<?>> listOfPair){
         DaxBody body = new DaxBody();
 
 //        if (blockCount==0) {
             body.nextBlock();
 //        }
-        for(DaxPair<?> pair : listOfPair){
+        for(DaxValue<?> pair : listOfPair){
             if(pair.getTag().equals(DaxCoreTags.CHECKSUM)){
                 break;
             }

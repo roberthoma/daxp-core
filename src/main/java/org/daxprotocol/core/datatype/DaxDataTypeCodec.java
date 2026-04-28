@@ -1,7 +1,7 @@
 package org.daxprotocol.core.datatype;
 
 import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.math.BigDecimal;
@@ -33,7 +33,7 @@ public class DaxDataTypeCodec {
 
     }
 
-    private Class<?> decodeCOLLECTION(Map<DaxTag, DaxPair<?>> tagPairMap){
+    private Class<?> decodeCOLLECTION(Map<DaxTag, DaxValue<?>> tagPairMap){
 
         if (tagPairMap.containsKey(COLLECTION_HAS_KEYS)) {
             if (tagPairMap.get(COLLECTION_HAS_KEYS).getBooleanValue()){
@@ -52,7 +52,7 @@ public class DaxDataTypeCodec {
 
 
 
-    public Class<?> decode(Map<DaxTag, DaxPair<?>> tagPairMap){
+    public Class<?> decode(Map<DaxTag, DaxValue<?>> tagPairMap){
 
         if (tagPairMap.isEmpty()) return null;
 
@@ -69,22 +69,22 @@ public class DaxDataTypeCodec {
 //        return null;
     }
 
-    public Map<DaxTag, DaxPair<?>> encode(Class<?> clazz){
-        Map<DaxTag, DaxPair<?>> map = new HashMap<>();
+    public Map<DaxTag, DaxValue<?>> encode(Class<?> clazz){
+        Map<DaxTag, DaxValue<?>> map = new HashMap<>();
 
         if (clazz == List.class){
-            map.put(DATA_TYPE, new DaxPair<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
-            map.put(COLLECTION_ALLOW_DUPLICATES, new DaxPair<>(COLLECTION_ALLOW_DUPLICATES,true));
+            map.put(DATA_TYPE, new DaxValue<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
+            map.put(COLLECTION_ALLOW_DUPLICATES, new DaxValue<>(COLLECTION_ALLOW_DUPLICATES,true));
             return map;
         }
 
         if (clazz.isEnum()){
-            map.put(DATA_TYPE, new DaxPair<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
-            map.put(COLLECTION_HAS_KEYS, new DaxPair<>(COLLECTION_HAS_KEYS,true));
+            map.put(DATA_TYPE, new DaxValue<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
+            map.put(COLLECTION_HAS_KEYS, new DaxValue<>(COLLECTION_HAS_KEYS,true));
             return map;
         }
 
-        map.put(DATA_TYPE, new DaxPair<>(DATA_TYPE,decodeClass(clazz).getCode()));
+        map.put(DATA_TYPE, new DaxValue<>(DATA_TYPE,decodeClass(clazz).getCode()));
 
         return map;
     }
@@ -144,9 +144,9 @@ public class DaxDataTypeCodec {
         throw new IllegalArgumentException("No converter for type: " + type.getName());
     }
 
-    public Map<DaxTag, DaxPair<?>> encode(DaxDataType daxDataType) {
-        Map<DaxTag, DaxPair<?>> map = new HashMap<>();
-        map.put(DATA_TYPE, new DaxPair<>(DATA_TYPE, daxDataType.getCode()));
+    public Map<DaxTag, DaxValue<?>> encode(DaxDataType daxDataType) {
+        Map<DaxTag, DaxValue<?>> map = new HashMap<>();
+        map.put(DATA_TYPE, new DaxValue<>(DATA_TYPE, daxDataType.getCode()));
 
         return map;
     }

@@ -18,7 +18,8 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.model.head;
-import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.attributes.DaxMsgBlockQuantity;
 import org.daxprotocol.core.attributes.DaxMsgType;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -30,7 +31,7 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 public final class DaxHead {
 
-    Map<DaxTag, DaxPair<?>> map = new LinkedHashMap<>();
+    Map<DaxTag, DaxValue<?>> map = new LinkedHashMap<>();
 
     public String getMsgType() {
         return map.get(MSG_TYPE).getStrValue();
@@ -38,7 +39,7 @@ public final class DaxHead {
 
     public DaxHead(String msgType) {
         map.put(MSG_TYPE,new DaxMsgType(msgType));
-        map.put(MSG_BLOCK_QUANTITY,new DaxMsgBlockQuantity(0));
+        map.put(MSG_BLOCK_QUANTITY,new DaxValue<>(DaxDataType.INTEGER, 0));
     }
 
     public int getBlockCount() {
@@ -50,7 +51,7 @@ public final class DaxHead {
                  (daxPair, daxPair2) -> daxPair2);
     }
 
-    public void putPair(DaxPair<?> pair){
+    public void putPair(DaxValue<?> pair){
         map.put(pair.getTag(),pair);
     }
 

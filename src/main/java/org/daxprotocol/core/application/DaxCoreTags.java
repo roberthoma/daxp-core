@@ -18,6 +18,7 @@
  * ***********************************************************************
  */
 package org.daxprotocol.core.application;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.register.DaxRegister;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -34,6 +35,10 @@ public class DaxCoreTags {
     private static final Map<Integer, DaxTag> SYS_TAG_CACHE = new HashMap<>();
 
     private static DaxTag daxpSysTag(int tagId) {
+       return daxpSysTag(tagId, DaxDataType.UNKNOWN) ;
+    }
+
+    private static DaxTag daxpSysTag(int tagId, DaxDataType dataType) {
         if (SYS_TAG_CACHE.containsKey(tagId)) {
             throw new IllegalStateException("Duplicate DAXP TAG ID detected: " + tagId);
         }

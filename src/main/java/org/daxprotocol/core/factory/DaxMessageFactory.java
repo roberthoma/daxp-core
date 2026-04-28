@@ -31,8 +31,8 @@ import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.pair.DaxPairString;
+import org.daxprotocol.core.model.value.DaxValue;
+import org.daxprotocol.core.model.value.DaxValueString;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
@@ -90,7 +90,7 @@ public class DaxMessageFactory {
         return new DaxMessage(DaxCoreMessages.DIC_REQ);
     }
 
-    private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
+    private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxValue<?>> map){
         body.nextBlock(DaxBlockType.BLOCK_TAG);
         body.putPair(ENTRY_ID,tagCodec.encode(tag));
 
@@ -335,7 +335,7 @@ public class DaxMessageFactory {
                             objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                         }
                         else {
-                            body.putPair(blogIdx,new DaxPair<>(tag, field.get(entry)));
+                            body.putPair(blogIdx,new DaxValue<>(tag, field.get(entry)));
                         }
                     }
                     continue;
@@ -352,7 +352,7 @@ public class DaxMessageFactory {
 
 
 
-                        body.putPair(blogIdx,new DaxPair<>(tag, field.get(entry)));
+                        body.putPair(blogIdx,new DaxValue<>(tag, field.get(entry)));
                     }
                 }
                 //----------------------------------------
@@ -374,7 +374,7 @@ public class DaxMessageFactory {
                     continue;
                 }
                 Object o = method.invoke(entry);
-                body.putPair(blogIdx,new DaxPair<>(tag, o.toString()));
+                body.putPair(blogIdx,new DaxValue<>(tag, o.toString()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -412,7 +412,7 @@ public class DaxMessageFactory {
 //
 //    }
 
-    public DaxMessage toDaxMessageFromPairMap( String messageType, Map<DaxTag,DaxPair<?>> pairMap){
+    public DaxMessage toDaxMessageFromPairMap( String messageType, Map<DaxTag, DaxValue<?>> pairMap){
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
         DaxTrailer trailer = new DaxTrailer();
@@ -426,7 +426,7 @@ public class DaxMessageFactory {
 
 
     public DaxMessage toDaxMessageFromListOfPairMap( String messageType,
-                                          List<Map<DaxTag,DaxPair<?>>> pairMapList){
+                                          List<Map<DaxTag, DaxValue<?>>> pairMapList){
 
 
         DaxHead head = new DaxHead(messageType);
@@ -447,7 +447,7 @@ public class DaxMessageFactory {
     public DaxMessage errorResourceNotFound() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
         message.getBody().nextBlock();
-        message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Resource not found"));
+        message.getBody().putPair(new DaxValueString(ERR_DESCRIPTION,"Resource not found"));
         return message;
     }
 
@@ -460,11 +460,11 @@ public class DaxMessageFactory {
     public DaxMessage errorInvalidMessageType() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
         message.getBody().nextBlock();
-        message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Invalid Message Type"));
+        message.getBody().putPair(new DaxValueString(ERR_DESCRIPTION,"Invalid Message Type"));
         return message;
     }
 
-    public DaxMessage createMsg(String messageType,List<DaxPair<?>> listOfPair){
+    public DaxMessage createMsg(String messageType,List<DaxValue<?>> listOfPair){
         DaxHead head;
         DaxBody body;
         DaxTrailer trailer;
@@ -478,7 +478,7 @@ public class DaxMessageFactory {
         //return messageCodec.createMsg(messageType, listOfPair);
     }
 
-    public DaxMessage createMsg(List<DaxPair<?>> listOfPair){
+    public DaxMessage createMsg(List<DaxValue<?>> listOfPair){
         DaxHead head;
         DaxBody body;
         DaxTrailer trailer;
