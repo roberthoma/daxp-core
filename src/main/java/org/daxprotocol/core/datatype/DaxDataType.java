@@ -22,6 +22,7 @@ public enum DaxDataType {
     DOUBLE("DBL", "Binary floating point (Oracle BINARY_DOUBLE)"), //, Double.class),
     DECIMAL("DEC", "Precise fixed-point decimal (Oracle NUMBER)"), //, BigDecimal.class),
     BOOLEAN("BLN", "Boolean value (Oracle CHAR(1) Y/N)"), //, Boolean.class),
+    CHARACTER("CHR", "Boolean value (Oracle CHAR(1) Y/N)"), //, Boolean.class),
 
     // 2. Temporal Types
     LOCAL_DATE("LDD", "Date without time (YYYY-MM-DD)"), //, LocalDate.class),

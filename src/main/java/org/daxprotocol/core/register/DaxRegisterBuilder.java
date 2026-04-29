@@ -84,7 +84,7 @@ public class DaxRegisterBuilder {
 
             field.setAccessible(true);
 
-            tag =  tagCodec.decode(daxField.value(),daxField.context(),daxField.tagId());
+            tag =  tagCodec.decode(daxField);
             fieldName = daxField.name();
 
         }
@@ -93,7 +93,7 @@ public class DaxRegisterBuilder {
             DaxpValue daxpValue = field.getAnnotation(DaxpValue.class);
 
            // field.setAccessible(true);
-            tag =  tagCodec.decode(daxpValue.value(),daxpValue.context(),  daxpValue.tagId());
+            tag =  tagCodec.decode(daxpValue);
             fieldName = daxpValue.name();
 
         }
@@ -235,7 +235,7 @@ public class DaxRegisterBuilder {
 
         if (!Modifier.isFinal(field.getModifiers())) return;  //TODO check or set read only
 
-        DaxpTag daxTag = field.getAnnotation(DaxpTag.class);
+        DaxpTag tagAnn = field.getAnnotation(DaxpTag.class);
         field.setAccessible(true);
 
         Class<?> tagClazz =  field.getType();
@@ -244,21 +244,21 @@ public class DaxRegisterBuilder {
         System.out.println(tagClazz.toString());
 
 
-
+        String value = "";
+        int tagId = -1 ;
         try {
             if (field.getType() == String.class) {
-               String value = (String)(field.get(null));
-               tag = tagParser.parseDaxTag(value,config.getAppContextId());
+               value = (String)(field.get(null));
+               //tag = tagParser.parseDaxTag(value,config.getAppContextId());
+
             }
             else {
-                int tagId = -1;
                 tagId = field.getInt(null);
                 //TODO Create DaxContextCodec
-                int contextId = daxTag.context().isBlank() ? config.getAppContextId():
-                        contextMapper.getReferenceId(daxTag.context());
-
-                tag = DaxTag.of(contextId ,tagId);
-
+//                int contextId = daxTag.context().isBlank() ? config.getAppContextId():
+//                        contextMapper.getReferenceId(daxTag.context());
+//
+//                tag = DaxTag.of(contextId ,tagId);
 
             }
         }
@@ -267,19 +267,24 @@ public class DaxRegisterBuilder {
         }
 
 
+          tag =  tagCodec.decode(value,tagAnn.context(),tagId);
 
 
          register.putTag(tag );
 
         //TODO  check tah DataType is exist
 
-        logger.info("description : {}",daxTag.description());
+        logger.info("description : {}",tagAnn.description());
 
-        if (! daxTag.clazz().equals(Void.class)) {
-            register.putAtrDataType(tag, dataTypeCodec.encode(daxTag.clazz()));
+        if (! tagAnn.clazz().equals(Void.class)) {
+            register.putAtrDataType(tag, dataTypeCodec.encode(tagAnn.clazz()));
         }
 
-        if (daxTag.readOnly()) {
+        if (tagAnn.daxDataType() != DaxDataType.UNKNOWN){
+            register.putAtrDataType(tag,tagAnn.daxDataType());
+        }
+
+        if (tagAnn.readOnly()) {
             register.putAtrReadOnly(tag,Boolean.TRUE);
         }
 

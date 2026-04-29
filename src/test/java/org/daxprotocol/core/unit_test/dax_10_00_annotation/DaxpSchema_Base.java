@@ -6,6 +6,7 @@ import org.daxprotocol.core.annotation.DaxpMsg;
 import org.daxprotocol.core.annotation.DaxpSchema;
 import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.application.DaxCoreConstants;
+import org.daxprotocol.core.datatype.DaxDataType;
 
 @DaxpSchema
 public class DaxpSchema_Base {
@@ -57,8 +58,8 @@ public class DaxpSchema_Base {
     @DaxpTag(description = "Test enum")
     public static final  int TEST_ENUM_1 = 6001;
 
-    @DaxpTag( description = "SUB Base DTO ")
-    public static final int TEST_TAG_SUB_DTO = 8000;
+    @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
+    public static final int TEST_TAG_SUB_ENTITY = 8000;
 
     @DaxpTag( description = "SUB Base DTO ")
     public static final int TEST_SUB_DTO_1 =  5077;

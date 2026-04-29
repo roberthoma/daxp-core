@@ -102,7 +102,6 @@ public class DaxBody {
         blockIdx = blockMap.size();
         blockMap.put(blockIdx,new HashMap<>());
         blockRefMap.put(blockIdx,new HashMap<>());
-
     }
 
     public void nextBlock(DaxBlockType blockType){
@@ -123,6 +122,7 @@ public class DaxBody {
         return blockIdx;
     }
 
+    //TODO Refactor to merge
     public void putTagBlockReference(int blogIdx, DaxTag tag, int refBlockIdx) {
         blockRefMap.get(blogIdx).put(tag,refBlockIdx);
     }

@@ -20,6 +20,9 @@
 
 package org.daxprotocol.core.codec;
 
+import org.daxprotocol.core.annotation.DaxpEntity;
+import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -51,6 +54,16 @@ public class DaxTagCodec {
                     DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
         }
         return String.valueOf(tag.getTagId());
+    }
+
+    public DaxTag decode(DaxpField ann){
+        return decode(ann.value(),ann.context(), ann.tagId());
+    }
+    public DaxTag decode(DaxpValue ann){
+        return decode(ann.value(),ann.context(), ann.tagId());
+    }
+    public DaxTag decode(DaxpEntity ann){
+        return decode(ann.value(),ann.context(), ann.tagId());
     }
 
     public DaxTag decode(

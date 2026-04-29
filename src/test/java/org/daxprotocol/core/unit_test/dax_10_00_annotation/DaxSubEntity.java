@@ -3,8 +3,8 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
 
-@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_SUB_DTO)
-public class DaxSubDTO {
+@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_SUB_ENTITY)
+public class DaxSubEntity {
     @DaxpField("8001")
     private int value_1;
 
@@ -40,7 +40,7 @@ public class DaxSubDTO {
     }
 
 
-    public DaxSubDTO(int value_1, String value2, Double dd) {
+    public DaxSubEntity(int value_1, String value2, Double dd) {
         this.value_1 = value_1;
         this.value2 = value2;
         this.dd = dd;

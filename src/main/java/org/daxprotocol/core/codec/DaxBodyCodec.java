@@ -67,14 +67,14 @@ public class DaxBodyCodec {
             pairCodec.encode(sb, DaxCoreTags.ENTRY_ID, blockMap.get(DaxCoreTags.ENTRY_ID), pairSeparator);
         }
 
-        blockMap.forEach((tag, pair) ->
+        blockMap.forEach((tag, value) ->
         {
             if (!tag.equals(DaxCoreTags.BLOCK_INDEX) &&
                 !tag.equals(DaxCoreTags.BLOCK_TYPE) &&
                 !tag.equals(DaxCoreTags.ENTRY_ID)
             )
             {
-                pairCodec.encode(sb, tag, pair, pairSeparator);
+                pairCodec.encode(sb, tag, value, pairSeparator);
             }
         });
 

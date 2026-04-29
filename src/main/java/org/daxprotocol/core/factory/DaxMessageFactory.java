@@ -64,7 +64,7 @@ public class DaxMessageFactory {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-    DaxRegister dictionary;
+    DaxRegister register;
     DaxTagParser tagParser;
     DaxDataTypeCodec dataTypeCodec;
     public DaxMessageFactory(DaxConfig config,
@@ -74,7 +74,7 @@ public class DaxMessageFactory {
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxRegister dictionary,
+            DaxRegister register,
             DaxTagParser tagParser,
             DaxDataTypeCodec dataTypeCodec
 
@@ -86,7 +86,7 @@ public class DaxMessageFactory {
         this.headCodec = headCodec;
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
-        this.dictionary = dictionary;
+        this.register = register;
         this.tagParser = tagParser;
         this.dataTypeCodec = dataTypeCodec;
 
@@ -99,8 +99,7 @@ public class DaxMessageFactory {
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxValue<?>> map){
         body.nextBlock(DaxBlockType.BLOCK_TAG);
         body.putPair(ENTRY_ID, new DaxValueTag(tag));
-
-        map.forEach((i, pair) -> body.putPair(tag , pair));
+        map.forEach(body::putPair);
     }
 
 
@@ -173,7 +172,7 @@ public class DaxMessageFactory {
 //        }
 
     }
-    private void putEnumValuesToBody(DaxBody body, DaxTag tag,Map<String, DaxEnumValue> enumValueMap ){
+    private void putCollectionValuesToBody(DaxBody body, DaxTag tag,Map<String, DaxEnumValue> enumValueMap ){
         enumValueMap.forEach( (s, value) -> {
             body.nextBlock(DaxBlockType.BLOCK_VALUE);
             body.putPair(COLLECTION_ID, tagCodec.encode(tag));
@@ -191,7 +190,7 @@ public class DaxMessageFactory {
 
         enumDictionary.getEnumMap().forEach((daxTag, daxEnum) ->
         { putEnumToBlock(body,daxTag,daxEnum);
-          putEnumValuesToBody(body,daxTag,enumDictionary.getEnumValueMap(daxTag));
+          putCollectionValuesToBody(body,daxTag,enumDictionary.getEnumValueMap(daxTag));
         }
         );
     }
@@ -253,11 +252,11 @@ public class DaxMessageFactory {
     public DaxMessage schemaToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_DIC);
 
-        dictionary.getContextMap().forEach((idCtx, context) ->
+        register.getContextMap().forEach((idCtx, context) ->
                         putContextToBody(message.getBody(), context)
                 );
 
-        schemaToMsg(dictionary,message );
+        schemaToMsg(register,message );
 
         message.finish();
         return message;
@@ -275,7 +274,7 @@ public class DaxMessageFactory {
           : toDaxMessageFromList( messageType, List.of(daxDataEntry), null );
     }
 
-    //TODO reate message with token
+    //TODO reate message with token and implement  outFrame
     public DaxMessage toDaxRespondMessage( DaxFrame reqFrame , String messageType, Object daxDataEntry ) {
         Set<DaxTag> tagSet;
 
@@ -317,12 +316,7 @@ public class DaxMessageFactory {
                     DaxTag tag;
 
                     if (field.get(entry) != null){
-                        if (!fieldAnn.value().isBlank()){
-                            tag = tagParser.parseDaxTag(fieldAnn.value(),config.getAppContextId());
-                        }
-                        else {
-                         tag = creatTag(fieldAnn.context(), fieldAnn.tagId());
-                        }
+                        tag = tagCodec.decode( fieldAnn);
 
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
                             continue;
@@ -333,30 +327,27 @@ public class DaxMessageFactory {
                             body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                             int nestedIdx = body.getCurrentIdx();
 
-
-
-
                             body.putTagBlockReference(blogIdx, tag, (nestedIdx+1));
 
                             objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                         }
                         else {
 //                            body.putPair(blogIdx,tag, new DaxValue<>(field.get(entry)));
-                            body.putPair(blogIdx,tag, dataTypeCodec.convertToValue(tag,field, entry));
+                            body.putPair(blogIdx,tag, dataTypeCodec.convertToValue(tag,field, field.get(entry) ));
                         }
                     }
                     continue;
                 }
                 if (field.isAnnotationPresent(DaxpValue.class)) {
-                    DaxpValue daxValue = field.getAnnotation(DaxpValue.class);
+                    DaxpValue valueAnn = field.getAnnotation(DaxpValue.class);
                     //   field.setAccessible(true);
                     if (field.get(entry) != null) {
-                        DaxTag tag = creatTag(daxValue.context(), daxValue.tagId());
+                        DaxTag tag = tagCodec.decode( valueAnn);
 
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
                             continue;
                         }
-                        body.putPair(blogIdx,tag, dataTypeCodec.convertToValue(tag,field, entry));
+                        body.putPair(blogIdx,tag, dataTypeCodec.convertToValue(tag,field, field.get(entry) ));
 
 //                        body.putPair(blogIdx,new DaxValue<>(tag, field.get(entry)));
                     }
@@ -375,7 +366,7 @@ public class DaxMessageFactory {
                 if (methodAnn == null) continue;
                 Class<?> returnType = method.getReturnType();
 
-                DaxTag tag = DaxTag.of(config.getAppContextId(),methodAnn.tagId());
+                DaxTag tag = tagCodec.decode( methodAnn);
                 if(reqTagSet != null && !reqTagSet.contains(tag)){
                     continue;
                 }
@@ -398,8 +389,8 @@ public class DaxMessageFactory {
 
         daxDataEntry.forEach(entry -> {
             if (entry.getClass().isAnnotationPresent(DaxpEntity.class)) {
-                DaxpEntity dtoAnn = entry.getClass().getAnnotation(DaxpEntity.class);
-                DaxTag tag = creatTag("",dtoAnn.tagId());
+                DaxpEntity entityAnn = entry.getClass().getAnnotation(DaxpEntity.class);
+                DaxTag tag =  tagCodec.decode( entityAnn);
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                 objectToMsgBlock(body.getCurrentIdx(),tag, entry, body, reqTagSet);
             }

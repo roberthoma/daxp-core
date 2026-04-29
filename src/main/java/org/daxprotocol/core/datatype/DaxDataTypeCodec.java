@@ -100,6 +100,10 @@ public class DaxDataTypeCodec {
         if (obj instanceof Boolean) return DaxDataType.BOOLEAN;
         if (obj instanceof LocalDate) return DaxDataType.LOCAL_DATE;
         if (obj instanceof LocalDateTime) return DaxDataType.LOCAL_DATE_TIME;
+        if (obj instanceof String) return DaxDataType.STRING;
+        if (obj instanceof Character) return DaxDataType.CHARACTER;
+
+
         return DaxDataType.UNKNOWN;
     }
 
@@ -108,7 +112,7 @@ public class DaxDataTypeCodec {
     public    DaxDataType decodeClass(Class<?> clazz) {
         if (clazz == null) { return DaxDataType.UNKNOWN;}
 
-        if (clazz.isEnum()) {return DaxDataType.COLLECTION;}
+        if (clazz.equals(Enum.class)) {return DaxDataType.COLLECTION;}
         if (clazz == String.class) return DaxDataType.STRING;
         if (clazz.equals(Integer.class)) return DaxDataType.INTEGER;
         if (clazz.equals(Long.class)) return DaxDataType.LONG;
@@ -117,7 +121,12 @@ public class DaxDataTypeCodec {
         if (clazz.equals(Boolean.class)) return DaxDataType.BOOLEAN;
         if (clazz.equals(LocalDate.class)) return DaxDataType.LOCAL_DATE;
         if (clazz.equals(LocalDateTime.class)) return DaxDataType.LOCAL_DATE_TIME;
+        if (clazz.equals(Character.class)) return DaxDataType.CHARACTER;
 
+
+        if (clazz.isEnum()) {
+            return DaxDataType.ENTITY;
+        }
 
         if (clazz.isAnnotationPresent(DaxpEntity.class)) {
             return DaxDataType.ENTITY;
@@ -151,12 +160,15 @@ public class DaxDataTypeCodec {
 
     public DaxValue<?> convertToValue(DaxTag tag, Field field, Object obj) {
         DaxDataType dataType = decodeFromObject(obj);
-
+        System.out.println(tag.getTagId()+" >>>>"+obj);
         return switch (dataType){
         //    case COLLECTION ->  decodeCOLLECTION(tagPairMap);
             case STRING ->  new DaxValueString((String) obj);
             case INTEGER -> new DaxValueInteger((Integer) obj);
-            default         -> null; /// TODO add log and exception
+            case CHARACTER -> new DaxValueCharacter((Character) obj);
+            case BOOLEAN -> new DaxValueBoolean((Boolean) obj);
+            case TAG       -> new DaxValueTag((DaxTag) obj);
+            default      -> throw new RuntimeException("NO DATA TYPE CONVERTING !!!");
         };
 
     }
