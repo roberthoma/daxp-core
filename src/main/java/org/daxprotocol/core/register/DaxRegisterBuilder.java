@@ -299,7 +299,8 @@ public class DaxRegisterBuilder {
 
         register.putEntity(new DaxEntity(entityTag, entityName));
 
-        register.putAtrDataType(entityTag, dataTypeCodec.encode( DaxDataType.ENTITY));
+//        register.putAtrDataType(entityTag, dataTypeCodec.encode( DaxDataType.ENTITY));
+        register.putAtrDataType(entityTag,  DaxDataType.ENTITY);
 
         List<Field> allFields = DaxLangTool.allFields(clazz);
 

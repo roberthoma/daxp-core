@@ -71,4 +71,19 @@ public abstract class DaxValue<T>{
         }
         return (Boolean) value;
     }
+
+    public DaxDataType getDataTypeValue() {
+        return (DaxDataType) value;
+    }
+//
+
 }
+/*
+public <T> T getValue(DaxTag tag, Class<T> type) {
+    DaxValue<?> wrappedValue = tagPairMap.get(tag);
+    if (wrappedValue == null) return null;
+
+    // Tutaj możesz sprawdzić spójność z tagDataType
+    return type.cast(wrappedValue.getValue());
+}
+*/

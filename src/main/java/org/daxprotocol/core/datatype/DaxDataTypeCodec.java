@@ -58,7 +58,7 @@ public class DaxDataTypeCodec {
         if (tagPairMap.isEmpty()) return null;
 
         if (!tagPairMap.containsKey(ATR_DATA_TYPE)) return null;
-        DaxDataType dataType = DaxDataType.fromCode(tagPairMap.get(ATR_DATA_TYPE).getStrValue());
+        DaxDataType dataType = tagPairMap.get(ATR_DATA_TYPE).getDataTypeValue();
 
         return switch (dataType){
                       case COLLECTION ->  decodeCOLLECTION(tagPairMap);

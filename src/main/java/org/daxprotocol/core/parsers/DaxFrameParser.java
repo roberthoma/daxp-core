@@ -27,6 +27,7 @@ import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.value.DaxValueString;
+import org.daxprotocol.core.model.value.DaxValueTagSet;
 import org.daxprotocol.core.register.DaxRegister;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -196,7 +197,7 @@ public class DaxFrameParser {
                                         .map(String::trim)
                                         .map(s ->  tagParser.parseDaxTag(s,preamble.getContextId()))
                                         .collect(Collectors.toSet());
-                        pair = new DaxPair(tag,daxTagSet);
+                        pair = new DaxPair(tag, new DaxValueTagSet(daxTagSet));
                     }
                     else {
                         pair = new DaxPair(tag, new DaxValueString( valueStr ));

@@ -27,12 +27,9 @@ import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
-import org.daxprotocol.core.model.value.DaxValue;
+import org.daxprotocol.core.model.value.*;
 import org.daxprotocol.core.entity.DaxEntity;
-import org.daxprotocol.core.model.value.DaxValueBoolean;
-import org.daxprotocol.core.model.value.DaxValueInteger;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.value.DaxValueString;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -258,10 +255,10 @@ public class DaxRegister {
 
     };
 
-//
-//    public void putAtrDataType(DaxTag tag, DaxDataType dataType){
-//        putAttribute(tag, new DaxAtrDataType(dataType));
-//    };
+
+    public void putAtrDataType(DaxTag tag, DaxDataType dataType){
+        putAttribute(tag, ATR_DATA_TYPE,new DaxValueDataType(dataType));
+    };
 
 
 
@@ -296,9 +293,9 @@ public class DaxRegister {
 //    }
 
 
-//    public void putAtrFieldName(DaxTag tag, String name) {
-//        putAttribute(tag,  new DaxArtFieldName(name));
-//    }
+    public void putAtrFieldName(DaxTag tag, String name) {
+        putAttribute(tag, ENTRY_NAME ,new DaxValueString(name));
+    }
 
 
 //    public void putAtrEntityDataTypeId(DaxTag tag, DaxDataType dataTypeTag) {
@@ -318,6 +315,10 @@ public class DaxRegister {
         }
         tagSet.add(tag);
 
+    }
+
+    public void putAtrEnumTypeTag(DaxTag tag, DaxTag typeTag) {
+        putAttribute(tag, COLLECTION_ID,new DaxValueTag(typeTag));
     }
     //------------------------------------
 //    public Class<?> getAtrDataType(DaxTag tag){
