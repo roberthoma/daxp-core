@@ -36,7 +36,7 @@ public class DaxDataTypeTest extends DaxConfigBaseTest {
         Map<DaxTag, DaxValue<?>> tagPairMap = new HashMap<>();
         Map<DaxTag, DaxValue<?>> tagPairMapOut ;
 
-        tagPairMap.put(DATA_TYPE, new DaxValue<>(DATA_TYPE,DaxDataType.COLLECTION.getCode()));
+        tagPairMap.put(ATR_DATA_TYPE, new DaxValue<>(ATR_DATA_TYPE,DaxDataType.COLLECTION.getCode()));
         tagPairMap.put(COLLECTION_ALLOW_DUPLICATES, new DaxValue<>(COLLECTION_ALLOW_DUPLICATES,true));
 
         Class<?> clazz =  dataTypeCodec.decode(tagPairMap);

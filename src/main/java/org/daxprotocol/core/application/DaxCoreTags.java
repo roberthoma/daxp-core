@@ -93,7 +93,7 @@ public class DaxCoreTags {
 
 
     public static final DaxTag TAG_LIST                = daxpSysTag(115);
-    public static final DaxTag DATA_TYPE               = daxpSysTag(7);
+    public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(7);
     public static final DaxTag ENTITY_DATA_TYPE_ID     = daxpSysTag(118);
 
     public static final DaxTag REFERENCE_ENTITY         = daxpSysTag(15);
@@ -161,6 +161,8 @@ public class DaxCoreTags {
 
 
     //TODO
+//    $:121=tag - ustawia NULL
+//    $:122=tag - usuwa pole
 
     /*****************************
      * Attributes of UI

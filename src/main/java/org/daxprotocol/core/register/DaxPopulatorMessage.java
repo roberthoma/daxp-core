@@ -24,9 +24,9 @@ public class DaxPopulatorMessage {
 
     private void populateFromMsgBlock(int msgContextId , Map<DaxTag, DaxValue<?>> blockPairMap) {
 
-        String blockType =   blockPairMap.get(DaxCoreTags.BLOCK_TYPE).getStrValue();
+        Character blockType =   blockPairMap.get(DaxCoreTags.BLOCK_TYPE).getCharValue();
 
-        if(blockType.equals(DaxBlockType.BLOCK_MESSAGE)){
+        if(blockType.equals(DaxBlockType.BLOCK_MESSAGE.getCode())){
             String msgDesc = "";
             if (blockPairMap.containsKey(DaxCoreTags.FIELD_VALUE_DESCRIPTION)){
                 msgDesc =  blockPairMap.get(DaxCoreTags.FIELD_VALUE_DESCRIPTION).getStrValue();
@@ -58,7 +58,7 @@ public class DaxPopulatorMessage {
             return;
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_COLLECTION)){
+        if(blockType.equals(DaxBlockType.BLOCK_COLLECTION.getCode())){
 
             DaxTag enumTag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgContextId
@@ -114,8 +114,8 @@ public class DaxPopulatorMessage {
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 
-
-            if(blockPairMap.containsKey(DaxCoreTags.DATA_TYPE)) {
+/*
+            if(blockPairMap.containsKey(DaxCoreTags.ATR_DATA_TYPE)) {
 
                 //TODO make validator nad filter
                 //daxDic.putAtrDataType(tag, blockPairMap.get(DaxCoreTags.DATA_TYPE).getStrValue());
@@ -126,13 +126,14 @@ public class DaxPopulatorMessage {
             else if(blockPairMap.containsKey(DaxCoreTags.ENTITY_DATA_TYPE_ID)) {
                 DaxTag tag3 = tagParser.parseDaxTag(
                         blockPairMap.get(DaxCoreTags.ENTITY_DATA_TYPE_ID).getStrValue(), msgContextId);
+
                 daxDic.putAtrEntityDataTypeId(tag, tag3);
             }
             else{
                 System.out.println("No data type !!!!!! ");
             }
 
-
+*/
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_NULLABLE)) {
                 daxDic.putAtrNullable(tag,

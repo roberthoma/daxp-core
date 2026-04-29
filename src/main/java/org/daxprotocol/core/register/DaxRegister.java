@@ -23,6 +23,7 @@ package org.daxprotocol.core.register;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.*;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -31,6 +32,7 @@ import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.value.DaxValueBoolean;
 import org.daxprotocol.core.model.value.DaxValueInteger;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.model.value.DaxValueString;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +42,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
+import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 //TODO
 // dictionary od exception by context
@@ -86,7 +88,7 @@ public class DaxRegister {
      * Key : tagId
      * Value : map of attributes
      * */
-     Map<DaxTag, Map<DaxTag, Object>> attributMap = new ConcurrentHashMap<>();
+     Map<DaxTag, Map<DaxTag, DaxValue<?>>> attributMap = new ConcurrentHashMap<>();
 //    Map<DaxTag, Map<DaxTag, DaxValue<?>>> attributMap = new ConcurrentHashMap<>();
 
 
@@ -226,7 +228,7 @@ public class DaxRegister {
 //                        DaxCollectionTool.putAndReturnMap(eM, atrTag, atrValue));
 //
 //    }
-    public void putAttribute(DaxTag tag, DaxTag atrTag,  Object atrValue){
+    public void putAttribute(DaxTag tag, DaxTag atrTag,  DaxValue<?> atrValue){
         attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrTag, atrValue)),
                 (eM, nM) ->
                         DaxCollectionTool.putAndReturnMap(eM, atrTag, atrValue));
@@ -236,10 +238,10 @@ public class DaxRegister {
     //**********************************************************************
     // Dedicated attributes
 
-    public Map<DaxTag, DaxValue<?>> getFieldAttributeMap(int tagId) {
-        DaxTag tag = DaxTag.of(config.getAppContextId(), tagId);
-        return attributMap.get( tag);
-    }
+//    public Map<DaxTag, DaxValue<?>> getFieldAttributeMap(DaxTag tagId) {
+//        DaxTag tag = DaxTag.of(config.getAppContextId(), tagId);
+//        return attributMap.get( tag);
+//    }
 
     public Map<DaxTag, Map<DaxTag, DaxValue<?>>> getAttributMap(){
         return attributMap;
@@ -251,8 +253,8 @@ public class DaxRegister {
 //    };
 
     public void putAtrDataType(DaxTag tag, Map<DaxTag, DaxValue<?>> pairMap){
-        pairMap.forEach((atrTag, atrPair) ->
-        putAttribute(tag, atrPair));
+        pairMap.forEach((atrTag, atrValue) ->
+        putAttribute(tag,atrTag , atrValue));
 
     };
 
@@ -267,41 +269,41 @@ public class DaxRegister {
 
 
     public void putAtrSizeMax(DaxTag tag,  Integer max){
-        putAttribute(tag, new DaxValueInteger(max));
+        putAttribute(tag, ATR_SIZE_MAX, new DaxValueInteger(max));
     }
 
 
     public void putAtrSizeMin(DaxTag tag,  Integer min){
-        putAttribute(tag, new DaxValueInteger(min));
+        putAttribute(tag, ATR_SIZE_MIN, new DaxValueInteger(min));
     }
 
 
 
     public void putAtrNullable(DaxTag tag,  Boolean able){
-        putAttribute(tag, ,new DaxAtrNullable(able));
+        putAttribute(tag, ATR_NULLABLE ,new DaxValueBoolean(able));
     }
 
     public void putAtrReadOnly(DaxTag tag, Boolean able) {
-        putAttribute(tag, DaxCoreTags.ATR_READONLY , able);
+        putAttribute(tag,ATR_READONLY , new DaxValueBoolean(able));
     }
 
-    public void putAtrReadOnly(DaxTag tag, char able) {
-        putAttribute(tag, new DaxArtReadOnly(able=='Y'? Boolean.TRUE:Boolean.FALSE));
-    }
+//    public void putAtrReadOnly(DaxTag tag, char able) {
+//        putAttribute(tag, new DaxArtReadOnly(able=='Y'? Boolean.TRUE:Boolean.FALSE));
+//    }
 
-    public void putAtrEnumTypeTag(DaxTag tag, DaxTag enumTag) {
-        putAttribute(tag, new DaxAtrEnumTag(enumTag));
-    }
-
-
-    public void putAtrFieldName(DaxTag tag, String name) {
-        putAttribute(tag, new DaxArtFieldName(name));
-    }
+//    public void putAtrEnumTypeTag(DaxTag tag, DaxTag enumTag) {
+//        putAttribute(tag, new DaxAtrEnumTag(enumTag));
+//    }
 
 
-    public void putAtrEntityDataTypeId(DaxTag tag, DaxTag dataTypeTag) {
-        putAttribute(tag, new DaxAtrEntityDataTypeId(dataTypeTag));
-    }
+//    public void putAtrFieldName(DaxTag tag, String name) {
+//        putAttribute(tag,  new DaxArtFieldName(name));
+//    }
+
+
+//    public void putAtrEntityDataTypeId(DaxTag tag, DaxDataType dataTypeTag) {
+//        putAttribute(tag, ATR_DATA_TYPE,new DaxValueString(dataTypeTag));
+//    }
 
 
     public void putAtrDeprecated(DaxTag tag) {

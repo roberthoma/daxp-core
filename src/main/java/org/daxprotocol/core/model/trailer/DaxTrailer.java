@@ -23,6 +23,7 @@ package org.daxprotocol.core.model.trailer;
 import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.model.value.DaxValueInteger;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class DaxTrailer {
     private final DaxValue<Integer> checksumPair;
 
     public DaxTrailer(){
-        checksumPair = new DaxValue<Integer>(DaxCoreTags.CHECKSUM,0);
+        checksumPair = new DaxValueInteger(0);
         map.put(DaxCoreTags.CHECKSUM,checksumPair);
     }
 

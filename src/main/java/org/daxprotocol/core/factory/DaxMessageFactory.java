@@ -27,6 +27,7 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.context.DaxContext;
@@ -65,6 +66,7 @@ public class DaxMessageFactory {
     DaxTrailerCodec  trailerCodec;
     DaxRegister dictionary;
     DaxTagParser tagParser;
+    DaxDataTypeCodec dataTypeCodec;
     public DaxMessageFactory(DaxConfig config,
             DaxContextMapper contextMapper,
             DaxTagCodec tagCodec,
@@ -73,7 +75,8 @@ public class DaxMessageFactory {
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
             DaxRegister dictionary,
-            DaxTagParser tagParser
+            DaxTagParser tagParser,
+            DaxDataTypeCodec dataTypeCodec
 
             ) {
         this.config = config;
@@ -85,6 +88,7 @@ public class DaxMessageFactory {
         this.trailerCodec = trailerCodec;
         this.dictionary = dictionary;
         this.tagParser = tagParser;
+        this.dataTypeCodec = dataTypeCodec;
 
     }
 
@@ -337,7 +341,8 @@ public class DaxMessageFactory {
                             objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                         }
                         else {
-                            body.putPair(blogIdx,tag, new DaxValue<>(field.get(entry)));
+//                            body.putPair(blogIdx,tag, new DaxValue<>(field.get(entry)));
+                            body.putPair(blogIdx,tag, dataTypeCodec.convertToValue(tag,field, entry));
                         }
                     }
                     continue;
@@ -351,10 +356,9 @@ public class DaxMessageFactory {
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
                             continue;
                         }
+                        body.putPair(blogIdx,tag, dataTypeCodec.convertToValue(tag,field, entry));
 
-
-
-                        body.putPair(blogIdx,new DaxValue<>(tag, field.get(entry)));
+//                        body.putPair(blogIdx,new DaxValue<>(tag, field.get(entry)));
                     }
                 }
                 //----------------------------------------
