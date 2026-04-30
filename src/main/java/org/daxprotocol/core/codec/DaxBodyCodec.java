@@ -22,9 +22,8 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.value.DaxValueString;
+import org.daxprotocol.core.model.pair.DaxPairString;
 
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class DaxBodyCodec {
     }
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
-                                      int blockIdx ,Map<DaxTag, DaxValue<?>> blockMap,
+                                      int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
                                       Map<DaxTag, Integer> tagBlockRefMap,
                                      char pairSeparator)
     {
@@ -60,29 +59,29 @@ public class DaxBodyCodec {
                     +" block:"+blockStr);
         }
 
-        DaxValue<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);
+        DaxPair<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);
         pairCodec.encode(sb, DaxCoreTags.BLOCK_TYPE, blockType.getStrValue(), pairSeparator);
 
         if (blockMap.containsKey(DaxCoreTags.ENTRY_ID) ){
-            pairCodec.encode(sb, DaxCoreTags.ENTRY_ID, blockMap.get(DaxCoreTags.ENTRY_ID), pairSeparator);
+            pairCodec.encode(sb, blockMap.get(DaxCoreTags.ENTRY_ID), pairSeparator);
         }
 
-        blockMap.forEach((tag, value) ->
+        blockMap.forEach((tag, pair) ->
         {
             if (!tag.equals(DaxCoreTags.BLOCK_INDEX) &&
                 !tag.equals(DaxCoreTags.BLOCK_TYPE) &&
                 !tag.equals(DaxCoreTags.ENTRY_ID)
             )
             {
-                pairCodec.encode(sb, tag, value, pairSeparator);
+                pairCodec.encode(sb, pair, pairSeparator);
             }
         });
 
         tagBlockRefMap.forEach((tag, i)
-                -> pairCodec.encode(sb, DaxCoreTags.REFERENCE_BLOCK,
-                                     new DaxValueString(
+                -> pairCodec.encode(sb, new DaxPairString(DaxCoreTags.REFERENCE_BLOCK,
                                              tagCodec.encode(tag) + DaxCoreConstants.REFERENCE_AT_BLOCK_CHAR +i)
-                , pairSeparator));
+                                    , pairSeparator)
+        );
 
 
 
@@ -115,7 +114,7 @@ public class DaxBodyCodec {
     }
 
 
-    public  DaxBody createBody(int blockCount , List<DaxPair> listOfPair){
+    public  DaxBody createBody(int blockCount , List<DaxPair<?>> listOfPair){
         DaxBody body = new DaxBody();
 
 //        if (blockCount==0) {

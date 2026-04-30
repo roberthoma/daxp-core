@@ -22,14 +22,12 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
 import java.util.List;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
-//public class DaxTrailerCodec implements DaxCodec<DaxTrailer> {
 public class DaxTrailerCodec {
     DaxPairCodec pairCodec;
 
@@ -44,11 +42,11 @@ public class DaxTrailerCodec {
     }
 
 
-    public DaxTrailer createTrailer(List<DaxPair> listOfPair) {
+    public DaxTrailer createTrailer(List<DaxPair<?>> listOfPair) {
         DaxTrailer trailer = new DaxTrailer();
-        for(DaxPair pair : listOfPair) {
+        for(DaxPair<?> pair : listOfPair) {
             if (pair.getTag().equals(DaxCoreTags.CHECKSUM)) {
-                trailer.setChecksum(pair.getValue().getIntegerValue());
+                trailer.setChecksum(pair.getIntegerValue());
                 break;
             }
         }

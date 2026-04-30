@@ -17,14 +17,12 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.model.value;
+package org.daxprotocol.core.model.pair;
 
 import org.daxprotocol.core.model.tag.DaxTag;
 
-import java.util.Set;
-
-public class DaxValueTagSet extends DaxValue<Set<DaxTag>> {
-    public DaxValueTagSet(Set<DaxTag> value) {
-        super(value);
+public class DaxPairTag extends DaxPair<DaxTag> {
+    public DaxPairTag(DaxTag tag, DaxTag value) {
+        super(tag, value);
     }
 }

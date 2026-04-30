@@ -20,21 +20,21 @@
 
 package org.daxprotocol.core.model.trailer;
 
-import org.daxprotocol.core.model.value.DaxValue;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.value.DaxValueInteger;
+import org.daxprotocol.core.model.pair.DaxPairInteger;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DaxTrailer {
 
-    Map<DaxTag, DaxValue<?>> map = new LinkedHashMap<>();
-    private final DaxValue<Integer> checksumPair;
+    Map<DaxTag, DaxPair<?>> map = new LinkedHashMap<>();
+    private final DaxPair<Integer> checksumPair;
 
     public DaxTrailer(){
-        checksumPair = new DaxValueInteger(0);
+        checksumPair = new DaxPairInteger(DaxCoreTags.CHECKSUM,0);
         map.put(DaxCoreTags.CHECKSUM,checksumPair);
     }
 

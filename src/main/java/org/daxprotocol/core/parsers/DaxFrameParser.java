@@ -26,8 +26,8 @@ import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.value.DaxValueString;
-import org.daxprotocol.core.model.value.DaxValueTagSet;
+import org.daxprotocol.core.model.pair.DaxPairString;
+import org.daxprotocol.core.model.pair.DaxPairTagSet;
 import org.daxprotocol.core.register.DaxRegister;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -35,7 +35,6 @@ import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.exceptions.DaxFrameParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.value.DaxValue;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxChecksumService;
@@ -122,7 +121,7 @@ public class DaxFrameParser {
 
 
         List<Integer> indList = getSeparatorIndices(frameStr, pairSeparator);
-        List<DaxPair> listOfPair =  new ArrayList<>();
+        List<DaxPair<?>> listOfPair =  new ArrayList<>();
         String tagStr;
         String valueStr;
         int sum = 0;
@@ -190,17 +189,17 @@ public class DaxFrameParser {
                     }
                     //------------
                     //TODO  move to msgCodec and develop
-                    DaxPair pair;
+                    DaxPair<?> pair;
                     if(tag.equals(DaxCoreTags.REQ_FIELD_LIST)){
                         Set<DaxTag> daxTagSet =
                                 Arrays.stream(valueStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
                                         .map(String::trim)
                                         .map(s ->  tagParser.parseDaxTag(s,preamble.getContextId()))
                                         .collect(Collectors.toSet());
-                        pair = new DaxPair(tag, new DaxValueTagSet(daxTagSet));
+                        pair = new DaxPairTagSet(tag, daxTagSet);
                     }
                     else {
-                        pair = new DaxPair(tag, new DaxValueString( valueStr ));
+                        pair = new DaxPairString(tag, valueStr );
                     }
 
                     listOfPair.add(pair);

@@ -1,7 +1,7 @@
 package org.daxprotocol.core.register;
 
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.value.DaxValue;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 
 import java.util.HashSet;
@@ -15,9 +15,9 @@ public class DaxBaseRegister {
      */
     Set<DaxTag> tagSet = new HashSet<>();
 
-    Map<DaxTag, Map<DaxTag, DaxValue<?>>> attributMap = new ConcurrentHashMap<>();
+    Map<DaxTag, Map<DaxTag, DaxPair<?>>> attributMap = new ConcurrentHashMap<>();
 
-    public void putAttribute(DaxTag tag, DaxTag atrTag,  DaxValue<?> atrValue){
+    public void putAttribute(DaxTag tag, DaxTag atrTag,  DaxPair<?> atrValue){
         attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrTag, atrValue)),
                 (eM, nM) ->
                         DaxCollectionTool.putAndReturnMap(eM, atrTag, atrValue));

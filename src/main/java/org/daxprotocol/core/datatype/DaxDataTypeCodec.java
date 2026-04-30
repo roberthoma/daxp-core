@@ -1,7 +1,7 @@
 package org.daxprotocol.core.datatype;
 
 import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.model.value.*;
+import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Field;
@@ -25,7 +25,7 @@ public class DaxDataTypeCodec {
         CONVERTERS.put(Integer.class, Integer::valueOf);
         CONVERTERS.put(long.class, Long::parseLong);
         CONVERTERS.put(Long.class, Long::valueOf);
-        CONVERTERS.put(boolean.class, s -> Boolean.parseBoolean(s));
+        CONVERTERS.put(boolean.class, Boolean::parseBoolean);
         CONVERTERS.put(Boolean.class, Boolean::valueOf);
         CONVERTERS.put(double.class, Double::parseDouble);
         CONVERTERS.put(Double.class, Double::valueOf);
@@ -34,7 +34,7 @@ public class DaxDataTypeCodec {
 
     }
 
-    private Class<?> decodeCOLLECTION(Map<DaxTag, DaxValue<?>> tagPairMap){
+    private Class<?> decodeCOLLECTION(Map<DaxTag, DaxPair<?>> tagPairMap){
 
         if (tagPairMap.containsKey(COLLECTION_HAS_KEYS)) {
             if (tagPairMap.get(COLLECTION_HAS_KEYS).getBooleanValue()){
@@ -53,7 +53,7 @@ public class DaxDataTypeCodec {
 
 
 
-    public Class<?> decode(Map<DaxTag, DaxValue<?>> tagPairMap){
+    public Class<?> decode(Map<DaxTag, DaxPair<?>> tagPairMap){
 
         if (tagPairMap.isEmpty()) return null;
 
@@ -70,28 +70,28 @@ public class DaxDataTypeCodec {
 //        return null;
     }
 
-    public Map<DaxTag, DaxValue<?>> encode(Class<?> clazz){
-        Map<DaxTag, DaxValue<?>> map = new HashMap<>();
+    public Map<DaxTag, DaxPair<?>> encode(Class<?> clazz){
+        Map<DaxTag, DaxPair<?>> map = new HashMap<>();
 
         if (clazz == List.class){
-            map.put(ATR_DATA_TYPE, new DaxValueString(DaxDataType.COLLECTION.getCode()));
-            map.put(COLLECTION_ALLOW_DUPLICATES, new DaxValueBoolean(true));
+            map.put(ATR_DATA_TYPE, new DaxPairString(ATR_DATA_TYPE,DaxDataType.COLLECTION.getCode()));
+            map.put(COLLECTION_ALLOW_DUPLICATES, new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
             return map;
         }
 
         if (clazz.isEnum()){
-            map.put(ATR_DATA_TYPE, new DaxValueDataType(DaxDataType.COLLECTION));
-            map.put(COLLECTION_HAS_KEYS, new DaxValueBoolean(true));
+            map.put(ATR_DATA_TYPE, new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
+            map.put(COLLECTION_HAS_KEYS, new DaxPairBoolean(COLLECTION_HAS_KEYS,true));
             return map;
         }
 
-        map.put(ATR_DATA_TYPE, new DaxValueDataType(DaxDataType.fromCode(  decodeClass(clazz).getCode())));
+        map.put(ATR_DATA_TYPE, new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.fromCode(  decodeClass(clazz).getCode())));
 
         return map;
     }
 
     //--------------------------------
-    public  DaxDataType decodeFromObject(Object obj) {
+    private   DaxDataType decodeFromObject(Object obj) {
         if (obj == null) return DaxDataType.STRING; // Default
         if (obj instanceof Integer) return DaxDataType.INTEGER;
         if (obj instanceof Long) return DaxDataType.LONG;
@@ -154,20 +154,21 @@ public class DaxDataTypeCodec {
         throw new IllegalArgumentException("No converter for type: " + type.getName());
     }
 
-    public Map<DaxTag, DaxValue<?>> encode(DaxDataType daxDataType) {
+    public Map<DaxTag, DaxPair<?>> encode(DaxDataType daxDataType) {
         return null;
     }
 
-    public DaxValue<?> convertToValue(DaxTag tag, Field field, Object obj) {
+//    public DaxPair<?> convertToValue(DaxTag tag, Field field, Object obj) {
+    public DaxPair<?> convertToValue(DaxTag tag,  Object obj) {
         DaxDataType dataType = decodeFromObject(obj);
         System.out.println(tag.getTagId()+" >>>>"+obj);
         return switch (dataType){
         //    case COLLECTION ->  decodeCOLLECTION(tagPairMap);
-            case STRING ->  new DaxValueString((String) obj);
-            case INTEGER -> new DaxValueInteger((Integer) obj);
-            case CHARACTER -> new DaxValueCharacter((Character) obj);
-            case BOOLEAN -> new DaxValueBoolean((Boolean) obj);
-            case TAG       -> new DaxValueTag((DaxTag) obj);
+            case STRING ->  new DaxPairString(tag, (String) obj);
+            case INTEGER -> new DaxPairInteger(tag,(Integer) obj);
+            case CHARACTER -> new DaxPairCharacter(tag,(Character) obj);
+            case BOOLEAN -> new DaxPairBoolean(tag,(Boolean) obj);
+            case TAG       -> new DaxPairTag(tag,(DaxTag) obj);
             default      -> throw new RuntimeException("NO DATA TYPE CONVERTING !!!");
         };
 

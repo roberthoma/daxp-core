@@ -23,9 +23,8 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.model.value.DaxValue;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.value.DaxValueDataType;
 
 public class DaxPairCodec {
     DaxConfig config;
@@ -48,20 +47,20 @@ public class DaxPairCodec {
         return sb.toString() ;
     }
 
-    //TODO refactor to service : decode value
-    public   String encode(StringBuilder sb, DaxTag tag, DaxValue<?> daxValue, char pairSeparator ) {
+
+    public   String encode(StringBuilder sb, DaxPair<?> daxPair, char pairSeparator ) {
         String value;
-        if (daxValue.getValue() instanceof DaxTag){
-            value = tagCodec.encode((DaxTag)daxValue.getValue());
-            return encode(sb,tag,value ,pairSeparator );
+        if (daxPair.getValue() instanceof DaxTag){
+            value = tagCodec.encode((DaxTag) daxPair.getValue());
+            return encode(sb,daxPair.getTag(),value ,pairSeparator );
         }
-        if (daxValue.getValue() instanceof DaxDataType){
-            value =  daxValue.getDataTypeValue().getCode();
-            return encode(sb,tag,value ,pairSeparator );
+        if (daxPair.getValue() instanceof DaxDataType){
+            value =  daxPair.getDataTypeValue().getCode();
+            return encode(sb,daxPair.getTag(),value ,pairSeparator );
 
         }
 
-        value = daxValue.getStrValue();
-        return encode(sb,tag,value ,pairSeparator );
+        value = daxPair.getStrValue();
+        return encode(sb,daxPair.getTag(),value ,pairSeparator );
     }
 }
