@@ -8,10 +8,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
@@ -70,22 +67,22 @@ public class DaxDataTypeCodec {
 //        return null;
     }
 
-    public Map<DaxTag, DaxPair<?>> encode(Class<?> clazz){
-        Map<DaxTag, DaxPair<?>> map = new HashMap<>();
+    public Set<DaxPair<?>> encode(Class<?> clazz){
+        Set< DaxPair<?>> map = new HashSet<>();
 
         if (clazz == List.class){
-            map.put(ATR_DATA_TYPE, new DaxPairString(ATR_DATA_TYPE,DaxDataType.COLLECTION.getCode()));
-            map.put(COLLECTION_ALLOW_DUPLICATES, new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
+            map.add( new DaxPairString(ATR_DATA_TYPE,DaxDataType.COLLECTION.getCode()));
+            map.add(new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
             return map;
         }
 
         if (clazz.isEnum()){
-            map.put(ATR_DATA_TYPE, new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
-            map.put(COLLECTION_HAS_KEYS, new DaxPairBoolean(COLLECTION_HAS_KEYS,true));
+            map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
+            map.add (new DaxPairBoolean(COLLECTION_HAS_KEYS,true));
             return map;
         }
 
-        map.put(ATR_DATA_TYPE, new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.fromCode(  decodeClass(clazz).getCode())));
+        map.add( new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.fromCode(  decodeClass(clazz).getCode())));
 
         return map;
     }
@@ -102,7 +99,8 @@ public class DaxDataTypeCodec {
         if (obj instanceof LocalDateTime) return DaxDataType.LOCAL_DATE_TIME;
         if (obj instanceof String) return DaxDataType.STRING;
         if (obj instanceof Character) return DaxDataType.CHARACTER;
-
+        if (obj instanceof List<?>) return DaxDataType.COLLECTION;
+        if (obj instanceof Enum<?>) return DaxDataType.COLLECTION;
 
         return DaxDataType.UNKNOWN;
     }
@@ -122,10 +120,13 @@ public class DaxDataTypeCodec {
         if (clazz.equals(LocalDate.class)) return DaxDataType.LOCAL_DATE;
         if (clazz.equals(LocalDateTime.class)) return DaxDataType.LOCAL_DATE_TIME;
         if (clazz.equals(Character.class)) return DaxDataType.CHARACTER;
+        if (clazz.equals(List.class)) return DaxDataType.COLLECTION;
+        if (clazz.equals(Map.class)) return DaxDataType.COLLECTION;
+        if (clazz.equals(Set.class)) return DaxDataType.COLLECTION;
 
 
         if (clazz.isEnum()) {
-            return DaxDataType.ENTITY;
+            return DaxDataType.COLLECTION;
         }
 
         if (clazz.isAnnotationPresent(DaxpEntity.class)) {
@@ -158,17 +159,17 @@ public class DaxDataTypeCodec {
         return null;
     }
 
-//    public DaxPair<?> convertToValue(DaxTag tag, Field field, Object obj) {
-    public DaxPair<?> convertToValue(DaxTag tag,  Object obj) {
+    public Set<DaxPair<?>> convertToValue(DaxTag tag,  Object obj) {
         DaxDataType dataType = decodeFromObject(obj);
         System.out.println(tag.getTagId()+" >>>>"+obj);
         return switch (dataType){
-        //    case COLLECTION ->  decodeCOLLECTION(tagPairMap);
-            case STRING ->  new DaxPairString(tag, (String) obj);
-            case INTEGER -> new DaxPairInteger(tag,(Integer) obj);
-            case CHARACTER -> new DaxPairCharacter(tag,(Character) obj);
-            case BOOLEAN -> new DaxPairBoolean(tag,(Boolean) obj);
-            case TAG       -> new DaxPairTag(tag,(DaxTag) obj);
+            case COLLECTION ->  encode(obj.getClass());
+            case STRING ->  Set.of( new DaxPairString(tag, (String) obj));
+            case INTEGER -> Set.of(new DaxPairInteger(tag,(Integer) obj));
+            case CHARACTER -> Set.of(new DaxPairCharacter(tag,(Character) obj));
+            case BOOLEAN -> Set.of(new DaxPairBoolean(tag,(Boolean) obj));
+            case DOUBLE -> Set.of(new DaxPairDouble(tag,(Double) obj));
+            case TAG       -> Set.of(new DaxPairTag(tag,(DaxTag) obj));
             default      -> throw new RuntimeException("NO DATA TYPE CONVERTING !!!");
         };
 

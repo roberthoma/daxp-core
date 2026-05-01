@@ -62,15 +62,15 @@ public class DaxBodyCodec {
         DaxPair<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);
         pairCodec.encode(sb, DaxCoreTags.BLOCK_TYPE, blockType.getStrValue(), pairSeparator);
 
-        if (blockMap.containsKey(DaxCoreTags.ENTRY_ID) ){
-            pairCodec.encode(sb, blockMap.get(DaxCoreTags.ENTRY_ID), pairSeparator);
+        if (blockMap.containsKey(DaxCoreTags.ENTRY_TAG) ){
+            pairCodec.encode(sb, blockMap.get(DaxCoreTags.ENTRY_TAG), pairSeparator);
         }
 
         blockMap.forEach((tag, pair) ->
         {
             if (!tag.equals(DaxCoreTags.BLOCK_INDEX) &&
                 !tag.equals(DaxCoreTags.BLOCK_TYPE) &&
-                !tag.equals(DaxCoreTags.ENTRY_ID)
+                !tag.equals(DaxCoreTags.ENTRY_TAG)
             )
             {
                 pairCodec.encode(sb, pair, pairSeparator);

@@ -74,17 +74,24 @@ public class DaxCoreTags {
      */
     public static final DaxTag BLOCK_INDEX             = daxpSysTag(4, DaxDataType.QUANTITY);
     public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);
+    public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(7);
     public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(8);
+
+    /******************************
+     * Trailer tag
+     * */
+    public static final DaxTag CHECKSUM                = daxpSysTag(9);
 
 
     ///Universal tag
-    public static final DaxTag ENTRY_ID                = daxpSysTag(6);
-    public static final DaxTag ENTRY_NAME              = daxpSysTag(101);
-    public static final DaxTag ENTRY_STATUS            = daxpSysTag(102);
+    public static final DaxTag ENTRY_TAG               = daxpSysTag(6);
+    public static final DaxTag ENTRY_NAME              = daxpSysTag(11);
+    public static final DaxTag ENTRY_DESCRIPTION       = daxpSysTag(12);
+    public static final DaxTag ENTRY_SYMBOL            = daxpSysTag(15);
+
     public static final DaxTag ENTRY_VALUE             = daxpSysTag(103);
     public static final DaxTag ENTRY_VALUE_DEFAULT     = daxpSysTag(104);
-    public static final DaxTag FIELD_VALUE_DESCRIPTION = daxpSysTag(105);
-    public static final DaxTag FIELD_VALUE_SYMBOL      = daxpSysTag(106);
+
     public static final DaxTag FIELD_VALUE_PREFIX      = daxpSysTag(107);
     public static final DaxTag REQ_FIELD_LIST          = daxpSysTag(108);
 
@@ -93,10 +100,9 @@ public class DaxCoreTags {
 
 
     public static final DaxTag TAG_LIST                = daxpSysTag(115);
-    public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(7);
     public static final DaxTag ENTITY_DATA_TYPE_ID     = daxpSysTag(118);
 
-    public static final DaxTag REFERENCE_ENTITY         = daxpSysTag(15);
+//    public static final DaxTag REFERENCE_ENTITY         = daxpSysTag(15);
 
 
     public static final DaxTag FIELD_ROLE         = daxpSysTag(122);
@@ -105,12 +111,12 @@ public class DaxCoreTags {
 
     public static final DaxTag COLLECTION_ID = daxpSysTag(129);
     public static final DaxTag ENUM_NAME               = daxpSysTag(130);
-    public static final DaxTag ENUM_DESCRIPTION        = daxpSysTag(131);
+//    public static final DaxTag ENUM_DESCRIPTION        = daxpSysTag(131);
     public static final DaxTag COLLECTION_VALUE = daxpSysTag(132);
-    public static final DaxTag ENUM_VALUE_DESCRIPTION  = daxpSysTag(133);
-    public static final DaxTag ENUM_VALUE_SYMBOL       = daxpSysTag(134);
-    public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
-    public static final DaxTag ENUM_VALUE_TAG          = daxpSysTag(136);
+//    public static final DaxTag ENUM_VALUE_DESCRIPTION  = daxpSysTag(133);
+//    public static final DaxTag ENUM_VALUE_SYMBOL       = daxpSysTag(134);
+//    public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
+//    public static final DaxTag ENUM_VALUE_TAG          = daxpSysTag(136);
     //----
     //    public static final DaxTag NAMESPACE          = daxpSysTag(144);
 //    public static final DaxTag NAMESPACE_DESC     = daxpSysTag(144);
@@ -119,7 +125,7 @@ public class DaxCoreTags {
     //----
     public static final DaxTag ENTITY_NAME = daxpSysTag(143);
     public static final DaxTag DTO_NAMESPACE   = daxpSysTag(144);
-    public static final DaxTag ENTITY_DESCRIPTION = daxpSysTag(145);
+  //  public static final DaxTag ENTITY_DESCRIPTION = daxpSysTag(145);
 
     //----------
     //Use in multi message transaction , tag is head item
@@ -183,10 +189,6 @@ public class DaxCoreTags {
 
     //LOG
 
-    /******************************
-     * Trailer tag
-     * */
-    public static final DaxTag CHECKSUM                = daxpSysTag(9);
 
 
     public static void init(DaxRegister dic){

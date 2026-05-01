@@ -1,3 +1,17 @@
+Default Frame Separator
+
+
+
+The default and recommended frame separator in DAXP is the ASCII SOH character (0x01).
+
+For testing and debugging purposes, alternative separators MAY be used if explicitly
+
+declared by the frame. The separator is defined as the character immediately following
+
+the 'DAXP' prefix and SHALL be consistently used for the entire frame.
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
 1. Rozszerzenie Metadanych o Reguły Spójności
 
 Dodając tagi takie jak IS_UNIQUE, IS_PRIMARY_KEY, czy FOREIGN_KEY_REF, pozwalasz warstwie odbiorczej (np. Twojej implementacji w Javie)

@@ -7,7 +7,8 @@ public class DaxMessageDecorator {
     public static String decorate(String msgStr){
 
         return msgStr.replace("$:1=","\n$:1=")
-                     .replace("$:4=","\n$:4=");
+                     .replace("$:4=","\n$:4=")
+                     .replace("$:9=","\n$:9=");
 
     }
 }

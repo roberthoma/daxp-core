@@ -135,6 +135,7 @@ public class DaxRegisterBuilder {
 
         register.putTag(tag);
         register.putAtrFieldName(tag, fieldName);
+        register.putAtrDataType(tag, dataTypeCodec.decodeClass(field.getType() ));
 
         if (field.isAnnotationPresent(Deprecated.class)) {
             Deprecated daxpValue = field.getAnnotation(Deprecated.class);
@@ -306,6 +307,7 @@ public class DaxRegisterBuilder {
 
 //        register.putAtrDataType(entityTag, dataTypeCodec.encode( DaxDataType.ENTITY));
         register.putAtrDataType(entityTag,  DaxDataType.ENTITY);
+        register.putAtrFieldName(entityTag,entityName);
 
         List<Field> allFields = DaxLangTool.allFields(clazz);
 

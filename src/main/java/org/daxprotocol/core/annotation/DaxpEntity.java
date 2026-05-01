@@ -20,6 +20,8 @@
 
 package org.daxprotocol.core.annotation;
 
+import org.daxprotocol.core.datatype.DaxDataType;
+
 import java.lang.annotation.*;
 import static java.lang.annotation.ElementType.TYPE;
 
@@ -27,6 +29,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Documented
 public @interface DaxpEntity {
+    DaxDataType daxDataType()  default DaxDataType.UNKNOWN;
     String value() default "";
     int    tagId() default -1;
     String context() default "";

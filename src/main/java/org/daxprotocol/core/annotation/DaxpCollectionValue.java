@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.FIELD })
-public @interface DaxpValue {
+public @interface DaxpCollectionValue {
     DaxDataType daxDataType()  default DaxDataType.UNKNOWN;
     String value() default "";      //context plus tagId "FIX:53"
     int tagId() default -1;                   // It can be define by @DaxpTag

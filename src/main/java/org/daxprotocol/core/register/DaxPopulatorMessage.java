@@ -28,12 +28,12 @@ public class DaxPopulatorMessage {
 
         if(blockType.equals(DaxBlockType.BLOCK_MESSAGE.getCode())){
             String msgDesc = "";
-            if (blockPairMap.containsKey(DaxCoreTags.FIELD_VALUE_DESCRIPTION)){
-                msgDesc =  blockPairMap.get(DaxCoreTags.FIELD_VALUE_DESCRIPTION).getStrValue();
+            if (blockPairMap.containsKey(DaxCoreTags.ENTRY_DESCRIPTION)){
+                msgDesc =  blockPairMap.get(DaxCoreTags.ENTRY_DESCRIPTION).getStrValue();
             }
 
             DaxMessageItem msgItem = new DaxMessageItem(
-                    blockPairMap.get(DaxCoreTags.ENTRY_VALUE).getStrValue(),msgDesc);
+                    blockPairMap.get(DaxCoreTags.ENTRY_SYMBOL).getStrValue(),msgDesc);
 
             if (blockPairMap.containsKey(DaxCoreTags.MESSAGE_TAGS)){
 
@@ -69,8 +69,8 @@ public class DaxPopulatorMessage {
 
             String name = blockPairMap.get(DaxCoreTags.ENTRY_NAME).getStrValue();
             String desc = "";
-            if (blockPairMap.containsKey(DaxCoreTags.ENUM_DESCRIPTION)){
-                desc = blockPairMap.get(DaxCoreTags.ENUM_DESCRIPTION).getStrValue();
+            if (blockPairMap.containsKey(DaxCoreTags.ENTRY_DESCRIPTION)){
+                desc = blockPairMap.get(DaxCoreTags.ENTRY_DESCRIPTION).getStrValue();
             }
             daxDic.putEnum(enumTag, new DaxEnum(name , desc ));
 
@@ -94,8 +94,8 @@ public class DaxPopulatorMessage {
             String valueDesc = "";
             String value  = blockPairMap.get(DaxCoreTags.COLLECTION_VALUE).getStrValue();
 
-            if (blockPairMap.containsKey(DaxCoreTags.ENUM_VALUE_DESCRIPTION)) {
-                valueDesc = blockPairMap.get(DaxCoreTags.ENUM_VALUE_DESCRIPTION).getStrValue();
+            if (blockPairMap.containsKey(DaxCoreTags.ENTRY_DESCRIPTION)) {
+                valueDesc = blockPairMap.get(DaxCoreTags.ENTRY_DESCRIPTION).getStrValue();
             }
             daxDic.putEnumValue(enumTag, new DaxEnumValue(value, valueDesc));
 
@@ -107,7 +107,7 @@ public class DaxPopulatorMessage {
         if(blockType.equals(DaxBlockType.BLOCK_TAG)){
 
             DaxTag tag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.ENTRY_ID).getStrValue() , msgContextId
+                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgContextId
             ) ;
 
             daxDic.putTag( tag);
@@ -176,7 +176,7 @@ public class DaxPopulatorMessage {
 
             //int groupId = groupMapper.getReferenceId(groupName);
             DaxTag groupTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.ENTRY_ID).getStrValue(), msgContextId
+                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue(), msgContextId
             ) ;
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();

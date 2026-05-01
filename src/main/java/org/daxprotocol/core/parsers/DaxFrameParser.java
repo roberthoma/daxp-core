@@ -107,16 +107,15 @@ public class DaxFrameParser {
     private DaxFrame parse(String frameStr, char workMode) {
         DaxFrame frame = new DaxFrame();
         List<DaxMessage> messageList = new ArrayList<>();
-        char pairSeparator ; //= DaxCoreConstants.PAIR_SEPARATOR;
+        char pairSeparator ;
         int sepPos = findFirstSeparator(frameStr, DaxCoreConstants.ALLOWED_PAIR_SEPARATORS);
 
         if (sepPos > 0){
-               pairSeparator = frameStr.charAt(sepPos);
+            pairSeparator = frameStr.charAt(sepPos);
         }
         else {
-                                logger.error("1> IT IS NOT DAXP MESSAGE : {}", frameStr);
-                    throw new DaxFrameParserException("IT IS NOT DAXP MESSAGE !!!");
-
+           logger.error("1> IT IS NOT DAXP MESSAGE : {}", frameStr);
+           throw new DaxFrameParserException("IT IS NOT DAXP MESSAGE !!!");
         }
 
 

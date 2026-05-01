@@ -52,11 +52,6 @@ public class DaxRegister {
     DaxContextMapper contextMapper;
     DaxMessageMapper messageMapper;
 
-    /*****************************************************
-     *  Map of context referenced by integer
-     */
-    Map<Integer, DaxContext> contextMap = new HashMap<>();
-
 
     /*****************************************************
      * Main SET of tags
@@ -64,9 +59,10 @@ public class DaxRegister {
     Set<DaxTag> tagSet = new HashSet<>();
 
     /*****************************************************
-     * Entity tags, key is tag of entity
+     *  Map of context referenced by integer
      */
-    Map<DaxTag,  Set<DaxTag>> entityTagSet = new HashMap<>();
+    Map<Integer, DaxContext> contextMap = new HashMap<>();
+
 
 
     Map<Integer, DaxCollectionRegister> collectionRegMap = new ConcurrentHashMap<>();
@@ -77,7 +73,7 @@ public class DaxRegister {
      * Key: Message type
      * */
 
-    Map<Integer, DaxMessageRegister> messageDicMap = new ConcurrentHashMap<>();;
+    Map<Integer, DaxMessageRegister> messageDicMap = new ConcurrentHashMap<>();
     DaxMessageRegister msgMap;
 
     /*****************************************************
@@ -93,12 +89,12 @@ public class DaxRegister {
     //Add dedicated attributes for field used by Entity
 
     /*****************************************************
-     *  Entity Map //
+     *  Entity Map
      */
     Map<DaxTag, Set<DaxTag>> entityFieldsMap = new ConcurrentHashMap<>();
+    Map<DaxTag, DaxEntity>   entityMap = new ConcurrentHashMap<>();
 
-    Map<DaxTag, DaxEntity> entityMap = new ConcurrentHashMap<>();
-
+//    Map <DaxTag, > ???? Atrybuty Fields dla encji .
 
     /******************************************************/
     int appContextId;
@@ -134,7 +130,6 @@ public class DaxRegister {
 
     public void putContext(DaxContext context){
         contextMap.put(contextMapper.getReferenceId(context.getTagPrefix()),context);
-//        contextMap.put(contextMapper.getReferenceId(context.getSymbol()),context);
     }
 
 
@@ -236,8 +231,8 @@ public class DaxRegister {
 //        putAttribute(tagId, new DaxAtrDataType(clazz));
 //    };
 
-    public void putAtrDataType(DaxTag tag, Map<DaxTag, DaxPair<?>> pairMap){
-        pairMap.forEach((atrTag, atrPair) ->
+    public void putAtrDataType(DaxTag tag, Set< DaxPair<?>> pairMap){
+        pairMap.forEach(( atrPair) ->
         putAttribute(tag,atrPair));
 
     };

@@ -26,6 +26,7 @@ import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DaxBody {
 
@@ -60,6 +61,14 @@ public class DaxBody {
         checkBlockCounterBeforePut();
         blockMap.get(blkIdx).put(pair.getTag(),pair);
     }
+    //------------------------------
+
+    public void putPair(int blkIdx , Set<DaxPair<?>> pairSet){
+        checkBlockCounterBeforePut();
+        pairSet.forEach(pair ->
+        blockMap.get(blkIdx).put(pair.getTag(),pair));
+    }
+
     //----------------------------
     public void putPair(DaxTag tag, String value){
         checkBlockCounterBeforePut();
