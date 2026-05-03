@@ -1,4 +1,4 @@
-package org.daxprotocol.core.register;
+package org.daxprotocol.core.dictionary;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

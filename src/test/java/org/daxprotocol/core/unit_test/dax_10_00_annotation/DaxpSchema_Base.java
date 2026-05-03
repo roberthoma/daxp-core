@@ -8,7 +8,7 @@ import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 
-@DaxpSchema
+@DaxpSchema(name = "TestSchemaB")
 public class DaxpSchema_Base {
 
     @DaxpTag( description = "Base Entity ")

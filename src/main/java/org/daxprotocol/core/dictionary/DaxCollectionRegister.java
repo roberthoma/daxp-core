@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.register;
+package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxCollectionTool;
@@ -37,7 +37,7 @@ public class DaxCollectionRegister {
      * Key : idField
      * */
 
-    Map<DaxTag, DaxEnum> enumMap      = new HashMap<>();
+    Map<DaxTag, DaxCollection_TMP> enumMap      = new HashMap<>();
 //    Map<DaxTag, Enum<?> > enumMap2      = new HashMap<>();
 
     /*****************************************************
@@ -55,8 +55,8 @@ public class DaxCollectionRegister {
     }
 
 
-    public void putEnum(DaxTag tag, DaxEnum daxEnum){
-        enumMap.computeIfAbsent(tag,nameS -> daxEnum);
+    public void putEnum(DaxTag tag, DaxCollection_TMP daxCollectionTMP){
+        enumMap.computeIfAbsent(tag,nameS -> daxCollectionTMP);
     }
 
 //    public void putEnum2(DaxTag tag, Enum<?> daxEnum){
@@ -76,7 +76,7 @@ public class DaxCollectionRegister {
         return  enumValueMap;
     }
 
-    public  Map<DaxTag, DaxEnum> getEnumMap(){
+    public  Map<DaxTag, DaxCollection_TMP> getEnumMap(){
         return enumMap;
     }
 

@@ -1,4 +1,4 @@
-package org.daxprotocol.core.register;
+package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.annotation.DaxpCollection;
 import org.daxprotocol.core.config.DaxConfig;
@@ -31,7 +31,7 @@ public class DaxPopulatorEnumType {
 
         DaxTag enumTag = DaxTag.of(config.getAppContextId(),groupAtn.tagId());
 
-        daxDic.putEnum(enumTag, new DaxEnum(enumName,groupAtn.description()) );
+        daxDic.putEnum(enumTag, new DaxCollection_TMP(enumName,groupAtn.description()) );
 
         Object[] constants = clazz.getEnumConstants();
 

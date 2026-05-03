@@ -7,7 +7,8 @@ import org.daxprotocol.core.model.DaxMessage;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+//rules
+// One   DaxpHandler ca be use with one message
 public class DaxHandlerRegistry {
 
     /*****************************************************

@@ -17,24 +17,25 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.register;
+package org.daxprotocol.core.dictionary;
 
-public class DaxEnumValue {
-
-    String value;
+public class DaxCollection_TMP {
+    int contextId;
+    String name;
     String desc;
 
-    public DaxEnumValue(String value, String desc) {
-        this.value = value;
+    public DaxCollection_TMP(String name, String desc) {
+        this.name = name;
         this.desc = desc;
     }
 
-    public String getValue() {
-        return value;
+
+    public String getName() {
+        return name;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDesc() {
@@ -44,5 +45,4 @@ public class DaxEnumValue {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-
 }

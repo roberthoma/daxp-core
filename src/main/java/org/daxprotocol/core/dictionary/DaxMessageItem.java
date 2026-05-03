@@ -1,4 +1,4 @@
-package org.daxprotocol.core.register;
+package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.model.tag.DaxTag;
 

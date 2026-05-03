@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.application;
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.register.DaxDictionary;
+import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
@@ -155,6 +155,8 @@ public class DaxCoreTags {
     public static final DaxTag ATR_SIZE_MIN        = daxpSysTag(168);
     public static final DaxTag ATR_READONLY        = daxpSysTag(169);
     public static final DaxTag ATR_IS_DEPRECATED   = daxpSysTag(170);
+
+    public static final DaxTag VALE_IS_EDITABLE   = daxpSysTag(172);
 
 
 

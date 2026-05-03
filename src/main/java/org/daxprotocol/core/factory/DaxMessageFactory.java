@@ -42,7 +42,7 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.register.*;
+import org.daxprotocol.core.dictionary.*;
 import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.lang.reflect.Field;
@@ -63,7 +63,7 @@ public class DaxMessageFactory {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-    DaxDictionary register;
+    DaxDictionary dictionary;
     DaxTagParser tagParser;
     DaxDataTypeCodec dataTypeCodec;
     public DaxMessageFactory(DaxConfig config,
@@ -73,7 +73,7 @@ public class DaxMessageFactory {
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxDictionary register,
+            DaxDictionary dictionary,
             DaxTagParser tagParser,
             DaxDataTypeCodec dataTypeCodec
 
@@ -85,7 +85,7 @@ public class DaxMessageFactory {
         this.headCodec = headCodec;
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
-        this.register = register;
+        this.dictionary = dictionary;
         this.tagParser = tagParser;
         this.dataTypeCodec = dataTypeCodec;
 
@@ -161,11 +161,11 @@ public class DaxMessageFactory {
 
     private void putEnumToBlock(DaxBody body,
                                         DaxTag tag,
-                                DaxEnum daxEnum){
+                                DaxCollection_TMP daxCollectionTMP){
         body.nextBlock(DaxBlockType.BLOCK_COLLECTION);
         body.putPair(COLLECTION_ID, tagCodec.encode(tag));
-        body.putPair(ENTRY_NAME, daxEnum.getName());
-        body.putPair(ENTRY_DESCRIPTION, daxEnum.getDesc());
+        body.putPair(ENTRY_NAME, daxCollectionTMP.getName());
+        body.putPair(ENTRY_DESCRIPTION, daxCollectionTMP.getDesc());
 
 //TODO put list o enum value if description is empty
 //        if (enumValueMap != null) {
@@ -217,47 +217,30 @@ public class DaxMessageFactory {
     }
 
 
-    //TODO  create multi message with context dictionary values
-
-
-    private void schemaToMsg(DaxDictionary schemaRegister, DaxMessage message)
-    {
-        schemaRegister.getMsgMap().forEach((s, messageDicItem) ->
-                putMsgItem(message.getBody(),messageDicItem)
-                );
-
-
-//        schemaRegister.getContextMap().forEach((i, context) ->
-//                enumDictionaryToMsg(message.getBody(),schemaRegister.getEnumDictionary(i)));
-
-        enumDictionaryToMsg(message.getBody(),schemaRegister.getEnumDictionary(1));
-
-        //----------------------------------------------------------------------------------
-        // TODO create attributes by tags !!!!!
-        schemaRegister.getAttributMap().forEach((tag, atrMap) ->
-                putAttributesToTagBlock(message.getBody(),tag,  atrMap)
-        );
-
-        //     schemaRegister.getTagSet().forEach(daxTag -> putTagsBlock(message.getBody(),daxTag));
-        //-------------------------------------------------------------------------------
-
-        schemaRegister.getEntityMap().forEach((tag, entity) ->
-                putEntityToBody(message.getBody(), entity, schemaRegister.getEntityFieldsMap().get(entity.getTag())));
-
-
-
-    }
 
 
     //TODO Develop selective tags
-    public DaxMessage schemaToMsg() {
+    public DaxMessage dictionaryToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_DIC);
 
-        register.getContextMap().forEach((idCtx, context) ->
+        dictionary.getContextMap().forEach((idCtx, context) ->
                         putContextToBody(message.getBody(), context)
                 );
 
-        schemaToMsg(register,message );
+        dictionary.getMsgMap().forEach((s, messageDicItem) ->
+                putMsgItem(message.getBody(),messageDicItem)
+        );
+
+        enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(1));
+
+        dictionary.getAttributMap().forEach((tag, atrMap) ->
+                putAttributesToTagBlock(message.getBody(),tag,  atrMap)
+        );
+
+        dictionary.getEntityMap().forEach((tag, entity) ->
+                putEntityToBody(message.getBody(), entity, dictionary.getEntityFieldsMap().get(entity.getTag())));
+
+
 
         message.finish();
         return message;

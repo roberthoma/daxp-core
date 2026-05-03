@@ -18,31 +18,37 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.register;
+package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
+import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
-//TODO
-// dictionary od exception by context
-// CRM:00234, DAX:23445, $:23455 , crm:33345
+
+/******************************************************
+ Registration Rules
+ A tag Destination must be a specific type (e.g., FIELDS, ENTITY).
+ A tag can be used multiple times within the same destination type.
+ However, each unique tag can only be used once per entity.
+ */
+
 
 public class DaxDictionary {
     private static final Logger logger = LoggerFactory.getLogger(DaxDictionary.class);
@@ -55,13 +61,14 @@ public class DaxDictionary {
     /*****************************************************
      * Main SET of tags
      */
-    Set<DaxTag> tagSet = new HashSet<>();
+//    Set<DaxTag> tagSet = new HashSet<>();
+    Map<DaxTag,DaxRegisterSource> tagMap = new ConcurrentHashMap<>();
+    Map<DaxTag,DaxTagDestiny>     tagDestinyMap  = new ConcurrentHashMap<>();
 
     /*****************************************************
      *  Map of context referenced by integer
      */
-    Map<Integer, DaxContext> contextMap = new HashMap<>();
-
+    Map<Integer, DaxContext> contextMap = new ConcurrentHashMap<>();
 
 
     Map<Integer, DaxCollectionRegister> collectionRegMap = new ConcurrentHashMap<>();
@@ -143,20 +150,25 @@ public class DaxDictionary {
     }
 
 
-    //**********************************************************************
-    // Enums
+    /*******************************************************************************
+     * Collection  registration
+     */
+    public void putCollectionType(DaxTag tag, DaxTag typeTag) {
+        putAttribute(tag, new DaxPairTag(COLLECTION_ID,typeTag));
+    }
+
 
     public DaxCollectionRegister getEnumDictionary(int contextId){
         return collectionRegMap.get(contextId);
     }
 
-    public void putEnum(DaxTag tag, DaxEnum daxEnum){
-        collectionRegMap.get(tag.getContextId()).putEnum(tag, daxEnum);
+    public void putEnum(DaxTag tag, DaxCollection_TMP daxCollectionTMP){
+        collectionRegMap.get(tag.getContextId()).putEnum(tag, daxCollectionTMP);
 
     }
 
 
-    public Map<DaxTag, DaxEnum>  getEnumMap(int contextId) {
+    public Map<DaxTag, DaxCollection_TMP>  getEnumMap(int contextId) {
         return collectionRegMap.get(contextId).getEnumMap();
     }
 
@@ -173,8 +185,9 @@ public class DaxDictionary {
 
     //TODO getters and setter for other context enumDic;
 
-    //**********************************************************************
-    // Groups
+    /*******************************************************************************
+     * Entity  registration
+     */
 
     public void putEntity(DaxEntity entity){
 
@@ -192,8 +205,8 @@ public class DaxDictionary {
     }
 
 
-    public Set<DaxTag> getTagSet(){
-        return tagSet;
+    public Map<DaxTag,DaxRegisterSource> getTagSet(){
+        return tagMap;
     }
 
     //TODO chek exist of fields in group,
@@ -284,18 +297,36 @@ public class DaxDictionary {
         putAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));
     }
 
-    public void putTag(DaxTag tag){
 
-        if (tagSet.contains(tag)){
-            logger.warn("TAG {} EXIST in dictionary ", tag.getTagId());
+    /*********************
+     * Tag registration
+    */
+    public void putTag(DaxTag tag, DaxRegisterSource source){
+
+        if (tagMap.containsKey(tag)){
+            logger.warn("TAG {} EXIST in dictionary , source {}  ", tag.getTagId(), tagMap.get(tag));
             //throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
+            return;
         }
-        tagSet.add(tag);
+        tagMap.put(tag,source);
 
     }
+    public void putTagDestiny(DaxTag tag, DaxTagDestiny destiny){
+        if (tagDestinyMap.containsKey(tag))
+        {
+           if(tagDestinyMap.get(tag) != destiny)
+           {
+              throw new DaxTagParserException("Bad tag destination, tag is use as : " + tagDestinyMap.get(tag).toString());
+           }
+           return;
+        }
+        tagDestinyMap.put(tag,destiny);
+    }
 
-    public void putAtrEnumTypeTag(DaxTag tag, DaxTag typeTag) {
-        putAttribute(tag, new DaxPairTag(COLLECTION_ID,typeTag));
+    public void putTag(DaxTag tag, DaxRegisterSource source, DaxTagDestiny destiny){
+        putTag(tag, source);
+        putTagDestiny(tag,destiny); // Check
+
     }
 
 

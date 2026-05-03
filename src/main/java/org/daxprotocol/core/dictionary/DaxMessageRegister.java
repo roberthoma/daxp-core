@@ -1,4 +1,4 @@
-package org.daxprotocol.core.register;
+package org.daxprotocol.core.dictionary;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.daxprotocol.core.register;
+package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
@@ -14,10 +14,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class DaxPopulatorMessage {
+public class DaxMessagePopulator {
     DaxTagParser tagParser;
     DaxDictionary daxDic;
-    public DaxPopulatorMessage(DaxTagParser tagParser, DaxDictionary daxDic){
+    public DaxMessagePopulator(DaxTagParser tagParser, DaxDictionary daxDic){
         this.tagParser = tagParser;
         this.daxDic =  daxDic;
     }
@@ -64,7 +64,7 @@ public class DaxPopulatorMessage {
                     blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgContextId
             ) ;
 
-            daxDic.putTag( enumTag);
+            daxDic.putTag( enumTag, DaxRegisterSource.MESSAGE);
 
 
             String name = blockPairMap.get(DaxCoreTags.ENTRY_NAME).getStrValue();
@@ -72,7 +72,7 @@ public class DaxPopulatorMessage {
             if (blockPairMap.containsKey(DaxCoreTags.ENTRY_DESCRIPTION)){
                 desc = blockPairMap.get(DaxCoreTags.ENTRY_DESCRIPTION).getStrValue();
             }
-            daxDic.putEnum(enumTag, new DaxEnum(name , desc ));
+            daxDic.putEnum(enumTag, new DaxCollection_TMP(name , desc ));
 
             //TODO Add this implementation
 //            String valuesStrList = blockPairMap.get(DaxTagConst.ENUM_VALUE_LIST).getStrValue();
@@ -110,7 +110,7 @@ public class DaxPopulatorMessage {
                     blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgContextId
             ) ;
 
-            daxDic.putTag( tag);
+            daxDic.putTag( tag, DaxRegisterSource.MESSAGE);
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 
@@ -160,7 +160,7 @@ public class DaxPopulatorMessage {
             }
 
             if(blockPairMap.containsKey(DaxCoreTags.COLLECTION_ID)) {
-                daxDic.putAtrEnumTypeTag(tag,
+                daxDic.putCollectionType(tag,
                         tagParser.parseDaxTag(blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue(), msgContextId)
                 );
             }

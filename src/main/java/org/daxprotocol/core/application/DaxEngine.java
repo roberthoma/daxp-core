@@ -28,13 +28,13 @@ import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.register.DaxRegisterBuilder;
-import org.daxprotocol.core.register.DaxPopulatorEnumType;
-import org.daxprotocol.core.register.DaxPopulatorMessage;
+import org.daxprotocol.core.dictionary.DaxDictionaryRegister;
+import org.daxprotocol.core.dictionary.DaxPopulatorEnumType;
+import org.daxprotocol.core.dictionary.DaxMessagePopulator;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxContextMapper;
-import org.daxprotocol.core.register.DaxMessageConverter;
-import org.daxprotocol.core.register.DaxDictionary;
+import org.daxprotocol.core.dictionary.DaxMessageConverter;
+import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -75,9 +75,9 @@ public class DaxEngine {
     private DaxPopulatorEnumType  enumPopulator;
 
 
-    private DaxPopulatorMessage messagePopulator;
+    private DaxMessagePopulator messagePopulator;
 
-    private DaxRegisterBuilder annotationRegister;
+    private DaxDictionaryRegister annotationRegister;
 
     private DaxDispatcher dispatcher;
 
@@ -123,9 +123,9 @@ public class DaxEngine {
         frameCodec = new DaxFrameCodec(config, preambleCodec, messageCodec);
 
 
-        messagePopulator    = new DaxPopulatorMessage( tagParser, schema);
+        messagePopulator    = new DaxMessagePopulator( tagParser, schema);
         enumPopulator       = new DaxPopulatorEnumType(config, contextMapper, schema, dataTypeCodec);
-        annotationRegister = new DaxRegisterBuilder(tagParser ,
+        annotationRegister = new DaxDictionaryRegister(tagParser ,
                                                         enumPopulator,
                                                         config,
                                                         contextMapper,
