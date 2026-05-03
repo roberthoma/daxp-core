@@ -1,6 +1,6 @@
 package org.daxprotocol.core.register;
 
-import org.daxprotocol.core.annotation.DaxpDictionary;
+import org.daxprotocol.core.annotation.DaxpCollection;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -9,11 +9,11 @@ import org.daxprotocol.core.model.tag.DaxTag;
 public class DaxPopulatorEnumType {
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxRegister daxDic;
+    DaxDictionary daxDic;
     DaxDataTypeCodec dataTypeCodec;
    public DaxPopulatorEnumType (DaxConfig config,
                                DaxContextMapper contextMapper,
-                               DaxRegister daxDic,
+                               DaxDictionary daxDic,
            DaxDataTypeCodec dataTypeCodec
     ){
         this.config        = config;
@@ -24,7 +24,7 @@ public class DaxPopulatorEnumType {
 
 
     public void populate( Class<?> clazz ){
-        DaxpDictionary groupAtn =  clazz.getAnnotation(DaxpDictionary.class);
+        DaxpCollection groupAtn =  clazz.getAnnotation(DaxpCollection.class);
         String enumName = !groupAtn.name().isBlank() ? groupAtn.name() :
                 clazz.getSimpleName();
 

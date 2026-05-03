@@ -63,7 +63,7 @@ public class DaxMessageFactory {
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
-    DaxRegister register;
+    DaxDictionary register;
     DaxTagParser tagParser;
     DaxDataTypeCodec dataTypeCodec;
     public DaxMessageFactory(DaxConfig config,
@@ -73,7 +73,7 @@ public class DaxMessageFactory {
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxRegister register,
+            DaxDictionary register,
             DaxTagParser tagParser,
             DaxDataTypeCodec dataTypeCodec
 
@@ -220,7 +220,7 @@ public class DaxMessageFactory {
     //TODO  create multi message with context dictionary values
 
 
-    private void schemaToMsg(DaxRegister schemaRegister, DaxMessage message)
+    private void schemaToMsg(DaxDictionary schemaRegister, DaxMessage message)
     {
         schemaRegister.getMsgMap().forEach((s, messageDicItem) ->
                 putMsgItem(message.getBody(),messageDicItem)

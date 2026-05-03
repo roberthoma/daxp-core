@@ -16,8 +16,8 @@ import java.util.Map;
 
 public class DaxPopulatorMessage {
     DaxTagParser tagParser;
-    DaxRegister daxDic;
-    public DaxPopulatorMessage(DaxTagParser tagParser, DaxRegister daxDic){
+    DaxDictionary daxDic;
+    public DaxPopulatorMessage(DaxTagParser tagParser, DaxDictionary daxDic){
         this.tagParser = tagParser;
         this.daxDic =  daxDic;
     }

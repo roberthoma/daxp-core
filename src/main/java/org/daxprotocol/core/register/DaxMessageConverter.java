@@ -35,10 +35,10 @@ public class DaxMessageConverter {
 
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxRegister dictionary;
+    DaxDictionary dictionary;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
-    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxRegister dictionary,
+    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxDictionary dictionary,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec
             ) {

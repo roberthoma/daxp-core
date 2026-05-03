@@ -34,7 +34,7 @@ public class DaxRegisterBuilder {
     DaxPopulatorEnumType enumPopulator;
     DaxConfig config;
     DaxContextMapper contextMapper;
-    DaxRegister register;
+    DaxDictionary register;
     DaxHandlerRegistry handlerRegistry;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
@@ -43,7 +43,7 @@ public class DaxRegisterBuilder {
             DaxPopulatorEnumType  enumPopulator,
             DaxConfig config,
             DaxContextMapper contextMapper,
-            DaxRegister register,
+            DaxDictionary register,
             DaxHandlerRegistry handlerRegistry,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec
@@ -111,8 +111,8 @@ public class DaxRegisterBuilder {
 
         if (field.getType().isEnum()){
 
-            if (field.getType().isAnnotationPresent(DaxpDictionary.class)) {
-                DaxpDictionary dicAnn = field.getType().getAnnotation(DaxpDictionary.class);
+            if (field.getType().isAnnotationPresent(DaxpCollection.class)) {
+                DaxpCollection dicAnn = field.getType().getAnnotation(DaxpCollection.class);
 
                 String typeName = !dicAnn.name().isBlank() ? dicAnn.name() :
                         field.getClass().getSimpleName();
@@ -135,7 +135,7 @@ public class DaxRegisterBuilder {
 
         register.putTag(tag);
         register.putAtrFieldName(tag, fieldName);
-        register.putAtrDataType(tag, dataTypeCodec.decodeClass(field.getType() ));
+        register.putAtrDataType(tag, dataTypeCodec.encode(field.getType() ));
 
         if (field.isAnnotationPresent(Deprecated.class)) {
             Deprecated daxpValue = field.getAnnotation(Deprecated.class);
@@ -364,7 +364,7 @@ public class DaxRegisterBuilder {
             }
 
             if (clazz.isEnum() ||
-                clazz.isAnnotationPresent(DaxpDictionary.class))
+                clazz.isAnnotationPresent(DaxpCollection.class))
             {
                 enumPopulator.populate( clazz);
 //                return;

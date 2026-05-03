@@ -70,6 +70,12 @@ public class DaxDataTypeCodec {
     public Set<DaxPair<?>> encode(Class<?> clazz){
         Set< DaxPair<?>> map = new HashSet<>();
 
+        if (clazz == Set.class){
+            map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
+            map.add (new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,Boolean.FALSE));
+            return map;
+        }
+
         if (clazz == List.class){
             map.add( new DaxPairString(ATR_DATA_TYPE,DaxDataType.COLLECTION.getCode()));
             map.add(new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
@@ -77,6 +83,13 @@ public class DaxDataTypeCodec {
         }
 
         if (clazz.isEnum()){
+            map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
+            map.add (new DaxPairBoolean(COLLECTION_HAS_KEYS,true));
+            map.add (new DaxPairBoolean(COLLECTION_IS_DICTIONARY,true));
+            return map;
+        }
+
+        if (clazz == Map.class){
             map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
             map.add (new DaxPairBoolean(COLLECTION_HAS_KEYS,true));
             return map;
@@ -113,6 +126,8 @@ public class DaxDataTypeCodec {
         if (clazz.equals(Enum.class)) {return DaxDataType.COLLECTION;}
         if (clazz == String.class) return DaxDataType.STRING;
         if (clazz.equals(Integer.class)) return DaxDataType.INTEGER;
+        if (clazz.equals(int.class)) return DaxDataType.INTEGER;
+        if (clazz.equals(char.class)) return DaxDataType.CHARACTER;
         if (clazz.equals(Long.class)) return DaxDataType.LONG;
         if (clazz.equals(BigDecimal.class)) return DaxDataType.DECIMAL;
         if (clazz.equals(Double.class)) return DaxDataType.DOUBLE;
@@ -161,7 +176,6 @@ public class DaxDataTypeCodec {
 
     public Set<DaxPair<?>> convertToValue(DaxTag tag,  Object obj) {
         DaxDataType dataType = decodeFromObject(obj);
-        System.out.println(tag.getTagId()+" >>>>"+obj);
         return switch (dataType){
             case COLLECTION ->  encode(obj.getClass());
             case STRING ->  Set.of( new DaxPairString(tag, (String) obj));
@@ -170,7 +184,8 @@ public class DaxDataTypeCodec {
             case BOOLEAN -> Set.of(new DaxPairBoolean(tag,(Boolean) obj));
             case DOUBLE -> Set.of(new DaxPairDouble(tag,(Double) obj));
             case TAG       -> Set.of(new DaxPairTag(tag,(DaxTag) obj));
-            default      -> throw new RuntimeException("NO DATA TYPE CONVERTING !!!");
+            default      -> { //TODO Logger
+                             throw new RuntimeException("NO DATA TYPE CONVERTING !!!");}
         };
 
     }

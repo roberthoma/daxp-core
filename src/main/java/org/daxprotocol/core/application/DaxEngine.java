@@ -34,7 +34,7 @@ import org.daxprotocol.core.register.DaxPopulatorMessage;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.register.DaxMessageConverter;
-import org.daxprotocol.core.register.DaxRegister;
+import org.daxprotocol.core.register.DaxDictionary;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -52,7 +52,7 @@ public class DaxEngine {
 
     private final DaxMessageConverter messageConverter;
 
-    private final DaxRegister schema;
+    private final DaxDictionary schema;
 
     private final DaxPreambleFactory preambleFactory;
 
@@ -99,7 +99,7 @@ public class DaxEngine {
         contextMapper.registerPredefined(appContext);
         dataTypeCodec = new DaxDataTypeCodec();
 
-        schema = new DaxRegister(config, contextMapper, messageMapper, dataTypeCodec);
+        schema = new DaxDictionary(config, contextMapper, messageMapper, dataTypeCodec);
         schema.putContext(sysContext);
         schema.putContext(appContext);
         DaxCoreTags.init(schema);
@@ -187,7 +187,7 @@ public class DaxEngine {
         return messageConverter;
     }
 
-    public DaxRegister getSchema() {
+    public DaxDictionary getSchema() {
         if(schema == null){
             throw new RuntimeException("Dictionary is NOT READY !!!!");
         }

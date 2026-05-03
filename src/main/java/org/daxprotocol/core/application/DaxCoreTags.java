@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.application;
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.register.DaxRegister;
+import org.daxprotocol.core.register.DaxDictionary;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
@@ -97,6 +97,8 @@ public class DaxCoreTags {
 
 
     public static final DaxTag FIELD_OWNER_ID          = daxpSysTag(110);
+    public static final DaxTag TAG_OWNER_ID          = daxpSysTag(111);
+
 
 
     public static final DaxTag TAG_LIST                = daxpSysTag(115);
@@ -164,7 +166,8 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
 
 
-
+    // COLLECTION_PK,  ATTR_UNIQUE
+    //Foreign Key	ATTR_REF_CONTEXT	Points to a different context (e.g., CRM:ID) as a relational constraint.
 
     //TODO
 //    $:121=tag - ustawia NULL
@@ -191,7 +194,7 @@ public class DaxCoreTags {
 
 
 
-    public static void init(DaxRegister dic){
+    public static void init(DaxDictionary dic){
 //        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
 //        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
     }

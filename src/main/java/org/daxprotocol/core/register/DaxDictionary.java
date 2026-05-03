@@ -20,7 +20,6 @@
 
 package org.daxprotocol.core.register;
 
-import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.datatype.DaxDataType;
@@ -45,8 +44,8 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 // dictionary od exception by context
 // CRM:00234, DAX:23445, $:23455 , crm:33345
 
-public class DaxRegister {
-    private static final Logger logger = LoggerFactory.getLogger(DaxRegister.class);
+public class DaxDictionary {
+    private static final Logger logger = LoggerFactory.getLogger(DaxDictionary.class);
 
     DaxConfig config;
     DaxContextMapper contextMapper;
@@ -99,7 +98,7 @@ public class DaxRegister {
     /******************************************************/
     int appContextId;
 
-    public DaxRegister(DaxConfig config,
+    public DaxDictionary(DaxConfig config,
             DaxContextMapper contextMapper ,
             DaxMessageMapper messageMapper ,
             DaxDataTypeCodec dataTypeCodec
@@ -280,10 +279,6 @@ public class DaxRegister {
     }
 
 
-//    public void putAtrEntityDataTypeId(DaxTag tag, DaxDataType dataTypeTag) {
-//        putAttribute(tag, ATR_DATA_TYPE,new DaxValueString(dataTypeTag));
-//    }
-
 
     public void putAtrDeprecated(DaxTag tag) {
         putAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));
@@ -302,17 +297,6 @@ public class DaxRegister {
     public void putAtrEnumTypeTag(DaxTag tag, DaxTag typeTag) {
         putAttribute(tag, new DaxPairTag(COLLECTION_ID,typeTag));
     }
-    //------------------------------------
-//    public Class<?> getAtrDataType(DaxTag tag){
-//        if (attributMap.containsKey(tag) && attributMap.get(tag).containsKey(DaxCoreTags.DATA_TYPE)) {
-//
-//            return DaxDataType_OLD.fromCode(attributMap.get(tag).get(DaxCoreTags.DATA_TYPE).getStrValue());
-//        }
-//        return DaxDataType_OLD.UNKNOWN;
-//
-//    }
-
-
 
 
 }
