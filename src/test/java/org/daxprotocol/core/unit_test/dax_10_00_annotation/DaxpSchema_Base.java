@@ -34,11 +34,11 @@ public class DaxpSchema_Base {
     public static final int TEST_TAG_Deprecated_String  = 5005;
 
 
-    @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class, context = "FIX")
+    public static final String CTX_FIX= "FIX";
+
+    @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class, context = CTX_FIX)
     public static final int TEST_CTX_TAG_String            = 5050;
 
-
-    public static final String CTX_FIX= "FIX";
 
     @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class)
     public static final String TEST_CTX_TAG_StrVal     = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "51";

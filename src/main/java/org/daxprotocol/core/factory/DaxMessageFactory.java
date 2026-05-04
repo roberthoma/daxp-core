@@ -29,7 +29,6 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.DaxFrame;
-import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -131,33 +130,22 @@ public class DaxMessageFactory {
 //            );
 
 
-    private void putEntityToBody(DaxBody body, DaxEntity entity, Set<DaxTag> daxFields){
-        body.nextBlock(DaxBlockType.BLOCK_ENTITY);
-        body.putPair(ENTRY_TAG, tagCodec.encode(entity.getTag()) );
-        body.putPair(ENTRY_NAME, entity.getName());
+//    private void putEntityToBody(DaxBody body, DaxEntity entity, Set<DaxTag> daxFields){
+//        body.nextBlock(DaxBlockType.BLOCK_ENTITY);
+//        body.putPair(ENTRY_TAG, tagCodec.encode(entity.getTag()) );
+//        body.putPair(ENTRY_NAME, entity.getName());
 //        body.putPair( ENTITY_NAME, entity.getName());
-        if (!entity.getDescription().isBlank() ){
-            body.putPair(ENTRY_DESCRIPTION, entity.getDescription());
-        }
-
-        body.putPair(TAG_LIST, createTagListStr(daxFields));
-
-
-
-    }
-
-//    private void purEnumValueToBlock(DaxBody body,
-//            DaxTag tag,
-//            DaxEnumValue enumValueMap)
-////                                Map<String, DaxEnumValue> enumValueMap)
-//    {
-//        body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
-//        body.putPair(ENUM_ID, tagEncode(tag));
-//        body.putPair(ENUM_VALUE, enumValueMap.getValue());
-//        body.putPair(ENUM_VALUE_DESCRIPTION, enumValueMap.getDesc());
+//        if (!entity.getDescription().isBlank() ){
+//            body.putPair(ENTRY_DESCRIPTION, entity.getDescription());
+//        }
+//
+//        body.putPair(TAG_LIST, createTagListStr(daxFields));
+//
 //
 //
 //    }
+
+
 
     private void putEnumToBlock(DaxBody body,
                                         DaxTag tag,
@@ -237,8 +225,8 @@ public class DaxMessageFactory {
                 putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );
 
-        dictionary.getEntityMap().forEach((tag, entity) ->
-                putEntityToBody(message.getBody(), entity, dictionary.getEntityFieldsMap().get(entity.getTag())));
+//        dictionary.getEntityMap().forEach((tag, entity) ->
+//                putEntityToBody(message.getBody(), entity, dictionary.getEntityFieldsMap().get(entity.getTag())));
 
 
 
@@ -246,7 +234,7 @@ public class DaxMessageFactory {
         return message;
     }
 
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxx
 
     //TODO Check message atributes if  any massage is resoint type then will need message request
     // and throw exception

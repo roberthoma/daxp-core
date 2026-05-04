@@ -68,7 +68,7 @@ public class DaxMessageCodec {
         trailer.setChecksum(DaxChecksumService.calculateChecksum(msgSb.toString()));
         msgSb.append(trailerCodec.encode(trailer,pS));
 
-        //TODO create statistics counter
+        //TODO create statistics counter for example avg message size
         //TODO  System.out.println("TODO Counter statistics message length = "+sb.length());
 
         return msgSb.toString();

@@ -9,16 +9,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DaxBaseRegister {
-    /*****************************************************
-     * Main SET of tags
-     */
-    Set<DaxTag> tagSet = new HashSet<>();
+public class DaxBaseDictionary<T> {
 
-    Map<DaxTag, Map<DaxTag, DaxPair<?>>> attributMap = new ConcurrentHashMap<>();
+    Map<T, Map<DaxTag, DaxPair<?>>> attributMap = new ConcurrentHashMap<>();
 
-    public void putAttribute(DaxTag tag, DaxTag atrTag,  DaxPair<?> atrValue){
-        attributMap.merge(tag, new ConcurrentHashMap<>(Map.of(atrTag, atrValue)),
+    public void putAttribute(T key, DaxTag atrTag,  DaxPair<?> atrValue){
+        attributMap.merge(key, new ConcurrentHashMap<>(Map.of(atrTag, atrValue)),
                 (eM, nM) ->
                         DaxCollectionTool.putAndReturnMap(eM, atrTag, atrValue));
 

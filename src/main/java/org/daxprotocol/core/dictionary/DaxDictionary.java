@@ -28,7 +28,6 @@ import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.model.pair.*;
-import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.tool.DaxCollectionTool;
@@ -98,12 +97,11 @@ public class DaxDictionary {
      *  Entity Map
      */
     Map<DaxTag, Set<DaxTag>> entityFieldsMap = new ConcurrentHashMap<>();
-    Map<DaxTag, DaxEntity>   entityMap = new ConcurrentHashMap<>();
+
 
 //    Map <DaxTag, > ???? Atrybuty Fields dla encji .
 
     /******************************************************/
-    int appContextId;
 
     public DaxDictionary(DaxConfig config,
             DaxContextMapper contextMapper ,
@@ -111,17 +109,16 @@ public class DaxDictionary {
             DaxDataTypeCodec dataTypeCodec
     )
     {
-        logger.info("Init DaxSchemaRegister...");
-        appContextId = config.getAppContextId();
+        logger.info("Init DaxDictionary ...");
         this.config = config;
 
         this.contextMapper = contextMapper;
         this.messageMapper = messageMapper;
 
-        collectionRegMap.put(appContextId, new DaxCollectionRegister(appContextId) );
+        collectionRegMap.put(config.getAppContextId(), new DaxCollectionRegister(config.getAppContextId()) );
 
-        msgMap = new DaxMessageRegister(appContextId);
-        messageDicMap.put(appContextId,msgMap);
+        msgMap = new DaxMessageRegister(config.getAppContextId());
+        messageDicMap.put(config.getAppContextId(),msgMap);
 
 
     }
@@ -188,16 +185,6 @@ public class DaxDictionary {
     /*******************************************************************************
      * Entity  registration
      */
-
-    public void putEntity(DaxEntity entity){
-
-        entityMap.put(entity.getTag(),entity);
-
-    }
-
-    public Map<DaxTag, DaxEntity> getEntityMap() {
-        return entityMap;
-    }
 
 
     public Map<DaxTag, Set<DaxTag>> getEntityFieldsMap(){

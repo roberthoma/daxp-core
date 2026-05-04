@@ -27,7 +27,6 @@ import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
-import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.tag.DaxTagDestiny;
@@ -293,7 +292,6 @@ public class DaxDictionaryRegister {
 
         DaxTag entityTag = tagCodec.decode(entityAnn.value(),entityAnn.context(),entityAnn.tagId());
 
-        dictionary.putEntity(new DaxEntity(entityTag, entityName));
         dictionary.putTagDestiny(entityTag, DaxTagDestiny.ENTITY);
         dictionary.putAtrDataType(entityTag,DaxDataType.ENTITY);
         dictionary.putAtrFieldName(entityTag,entityName);

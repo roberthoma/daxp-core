@@ -3,11 +3,11 @@ package org.daxprotocol.core.dictionary;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.datatype.DaxBlockType;
-import org.daxprotocol.core.entity.DaxEntity;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.parsers.DaxTagParser;
 
 import java.util.Arrays;
@@ -181,8 +181,7 @@ public class DaxMessagePopulator {
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
 
-            DaxEntity group = new DaxEntity(groupTag,groupName);
-            daxDic.putEntity(group);
+            daxDic.putTag(groupTag, DaxRegisterSource.MESSAGE, DaxTagDestiny.ENTITY);
             String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
             List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgContextId);
             tagList.forEach(tag -> daxDic.putEntityField(groupTag, tag));
