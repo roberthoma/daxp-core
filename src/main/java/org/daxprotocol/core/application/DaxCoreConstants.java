@@ -42,7 +42,8 @@ public class DaxCoreConstants {
     /*****************************************************
      *     DAXP  mappers
      */
-    public static final int  START_IDX_MSG_MAPPER = 101;
-    public static final int  START_IDX_CTX_MAPPER = 101;
+    public static final int  START_IDX_MSG_MAPPER    = 101;
+    public static final int  START_IDX_CTX_MAPPER    = 101;
+    public static final int  START_IDX_SCHEMA_MAPPER = 101;
 
 }

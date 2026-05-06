@@ -48,20 +48,20 @@ public class DaxFrameParser {
     private static final Logger logger = LoggerFactory.getLogger(DaxFrameParser.class);
 
     DaxTagParser tagParser;
-    DaxContextMapper contextMapper;
+    //DaxContextMapper contextMapper;
     DaxConfig config;
     DaxMessageFactory messageFactory;
     DaxPreambleCodec preambleCodec;
 
     //char[] separators = { DaxCoreConstants.DEFAULT_PAIR_SEPARATOR,'|','^','#'};
     public DaxFrameParser(DaxConfig config,
-                            DaxContextMapper contextMapper,
+                          //  DaxContextMapper contextMapper,
                             DaxTagParser tagParser,
                             DaxDictionary daxDic,
             DaxMessageFactory messageFactory,
             DaxPreambleCodec preambleCodec) {
         this.tagParser = tagParser;
-        this.contextMapper = contextMapper;
+        //this.contextMapper = contextMapper;
         this.config = config;
         this.messageFactory = messageFactory;
         this.preambleCodec = preambleCodec;

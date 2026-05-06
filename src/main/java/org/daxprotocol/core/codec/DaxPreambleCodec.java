@@ -40,11 +40,9 @@ import static org.daxprotocol.core.application.DaxCoreConstants.EQUAL;
 //public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 public class DaxPreambleCodec {
 
-    DaxConfig config;
     DaxContextMapper contextMapper;
 
-    public DaxPreambleCodec(DaxConfig config, DaxContextMapper contextMapper) {
-        this.config = config;
+    public DaxPreambleCodec( DaxContextMapper contextMapper) {
         this.contextMapper = contextMapper;
     }
 

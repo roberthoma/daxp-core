@@ -64,7 +64,7 @@ public class DaxMessagePopulator {
                     blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgContextId
             ) ;
 
-            daxDic.putTag( enumTag, DaxRegisterSource.MESSAGE);
+            daxDic.putTag( enumTag, DaxRegisterSource.MESSAGE, DaxTagDestiny.COLLECTION);
 
 
             String name = blockPairMap.get(DaxCoreTags.ENTRY_NAME).getStrValue();

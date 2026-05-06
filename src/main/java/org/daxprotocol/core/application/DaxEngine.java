@@ -26,6 +26,7 @@ import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
+import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.dictionary.DaxDictionaryRegister;
@@ -52,7 +53,7 @@ public class DaxEngine {
 
     private final DaxMessageConverter messageConverter;
 
-    private final DaxDictionary schema;
+    private final DaxDictionary dictionary;
 
     private final DaxPreambleFactory preambleFactory;
 
@@ -61,6 +62,8 @@ public class DaxEngine {
     private final DaxContextMapper contextMapper;
 
     private final DaxMessageMapper messageMapper;
+
+    private final DaxSchemaMapper schemaMapper;
 
     private final DaxTagCodec tagCodec;
 
@@ -94,23 +97,24 @@ public class DaxEngine {
 
         contextMapper = new DaxContextMapper();
         messageMapper = new DaxMessageMapper();
+        schemaMapper  = new DaxSchemaMapper();
 
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
         dataTypeCodec = new DaxDataTypeCodec();
 
-        schema = new DaxDictionary(config, contextMapper, messageMapper, dataTypeCodec);
-        schema.putContext(sysContext);
-        schema.putContext(appContext);
-        DaxCoreTags.init(schema);
+        dictionary = new DaxDictionary(config, contextMapper, messageMapper,schemaMapper, dataTypeCodec);
+        dictionary.putContext(sysContext);
+        dictionary.putContext(appContext);
+        DaxCoreTags.init(dictionary);
 
         tagParser  = new DaxTagParser(contextMapper);
 
         handlerRegistry = new DaxHandlerRegistry();
 
         tagCodec      = new DaxTagCodec     (config, contextMapper, tagParser );
-        pairCodec     = new DaxPairCodec    (config, contextMapper, tagCodec);
-        preambleCodec = new DaxPreambleCodec(config, contextMapper);
+        pairCodec     = new DaxPairCodec    (tagCodec);
+        preambleCodec = new DaxPreambleCodec( contextMapper);
 
         DaxHeadCodec    headCodec    = new DaxHeadCodec(pairCodec);
         DaxBodyCodec    bodyCodec    = new DaxBodyCodec(pairCodec, tagCodec);
@@ -123,18 +127,19 @@ public class DaxEngine {
         frameCodec = new DaxFrameCodec(config, preambleCodec, messageCodec);
 
 
-        messagePopulator    = new DaxMessagePopulator( tagParser, schema);
-        enumPopulator       = new DaxPopulatorEnumType(config, contextMapper, schema, dataTypeCodec);
+        messagePopulator    = new DaxMessagePopulator( tagParser, dictionary);
+        enumPopulator       = new DaxPopulatorEnumType(config, dictionary, dataTypeCodec);
         annotationRegister = new DaxDictionaryRegister(tagParser ,
                                                         enumPopulator,
                                                         config,
-                                                        contextMapper,
-                schema,
+//                                                        contextMapper,
+                dictionary,
                                                         handlerRegistry,
                 tagCodec, dataTypeCodec
         );
 
-        messageConverter     = new DaxMessageConverter(config,contextMapper , schema, tagCodec, dataTypeCodec);
+        messageConverter     = new DaxMessageConverter(config,//contextMapper ,
+                dictionary, tagCodec, dataTypeCodec);
 
 
 
@@ -142,16 +147,17 @@ public class DaxEngine {
         preambleFactory = new DaxPreambleFactory(config, preambleCodec);
 
 
-        messageFactory       = new DaxMessageFactory(config, contextMapper, tagCodec,  messageCodec,
-                                                     headCodec, bodyCodec, trailerCodec, schema, tagParser,
+        messageFactory       = new DaxMessageFactory(config,
+                tagCodec,  messageCodec,
+                                                     headCodec, bodyCodec, trailerCodec, dictionary, tagParser,
                 dataTypeCodec
         );
 
 
         frameParser =  new DaxFrameParser( config,
-                                                 contextMapper,
+                                             //    contextMapper,
                                                  tagParser,
-                schema,
+                dictionary,
                                                  messageFactory,
                                                  preambleCodec) ;
 
@@ -187,11 +193,11 @@ public class DaxEngine {
         return messageConverter;
     }
 
-    public DaxDictionary getSchema() {
-        if(schema == null){
+    public DaxDictionary getDictionary() {
+        if(dictionary == null){
             throw new RuntimeException("Dictionary is NOT READY !!!!");
         }
-        return schema;
+        return dictionary;
     }
 
     public DaxMessageFactory getMessageFactory() {

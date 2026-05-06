@@ -30,7 +30,6 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.context.DaxContext;
-import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.datatype.DaxBlockType;
@@ -56,7 +55,7 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxMessageFactory {
 
     DaxConfig config;
-    DaxContextMapper contextMapper;
+//    DaxContextMapper contextMapper;
     DaxTagCodec tagCodec;
     DaxMessageCodec messageCodec;
     DaxHeadCodec     headCodec;
@@ -66,7 +65,7 @@ public class DaxMessageFactory {
     DaxTagParser tagParser;
     DaxDataTypeCodec dataTypeCodec;
     public DaxMessageFactory(DaxConfig config,
-            DaxContextMapper contextMapper,
+          //  DaxContextMapper contextMapper,
             DaxTagCodec tagCodec,
             DaxMessageCodec messageCodec,
             DaxHeadCodec headCodec,
@@ -78,7 +77,7 @@ public class DaxMessageFactory {
 
             ) {
         this.config = config;
-        this.contextMapper = contextMapper;
+     //   this.contextMapper = contextMapper;
         this.tagCodec = tagCodec;
         this.messageCodec = messageCodec;
         this.headCodec = headCodec;
@@ -221,7 +220,7 @@ public class DaxMessageFactory {
 
         enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(1));
 
-        dictionary.getAttributMap().forEach((tag, atrMap) ->
+        dictionary.getTagAttributeMap().forEach((tag, atrMap) ->
                 putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );
 
@@ -264,13 +263,13 @@ public class DaxMessageFactory {
     }
 
     //TODO move to tool class
-    private DaxTag creatTag(String context, int tagId){
-
-        int contextId = context.isBlank() ?
-                config.getAppContextId():
-                contextMapper.getReferenceId(context);
-        return DaxTag.of(contextId ,tagId);
-    }
+//    private DaxTag creatTag(String context, int tagId){
+//
+//        int contextId = context.isBlank() ?
+//                config.getAppContextId():
+//                contextMapper.getReferenceId(context);
+//        return DaxTag.of(contextId ,tagId);
+//    }
 
 
 //todo add required tagCollection reqTagSet

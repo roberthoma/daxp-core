@@ -31,7 +31,8 @@ public enum DaxBlockType {//extends DaxValue<String> {
     BLOCK_TAG('T',"Tag definition block"),
     BLOCK_FIELD('F',"Field definition block"),
     BLOCK_COLLECTION('C',"Definition block of collection : Name , Allow duplication , has key ...."),
-    BLOCK_VALUE('V',"Value block");   // for example Collection value
+    BLOCK_VALUE('V',"Value block"),   // for example Collection value
+    BLOCK_SCHEMA('S',"Schema block");   // for example Collection value
 
     private final Character code;
     private final String description;

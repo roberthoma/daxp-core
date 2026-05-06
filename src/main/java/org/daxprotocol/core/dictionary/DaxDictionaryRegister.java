@@ -27,7 +27,6 @@ import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
-import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.parsers.DaxTagParser;
@@ -49,7 +48,7 @@ public class DaxDictionaryRegister {
     DaxTagParser tagParser;
     DaxPopulatorEnumType enumPopulator;
     DaxConfig config;
-    DaxContextMapper contextMapper;
+//    DaxContextMapper contextMapper;
     DaxDictionary dictionary;
     DaxHandlerRegistry handlerRegistry;
     DaxTagCodec tagCodec;
@@ -58,7 +57,7 @@ public class DaxDictionaryRegister {
             DaxTagParser tagParser ,
             DaxPopulatorEnumType  enumPopulator,
             DaxConfig config,
-            DaxContextMapper contextMapper,
+//            DaxContextMapper contextMapper,
             DaxDictionary dictionary,
             DaxHandlerRegistry handlerRegistry,
             DaxTagCodec tagCodec,
@@ -68,7 +67,7 @@ public class DaxDictionaryRegister {
         this.tagParser = tagParser;
         this.jakartaPopulator = new DaxPopulatorJakartaValidation();
         this.config = config;
-        this.contextMapper = contextMapper;
+//        this.contextMapper = contextMapper;
         this.enumPopulator = enumPopulator;
         this.dictionary = dictionary;
         this.handlerRegistry = handlerRegistry;
@@ -76,7 +75,13 @@ public class DaxDictionaryRegister {
         this.dataTypeCodec = dataTypeCodec;
     }
 
+    private void  putAtrDeprecated(DaxTag tag, DaxpDeprecated daxpDeprecated){
+        dictionary.putAtrDeprecated(tag);
+    }
 
+    private void  putAtrDeprecated(DaxTag tag, Deprecated deprecated){
+        dictionary.putAtrDeprecated(tag);
+    }
 
 
     private void registerDaxpField(Field field,
@@ -156,13 +161,16 @@ public class DaxDictionaryRegister {
 
 
         dictionary.putTag(tag, source , tagDestiny);
-        dictionary.putAtrFieldName(tag, fieldName);
-        dictionary.putAtrDataType(tag, dataTypeCodec.encode(field.getType() ));
+        dictionary.putAtrEntryName(tag, fieldName);
+        dictionary.putTagAttributes(tag, dataTypeCodec.encode(field.getType() ));
         dictionary.putEntityField( entityTag,tag);
 
         if (field.isAnnotationPresent(Deprecated.class)) {
-            Deprecated daxpValue = field.getAnnotation(Deprecated.class);
-            dictionary.putAtrDeprecated(tag);
+            putAtrDeprecated(tag, field.getAnnotation(Deprecated.class));
+        }
+
+        if (field.isAnnotationPresent(DaxpDeprecated.class)) {
+            putAtrDeprecated(tag, field.getAnnotation(DaxpDeprecated.class));
         }
 
 
@@ -186,7 +194,7 @@ public class DaxDictionaryRegister {
 
             Class<?> returnType = method.getReturnType();
 
-            dictionary.putAtrDataType( tag, dataTypeCodec.encode( returnType));
+            dictionary.putTagAttributes( tag, dataTypeCodec.encode( returnType));
             dictionary.putAtrReadOnly(tag,true);
             dictionary.putEntityField( entityTag,tag);
 
@@ -216,8 +224,6 @@ public class DaxDictionaryRegister {
     }
     private void registerDaxpSchema(Class<?> clazz){
 
-
-
         for (Field field : DaxLangTool.allFields(clazz)) {
 
             if (field.isAnnotationPresent(DaxpTag.class)) {
@@ -227,6 +233,15 @@ public class DaxDictionaryRegister {
             if (field.isAnnotationPresent(DaxpMsg.class)){
                 registerDaxpMsg(field,DaxRegisterSource.SCHEMA);
             }
+
+            if (field.isAnnotationPresent(DaxpField.class)){
+                throw new DaxAnnotationException("Can't use annotation DaxpField in Schame class :"+clazz.getName());
+            }
+
+            if (field.isAnnotationPresent(DaxpValue.class)){
+                throw new DaxAnnotationException("Can't use annotation DaxpValue in Schame class :"+clazz.getName());
+            }
+
         }
     }
 
@@ -267,7 +282,7 @@ public class DaxDictionaryRegister {
         logger.info("Tag {} description : {}",tagCodec.encode(tag) ,tagAnn.description());
 
         if (! tagAnn.clazz().equals(Void.class)) {
-            dictionary.putAtrDataType(tag, dataTypeCodec.encode(tagAnn.clazz()));
+            dictionary.putTagAttributes(tag, dataTypeCodec.encode(tagAnn.clazz()));
         }
 
         if (tagAnn.daxDataType() != DaxDataType.UNKNOWN){
@@ -277,6 +292,8 @@ public class DaxDictionaryRegister {
         if (tagAnn.readOnly()) {
             dictionary.putAtrReadOnly(tag,Boolean.TRUE);
         }
+
+
 
         jakartaPopulator.populate(dictionary, field, tag );
 
@@ -294,7 +311,16 @@ public class DaxDictionaryRegister {
 
         dictionary.putTagDestiny(entityTag, DaxTagDestiny.ENTITY);
         dictionary.putAtrDataType(entityTag,DaxDataType.ENTITY);
-        dictionary.putAtrFieldName(entityTag,entityName);
+        dictionary.putAtrEntryName(entityTag,entityName);
+
+        if (clazz.isAnnotationPresent(Deprecated.class)) {
+            putAtrDeprecated(entityTag, clazz.getAnnotation(Deprecated.class));
+        }
+
+        if (clazz.isAnnotationPresent(DaxpDeprecated.class)) {
+            putAtrDeprecated(entityTag, clazz.getAnnotation(DaxpDeprecated.class));
+        }
+
 
         List<Field> allFields = DaxLangTool.allFields(clazz);
 
@@ -314,6 +340,7 @@ public class DaxDictionaryRegister {
             if (field.isAnnotationPresent(DaxpMsg.class)){
                 registerDaxpMsg(field, DaxRegisterSource.ENTITY);
             }
+
 
 
         }

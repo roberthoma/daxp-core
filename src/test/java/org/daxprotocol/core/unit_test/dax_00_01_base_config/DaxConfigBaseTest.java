@@ -50,7 +50,7 @@ public class DaxConfigBaseTest {
                             .createProperties("application_BASE.properties")));
 
             appContextId    = daxEngine.getConfig().getAppContextId();
-            dictionary      = daxEngine.getSchema();
+            dictionary      = daxEngine.getDictionary();
             contextMapper   = daxEngine.getContextMapper();
             messageCodec    = daxEngine.getMessageCodec();
             preambleCodec   = daxEngine.getPreambleCodec();

@@ -2,13 +2,14 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpMsg;
 import org.daxprotocol.core.annotation.DaxpSchema;
 import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 
-@DaxpSchema(name = "TestSchemaB")
+@DaxpSchema(value = "SCH1", name = "TestSchemaB")
 public class DaxpSchema_Base {
 
     @DaxpTag( description = "Base Entity ")
@@ -63,4 +64,8 @@ public class DaxpSchema_Base {
 
     @DaxpTag( description = "SUB Base DTO ")
     public static final int TEST_SUB_DTO_1 =  5077;
+
+    //TODO Create new tested schema for exceptions
+//    @DaxpField("ABC:1123")
+//    public String testVal;
 }

@@ -34,16 +34,17 @@ import java.util.Map;
 public class DaxMessageConverter {
 
     DaxConfig config;
-    DaxContextMapper contextMapper;
+//    DaxContextMapper contextMapper;
     DaxDictionary dictionary;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
-    public DaxMessageConverter(DaxConfig config, DaxContextMapper contextMapper, DaxDictionary dictionary,
+    public DaxMessageConverter(DaxConfig config, //DaxContextMapper contextMapper,
+            DaxDictionary dictionary,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec
             ) {
         this.config = config;
-        this.contextMapper = contextMapper;
+//        this.contextMapper = contextMapper;
         this.dictionary = dictionary;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
@@ -60,12 +61,6 @@ public class DaxMessageConverter {
             for (Field f : targetClass.getDeclaredFields()) {
                 DaxpField ann = f.getAnnotation(DaxpField.class);
                 if (ann == null) continue; // skip non-annotated fields (e.g., town)
-
-                //TODO Add to utility class
-                int contextId = ann.context().isBlank() ? config.getAppContextId():
-                        contextMapper.getReferenceId(ann.context());
-
-         //TODO  read from all block ..
 
 //                if (!ann.value().isBlank()){
 //                    ?????
