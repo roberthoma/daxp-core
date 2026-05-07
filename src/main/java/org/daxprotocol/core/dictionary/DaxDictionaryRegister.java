@@ -163,6 +163,7 @@ public class DaxDictionaryRegister {
         dictionary.putTag(tag, source , tagDestiny);
         dictionary.putAtrEntryName(tag, fieldName);
         dictionary.putTagAttributes(tag, dataTypeCodec.encode(field.getType() ));
+        dictionary.putAtrDescription(entityTag,tag, "Any opisik");
         dictionary.putEntityField( entityTag,tag);
 
         if (field.isAnnotationPresent(Deprecated.class)) {
@@ -195,9 +196,10 @@ public class DaxDictionaryRegister {
             Class<?> returnType = method.getReturnType();
 
             dictionary.putTagAttributes( tag, dataTypeCodec.encode( returnType));
-            dictionary.putAtrReadOnly(tag,true);
-            dictionary.putEntityField( entityTag,tag);
+            dictionary.putAtrReadOnly(entityTag,tag,true);
+            dictionary.putAtrDescription(entityTag,tag, "Testowy opis ");//  methodAnn.description());
 
+            dictionary.putEntityField( entityTag,tag);
 
     }
 

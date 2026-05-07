@@ -58,7 +58,7 @@ public class DaxCoreTags {
 
 
     /**********************************
-     * UNKNOW_TAG
+     * UNKNOW_TAG  ;(
      */
      public static final DaxTag UNKNOW_TAG             = daxpSysTag(-1);
 
@@ -89,6 +89,10 @@ public class DaxCoreTags {
     public static final DaxTag ENTRY_DESCRIPTION       = daxpSysTag(12);
     public static final DaxTag ENTRY_SYMBOL            = daxpSysTag(15);
 
+    public static final DaxTag ENTRY_OWNER_ID          = daxpSysTag(20);
+    public static final DaxTag TAG_OWNER_ID          = daxpSysTag(111);
+
+
     public static final DaxTag ENTRY_VALUE             = daxpSysTag(103);
     public static final DaxTag ENTRY_VALUE_DEFAULT     = daxpSysTag(104);
 
@@ -96,8 +100,6 @@ public class DaxCoreTags {
     public static final DaxTag REQ_FIELD_LIST          = daxpSysTag(108);
 
 
-    public static final DaxTag FIELD_OWNER_ID          = daxpSysTag(110);
-    public static final DaxTag TAG_OWNER_ID          = daxpSysTag(111);
 
 
 
@@ -154,7 +156,20 @@ public class DaxCoreTags {
     public static final DaxTag ATR_SIZE_MAX        = daxpSysTag(167);
     public static final DaxTag ATR_SIZE_MIN        = daxpSysTag(168);
     public static final DaxTag ATR_READONLY        = daxpSysTag(169);
+
+    //-----------------------------------------
     public static final DaxTag ATR_IS_DEPRECATED   = daxpSysTag(170);
+/*
+    public @interface DaxpDeprecated {
+        String since() default ""; //This same as original Deprecated
+        boolean forRemoval() default false; //This same as original  Deprecated
+        String  removalVersion() default "";
+        String  replacement() default "";
+        String  reason() default "";
+    }
+*/
+
+
 
     public static final DaxTag VALE_IS_EDITABLE   = daxpSysTag(172);
 
@@ -192,7 +207,7 @@ public class DaxCoreTags {
     public static final DaxTag ERR_DESCRIPTION     = daxpSysTag(226);
 
 
-    //LOG
+    //LOGs tags
 
 
 

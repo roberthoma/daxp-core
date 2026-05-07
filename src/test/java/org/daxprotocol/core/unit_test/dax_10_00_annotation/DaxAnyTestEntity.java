@@ -28,7 +28,7 @@ public class DaxAnyTestEntity {
     @DaxpField(tagId = TEST_TAG_char)
     char anyChar;
 
-    @DaxpField(tagId = TEST_TAG_Boolean)
+    @DaxpField(tagId = TEST_TAG_Boolean, description = "Any tested boolean from entity")
     Boolean anyBoolean;
 
 

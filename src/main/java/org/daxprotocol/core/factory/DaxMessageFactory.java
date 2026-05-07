@@ -100,6 +100,14 @@ public class DaxMessageFactory {
 
     }
 
+    private void putAttributesToFieldBlock(DaxBody body,DaxTag entityTag ,DaxTag tag, Map<DaxTag, DaxPair<?>> map){
+        body.nextBlock(DaxBlockType.BLOCK_FIELD);
+        body.putPair(new DaxPairTag(ENTRY_OWNER_ID,entityTag));
+        body.putPair(new DaxPairTag(ENTRY_TAG,tag));
+        map.forEach((atrTag, pair) -> body.putPair(pair));
+
+    }
+
 
 
     private   String createTagListStr(Set<DaxTag> daxFields){
@@ -204,6 +212,11 @@ public class DaxMessageFactory {
     }
 
 
+    private void entityEntryToBlock(DaxBody body,DaxTag entityTag, DaxBaseDictionary<DaxTag> baseDic){
+        baseDic.getAttributMap().forEach((tag, atrMap) ->
+                putAttributesToFieldBlock(body, entityTag,tag, atrMap)
+        );
+    }
 
 
     //TODO Develop selective tags
@@ -223,6 +236,12 @@ public class DaxMessageFactory {
         dictionary.getTagAttributeMap().forEach((tag, atrMap) ->
                 putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );
+
+
+        dictionary.getEntityEntryAttributes()
+                  .forEach((entityTag, baseDic) ->
+                                  entityEntryToBlock(message.getBody(),entityTag, baseDic ));
+
 
 //        dictionary.getEntityMap().forEach((tag, entity) ->
 //                putEntityToBody(message.getBody(), entity, dictionary.getEntityFieldsMap().get(entity.getTag())));

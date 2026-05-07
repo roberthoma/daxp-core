@@ -23,7 +23,6 @@ package org.daxprotocol.core.dictionary;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -103,15 +102,14 @@ public class DaxDictionary {
      * Key : tagId
      * Value : map of attributes
      * */
-    Map<DaxTag,DaxBaseDictionary<DaxTag>> entityFieldAttributes = new HashMap<>();
+    Map<DaxTag,DaxBaseDictionary<DaxTag>> entityEntryAttributes = new HashMap<>();
 
     /******************************************************/
 
     public DaxDictionary(DaxConfig config,
             DaxContextMapper contextMapper ,
             DaxMessageMapper messageMapper ,
-            DaxSchemaMapper schemaMapper,
-            DaxDataTypeCodec dataTypeCodec
+            DaxSchemaMapper schemaMapper
     )
     {
         logger.info("Init DaxDictionary ...");
@@ -179,6 +177,9 @@ public class DaxDictionary {
         collectionRegMap.get(tag.getContextId()).putEnumValue (tag, value);
     }
 
+//    public void putAtrEnumTypeTag(DaxTag tag, DaxTag enumTag) {
+//        putAttribute(tag, new DaxAtrEnumTag(enumTag));
+//    }
 
 
     public Map<DaxTag, Map<String, DaxEnumValue>> getEnumValueMap(DaxTag tag) {
@@ -212,38 +213,56 @@ public class DaxDictionary {
     //**********************************************************************
     // Attributes
 
-    public void putAttribute(DaxTag tag, DaxPair<?> atrPair){
+    //*********************
+    // Attributes of tags
 
+
+
+    private void putTagAttribute(DaxTag tag, DaxPair<?> atrPair){
         tagAttributes.putAttribute(tag, atrPair);
-
-
     }
 
-    //**********************************************************************
-    // Dedicated attributes
-
-
-
-
-
-
-
     public void putTagAttributes(DaxTag tag, Set< DaxPair<?>> pairMap) {
-        pairMap.forEach(( atrPair) -> putAttribute(tag,atrPair));
+        pairMap.forEach(( atrPair) -> putTagAttribute(tag,atrPair));
     };
 
-    public void putAtrDataType(DaxTag tag, DaxDataType dataType) { putAttribute(tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-    public void putAtrSizeMax (DaxTag tag,  Integer max )        { putAttribute(tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
-    public void putAtrSizeMin (DaxTag tag,  Integer min )        { putAttribute(tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
-    public void putAtrNullable(DaxTag tag,  Boolean able)        { putAttribute(tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
-    public void putAtrEntryName(DaxTag tag, String name)         { putAttribute(tag, new DaxPairString(ENTRY_NAME,name));}
-    public void putAtrReadOnly(DaxTag tag, Boolean able)         { putAttribute(tag, new DaxPairBoolean(ATR_READONLY ,able));}
-    public void putAtrDeprecated(DaxTag tag)                     { putAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
+
+    public void putAtrDataType  (DaxTag tag, DaxDataType dataType) { putTagAttribute(tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
+    public void putAtrSizeMax   (DaxTag tag,  Integer max )        { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
+    public void putAtrSizeMin   (DaxTag tag,  Integer min )        { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
+    public void putAtrNullable  (DaxTag tag,  Boolean able)        { putTagAttribute(tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
+    public void putAtrEntryName (DaxTag tag,  String name)         { if(name!= null && !name.isBlank()){ putTagAttribute(tag, new DaxPairString(ENTRY_NAME,name));}}
+    public void putAtrDescription(DaxTag tag, String desc)         { if(desc!= null && !desc.isBlank()){ putTagAttribute(tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
+    public void putAtrReadOnly  (DaxTag tag, Boolean able)         { putTagAttribute(tag, new DaxPairBoolean(ATR_READONLY ,able));}
+    public void putAtrDeprecated(DaxTag tag)                       { putTagAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
 
 
-//    public void putAtrEnumTypeTag(DaxTag tag, DaxTag enumTag) {
-//        putAttribute(tag, new DaxAtrEnumTag(enumTag));
-//    }
+    //*********************
+    // Attributes of fields and values derived from the entity.
+    private void putEntityEntryAttribute(DaxTag entityTag, DaxTag tag, DaxPair<?> atrPair){
+
+        if(!entityEntryAttributes.containsKey(entityTag)){
+            entityEntryAttributes.put(entityTag, new DaxBaseDictionary<>());
+        }
+        DaxBaseDictionary<DaxTag> dic = entityEntryAttributes.get(entityTag);
+
+        dic.putAttribute(tag, atrPair);
+
+    }
+    public void putAtrDataType  (DaxTag entityTag, DaxTag tag, DaxDataType dataType) { putTagAttribute(tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
+    public void putAtrSizeMax   (DaxTag entityTag, DaxTag tag,  Integer max )        { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
+    public void putAtrSizeMin   (DaxTag entityTag, DaxTag tag,  Integer min )        { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
+    public void putAtrNullable  (DaxTag entityTag, DaxTag tag,  Boolean able)        { putTagAttribute(tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
+    public void putAtrEntryName (DaxTag entityTag, DaxTag tag,  String name)         { if(name!= null && !name.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_NAME,name));}}
+    public void putAtrDescription(DaxTag entityTag, DaxTag tag, String desc)         { if(desc!= null && !desc.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
+    public void putAtrReadOnly  (DaxTag entityTag, DaxTag tag, Boolean able)         { putTagAttribute(tag, new DaxPairBoolean(ATR_READONLY ,able));}
+    public void putAtrDeprecated(DaxTag entityTag, DaxTag tag)                       { putTagAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
+
+
+
+    public Map<DaxTag,DaxBaseDictionary<DaxTag>> getEntityEntryAttributes(){
+        return entityEntryAttributes;
+    }
 
 
     public Map<DaxTag, Map<DaxTag, DaxPair<?>>> getTagAttributeMap(){

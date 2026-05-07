@@ -103,7 +103,7 @@ public class DaxEngine {
         contextMapper.registerPredefined(appContext);
         dataTypeCodec = new DaxDataTypeCodec();
 
-        dictionary = new DaxDictionary(config, contextMapper, messageMapper,schemaMapper, dataTypeCodec);
+        dictionary = new DaxDictionary(config, contextMapper, messageMapper,schemaMapper);
         dictionary.putContext(sysContext);
         dictionary.putContext(appContext);
         DaxCoreTags.init(dictionary);
