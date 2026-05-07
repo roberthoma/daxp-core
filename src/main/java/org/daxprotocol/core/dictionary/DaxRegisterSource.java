@@ -1,8 +1,8 @@
 package org.daxprotocol.core.dictionary;
 
 public enum DaxRegisterSource {
-    ENTITY,
-    SCHEMA,
+    ENTITY_ANNOTATION,
+    SCHEMA_ANNOTATION,
     COLLECTION,
     MESSAGE, CONTROLLER
 }

@@ -110,7 +110,8 @@ public class DaxMessagePopulator {
                     blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgContextId
             ) ;
 
-            daxDic.putTag( tag, DaxRegisterSource.MESSAGE);
+            daxDic.putTag( tag, DaxRegisterSource.MESSAGE, DaxTagDestiny.TAG);
+            daxDic.putTag( tag, DaxRegisterSource.MESSAGE, DaxTagDestiny.TAG);
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 

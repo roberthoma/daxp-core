@@ -37,6 +37,7 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.parsers.DaxTagParser;
@@ -137,21 +138,6 @@ public class DaxMessageFactory {
 //            );
 
 
-//    private void putEntityToBody(DaxBody body, DaxEntity entity, Set<DaxTag> daxFields){
-//        body.nextBlock(DaxBlockType.BLOCK_ENTITY);
-//        body.putPair(ENTRY_TAG, tagCodec.encode(entity.getTag()) );
-//        body.putPair(ENTRY_NAME, entity.getName());
-//        body.putPair( ENTITY_NAME, entity.getName());
-//        if (!entity.getDescription().isBlank() ){
-//            body.putPair(ENTRY_DESCRIPTION, entity.getDescription());
-//        }
-//
-//        body.putPair(TAG_LIST, createTagListStr(daxFields));
-//
-//
-//
-//    }
-
 
 
     private void putEnumToBlock(DaxBody body,
@@ -218,6 +204,36 @@ public class DaxMessageFactory {
         );
     }
 
+    private void putEntityToBody(DaxBody body, DaxTag entityTag){
+      Set<DaxTag> entityTagSet = dictionary.getEntityFieldsMap().get(entityTag);
+
+        body.nextBlock(DaxBlockType.BLOCK_ENTITY);
+        body.putPair(ENTRY_TAG, tagCodec.encode(entityTag) );
+
+        DaxBaseDictionary<DaxTag> baseDic = dictionary.getEntityBaseDic(entityTag);
+
+//        baseDic.getAttributMap().forEach((daxTag, tagDaxPairMap) ->
+//                body.putPair(
+//        body.putPair(ENTRY_NAME, dictionary.getEntityEntryAttributes().  entity.getName());
+
+
+//        if (!entity.getDescription().isBlank() ){
+//            body.putPair(ENTRY_DESCRIPTION, entity.getDescription());
+//        }
+
+        body.putPair(TAG_LIST, createTagListStr(entityTagSet));
+
+
+
+    }
+
+
+    private void putTagBlockByDestiny(DaxTag tag, DaxTagDestiny destiny){
+
+
+
+    }
+
 
     //TODO Develop selective tags
     public DaxMessage dictionaryToMsg() {
@@ -231,17 +247,34 @@ public class DaxMessageFactory {
                 putMsgItem(message.getBody(),messageDicItem)
         );
 
-        enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(1));
+        //TODO SCHEMA
+
 
         dictionary.getTagAttributeMap().forEach((tag, atrMap) ->
                 putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );
 
 
+
+        dictionary.getTagDestinyMap().forEach(this::putTagBlockByDestiny);
+
+
+
+        enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(1));
+
+
         dictionary.getEntityEntryAttributes()
                   .forEach((entityTag, baseDic) ->
                                   entityEntryToBlock(message.getBody(),entityTag, baseDic ));
 
+
+
+        dictionary.getTagDestinyMap().forEach((tag, destiny) -> {
+            if (DaxTagDestiny.ENTITY.equals(destiny)) {
+                // This is safe even if destiny is null
+                putEntityToBody(message.getBody(), tag);
+            }
+        });
 
 //        dictionary.getEntityMap().forEach((tag, entity) ->
 //                putEntityToBody(message.getBody(), entity, dictionary.getEntityFieldsMap().get(entity.getTag())));

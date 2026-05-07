@@ -42,16 +42,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 
-/******************************************************
- Registration Rules
- * 1) A tag Destination must be a specific type (e.g., FIELDS, ENTITY).
+/**********************************************************************************************
+ *                  Registration Rules
+ * 1) A tag destination must be a specific type (e.g., FIELDS, ENTITY).
 
  * 2) A tag can be used multiple times within the same destination type.
- * However, each unique tag can only be used once per entity.
+ *    However, each unique tag can only be used once per entity, collection ...
 
- * 3) Each entry name used in Annotation must be single world
- */
+ * 3) Each entry name used in an annotation must be a single word.
 
+ * 4) All fields annotated with the same tag must be of the same data type.
+ **********************************************************************************************/
 
 public class DaxDictionary {
     private static final Logger logger = LoggerFactory.getLogger(DaxDictionary.class);
@@ -65,8 +66,9 @@ public class DaxDictionary {
      * Main SET of tags
      */
 //    Set<DaxTag> tagSet = new HashSet<>();
-    Map<DaxTag,DaxRegisterSource> tagMap         = new ConcurrentHashMap<>();
     Map<DaxTag,DaxTagDestiny>     tagDestinyMap  = new ConcurrentHashMap<>();
+
+    Map<DaxTag,DaxRegisterSource> tagMap         = new ConcurrentHashMap<>();
 
     DaxBaseDictionary<DaxTag> tagAttributes = new DaxBaseDictionary<>();
 
@@ -199,8 +201,8 @@ public class DaxDictionary {
     }
 
 
-    public Map<DaxTag,DaxRegisterSource> getTagSet(){
-        return tagMap;
+    public Map<DaxTag,DaxTagDestiny> getTagDestinyMap(){
+        return tagDestinyMap;
     }
 
     //TODO chek exist of fields in group,
@@ -249,19 +251,23 @@ public class DaxDictionary {
         dic.putAttribute(tag, atrPair);
 
     }
-    public void putAtrDataType  (DaxTag entityTag, DaxTag tag, DaxDataType dataType) { putTagAttribute(tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-    public void putAtrSizeMax   (DaxTag entityTag, DaxTag tag,  Integer max )        { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
-    public void putAtrSizeMin   (DaxTag entityTag, DaxTag tag,  Integer min )        { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
-    public void putAtrNullable  (DaxTag entityTag, DaxTag tag,  Boolean able)        { putTagAttribute(tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
+    public void putAtrDataType  (DaxTag entityTag, DaxTag tag, DaxDataType dataType) { putEntityEntryAttribute(entityTag,tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
+    public void putAtrSizeMax   (DaxTag entityTag, DaxTag tag,  Integer max )        { putEntityEntryAttribute(entityTag,tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
+    public void putAtrSizeMin   (DaxTag entityTag, DaxTag tag,  Integer min )        { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
+    public void putAtrNullable  (DaxTag entityTag, DaxTag tag,  Boolean able)        { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
     public void putAtrEntryName (DaxTag entityTag, DaxTag tag,  String name)         { if(name!= null && !name.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_NAME,name));}}
     public void putAtrDescription(DaxTag entityTag, DaxTag tag, String desc)         { if(desc!= null && !desc.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
-    public void putAtrReadOnly  (DaxTag entityTag, DaxTag tag, Boolean able)         { putTagAttribute(tag, new DaxPairBoolean(ATR_READONLY ,able));}
-    public void putAtrDeprecated(DaxTag entityTag, DaxTag tag)                       { putTagAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
+    public void putAtrReadOnly  (DaxTag entityTag, DaxTag tag, Boolean able)         { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_READONLY ,able));}
+    public void putAtrDeprecated(DaxTag entityTag, DaxTag tag)                       { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
 
 
 
     public Map<DaxTag,DaxBaseDictionary<DaxTag>> getEntityEntryAttributes(){
         return entityEntryAttributes;
+    }
+
+    public DaxBaseDictionary<DaxTag> getEntityBaseDic(DaxTag entityTag){
+        return entityEntryAttributes.get(entityTag);
     }
 
 
@@ -273,31 +279,33 @@ public class DaxDictionary {
     /*********************
      * Tag registration
     */
-    public void putTag(DaxTag tag, DaxRegisterSource source){
+
+    public void putTag(DaxTag tag, DaxRegisterSource source, DaxTagDestiny destiny){
+
+        if (tagDestinyMap.containsKey(tag))
+        {
+            if( tagDestinyMap.get(tag) == DaxTagDestiny.TAG){
+               tagDestinyMap.put(tag,destiny);
+            }
+
+            if(tagDestinyMap.get(tag) != destiny )
+            {
+                throw new DaxTagParserException("Bad tag destination, tag is use as : " + tagDestinyMap.get(tag).toString());
+            }
+        }
+        else {
+           tagDestinyMap.put(tag,destiny);
+        }
+
 
         if (tagMap.containsKey(tag)){
             logger.warn("TAG {} EXIST in dictionary , source {}  ", tag.getTagId(), tagMap.get(tag));
             //throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
             return;
         }
+
         tagMap.put(tag,source);
 
-    }
-    public void putTagDestiny(DaxTag tag, DaxTagDestiny destiny){
-        if (tagDestinyMap.containsKey(tag))
-        {
-           if(tagDestinyMap.get(tag) != destiny)
-           {
-              throw new DaxTagParserException("Bad tag destination, tag is use as : " + tagDestinyMap.get(tag).toString());
-           }
-           return;
-        }
-        tagDestinyMap.put(tag,destiny);
-    }
-
-    public void putTag(DaxTag tag, DaxRegisterSource source, DaxTagDestiny destiny){
-        putTag(tag, source);
-        putTagDestiny(tag,destiny); // Check
 
     }
 

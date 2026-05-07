@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.*;
 
-@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_ENTITY)
+@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_ENTITY, description = "Any desc from entity class")
 public class DaxAnyTestEntity {
 
 
@@ -32,6 +32,7 @@ public class DaxAnyTestEntity {
     Boolean anyBoolean;
 
 
+    @Deprecated
     @DaxpField(TEST_CTX_TAG_StrVal)
     char fixTestValue;
 
