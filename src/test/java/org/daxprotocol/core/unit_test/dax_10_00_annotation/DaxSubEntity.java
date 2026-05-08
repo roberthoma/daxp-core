@@ -3,6 +3,8 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
 
+import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.TEST_TAG_char;
+
 @DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_SUB_ENTITY)
 public class DaxSubEntity {
     @DaxpField("8001")
@@ -13,6 +15,11 @@ public class DaxSubEntity {
 
     @DaxpField(value = "FIX:8003",description = "Fix any double", name = "anyDouble")
     private Double dd;
+
+    @Deprecated
+    @DaxpField(tagId = TEST_TAG_char, description = "Desc from subEntity")
+    char anyChar;
+
 
     public void setValue_1(int value_1) {
         this.value_1 = value_1;

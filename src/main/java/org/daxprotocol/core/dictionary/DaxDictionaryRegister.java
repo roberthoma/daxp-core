@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
@@ -165,7 +166,11 @@ public class DaxDictionaryRegister {
 
         dictionary.putTag(tag, source , tagDestiny);
         dictionary.putAtrEntryName(tag, fieldName);
-        dictionary.putTagAttributes(tag, dataTypeCodec.encode(field.getType() ));
+
+        Type generitType =  field.getGenericType();
+
+        dictionary.putTagAttributes(tag, dataTypeCodec.encode(field.getType() , generitType));
+
         dictionary.putAtrDescription(entityTag,tag, fieldDesc);
         dictionary.putEntityField( entityTag,tag);
 
@@ -200,9 +205,9 @@ public class DaxDictionaryRegister {
             DaxTag tag  = tagCodec.decode(methodAnn.value(),methodAnn.context(),methodAnn.tagId());
             dictionary.putTag(tag,source, DaxTagDestiny.FIELD_OR_VALUE);
 
-            Class<?> returnType = method.getReturnType();
+            Class<?> returnClass = method.getReturnType();
 
-            dictionary.putTagAttributes( tag, dataTypeCodec.encode( returnType));
+            dictionary.putTagAttributes( tag, dataTypeCodec.encode( returnClass ));
             dictionary.putAtrReadOnly(entityTag,tag,true);
             dictionary.putAtrDescription(entityTag,tag, "Testowy opis ");//  methodAnn.description());
 

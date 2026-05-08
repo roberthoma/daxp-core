@@ -182,6 +182,8 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_ORDERED = daxpSysTag(212);
     public static final DaxTag COLLECTION_NAVIGABLE = daxpSysTag(213);
     public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
+//    public static final DaxTag COLLECTION_DATA_TYPE = daxpSysTag(215);
+
 
 
     // COLLECTION_PK,  ATTR_UNIQUE

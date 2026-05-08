@@ -5,6 +5,8 @@ import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -67,12 +69,31 @@ public class DaxDataTypeCodec {
 //        return null;
     }
 
+
     public Set<DaxPair<?>> encode(Class<?> clazz){
+        return encode(clazz, null);
+    }
+    public Set<DaxPair<?>> encode(Class<?> clazz, Type generitType){
         Set< DaxPair<?>> map = new HashSet<>();
+
+
+        if (generitType instanceof ParameterizedType pt) {
+            Type rawType = pt.getRawType();
+            Type[] args = pt.getActualTypeArguments();
+
+            if (rawType == Set.class && args[0] == String.class) {
+                System.out.println("Parameter is Set<String>");
+            }
+        }
+
+
 
         if (clazz == Set.class){
             map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
             map.add (new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,Boolean.FALSE));
+            System.out.println( "---------------------------------------");
+            System.out.println( "generitType.getTypeName()="+generitType.getTypeName());
+            System.out.println( "---------------------------------------");
             return map;
         }
 

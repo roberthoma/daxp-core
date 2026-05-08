@@ -24,8 +24,8 @@ public class DaxAnyTestEntity {
     @DaxpField(tagId = TEST_TAG_Deprecated_String)
     String anyDeprecatedString;
 
-
-    @DaxpField(tagId = TEST_TAG_char)
+    //@Deprecated
+    @DaxpField(tagId = TEST_TAG_char , description = "Desc from main test Entity")
     char anyChar;
 
     @DaxpField(tagId = TEST_TAG_Boolean, description = "Any tested boolean from entity")
@@ -62,7 +62,7 @@ public class DaxAnyTestEntity {
     Set<String> stringSet;
 
     @DaxpField(tagId = 5090)
-    Set<Integer> integerSet;
+    Set<DaxSubEntity> daxSubEntitySet;
 
 
 
