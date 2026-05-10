@@ -4,7 +4,6 @@ import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -35,8 +34,8 @@ public class DaxDataTypeCodec {
 
     private Class<?> decodeCOLLECTION(Map<DaxTag, DaxPair<?>> tagPairMap){
 
-        if (tagPairMap.containsKey(COLLECTION_HAS_KEYS)) {
-            if (tagPairMap.get(COLLECTION_HAS_KEYS).getBooleanValue()){
+        if (tagPairMap.containsKey(COLLECTION_HAS_KEY)) {
+            if (tagPairMap.get(COLLECTION_HAS_KEY).getBooleanValue()){
                 return Map.class;
             }
         };
@@ -66,58 +65,82 @@ public class DaxDataTypeCodec {
                       default         -> null; /// TODO add log and exception
         };
 
-//        return null;
     }
-
+    public  Class<?> getClass(Type type) {
+        if (type instanceof Class<?>) {
+            return (Class<?>) type;
+        } else if (type instanceof ParameterizedType) {
+            return (Class<?>) ((ParameterizedType) type).getRawType();
+        }
+        return null;
+    }
 
     public Set<DaxPair<?>> encode(Class<?> clazz){
         return encode(clazz, null);
     }
     public Set<DaxPair<?>> encode(Class<?> clazz, Type generitType){
         Set< DaxPair<?>> map = new HashSet<>();
-
-
-        if (generitType instanceof ParameterizedType pt) {
-            Type rawType = pt.getRawType();
-            Type[] args = pt.getActualTypeArguments();
-
-            if (rawType == Set.class && args[0] == String.class) {
-                System.out.println("Parameter is Set<String>");
-            }
-        }
+        boolean isCollection = false;
+        boolean isColAllowDuplicates = false;
+        boolean isColHasKey = false;
+        boolean isColDictionary = false;
 
 
 
         if (clazz == Set.class){
-            map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
-            map.add (new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,Boolean.FALSE));
-            System.out.println( "---------------------------------------");
-            System.out.println( "generitType.getTypeName()="+generitType.getTypeName());
-            System.out.println( "---------------------------------------");
-            return map;
+            isCollection = true;
         }
 
         if (clazz == List.class){
-            map.add( new DaxPairString(ATR_DATA_TYPE,DaxDataType.COLLECTION.getCode()));
-            map.add(new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
-            return map;
+            isColAllowDuplicates = true;
+            isCollection = true;
         }
 
         if (clazz.isEnum()){
-            map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
-            map.add (new DaxPairBoolean(COLLECTION_HAS_KEYS,true));
-            map.add (new DaxPairBoolean(COLLECTION_IS_DICTIONARY,true));
-            return map;
+            isCollection = true;
+            isColHasKey = true;
+            isColDictionary = true;
         }
 
         if (clazz == Map.class){
+            isCollection = true;
+            isColHasKey = true;
+        }
+
+        if (isCollection ){
+
             map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
-            map.add (new DaxPairBoolean(COLLECTION_HAS_KEYS,true));
+            if(isColAllowDuplicates)  map.add(new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
+            if(isColHasKey)           map.add(new DaxPairBoolean(COLLECTION_HAS_KEY,true));
+            if(isColDictionary)       map.add(new DaxPairBoolean(COLLECTION_IS_DICTIONARY,true));
+
+
+            if (generitType instanceof ParameterizedType pt) {
+                Type rawType = pt.getRawType();
+                Type[] args = pt.getActualTypeArguments();
+
+                if (isColHasKey){
+                    map.add(new DaxPairDataType(COL_KEY_DATA_TYPE,decodeClass( getClass(args[0]))));
+                    map.add(new DaxPairDataType(COL_VALUE_DATA_TYPE,decodeClass( getClass(args[1]))));
+                }else {
+                    map.add(new DaxPairDataType(COL_VALUE_DATA_TYPE,decodeClass( getClass(args[0]))));
+                }
+
+
+                    System.out.println( "**************************************************");
+                    System.out.println( "**");
+                    System.out.println( "generitType.getTypeName()="+generitType.getTypeName());
+                    System.out.println( "**");
+                    System.out.println( "**************************************************");
+         //       }
+            }
             return map;
         }
 
-        map.add( new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.fromCode(  decodeClass(clazz).getCode())));
 
+
+
+        map.add( new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.fromCode(  decodeClass(clazz).getCode())));
         return map;
     }
 
@@ -144,7 +167,6 @@ public class DaxDataTypeCodec {
     public    DaxDataType decodeClass(Class<?> clazz) {
         if (clazz == null) { return DaxDataType.UNKNOWN;}
 
-        if (clazz.equals(Enum.class)) {return DaxDataType.COLLECTION;}
         if (clazz == String.class) return DaxDataType.STRING;
         if (clazz.equals(Integer.class)) return DaxDataType.INTEGER;
         if (clazz.equals(int.class)) return DaxDataType.INTEGER;
@@ -156,19 +178,17 @@ public class DaxDataTypeCodec {
         if (clazz.equals(LocalDate.class)) return DaxDataType.LOCAL_DATE;
         if (clazz.equals(LocalDateTime.class)) return DaxDataType.LOCAL_DATE_TIME;
         if (clazz.equals(Character.class)) return DaxDataType.CHARACTER;
+
         if (clazz.equals(List.class)) return DaxDataType.COLLECTION;
         if (clazz.equals(Map.class)) return DaxDataType.COLLECTION;
         if (clazz.equals(Set.class)) return DaxDataType.COLLECTION;
+        if (clazz.equals(Collection.class)) return DaxDataType.COLLECTION;
+
+        if (clazz.equals(Enum.class)) return DaxDataType.COLLECTION;
+        if (clazz.isEnum()) return DaxDataType.COLLECTION;
 
 
-        if (clazz.isEnum()) {
-            return DaxDataType.COLLECTION;
-        }
-
-        if (clazz.isAnnotationPresent(DaxpEntity.class)) {
-            return DaxDataType.ENTITY;
-        }
-
+        if (clazz.isAnnotationPresent(DaxpEntity.class)) return DaxDataType.ENTITY;
 
 
         return DaxDataType.UNKNOWN;

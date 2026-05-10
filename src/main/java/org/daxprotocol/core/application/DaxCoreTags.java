@@ -114,14 +114,7 @@ public class DaxCoreTags {
 
 
 
-    public static final DaxTag COLLECTION_ID = daxpSysTag(129);
-    public static final DaxTag ENUM_NAME               = daxpSysTag(130);
-//    public static final DaxTag ENUM_DESCRIPTION        = daxpSysTag(131);
-    public static final DaxTag COLLECTION_VALUE = daxpSysTag(132);
-//    public static final DaxTag ENUM_VALUE_DESCRIPTION  = daxpSysTag(133);
-//    public static final DaxTag ENUM_VALUE_SYMBOL       = daxpSysTag(134);
-//    public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
-//    public static final DaxTag ENUM_VALUE_TAG          = daxpSysTag(136);
+
     //----
     //    public static final DaxTag NAMESPACE          = daxpSysTag(144);
 //    public static final DaxTag NAMESPACE_DESC     = daxpSysTag(144);
@@ -175,14 +168,25 @@ public class DaxCoreTags {
     public static final DaxTag VALE_IS_EDITABLE   = daxpSysTag(172);
 
 
-
+    public static final DaxTag COLLECTION_ID = daxpSysTag(129);
+    public static final DaxTag ENUM_NAME               = daxpSysTag(130);
+    //    public static final DaxTag ENUM_DESCRIPTION        = daxpSysTag(131);
+    public static final DaxTag COLLECTION_VALUE = daxpSysTag(132);
+//    public static final DaxTag ENUM_VALUE_DESCRIPTION  = daxpSysTag(133);
+//    public static final DaxTag ENUM_VALUE_SYMBOL       = daxpSysTag(134);
+//    public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
+//    public static final DaxTag ENUM_VALUE_TAG          = daxpSysTag(136);
 
     public static final DaxTag COLLECTION_ALLOW_DUPLICATES = daxpSysTag(210);
-    public static final DaxTag COLLECTION_HAS_KEYS = daxpSysTag(211);
+    public static final DaxTag COLLECTION_HAS_KEY = daxpSysTag(211);
     public static final DaxTag COLLECTION_ORDERED = daxpSysTag(212);
     public static final DaxTag COLLECTION_NAVIGABLE = daxpSysTag(213);
     public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
-//    public static final DaxTag COLLECTION_DATA_TYPE = daxpSysTag(215);
+
+    public static final DaxTag COL_VALUE_DATA_TYPE = daxpSysTag(215);
+    public static final DaxTag COL_VALUE_TYPE_ID = daxpSysTag(216);
+    public static final DaxTag COL_KEY_DATA_TYPE = daxpSysTag(217);
+    public static final DaxTag COL_KEY_TYPE_ID = daxpSysTag(218);
 
 
 

@@ -39,7 +39,7 @@ public class DaxAnyTestEntity {
     @DaxpField(tagId = TEST_ENUM_VALUE)
     DaxAnyTestEnum enumValue;
 
-    //@DaxpField("5077")
+
     @DaxpField(tagId = TEST_SUB_DTO_1 )
     DaxSubEntity subDTO;
 
