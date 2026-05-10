@@ -169,13 +169,14 @@ public class DaxCoreTags {
 
 
     public static final DaxTag COLLECTION_ID = daxpSysTag(129);
-    public static final DaxTag ENUM_NAME               = daxpSysTag(130);
-    //    public static final DaxTag ENUM_DESCRIPTION        = daxpSysTag(131);
+    public static final DaxTag COL_NAME               = daxpSysTag(130);
+    //    public static final DaxTag COL_DESCRIPTION        = daxpSysTag(131);
     public static final DaxTag COLLECTION_VALUE = daxpSysTag(132);
-//    public static final DaxTag ENUM_VALUE_DESCRIPTION  = daxpSysTag(133);
-//    public static final DaxTag ENUM_VALUE_SYMBOL       = daxpSysTag(134);
-//    public static final DaxTag ENUM_VALUE_LIST         = daxpSysTag(135);
-//    public static final DaxTag ENUM_VALUE_TAG          = daxpSysTag(136);
+
+//    public static final DaxTag COL_VALUE_DESCRIPTION  = daxpSysTag(133);
+//    public static final DaxTag COL_VALUE_SYMBOL       = daxpSysTag(134);
+//    public static final DaxTag COL_VALUE_LIST         = daxpSysTag(135);
+//    public static final DaxTag COL_VALUE_TAG          = daxpSysTag(136);
 
     public static final DaxTag COLLECTION_ALLOW_DUPLICATES = daxpSysTag(210);
     public static final DaxTag COLLECTION_HAS_KEY = daxpSysTag(211);

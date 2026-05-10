@@ -4,9 +4,7 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.*;
 
@@ -64,6 +62,11 @@ public class DaxAnyTestEntity {
     @DaxpField(tagId = 5090)
     Set<DaxSubEntity> daxSubEntitySet;
 
+    @DaxpField(tagId = 5091)
+    Queue<String>  queueStr;
+
+    @DaxpField(tagId = 5092)
+    LinkedList<String>  linkedListStr;
 
 
     public int getAnyInt() {

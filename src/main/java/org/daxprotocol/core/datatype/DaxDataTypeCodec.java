@@ -62,6 +62,7 @@ public class DaxDataTypeCodec {
                       case COLLECTION ->  decodeCOLLECTION(tagPairMap);
                       case STRING ->  String.class;
                       case INTEGER ->  Integer.class;
+                      //todo develop
                       default         -> null; /// TODO add log and exception
         };
 
@@ -84,6 +85,7 @@ public class DaxDataTypeCodec {
         boolean isColAllowDuplicates = false;
         boolean isColHasKey = false;
         boolean isColDictionary = false;
+        boolean isColNavigable = false;
 
 
 
@@ -107,24 +109,42 @@ public class DaxDataTypeCodec {
             isColHasKey = true;
         }
 
+        if (clazz == Queue.class){
+            isCollection = true;
+        }
+        if (clazz == LinkedList.class){
+            isCollection = true;
+            isColNavigable = true;
+        }
+
         if (isCollection ){
 
             map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
             if(isColAllowDuplicates)  map.add(new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
             if(isColHasKey)           map.add(new DaxPairBoolean(COLLECTION_HAS_KEY,true));
             if(isColDictionary)       map.add(new DaxPairBoolean(COLLECTION_IS_DICTIONARY,true));
+            if(isColNavigable)        map.add(new DaxPairBoolean(COLLECTION_NAVIGABLE,true));
 
 
             if (generitType instanceof ParameterizedType pt) {
                 Type rawType = pt.getRawType();
                 Type[] args = pt.getActualTypeArguments();
 
+                DaxDataType valueDataType;
+                DaxDataType keyDataType;
+
                 if (isColHasKey){
+
                     map.add(new DaxPairDataType(COL_KEY_DATA_TYPE,decodeClass( getClass(args[0]))));
                     map.add(new DaxPairDataType(COL_VALUE_DATA_TYPE,decodeClass( getClass(args[1]))));
+                    keyDataType   = decodeClass( getClass(args[0]));
+                    valueDataType = decodeClass( getClass(args[1]));
                 }else {
+                    valueDataType = decodeClass( getClass(args[0]));
                     map.add(new DaxPairDataType(COL_VALUE_DATA_TYPE,decodeClass( getClass(args[0]))));
                 }
+
+
 
 
                     System.out.println( "**************************************************");
@@ -156,6 +176,9 @@ public class DaxDataTypeCodec {
         if (obj instanceof LocalDateTime) return DaxDataType.LOCAL_DATE_TIME;
         if (obj instanceof String) return DaxDataType.STRING;
         if (obj instanceof Character) return DaxDataType.CHARACTER;
+
+
+        //TODO move to DataTypeCollectionService isObjInstanceOfCollection
         if (obj instanceof List<?>) return DaxDataType.COLLECTION;
         if (obj instanceof Enum<?>) return DaxDataType.COLLECTION;
 

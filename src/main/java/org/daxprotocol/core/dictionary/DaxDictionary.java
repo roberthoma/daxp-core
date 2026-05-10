@@ -82,7 +82,6 @@ public class DaxDictionary {
 
 
     Map<Integer, DaxCollectionRegister> collectionRegMap = new ConcurrentHashMap<>();
-//    DaxEnumDictionary enumDictionary; //Application enumDic
 
     /*****************************************************
      * Dictionary of messages type, required and respond tags
