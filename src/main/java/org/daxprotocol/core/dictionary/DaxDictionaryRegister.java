@@ -165,11 +165,11 @@ public class DaxDictionaryRegister {
 
 
         dictionary.putTag(tag, source , tagDestiny);
-        dictionary.putAtrEntryName(tag, fieldName);
+        dictionary.putAtrEntryName(entityTag, tag, fieldName);
 
         Type generitType =  field.getGenericType();
 
-        dictionary.putTagAttributes(tag, dataTypeCodec.encode(field.getType() , generitType));
+        dictionary.putTagAttributes(entityTag, tag, dataTypeCodec.encode(field.getType() , generitType));
 
         dictionary.putAtrDescription(entityTag,tag, fieldDesc);
         dictionary.putEntityField( entityTag,tag);

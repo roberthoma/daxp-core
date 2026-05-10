@@ -22,7 +22,7 @@ public class DaxDataTypeTest extends DaxConfigBaseTest {
     @Test
     void classNullToUnknow() {
 
-        DaxDataType classType =  dataTypeCodec.decodeClass(null);
+        DaxDataType classType =  dataTypeService.decodeClass(null);
         Assertions.assertEquals(DaxDataType.UNKNOWN.getCode(),classType.getCode());
     }
 
@@ -30,7 +30,7 @@ public class DaxDataTypeTest extends DaxConfigBaseTest {
     @Test
     void classStringToSTR() {
 
-        DaxDataType classType =  dataTypeCodec.decodeClass(String.class);
+        DaxDataType classType =  dataTypeService.decodeClass(String.class);
         Assertions.assertEquals(DaxDataType.STRING.getCode(),classType.getCode());
     }
 

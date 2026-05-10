@@ -30,6 +30,8 @@ import java.util.Map;
  * These tags are owned by the DAXP protocol and must not be reused
  * by application/domain dictionaries.
  */
+
+//TODO Add name for each tag
 public class DaxCoreTags {
 
     private static final Map<Integer, DaxTag> SYS_TAG_CACHE = new HashMap<>();
@@ -53,8 +55,7 @@ public class DaxCoreTags {
         return tag;
     }
 
-    //TODO Create predefine sys DaxTag
-    //DaxTag.newPredefineTag(DaxTagConst.ENUM_DESCRIPTION)
+
 
 
     /**********************************
@@ -184,10 +185,11 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_NAVIGABLE = daxpSysTag(213);
     public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
 
-    public static final DaxTag COL_VALUE_DATA_TYPE = daxpSysTag(215);
-    public static final DaxTag COL_VALUE_TYPE_ID = daxpSysTag(216);
-    public static final DaxTag COL_KEY_DATA_TYPE = daxpSysTag(217);
-    public static final DaxTag COL_KEY_TYPE_ID = daxpSysTag(218);
+    public static final DaxTag COL_KEY_DATA_TYPE = daxpSysTag(215);
+    public static final DaxTag COL_KEY_TYPE_ID = daxpSysTag(216);
+
+    public static final DaxTag COL_VALUE_DATA_TYPE = daxpSysTag(217);
+    public static final DaxTag COL_VALUE_TYPE_ID = daxpSysTag(218);
 
 
 

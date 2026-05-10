@@ -250,6 +250,10 @@ public class DaxDictionary {
         dic.putAttribute(tag, atrPair);
 
     }
+    public void putTagAttributes(DaxTag entityTag, DaxTag tag, Set< DaxPair<?>> pairMap) {
+        pairMap.forEach(( atrPair) -> putEntityEntryAttribute(entityTag,tag,atrPair));
+    };
+
     public void putAtrDataType  (DaxTag entityTag, DaxTag tag, DaxDataType dataType) { putEntityEntryAttribute(entityTag,tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
     public void putAtrSizeMax   (DaxTag entityTag, DaxTag tag,  Integer max )        { putEntityEntryAttribute(entityTag,tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
     public void putAtrSizeMin   (DaxTag entityTag, DaxTag tag,  Integer min )        { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MIN,min));}

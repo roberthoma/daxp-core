@@ -24,6 +24,7 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
+import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
@@ -84,6 +85,8 @@ public class DaxEngine {
 
     private DaxDispatcher dispatcher;
 
+
+    private DaxDataTypeService dataTypeService;
     private DaxDataTypeCodec dataTypeCodec;
 
     //TODO move tagParser to tagCodec
@@ -101,7 +104,8 @@ public class DaxEngine {
 
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
-        dataTypeCodec = new DaxDataTypeCodec();
+        dataTypeService = new DaxDataTypeService();
+        dataTypeCodec = new DaxDataTypeCodec(dataTypeService);
 
         dictionary = new DaxDictionary(config, contextMapper, messageMapper,schemaMapper);
         dictionary.putContext(sysContext);
@@ -249,5 +253,8 @@ public class DaxEngine {
         return dataTypeCodec;
     }
 
+    public DaxDataTypeService getDataTypeService() {
+        return dataTypeService;
+    }
 
 }
