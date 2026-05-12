@@ -1,5 +1,7 @@
 package org.daxprotocol.core.annotation;
 
+import org.daxprotocol.core.datatype.DaxDataType;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -16,6 +18,8 @@ public @interface DaxpCollection {
     String context()     default "";
     String name()        default "";
     String description() default "";
+    DaxDataType keyDataType()  default DaxDataType.UNKNOWN;
+    DaxDataType valueDataType()  default DaxDataType.UNKNOWN;
 }
 
 

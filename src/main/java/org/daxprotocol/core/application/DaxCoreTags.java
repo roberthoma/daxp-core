@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Predefined DAXP Core tags reserved in range 1..999.
+ * Predefined DAXP Core tags reserved by context $:
  * These tags are owned by the DAXP protocol and must not be reused
  * by application/domain dictionaries.
  */
@@ -185,11 +185,11 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_NAVIGABLE = daxpSysTag(213);
     public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
 
-    public static final DaxTag COL_KEY_DATA_TYPE = daxpSysTag(215);
-    public static final DaxTag COL_KEY_TYPE_ID = daxpSysTag(216);
+    public static final DaxTag COLLECTION_KEY_DATA_TYPE = daxpSysTag(215);
+    public static final DaxTag COLLECTION_KEY_TYPE_ID = daxpSysTag(216);
 
-    public static final DaxTag COL_VALUE_DATA_TYPE = daxpSysTag(217);
-    public static final DaxTag COL_VALUE_TYPE_ID = daxpSysTag(218);
+    public static final DaxTag COLLECTION_VALUE_DATA_TYPE = daxpSysTag(217);
+    public static final DaxTag COLLECTION_VALUE_TYPE_ID = daxpSysTag(218);
 
 
 

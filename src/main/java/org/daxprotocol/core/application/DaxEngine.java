@@ -31,7 +31,6 @@ import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.dictionary.DaxDictionaryRegister;
-import org.daxprotocol.core.dictionary.DaxPopulatorEnumType;
 import org.daxprotocol.core.dictionary.DaxMessagePopulator;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -75,9 +74,6 @@ public class DaxEngine {
     private final  DaxFrameParser frameParser ;
 
     private DaxHandlerRegistry handlerRegistry;
-
-    private DaxPopulatorEnumType  enumPopulator;
-
 
     private DaxMessagePopulator messagePopulator;
 
@@ -132,9 +128,7 @@ public class DaxEngine {
 
 
         messagePopulator    = new DaxMessagePopulator( tagParser, dictionary);
-        enumPopulator       = new DaxPopulatorEnumType(config, dictionary, dataTypeCodec);
         annotationRegister = new DaxDictionaryRegister(tagParser ,
-                                                        enumPopulator,
                                                         config,
 //                                                        contextMapper,
                 dictionary,

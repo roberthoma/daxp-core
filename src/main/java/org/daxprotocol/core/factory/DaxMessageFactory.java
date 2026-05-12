@@ -140,13 +140,16 @@ public class DaxMessageFactory {
 
 
 
-    private void putEnumToBlock(DaxBody body,
+    private void putCollectionToBlock(DaxBody body,
                                         DaxTag tag,
-                                DaxCollection_TMP daxCollectionTMP){
+                                        Map<DaxTag,DaxPair<?>> atrMap){
         body.nextBlock(DaxBlockType.BLOCK_COLLECTION);
         body.putPair(COLLECTION_ID, tagCodec.encode(tag));
-        body.putPair(ENTRY_NAME, daxCollectionTMP.getName());
-        body.putPair(ENTRY_DESCRIPTION, daxCollectionTMP.getDesc());
+        atrMap.forEach((daxTag, pair) ->
+                body.putPair(pair));
+
+//                body.putPair(ENTRY_NAME, daxCollectionTMP.getName());
+//        body.putPair(ENTRY_DESCRIPTION, daxCollectionTMP.getDesc());
 
 //TODO put list o enum value if description is empty
 //        if (enumValueMap != null) {
@@ -154,25 +157,27 @@ public class DaxMessageFactory {
 //        }
 
     }
-    private void putCollectionValuesToBody(DaxBody body, DaxTag tag,Map<String, DaxEnumValue> enumValueMap ){
-        enumValueMap.forEach( (s, value) -> {
-            body.nextBlock(DaxBlockType.BLOCK_VALUE);
-            body.putPair(COLLECTION_ID, tagCodec.encode(tag));
-            body.putPair(COLLECTION_VALUE, value.getValue());
+    private void putCollectionValuesToBody(DaxBody body, DaxTag colTag,DaxBaseDictionary<String> values){
 
-            if (!value.getDesc().isBlank()) {
-                body.putPair(ENTRY_DESCRIPTION, value.getDesc());
-            }
+        values.getAttributMap().forEach((s, tagDaxPairMap) ->
+                {
+                    body.nextBlock(DaxBlockType.BLOCK_VALUE);
+                    body.putPair(COLLECTION_ID, tagCodec.encode(colTag));
+                    body.putPair(COLLECTION_VALUE, s);
+
+//            if (!value.getDesc().isBlank()) {
+//                body.putPair(ENTRY_DESCRIPTION, value.getDesc());
+//            }
         }
         );
 
     }
 
-    private void enumDictionaryToMsg(DaxBody body, DaxCollectionRegister enumDictionary){
+    private void collectionDictionaryToMsg(DaxBody body, DaxBaseDictionary<DaxTag> collectionDic ){
 
-        enumDictionary.getEnumMap().forEach((daxTag, daxEnum) ->
-        { putEnumToBlock(body,daxTag,daxEnum);
-          putCollectionValuesToBody(body,daxTag,enumDictionary.getEnumValueMap(daxTag));
+        collectionDic.getAttributMap().forEach((daxTag, tagDaxPairMap) ->
+        { putCollectionToBlock(body,daxTag,tagDaxPairMap);
+          putCollectionValuesToBody(body,daxTag,  dictionary.getCollectionValues(daxTag));
         }
         );
     }
@@ -260,7 +265,7 @@ public class DaxMessageFactory {
 
 
 
-        enumDictionaryToMsg(message.getBody(),dictionary.getEnumDictionary(1));
+        collectionDictionaryToMsg(message.getBody(),dictionary.getCollectionAttributes());
 
 
         dictionary.getEntityEntryAttributes()

@@ -59,6 +59,10 @@ public class DaxpSchema_Base {
     @DaxpTag(description = "Test enum", daxDataType = DaxDataType.COLLECTION)
     public static final  int TEST_COLLECTION_ENUM = 6001;
 
+    @DaxpTag(description = "Test dic enum", daxDataType = DaxDataType.COLLECTION)
+    public static final  int TEST_COLLECTION_DIC_ENUM = 6002;
+
+
     @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
     public static final int TEST_TAG_SUB_ENTITY = 8000;
 

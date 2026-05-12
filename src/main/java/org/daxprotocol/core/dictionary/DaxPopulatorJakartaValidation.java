@@ -19,16 +19,16 @@ public class DaxPopulatorJakartaValidation {
         }
 
         if (field.isAnnotationPresent(NotNull.class)) {
-            daxDic.putAtrNullable(tag, false);
+            daxDic.putTagAtrNullable(tag, false);
         }
 
         if (field.isAnnotationPresent(Size.class)) {
             Size size = field.getAnnotation(Size.class);
             if (size.min() > 0){
-                daxDic.putAtrSizeMin(tag, size.min());
+                daxDic.putTagAtrSizeMin(tag, size.min());
             }
             if (size.max() < Integer.MAX_VALUE){
-                daxDic.putAtrSizeMax(tag, size.max());
+                daxDic.putTagAtrSizeMax(tag, size.max());
             }
         }
 

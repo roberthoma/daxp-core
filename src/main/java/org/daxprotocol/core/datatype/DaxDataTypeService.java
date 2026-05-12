@@ -16,8 +16,8 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 import static org.daxprotocol.core.application.DaxCoreTags.ATR_DATA_TYPE;
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_IS_DICTIONARY;
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_NAVIGABLE;
-import static org.daxprotocol.core.application.DaxCoreTags.COL_KEY_DATA_TYPE;
-import static org.daxprotocol.core.application.DaxCoreTags.COL_VALUE_DATA_TYPE;
+import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_KEY_DATA_TYPE;
+import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE_DATA_TYPE;
 
 public class DaxDataTypeService {
 
@@ -37,6 +37,9 @@ public class DaxDataTypeService {
 
     public boolean isObjInstanceOfCollection(Object obj){
         if (obj instanceof List<?>) return true;
+        if (obj instanceof Map<?,?>) return true;
+        if (obj instanceof Set<?>) return true;
+        if (obj instanceof Collection<?>) return true;
         if (obj instanceof Enum<?>) return true;
         return false;
     }
@@ -80,6 +83,8 @@ public class DaxDataTypeService {
         boolean isColHasKey = false;
         boolean isColDictionary = false;
         boolean isColNavigable = false;
+        boolean isJavaEnum = false;
+
 
 
 
@@ -97,7 +102,11 @@ public class DaxDataTypeService {
             isCollection = true;
             isColHasKey = true;
             isColDictionary = true;
+            isJavaEnum = true;
         }
+
+
+
 
         if (clazz == Map.class){
             isCollection = true;
@@ -124,25 +133,25 @@ public class DaxDataTypeService {
         if(isColNavigable)        map.add(new DaxPairBoolean(COLLECTION_NAVIGABLE,true));
 
 
+       //****************************************8888
+
+        DaxDataType valueDataType = DaxDataType.UNKNOWN;
+        DaxDataType keyDataType = DaxDataType.UNKNOWN;;
+
         if (generitType instanceof ParameterizedType pt) {
             Type rawType = pt.getRawType();
             Type[] args = pt.getActualTypeArguments();
 
-            DaxDataType valueDataType;
-            DaxDataType keyDataType;
-
             if (isColHasKey){
-
-                map.add(new DaxPairDataType(COL_KEY_DATA_TYPE,decodeClass( getClass(args[0]))));
-                map.add(new DaxPairDataType(COL_VALUE_DATA_TYPE,decodeClass( getClass(args[1]))));
                 keyDataType   = decodeClass( getClass(args[0]));
                 valueDataType = decodeClass( getClass(args[1]));
+
+                map.add(new DaxPairDataType(COLLECTION_KEY_DATA_TYPE,decodeClass( getClass(args[0]))));
+                map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,decodeClass( getClass(args[1]))));
             }else {
                 valueDataType = decodeClass( getClass(args[0]));
-                map.add(new DaxPairDataType(COL_VALUE_DATA_TYPE,decodeClass( getClass(args[0]))));
+                map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,decodeClass( getClass(args[0]))));
             }
-
-
 
 
             System.out.println( "**************************************************");
@@ -152,6 +161,36 @@ public class DaxDataTypeService {
             System.out.println( "**************************************************");
             //       }
         }
+
+
+        if(isJavaEnum){
+
+
+            map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,DaxDataType.STRING));
+
+            //        if (clazz.)
+///  Retrun as string val1, Val2,....
+        // If class has implemented DaxpDictionary then value ha each block
+
+//            Object[] constants = clazz.getEnumConstants();
+//
+//            if (constants != null){
+//                    for (Object c : constants) {
+//
+//                        System.out.println(">>>>> ENUM VAL="+c.toString());
+//                    }
+//            }
+//
+//        daxDic.putTagAttributes(enumTag,dataTypeCodec.encode(Enum.class) );
+
+
+        }
+
+
+
+
+
+
         return map;
 
     }

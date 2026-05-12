@@ -72,16 +72,8 @@ public class DaxMessagePopulator {
             if (blockPairMap.containsKey(DaxCoreTags.ENTRY_DESCRIPTION)){
                 desc = blockPairMap.get(DaxCoreTags.ENTRY_DESCRIPTION).getStrValue();
             }
-            daxDic.putEnum(enumTag, new DaxCollection_TMP(name , desc ));
+      //????      daxDic.putEnum(enumTag, new DaxCollection_TMP(name , desc ));
 
-            //TODO Add this implementation
-//            String valuesStrList = blockPairMap.get(DaxTagConst.ENUM_VALUE_LIST).getStrValue();
-//            List<String>  valueList =  Arrays.stream(valuesStrList
-//                                                     .split(DaxpConfig.VALUE_LIST_SEPARATOR.toString()))
-//                    .map(String::trim)
-//                    .filter(s -> !s.isEmpty())
-//                    .collect(Collectors.toList());
-//             valueList.forEach(eValue -> daxDic.putEnumValue( enumTag, new DaxEnumValue(eValue , "")));
 
             return;
         }
@@ -97,7 +89,7 @@ public class DaxMessagePopulator {
             if (blockPairMap.containsKey(DaxCoreTags.ENTRY_DESCRIPTION)) {
                 valueDesc = blockPairMap.get(DaxCoreTags.ENTRY_DESCRIPTION).getStrValue();
             }
-            daxDic.putEnumValue(enumTag, new DaxEnumValue(value, valueDesc));
+      //????      daxDic.putEnumValue(enumTag, new DaxEnumValue(value, valueDesc));
 
             return;
         }
@@ -137,25 +129,25 @@ public class DaxMessagePopulator {
 */
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_NULLABLE)) {
-                daxDic.putAtrNullable(tag,
+                daxDic.putTagAtrNullable(tag,
                         blockPairMap.get(DaxCoreTags.ATR_NULLABLE).getCharValue()=='Y'
                 );
             }
 
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_SIZE_MAX)) {
-                daxDic.putAtrSizeMax(tag,
+                daxDic.putTagAtrSizeMax(tag,
                         blockPairMap.get(DaxCoreTags.ATR_SIZE_MAX).getIntegerValue()
                 );
             }
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_SIZE_MIN)) {
-                daxDic.putAtrSizeMin(tag,
+                daxDic.putTagAtrSizeMin(tag,
                         blockPairMap.get(DaxCoreTags.ATR_SIZE_MIN).getIntegerValue()
                 );
             }
             if(blockPairMap.containsKey(DaxCoreTags.ATR_READONLY)) {
-                daxDic.putAtrReadOnly(tag,
+                daxDic.putTagAtrReadOnly(tag,
                         blockPairMap.get(DaxCoreTags.ATR_READONLY).getBooleanValue()
                 );
             }

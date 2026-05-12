@@ -20,6 +20,7 @@ public class DaxBaseDictionary<T> {
 
     }
 
+
     public Map<T, Map<DaxTag, DaxPair<?>>> getAttributMap(){
         return attributMap;
     }
