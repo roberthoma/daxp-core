@@ -79,7 +79,9 @@ public class DaxDataTypeCodec {
             return dataTypeService.collectionEncode(clazz,generitType);
         }
 
+        //develop as generic collection
         Set< DaxPair<?>> map = new HashSet<>();
+
         map.add( new DaxPairDataType(ATR_DATA_TYPE,
                 DaxDataType.fromCode(  dataTypeService.decodeClass(clazz).getCode())));
         return map;

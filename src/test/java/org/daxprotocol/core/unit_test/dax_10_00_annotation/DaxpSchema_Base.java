@@ -2,7 +2,6 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpMsg;
 import org.daxprotocol.core.annotation.DaxpSchema;
 import org.daxprotocol.core.annotation.DaxpTag;
@@ -13,26 +12,26 @@ import org.daxprotocol.core.datatype.DaxDataType;
 public class DaxpSchema_Base {
 
     @DaxpTag( description = "Base Entity ")
-    public static final int TEST_TAG_ENTITY = 5000;
+    public static final int TEST_TAG_ENTITY_5000 = 5000;
 
 
     @DaxpTag( description = "Test TAG int", clazz = Integer.class)
-    public static final int TEST_TAG_int            = 5001;
+    public static final int TEST_TAG_int_5001 = 5001;
 
     @NotNull
     @Size(min = 2 ,max = 120)
     @DaxpTag( description = "Test TAG String", clazz = String.class)
-    public static final int TEST_TAG_String            = 5002;
+    public static final int TEST_TAG_String_5002 = 5002;
 
 
     @DaxpTag( description = "Test TAG char", clazz = Character.class)
-    public static final int TEST_TAG_char            = 5003;
+    public static final int TEST_TAG_char_5003 = 5003;
 
     @DaxpTag( description = "Test TAG Boolean", clazz = Boolean.class)
-    public static final int TEST_TAG_Boolean            = 5004;
+    public static final int TEST_TAG_Boolean_5004 = 5004;
 
     @DaxpTag( description = "Test TAG String", clazz = String.class)
-    public static final int TEST_TAG_Deprecated_String  = 5005;
+    public static final int TEST_TAG_Deprecated_String_5005 = 5005;
 
 
     public static final String CTX_FIX= "FIX";
@@ -42,12 +41,28 @@ public class DaxpSchema_Base {
 
 
     @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class)
-    public static final String TEST_CTX_TAG_StrVal     = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "51";
+    public static final String TEST_CTX_TAG_StrVal_FIX51 = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "51";
 
     @DaxpTag( description = "Test enum value", clazz = Enum.class)
-    public static final int TEST_ENUM_VALUE     = 5032;
+    public static final int TEST_ENUM_VALUE_5032 = 5032;
 
 
+
+
+    @DaxpTag(description = "Test enum", daxDataType = DaxDataType.COLLECTION)
+    public static final  int TEST_COLLECTION_ENUM_6001 = 6001;
+
+    @DaxpTag(description = "Test dic enum", daxDataType = DaxDataType.COLLECTION)
+    public static final  int TEST_COLLECTION_DIC_ENUM_6002 = 6002;
+
+
+    @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
+    public static final int TEST_TAG_SUB_ENTITY_8000 = 8000;
+
+    @DaxpTag( description = "SUB Base DTO ")
+    public static final int TEST_SUB_DTO_1_5077 =  5077;
+
+    //Messages
     @DaxpMsg(description = "Base DTO Request")
     public static final String MSG_BASE_DTO_Req =  "BDR"; // 	REs 	Customer Data
 
@@ -56,20 +71,8 @@ public class DaxpSchema_Base {
 
 
 
-    @DaxpTag(description = "Test enum", daxDataType = DaxDataType.COLLECTION)
-    public static final  int TEST_COLLECTION_ENUM = 6001;
-
-    @DaxpTag(description = "Test dic enum", daxDataType = DaxDataType.COLLECTION)
-    public static final  int TEST_COLLECTION_DIC_ENUM = 6002;
-
-
-    @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
-    public static final int TEST_TAG_SUB_ENTITY = 8000;
-
-    @DaxpTag( description = "SUB Base DTO ")
-    public static final int TEST_SUB_DTO_1 =  5077;
-
     //TODO Create new tested schema for exceptions
 //    @DaxpField("ABC:1123")
 //    public String testVal;
+
 }

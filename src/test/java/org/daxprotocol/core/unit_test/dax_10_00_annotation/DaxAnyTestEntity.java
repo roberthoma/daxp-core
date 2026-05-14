@@ -8,38 +8,38 @@ import java.util.*;
 
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.*;
 
-@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_ENTITY, description = "Any desc from entity class")
+@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_ENTITY_5000, description = "Any desc from entity class")
 public class DaxAnyTestEntity {
 
 
-    @DaxpField(tagId = TEST_TAG_int)
+    @DaxpField(tagId = TEST_TAG_int_5001)
     int anyInt;
 
-    @DaxpField(tagId = TEST_TAG_String)
+    @DaxpField(tagId = TEST_TAG_String_5002)
     String anyString;
 
     @Deprecated
-    @DaxpField(tagId = TEST_TAG_Deprecated_String)
+    @DaxpField(tagId = TEST_TAG_Deprecated_String_5005)
     String anyDeprecatedString;
 
     //@Deprecated
-    @DaxpField(tagId = TEST_TAG_char , description = "Desc from main test Entity")
+    @DaxpField(tagId = TEST_TAG_char_5003, description = "Desc from main test Entity")
     char anyChar;
 
-    @DaxpField(tagId = TEST_TAG_Boolean, description = "Any tested boolean from entity")
+    @DaxpField(tagId = TEST_TAG_Boolean_5004, description = "Any tested boolean from entity")
     Boolean anyBoolean;
 
 
     @Deprecated
-    @DaxpField(TEST_CTX_TAG_StrVal)
+    @DaxpField(TEST_CTX_TAG_StrVal_FIX51)
     char fixTestValue;
 
-    @DaxpField(tagId = TEST_ENUM_VALUE)
+    @DaxpField(tagId = TEST_ENUM_VALUE_5032)
     DaxAnyTestEnum enumValue;
 
 
-    @DaxpField(tagId = TEST_SUB_DTO_1 )
-    DaxSubEntity subDTO;
+    @DaxpField(tagId = TEST_SUB_DTO_1_5077)
+    DaxSubEntity subEntity;
 
     @DaxpField(tagId = 5078)
     DaxSubEntity subDTO2;
@@ -93,8 +93,8 @@ public class DaxAnyTestEntity {
         return enumValue;
     }
 
-    public DaxSubEntity getSubDTO() {
-        return subDTO;
+    public DaxSubEntity getSubEntity() {
+        return subEntity;
     }
 
     public DaxAnyTestEntity(){
@@ -111,11 +111,11 @@ public class DaxAnyTestEntity {
         this.anyBoolean = true;
         this.fixTestValue = 'X';
         this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
-        this.subDTO = new DaxSubEntity(14,"testSubDTO",12.34);
+        this.subEntity = new DaxSubEntity(14,"testSubDTO",12.34);
         this.subDTO2 = new DaxSubEntity(34,"testSubDTO2",74.56);
 
-        stringList = List.of("strVal1","strVal2","strVal3","strVal1");
-
+        this.stringList    = List.of("strVal1","strVal2","strVal3","strVal1");
+        this.linkedListStr  = new LinkedList<>( List.of("strLinkedVal1","strLinkedVal2","strLinkedVal2","strLinkedVal2"));
 
     }
 }

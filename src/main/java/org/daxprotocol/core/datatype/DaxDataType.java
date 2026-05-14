@@ -70,6 +70,7 @@ public enum DaxDataType {
 
     BINARY("RAW", "Quantity",byte[].class),
 
+    NONE("NONE","None, not try detected"),
 
     UNKNOWN("UNKNOWN", "Unknown");  ///maybe byte[]
 

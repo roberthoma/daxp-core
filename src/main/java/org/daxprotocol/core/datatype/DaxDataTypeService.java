@@ -1,10 +1,15 @@
 package org.daxprotocol.core.datatype;
 
+import org.daxprotocol.core.annotation.DaxpCollection;
 import org.daxprotocol.core.annotation.DaxpEntity;
+import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairBoolean;
 import org.daxprotocol.core.model.pair.DaxPairDataType;
+import org.daxprotocol.core.model.pair.DaxPairTag;
+import org.daxprotocol.core.model.tag.DaxTag;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -21,15 +26,27 @@ import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE_DATA
 
 public class DaxDataTypeService {
 
+    DaxTagCodec tagCodec;
+
+    public DaxDataTypeService(DaxTagCodec tagCodec) {
+        this.tagCodec = tagCodec;
+    }
 
     public boolean isCollection(Class<?> clazz) {
+
 
         if (clazz.equals(List.class)) return true;
         if (clazz.equals(Map.class)) return true;
         if (clazz.equals(Set.class)) return true;
+        if (clazz.equals(Queue.class)) return true;
         if (clazz.equals(Collection.class)) return true;
         if (clazz.equals(Enum.class)) return true;
         if (clazz.isEnum()) return true;
+
+        if (Collection.class.isAssignableFrom(clazz)) {
+            return true;
+        }
+
 
         return false;
     }
@@ -105,9 +122,6 @@ public class DaxDataTypeService {
             isJavaEnum = true;
         }
 
-
-
-
         if (clazz == Map.class){
             isCollection = true;
             isColHasKey = true;
@@ -120,6 +134,12 @@ public class DaxDataTypeService {
             isCollection = true;
             isColNavigable = true;
         }
+
+
+        if (Collection.class.isAssignableFrom(clazz)) {
+            isCollection = true;  ///??? inmutable m
+        }
+
 
         if (!isCollection){
             throw new RuntimeException("It is NOT COLLECTION !!!");
@@ -135,23 +155,48 @@ public class DaxDataTypeService {
 
        //****************************************8888
 
-        DaxDataType valueDataType = DaxDataType.UNKNOWN;
-        DaxDataType keyDataType = DaxDataType.UNKNOWN;;
+        DaxDataType valueDataType = DaxDataType.NONE;
+        DaxDataType keyDataType = DaxDataType.NONE;;
 
         if (generitType instanceof ParameterizedType pt) {
             Type rawType = pt.getRawType();
             Type[] args = pt.getActualTypeArguments();
-
+//            Annotation ann;
             if (isColHasKey){
                 keyDataType   = decodeClass( getClass(args[0]));
                 valueDataType = decodeClass( getClass(args[1]));
 
-                map.add(new DaxPairDataType(COLLECTION_KEY_DATA_TYPE,decodeClass( getClass(args[0]))));
-                map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,decodeClass( getClass(args[1]))));
+                map.add(new DaxPairDataType(COLLECTION_KEY_DATA_TYPE,keyDataType));
+                map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,valueDataType));
+
+                if(valueDataType.equals(DaxDataType.ENTITY))
+                {
+                    DaxpEntity entAnn =  getClass(args[1]).getAnnotation(DaxpEntity.class);
+                    map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(entAnn)));
+                }
+
+
+                if(valueDataType.equals(DaxDataType.COLLECTION))
+                {
+                    if (getClass(args[1]).isAnnotationPresent(DaxpCollection.class)){
+                        DaxpCollection colAnn =  getClass(args[1]).getAnnotation(DaxpCollection.class);
+                        map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(colAnn)));
+                    }
+                }
+
+
             }else {
                 valueDataType = decodeClass( getClass(args[0]));
-                map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,decodeClass( getClass(args[0]))));
+                map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,valueDataType));
+                if(valueDataType.equals(DaxDataType.ENTITY))
+                {
+                    DaxpEntity entAnn =  getClass(args[0]).getAnnotation(DaxpEntity.class);
+                    map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(entAnn)));
+                }
+
             }
+
+
 
 
             System.out.println( "**************************************************");

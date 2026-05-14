@@ -100,7 +100,11 @@ public class DaxEngine {
 
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
-        dataTypeService = new DaxDataTypeService();
+
+        tagParser  = new DaxTagParser(contextMapper);
+        tagCodec      = new DaxTagCodec     (config, contextMapper, tagParser );
+
+        dataTypeService = new DaxDataTypeService(tagCodec);
         dataTypeCodec = new DaxDataTypeCodec(dataTypeService);
 
         dictionary = new DaxDictionary(config, contextMapper, messageMapper,schemaMapper);
@@ -108,11 +112,10 @@ public class DaxEngine {
         dictionary.putContext(appContext);
         DaxCoreTags.init(dictionary);
 
-        tagParser  = new DaxTagParser(contextMapper);
 
         handlerRegistry = new DaxHandlerRegistry();
 
-        tagCodec      = new DaxTagCodec     (config, contextMapper, tagParser );
+
         pairCodec     = new DaxPairCodec    (tagCodec);
         preambleCodec = new DaxPreambleCodec( contextMapper);
 
