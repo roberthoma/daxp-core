@@ -20,17 +20,16 @@
 
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.annotation.DaxpCollection;
-import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpValue;
+import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.exceptions.DaxAnnotationException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxTagParser;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 
 public class DaxTagCodec {
     DaxConfig config;
@@ -73,6 +72,28 @@ public class DaxTagCodec {
     }
     public DaxTag decode(DaxpEntity ann){
         return decode(ann.value(),ann.context(), ann.tagId());
+    }
+
+    public DaxTag decode(DaxpTag tagAnn, Field field) {
+
+        String value = "";
+        int tagId = -1;
+
+        ;
+        try {
+            if (field.getType() == String.class) {
+                value  = (String)(field.get(null));
+            }
+            else {
+                tagId = field.getInt(null);
+            }
+        }
+        catch (Exception e){
+            throw new DaxAnnotationException("RegisterDaxpTagException "+field.getName()) ;
+        }
+
+        return decode(value,tagAnn.context(), tagId);
+
     }
 
     public DaxTag decode(

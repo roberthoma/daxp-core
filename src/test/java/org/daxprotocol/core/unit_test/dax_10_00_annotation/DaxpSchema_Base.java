@@ -43,7 +43,7 @@ public class DaxpSchema_Base {
     @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class)
     public static final String TEST_CTX_TAG_StrVal_FIX51 = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "51";
 
-    @DaxpTag( description = "Test enum value", clazz = Enum.class)
+    @DaxpTag( description = "Test enum value", clazz = DaxAnyTestEnum.class)
     public static final int TEST_ENUM_VALUE_5032 = 5032;
 
 
@@ -59,7 +59,8 @@ public class DaxpSchema_Base {
     @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
     public static final int TEST_TAG_SUB_ENTITY_8000 = 8000;
 
-    @DaxpTag( description = "SUB Base DTO ")
+//    @DaxpTag( description = "SUB Base DTO ", clazz = DaxSubEntity.class)
+    @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
     public static final int TEST_SUB_DTO_1_5077 =  5077;
 
     //Messages

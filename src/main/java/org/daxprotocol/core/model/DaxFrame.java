@@ -10,12 +10,12 @@ public class DaxFrame {
     DaxPreamble preamble;
     List<DaxMessage> messageList = new ArrayList<>();
 
-    DaxMessageCodec codec;
-    public String toDaxString(){
-
-        return  codec.encodeAll(messageList);
-
-    }
+//    DaxMessageCodec codec;
+//    public String toDaxString(){
+//
+//        return  codec.encodeAll(messageList);
+//
+//    }
 
     public void setMessageList(List<DaxMessage> messageList) {
         this.messageList = messageList;

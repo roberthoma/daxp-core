@@ -43,6 +43,9 @@ public abstract class DaxPair<T>{
         if (value instanceof Boolean){
             return ((Boolean)value)? "Y" : "N";
         }
+
+        if (value == null ) { return "[>>>  NULL <<<]";}
+
         return value.toString();
     };
 

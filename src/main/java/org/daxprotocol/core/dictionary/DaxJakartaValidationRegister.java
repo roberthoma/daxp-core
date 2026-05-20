@@ -7,9 +7,9 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-public class DaxPopulatorJakartaValidation {
+public class DaxJakartaValidationRegister {
 
-    public void populate(DaxDictionary daxDic, Field field , DaxTag tag){
+    public void register(DaxDictionary daxDic, Field field , DaxTag tag){
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName()
                         .startsWith("jakarta.validation"));

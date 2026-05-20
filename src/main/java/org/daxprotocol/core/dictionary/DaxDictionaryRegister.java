@@ -39,30 +39,27 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE;
-import static org.daxprotocol.core.application.DaxCoreTags.ENTRY_DESCRIPTION;
 
 
 public class DaxDictionaryRegister {
     private static final Logger logger = LoggerFactory.getLogger(DaxDictionaryRegister.class);
-    DaxPopulatorJakartaValidation jakartaPopulator;
+    DaxJakartaValidationRegister jakartaRegister;
     DaxTagParser tagParser;
     DaxConfig config;
-//    DaxContextMapper contextMapper;
     DaxDictionary dictionary;
     DaxHandlerRegistry handlerRegistry;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
+    DaxDictionaryRegisterService service;
     public DaxDictionaryRegister(
             DaxTagParser tagParser ,
             DaxConfig config,
-//            DaxContextMapper contextMapper,
             DaxDictionary dictionary,
             DaxHandlerRegistry handlerRegistry,
             DaxTagCodec tagCodec,
@@ -70,73 +67,48 @@ public class DaxDictionaryRegister {
 
     ){
         this.tagParser = tagParser;
-        this.jakartaPopulator = new DaxPopulatorJakartaValidation();
+        this.jakartaRegister = new DaxJakartaValidationRegister();
         this.config = config;
-//        this.contextMapper = contextMapper;
         this.dictionary = dictionary;
         this.handlerRegistry = handlerRegistry;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
+        service = new DaxDictionaryRegisterService(dictionary, tagCodec, dataTypeCodec);
     }
 
-//    private void  putAtrDeprecated(DaxTag tag, DaxpDeprecated daxpDeprecated){
-//        dictionary.putAtrDeprecated(tag);
-//    }
-//
-//    private void  putAtrDeprecated(DaxTag tag, Deprecated deprecated){
-//        dictionary.putAtrDeprecated(tag);
-//    }
 
 
-    private void registerDaxpField(Field field,
-            DaxTag entityTag,
-            DaxRegisterSource source
+    //--------------------------------------------
 
+    private void registerDaxpField( Field           field,
+                                    DaxTag             entityTag,
+                                    DaxRegisterSource  source
     ){
-        DaxTag tag = DaxCoreTags.UNKNOW_TAG;
-        Class<?> fType = field.getType();
+        logger.trace("registerDaxpField > field name:{}", field.getName());
+
+
         //DaxDataType dataType = DaxDataType.fromClass(fType);
         DaxTag dataTypeTag = DaxCoreTags.UNKNOW_TAG;
         String fieldName = "";
         DaxTagDestiny tagDestiny = DaxTagDestiny.UNKNOW;
-         String fieldDesc = "";  //todo refator to optional
-
-        ;
-
-        logger.trace("registerDaxpField > field name:"+ field.getName());
+        String fieldDesc = "";  //todo refator to optional
 
 
 
+        DaxAnnotationNote annNote = new DaxAnnotationNote();
 
-        if (field.isAnnotationPresent(DaxpField.class)) {
-            DaxpField daxField = field.getAnnotation(DaxpField.class);
+        DaxpField daxField = field.getAnnotation(DaxpField.class);
 
-            field.setAccessible(true);
+        field.setAccessible(true);
 
-            tag =  tagCodec.decode(daxField);
-            fieldName = daxField.name();
-            tagDestiny = DaxTagDestiny.FIELD_OR_VALUE;
-            fieldDesc = daxField.description();
+        DaxTag tag = tagCodec.decode(daxField);
+        fieldName  = daxField.name().isBlank() ? field.getName(): daxField.name();
+        tagDestiny = DaxTagDestiny.FIELD;
+        fieldDesc  = daxField.description();
 
-        }
+        annNote.setName(daxField.name().isBlank() ? field.getName(): daxField.name());
+        annNote.setTag(tag);
 
-        if (field.isAnnotationPresent(DaxpValue.class)) {
-            DaxpValue daxpValue = field.getAnnotation(DaxpValue.class);
-
-           // field.setAccessible(true);
-            tag =  tagCodec.decode(daxpValue);
-            fieldName = daxpValue.name();
-            tagDestiny = DaxTagDestiny.FIELD_OR_VALUE;
-            fieldDesc = daxpValue.description();
-
-        }
-        if (fieldName.isBlank()){
-           fieldName = field.getName();
-        }
-
-//        if(contextId == -1 || tag.equals(DaxCoreTags.UNKNOW_TAG)){
-//            throw new DaxAnnotationException("RegisterDaxpFieldException "+field.getName()) ;
-//        }
 
 
 
@@ -168,31 +140,135 @@ public class DaxDictionaryRegister {
 
 
         dictionary.putTag(tag, source , tagDestiny);
-        dictionary.putEntityAtrName(entityTag, tag, fieldName);
+        dictionary.putEntityEntryAtrName(entityTag, tag, fieldName);
 
         Type generitType =  field.getGenericType();
+        dictionary.putTagAttributes( tag, dataTypeCodec.encode(field.getType() , generitType));
+        //dictionary.putEntityTagAttributes(entityTag, tag, dataTypeCodec.encode(field.getType() , generitType));
 
-        dictionary.putTagAttributes(entityTag, tag, dataTypeCodec.encode(field.getType() , generitType));
+        //annNote.setDaxDataType(DaxDataType.);????????
 
-        dictionary.putEntityAtrDescription(entityTag,tag, fieldDesc);
+        dictionary.putEntityEntryAtrDescription(entityTag,tag, fieldDesc);
         dictionary.putEntityField( entityTag,tag);
 
 
+
+        //-----------------------------------------------------------------
         //TODO develop AtrDeprecated for fields
         if (field.isAnnotationPresent(Deprecated.class)) {
             //putAtrDeprecated(tag, field.getAnnotation(DaxpDeprecated.class));
-            dictionary.putEntityAtrDeprecated(entityTag,tag);
+            dictionary.putEntityEntryAtrDeprecated(entityTag,tag);
         }
 
         if (field.isAnnotationPresent(DaxpDeprecated.class)) {
             //putAtrDeprecated(tag, field.getAnnotation(DaxpDeprecated.class));
-            dictionary.putEntityAtrDeprecated(entityTag,tag);
+            dictionary.putEntityEntryAtrDeprecated(entityTag,tag);
         }
-
+        //-----------------------------------------------------------------
 
       //  daxDic.putAtrReadOnly( ????);
 
-        jakartaPopulator.populate(dictionary, field, tag );
+        service.regByNote(annNote, source, DaxTagDestiny.FIELD);
+
+
+        jakartaRegister.register(dictionary, field, tag );
+
+
+
+    }
+
+    private void registerDaxpValue( Field           field,
+                                    DaxTag             entityTag,
+                                    DaxRegisterSource  source
+    ){
+        logger.trace("registerDaxpValue > field name:"+ field.getName());
+
+        DaxTag tag = DaxCoreTags.UNKNOW_TAG;
+        Class<?> fType = field.getType();
+        //DaxDataType dataType = DaxDataType.fromClass(fType);
+        DaxTag dataTypeTag = DaxCoreTags.UNKNOW_TAG;
+        String fieldName = "";
+        DaxTagDestiny tagDestiny = DaxTagDestiny.UNKNOW;
+         String fieldDesc = "";  //todo refator to optional
+
+        ;
+
+
+
+
+        if (field.isAnnotationPresent(DaxpValue.class)) {
+            DaxpValue daxpValue = field.getAnnotation(DaxpValue.class);
+
+           // field.setAccessible(true);
+            tag =  tagCodec.decode(daxpValue);
+            fieldName = daxpValue.name();
+            tagDestiny = DaxTagDestiny.FIELD;
+            fieldDesc = daxpValue.description();
+
+        }
+
+        if (fieldName.isBlank()){
+           fieldName = field.getName();
+        }
+
+
+
+        //Class  change type to char
+
+        if (field.getType().isEnum()){
+
+            if (field.getType().isAnnotationPresent(DaxpCollection.class)) {
+                DaxpCollection dicAnn = field.getType().getAnnotation(DaxpCollection.class);
+
+                String typeName = !dicAnn.name().isBlank() ? dicAnn.name() :
+                        field.getClass().getSimpleName();
+
+                DaxTag typeTag = tagCodec.decode(dicAnn.value(),dicAnn.context(),  dicAnn.tagId());
+
+
+                dictionary.putCollectionType(tag, typeTag);
+                System.out.println("is Enum >>>>>>>>>>  TO DEVELOP ");
+                tagDestiny = DaxTagDestiny.COLLECTION;
+
+            }
+            else {
+                //TODO
+                System.out.println("No annotation ");
+            }
+
+            //populateEnumFromFieldAnnotation(field,daxDic);
+        }
+
+
+        dictionary.putTag(tag, source , tagDestiny);
+        dictionary.putEntityEntryAtrName(entityTag, tag, fieldName);
+
+        Type generitType =  field.getGenericType();
+//        dictionary.putTagAttributes( tag, dataTypeCodec.encode(field.getType() , generitType));
+//
+        dictionary.putEntityTagAttributes(entityTag, tag, dataTypeCodec.encode(field.getType() , generitType));
+
+        dictionary.putEntityEntryAtrDescription(entityTag,tag, fieldDesc);
+        dictionary.putEntityField( entityTag,tag);
+
+
+
+        //-----------------------------------------------------------------
+        //TODO develop AtrDeprecated for fields
+        if (field.isAnnotationPresent(Deprecated.class)) {
+            //putAtrDeprecated(tag, field.getAnnotation(DaxpDeprecated.class));
+            dictionary.putEntityEntryAtrDeprecated(entityTag,tag);
+        }
+
+        if (field.isAnnotationPresent(DaxpDeprecated.class)) {
+            //putAtrDeprecated(tag, field.getAnnotation(DaxpDeprecated.class));
+            dictionary.putEntityEntryAtrDeprecated(entityTag,tag);
+        }
+        //-----------------------------------------------------------------
+
+      //  daxDic.putAtrReadOnly( ????);
+
+        jakartaRegister.register(dictionary, field, tag );
 
 
 
@@ -206,13 +282,13 @@ public class DaxDictionaryRegister {
             if (methodAnn == null) return;
 
             DaxTag tag  = tagCodec.decode(methodAnn.value(),methodAnn.context(),methodAnn.tagId());
-            dictionary.putTag(tag,source, DaxTagDestiny.FIELD_OR_VALUE);
+            dictionary.putTag(tag,source, DaxTagDestiny.FIELD);
 
             Class<?> returnClass = method.getReturnType();
 
             dictionary.putTagAttributes( tag, dataTypeCodec.encode( returnClass ));
-            dictionary.putEntityAtrReadOnly(entityTag,tag,true);
-            dictionary.putEntityAtrDescription(entityTag,tag, "Testowy opis ");//  methodAnn.description());
+            dictionary.putEntityEntryAtrReadOnly(entityTag,tag,true);
+            dictionary.putEntityEntryAtrDescription(entityTag,tag, "Testowy opis ");//  methodAnn.description());
 
             dictionary.putEntityField( entityTag,tag);
 
@@ -240,16 +316,10 @@ public class DaxDictionaryRegister {
         }
     }
     private void registerDaxpSchema(Class<?> clazz){
+        //Add schame
 
         for (Field field : DaxLangTool.allFields(clazz)) {
 
-            if (field.isAnnotationPresent(DaxpTag.class)) {
-                registerDaxpTag(field, DaxRegisterSource.SCHEMA_ANNOTATION);
-
-            }
-            if (field.isAnnotationPresent(DaxpMsg.class)){
-                registerDaxpMsg(field,DaxRegisterSource.SCHEMA_ANNOTATION);
-            }
 
             if (field.isAnnotationPresent(DaxpField.class)){
                 throw new DaxAnnotationException("Can't use annotation DaxpField in Schame class :"+clazz.getName());
@@ -259,63 +329,47 @@ public class DaxDictionaryRegister {
                 throw new DaxAnnotationException("Can't use annotation DaxpValue in Schame class :"+clazz.getName());
             }
 
+            if (field.isAnnotationPresent(DaxpTag.class)) {
+                registerDaxpTag(field, DaxRegisterSource.SCHEMA);
+
+            }
+            if (field.isAnnotationPresent(DaxpMsg.class)){
+                registerDaxpMsg(field,DaxRegisterSource.SCHEMA);
+            }
+
         }
     }
+
 
     private void registerDaxpTag(Field field,DaxRegisterSource source) {
-        // (optional but recommended) only accept static int constants
-        if (!Modifier.isStatic(field.getModifiers())) return;
+// (optional but recommended) only accept static int constants
+//        if (!Modifier.isStatic(field.getModifiers())) return;
+//        if (!Modifier.isFinal(field.getModifiers())) return;
 
-        if (!Modifier.isFinal(field.getModifiers())) return;  //TODO check or set read only
+        DaxpTag tagAnn            = field.getAnnotation(DaxpTag.class);
 
-        DaxpTag tagAnn = field.getAnnotation(DaxpTag.class);
+        DaxAnnotationNote annNote = new DaxAnnotationNote();
         field.setAccessible(true);
 
-        Class<?> tagClazz =  field.getType();
-        DaxTag tag;
+        annNote.setTag(tagCodec.decode(tagAnn, field));
 
-//        System.out.println(tagClazz.toString());
+        annNote.setClazz(tagAnn.clazz());
+        annNote.setDescription(tagAnn.description());
+        annNote.setDaxDataType(tagAnn.daxDataType());
+        annNote.setReadOnly(tagAnn.readOnly());
 
-
-        String value = "";
-        int tagId = -1 ;
-        try {
-            if (field.getType() == String.class) {
-               value = (String)(field.get(null));
-            }
-            else {
-               tagId = field.getInt(null);
-            }
-        }
-        catch (Exception e){
-            throw new DaxAnnotationException("RegisterDaxpTagException "+field.getName()) ;
-        }
+        service.regByNote(annNote, source, DaxTagDestiny.TAG);
 
 
-          tag =  tagCodec.decode(value,tagAnn.context(),tagId);
-
-
-        dictionary.putTag(tag, source, DaxTagDestiny.TAG);
-
-            logger.info("Tag {} description : {}",tagCodec.encode(tag) ,tagAnn.description());
-
-        if (! tagAnn.clazz().equals(Void.class)) {
-            dictionary.putTagAttributes(tag, dataTypeCodec.encode(tagAnn.clazz()));
-        }
-
-        if (tagAnn.daxDataType() != DaxDataType.UNKNOWN){
-            dictionary.putTagAtrDataType(tag,tagAnn.daxDataType());
-        }
-
-        if (tagAnn.readOnly()) {
-            dictionary.putTagAtrReadOnly(tag,Boolean.TRUE);
-        }
-
-
-
-        jakartaPopulator.populate(dictionary, field, tag );
+        jakartaRegister.register(dictionary, field, annNote.getTag() );
 
     }
+
+
+
+
+
+
 
 //    private String getName(Class<?> clazz, Class<A extends Annotation> ann  ){
 //
@@ -326,48 +380,66 @@ public class DaxDictionaryRegister {
 
 
     private void registerEntity(Class<?> clazz){
+        logger.trace("registerEntity class : {}",clazz.getName());
 
         DaxpEntity entityAnn = clazz.getAnnotation(DaxpEntity.class);
 
+        DaxAnnotationNote entityNote = new DaxAnnotationNote();
+        entityNote.setName(!entityAnn.name().isBlank() ? entityAnn.name() : clazz.getSimpleName());
+        entityNote.setTag(tagCodec.decode(entityAnn));
+        entityNote.setDaxDataType(DaxDataType.ENTITY);
 
-        String entityName = !entityAnn.name().isBlank() ? entityAnn.name() :
-                                                        clazz.getSimpleName();
-
-
-        DaxTag entityTag = tagCodec.decode(entityAnn.value(),entityAnn.context(),entityAnn.tagId());
-
-        dictionary.putTag(entityTag,DaxRegisterSource.ENTITY_ANNOTATION, DaxTagDestiny.ENTITY);
-        dictionary.putTagAtrDataType(entityTag,DaxDataType.ENTITY);
-        dictionary.putTagAtrName(entityTag,entityName);
+        service.regByNote(entityNote, DaxRegisterSource.ENTITY, DaxTagDestiny.ENTITY);
 
         if (clazz.isAnnotationPresent(Deprecated.class)) {
             //putAtrDeprecated(entityTag, clazz.getAnnotation(Deprecated.class));
-            dictionary.putTagAtrDeprecated(entityTag);
+            dictionary.putTagAtrDeprecated(entityNote.getTag());
         }
 
         if (clazz.isAnnotationPresent(DaxpDeprecated.class)) {
             //putAtrDeprecated(entityTag, clazz.getAnnotation(DaxpDeprecated.class));
-            dictionary.putTagAtrDeprecated(entityTag);
+            dictionary.putTagAtrDeprecated(entityNote.getTag());
         }
 
-
+       //----------------------------
         List<Field> allFields = DaxLangTool.allFields(clazz);
 
         for (Field field : allFields) {
-            if (field.isAnnotationPresent(DaxpField.class)
-               ||field.isAnnotationPresent(DaxpValue.class))
+
+            if (   field.isAnnotationPresent(DaxpField.class)
+                && field.isAnnotationPresent(DaxpValue.class))
             {
-                registerDaxpField(field, entityTag, DaxRegisterSource.ENTITY_ANNOTATION);
+                throw new DaxAnnotationException("You can't join DaxpField && DaxpValue Annotation ");
+            }
+
+
+            if (   field.isAnnotationPresent(DaxpField.class)
+                    && field.isAnnotationPresent(DaxpTag.class))
+            {
+                throw new DaxAnnotationException("You can't join DaxpField && DaxpTag Annotation ");
+            }
+            //TODO add other validation
+
+
+
+            if (field.isAnnotationPresent(DaxpField.class))
+            {
+                registerDaxpField(field, entityNote.getTag(), DaxRegisterSource.ENTITY);
+            }
+
+            if (field.isAnnotationPresent(DaxpValue.class))
+            {
+                registerDaxpValue(field, entityNote.getTag(), DaxRegisterSource.ENTITY);
             }
 
             if (field.isAnnotationPresent(DaxpTag.class)) {
-                registerDaxpTag(field, DaxRegisterSource.ENTITY_ANNOTATION);
+                registerDaxpTag(field, DaxRegisterSource.ENTITY);
 
             }
 
 
             if (field.isAnnotationPresent(DaxpMsg.class)){
-                registerDaxpMsg(field, DaxRegisterSource.ENTITY_ANNOTATION);
+                registerDaxpMsg(field, DaxRegisterSource.ENTITY);
             }
 
 
@@ -375,7 +447,7 @@ public class DaxDictionaryRegister {
         }
 
         for (Method method : clazz.getDeclaredMethods()) {
-             registerDaxpValueFromEntity(entityTag, method,DaxRegisterSource.ENTITY_ANNOTATION);
+             registerDaxpValueFromEntity(entityNote.getTag(), method,DaxRegisterSource.ENTITY);
         }
 
     }

@@ -1,7 +1,7 @@
 package org.daxprotocol.core.model.tag;
 
 public enum DaxTagDestiny {
-    FIELD_OR_VALUE,
+    FIELD,   //Use for VALUE register, value has readOnly Attribute
     ENTITY,
     COLLECTION,
     TAG,

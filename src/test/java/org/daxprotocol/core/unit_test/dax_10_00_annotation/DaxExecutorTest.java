@@ -27,7 +27,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
         System.out.println("-------------------\n");
         System.out.println("REQ > " + reqMsg);
         System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
-
+        System.out.println("AFTER DIC");
    }
 
     @Test

@@ -29,7 +29,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Documented
 public @interface DaxpEntity {
-    DaxDataType daxDataType()  default DaxDataType.UNKNOWN;
+//    DaxDataType daxDataType()  default DaxDataType.UNKNOWN;
     String value() default "";
     int    tagId() default -1;
     String context() default "";
