@@ -1,7 +1,6 @@
 package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.annotation.DaxAnnotationNote;
-import org.daxprotocol.core.annotation.DaxpDeprecated;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
@@ -27,16 +26,18 @@ public class DaxDictionaryRegisterService {
 
     }
 
-    public void regByNote(DaxAnnotationNote annNote,
+    public void registerByNote(DaxAnnotationNote annNote,
                           DaxRegisterSource source,
                           DaxTagDestiny destiny
 
     ){
+        logger.info("Tag {}, name:{} description : {}", tagCodec.encode(annNote.getTag())
+                                                      , annNote.getName()
+                                                      , annNote.getDescription());
+
         dictionary.putTag(annNote.getTag(), source, destiny);
 
-        if (annNote.isReadOnly()) {
-            dictionary.putTagAtrReadOnly(annNote.getTag(),Boolean.TRUE);
-        }
+
         if (annNote.getDaxDataType() != DaxDataType.UNKNOWN
             && annNote.getDaxDataType() != DaxDataType.NONE
             && annNote.getDaxDataType() != null
@@ -46,12 +47,41 @@ public class DaxDictionaryRegisterService {
             dictionary.putTagAtrDataType(annNote.getTag(),annNote.getDaxDataType());
         }
 
+        //TODO develop uniformity checking of class tags with fields
         if (! annNote.getClazz().equals(Void.class)) {
-            dictionary.putTagAttributes(annNote.getTag(), dataTypeCodec.encode(annNote.getClazz()));
+            dictionary.putTagAttributes(annNote.getTag()
+                                      , dataTypeCodec.encode(annNote.getClazz(), annNote.getGenericType()));
         }
 
-        logger.info("Tag {} description : {}",tagCodec.encode(annNote.getTag()) ,annNote.getDescription());
+        if (destiny.equals(DaxTagDestiny.ENTITY_FIELD) ||
+            destiny.equals(DaxTagDestiny.ENTITY_VALUE)  ){
+            dictionary.putEntityField( annNote.getEntityTag(),annNote.getTag());
+            dictionary.putEntityEntryAtrName(annNote.getEntityTag(), annNote.getTag(), annNote.getName());
+            dictionary.putEntityEntryAtrDescription(annNote.getEntityTag(),annNote.getTag(), annNote.getDescription());
 
+            if(annNote.isReadOnly()){
+                dictionary.putEntityEntryAtrReadOnly(annNote.getEntityTag(),annNote.getTag(), true);
+            }
+
+            if (annNote.isDeprecated()){
+               dictionary.putEntityEntryAtrDeprecated(annNote.getEntityTag(),annNote.getTag());
+            }
+
+        }
+
+        if (destiny.equals(DaxTagDestiny.TAG) ){
+            if(annNote.isReadOnly()){
+                dictionary.putTagAtrReadOnly(annNote.getTag(), true);
+            }
+            if (annNote.isDeprecated()){
+                dictionary.putTagAtrDeprecated(annNote.getTag());
+            }
+
+            if (annNote.isReadOnly()) {
+                dictionary.putTagAtrReadOnly(annNote.getTag(),Boolean.TRUE);
+            }
+
+        }
 
 
     }

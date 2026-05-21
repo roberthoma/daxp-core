@@ -3,6 +3,8 @@ package org.daxprotocol.core.annotation;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
 
+import java.lang.reflect.Type;
+
 public class DaxAnnotationNote {
 
 
@@ -12,9 +14,70 @@ public class DaxAnnotationNote {
     String name = "";
     String description = "";
     Class<?> clazz = Void.class;
+    Type genericType;
     DaxDataType keyDataType;
     DaxDataType valueDataType;
-    boolean readOnly;
+    boolean readOnly = false;
+
+
+    ///***************************************************
+    /// Annotation  Deprecated or DaxpDeprecated
+    ///
+    boolean isDeprecated = false;
+    String  since; //This same as original Deprecated
+    boolean forRemoval = false; //This same as original  Deprecated
+    String  removalVersion;
+    String  replacement;
+    String  reason;
+
+
+    public boolean isDeprecated() {
+        return isDeprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        isDeprecated = deprecated;
+    }
+
+    public String getSince() {
+        return since;
+    }
+
+    public void setSince(String since) {
+        this.since = since;
+    }
+
+    public boolean isForRemoval() {
+        return forRemoval;
+    }
+
+    public void setForRemoval(boolean forRemoval) {
+        this.forRemoval = forRemoval;
+    }
+
+    public String getRemovalVersion() {
+        return removalVersion;
+    }
+
+    public void setRemovalVersion(String removalVersion) {
+        this.removalVersion = removalVersion;
+    }
+
+    public String getReplacement() {
+        return replacement;
+    }
+
+    public void setReplacement(String replacement) {
+        this.replacement = replacement;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
     public DaxTag getTag() {
         return tag;
@@ -87,6 +150,13 @@ public class DaxAnnotationNote {
 
     public void setEntityTag(DaxTag entityTag) {
         this.entityTag = entityTag;
+    }
+    public Type getGenericType() {
+        return genericType;
+    }
+
+    public void setGenericType(Type genericType) {
+        this.genericType = genericType;
     }
 
 }

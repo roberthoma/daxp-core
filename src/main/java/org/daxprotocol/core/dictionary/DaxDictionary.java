@@ -242,7 +242,7 @@ public class DaxDictionary {
     public void putEntityEntryAtrNullable(DaxTag entityTag, DaxTag tag,  Boolean able)        { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
     public void putEntityEntryAtrName(DaxTag entityTag, DaxTag tag,  String name)             { if(name!= null && !name.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_NAME,name));}}
     public void putEntityEntryAtrDescription(DaxTag entityTag, DaxTag tag, String desc)       { if(desc!= null && !desc.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
-    public void putEntityEntryAtrReadOnly(DaxTag entityTag, DaxTag tag, Boolean able)       { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_READONLY ,able));}
+    public void putEntityEntryAtrReadOnly(DaxTag entityTag, DaxTag tag, Boolean able)         { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_READONLY ,able));}
     public void putEntityEntryAtrDeprecated(DaxTag entityTag, DaxTag tag)                     { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
 
 

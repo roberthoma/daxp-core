@@ -3,6 +3,7 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.datatype.DaxDataType;
 
 import java.util.*;
@@ -46,7 +47,8 @@ public class DaxAnyTestEntity {
     DaxSubEntity subDTO2;
 
 
-
+    @DaxpValue(tagId = 5079)
+    String strValueReadOnly = "Test value string only for read";
 
 
     /// Collection test
@@ -63,10 +65,12 @@ public class DaxAnyTestEntity {
     @DaxpField(tagId = 5090)
     Set<DaxSubEntity> daxSubEntitySet;
 
+    @Deprecated
     @DaxpField(tagId = 5091)
     Queue<String>  queueStr;
 
-    @DaxpField(tagId = 5092)
+
+    @DaxpField(tagId = 5092, name = "LinkedNameByAnn", description = "Any Description by Ann :) ")
     LinkedList<String>  linkedListStr;
 
     @DaxpField("5099")
