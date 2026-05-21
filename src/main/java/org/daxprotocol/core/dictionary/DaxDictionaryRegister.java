@@ -56,6 +56,7 @@ public class DaxDictionaryRegister {
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
     DaxDictionaryRegisterService service;
+
     public DaxDictionaryRegister(
             DaxTagParser tagParser ,
             DaxConfig config,
@@ -78,36 +79,6 @@ public class DaxDictionaryRegister {
 
 
     //--------------------------------------------
-    private void registerDaxpField( Field           field,
-            DaxTag             entityTag,
-            DaxRegisterSource  source
-    ){
-        DaxpField fieldAnn = field.getAnnotation(DaxpField.class);
-        registerDaxEntry( field,
-                tagCodec.decode(fieldAnn),
-                entityTag,
-                source,
-                DaxTagDestiny.ENTITY_FIELD,
-                fieldAnn.name(),
-                fieldAnn.description()
-                );
-    }
-
-    private void registerDaxpValue( Field           field,
-            DaxTag             entityTag,
-            DaxRegisterSource  source
-    ){
-        DaxpValue fieldAnn = field.getAnnotation(DaxpValue.class);
-        registerDaxEntry( field,
-                tagCodec.decode(fieldAnn),
-                entityTag,
-                source,
-                DaxTagDestiny.ENTITY_VALUE,
-                fieldAnn.name(),
-                fieldAnn.description()
-        );
-
-    }
 
 
     private void registerDaxEntry( Field           field,
@@ -181,6 +152,36 @@ public class DaxDictionaryRegister {
 
     }
 
+    private void registerDaxpField( Field           field,
+            DaxTag             entityTag,
+            DaxRegisterSource  source
+    ){
+        DaxpField fieldAnn = field.getAnnotation(DaxpField.class);
+        registerDaxEntry( field,
+                tagCodec.decode(fieldAnn),
+                entityTag,
+                source,
+                DaxTagDestiny.ENTITY_FIELD,
+                fieldAnn.name(),
+                fieldAnn.description()
+        );
+    }
+
+    private void registerDaxpValue( Field           field,
+            DaxTag             entityTag,
+            DaxRegisterSource  source
+    ){
+        DaxpValue fieldAnn = field.getAnnotation(DaxpValue.class);
+        registerDaxEntry( field,
+                tagCodec.decode(fieldAnn),
+                entityTag,
+                source,
+                DaxTagDestiny.ENTITY_VALUE,
+                fieldAnn.name(),
+                fieldAnn.description()
+        );
+
+    }
 
     private void registerMethodDaxpValue(DaxTag entityTag , Method method, DaxRegisterSource source){
 

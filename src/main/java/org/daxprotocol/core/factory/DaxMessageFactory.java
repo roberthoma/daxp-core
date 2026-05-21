@@ -331,8 +331,9 @@ public class DaxMessageFactory {
 
 //todo add required tagCollection reqTagSet
     private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry,
-            DaxBody body,
-            Set<DaxTag> reqTagSet ){
+                                    DaxBody body,
+                                    Set<DaxTag> reqTagSet )
+    {
         body.putPair(blogIdx, ENTRY_TAG, blockTag);
         try {
             for (Field field : DaxLangTool.allFields(entry.getClass())) {
@@ -368,7 +369,7 @@ public class DaxMessageFactory {
                 }
                 if (field.isAnnotationPresent(DaxpValue.class)) {
                     DaxpValue valueAnn = field.getAnnotation(DaxpValue.class);
-                    //   field.setAccessible(true);
+                    field.setAccessible(true);
                     if (field.get(entry) != null) {
                         DaxTag tag = tagCodec.decode( valueAnn);
 
@@ -387,13 +388,13 @@ public class DaxMessageFactory {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
+String methodName= "???";
         try {
             for (Method method : entry.getClass().getDeclaredMethods()) {
                 DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
                 if (methodAnn == null) continue;
                 Class<?> returnType = method.getReturnType();
-
+                methodName = method.getName();
                 DaxTag tag = tagCodec.decode( methodAnn);
                 if(reqTagSet != null && !reqTagSet.contains(tag)){
                     continue;
@@ -401,7 +402,15 @@ public class DaxMessageFactory {
                 Object o = method.invoke(entry);
                 body.putPair(blogIdx,new DaxPairString(tag,o.toString()));
             }
-        } catch (Exception e) {
+        }
+        catch (IllegalAccessException e){
+
+            //TODO develop DAX_EXCEPTION
+            System.out.println(">>>>>>>>>>>>>>>>> Method is not Public <<<<<<<<<<<<<<<<<<<");
+            System.out.println(">>>>>>>>>>>>>>>>> Method "+ methodName +"  is not Public <<<<<<<<<<<<<<<<<<<");
+            System.out.println(">>>>>>>>>>>>>>>>> Method is not Public <<<<<<<<<<<<<<<<<<<");
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }

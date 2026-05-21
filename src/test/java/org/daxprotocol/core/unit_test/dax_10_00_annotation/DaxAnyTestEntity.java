@@ -46,10 +46,11 @@ public class DaxAnyTestEntity {
     @DaxpField(tagId = 5078)
     DaxSubEntity subDTO2;
 
-
     @DaxpValue(tagId = 5079)
     String strValueReadOnly = "Test value string only for read";
 
+    @DaxpValue(tagId = 5080)
+   public String getAnyStr() { return "Test method string only for read";}
 
     /// Collection test
 
