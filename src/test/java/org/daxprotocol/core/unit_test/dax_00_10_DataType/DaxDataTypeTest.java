@@ -46,10 +46,10 @@ public class DaxDataTypeTest extends DaxConfigBaseTest {
         Class<?> clazz =  dataTypeCodec.decode(tagPairMap);
         Assertions.assertEquals(List.class, clazz);
 
-        tagPairMapOut = dataTypeCodec.encode(List.class);
-
-        tagPairMapOut.forEach(( daxPair) ->
-                System.out.println(tagCodec.encode(daxPair.getTag())  +"="+  daxPair.getStrValue()));
+//        tagPairMapOut = dataTypeCodec.encode(List.class);
+//
+//        tagPairMapOut.forEach(( daxPair) ->
+//                System.out.println(tagCodec.encode(daxPair.getTag())  +"="+  daxPair.getStrValue()));
 
 
       //  Assertions.assertEquals(tagPairMap, tagPairMapOut);

@@ -44,7 +44,8 @@ public abstract class DaxPair<T>{
             return ((Boolean)value)? "Y" : "N";
         }
 
-        if (value == null ) { return "[>>>  NULL <<<]";}
+        if (value == null ) { return null;}
+//        if (value == null ) { return "[>>>  NULL <<<]";}
 
         return value.toString();
     };

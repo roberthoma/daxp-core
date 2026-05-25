@@ -24,9 +24,7 @@ import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.tag.DaxTag;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class DaxBody {
 
@@ -35,6 +33,8 @@ public class DaxBody {
 
     Map<Integer,Map<DaxTag, Integer>> blockRefMap = new HashMap<>();
 
+//    List<DaxPair<?>> nullPairList = new ArrayList<>();
+//
     int blockIdx = -1;
 
     private void checkBlockCounterBeforePut(){

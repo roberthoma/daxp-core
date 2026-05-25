@@ -94,6 +94,7 @@ public class DaxConfigBaseTest {
     @Order(1)
     @Test
     void checkAppContextId(){
+        System.out.println("CheckAppContextId app Id = "+daxEngine.getConfig().getAppContextId());
         Assertions.assertEquals(1, daxEngine.getConfig().getAppContextId());
     }
 

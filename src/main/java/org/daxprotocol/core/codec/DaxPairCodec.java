@@ -20,6 +20,7 @@
 package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -31,13 +32,21 @@ public class DaxPairCodec {
     }
 
     public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator) {
-        if (strValue.isBlank()){
-            return sb.toString();
+
+        if (strValue == null || strValue.trim().isBlank())
+        {
+            sb.append(tagCodec.encode(DaxCoreTags.VALUE_IS_NULL))
+                    .append(DaxCoreConstants.EQUAL)
+                    .append(tagCodec.encode(tag))
+                    .append(pairSeparator);
         }
-        sb.append(tagCodec.encode(tag))
-                .append(DaxCoreConstants.EQUAL)
-                .append(strValue)
-                .append(pairSeparator);
+        else {
+            sb.append(tagCodec.encode(tag))
+                    .append(DaxCoreConstants.EQUAL)
+                    .append(strValue)
+                    .append(pairSeparator);
+        }
+
         return sb.toString() ;
     }
 

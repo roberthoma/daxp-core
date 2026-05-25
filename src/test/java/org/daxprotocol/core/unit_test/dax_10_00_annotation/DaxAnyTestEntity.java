@@ -80,6 +80,11 @@ public class DaxAnyTestEntity {
     @DaxpField("5100")
     DaxSubNoTagEntity subNoTagEntity;
 
+    @DaxpField("5112")
+    String  emptyStringS1;
+
+
+
     public int getAnyInt() {
         return anyInt;
     }

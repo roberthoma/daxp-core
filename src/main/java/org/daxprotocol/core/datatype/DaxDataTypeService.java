@@ -156,7 +156,7 @@ public class DaxDataTypeService {
         if(isColNavigable)        map.add(new DaxPairBoolean(COLLECTION_NAVIGABLE,true));
 
 
-       //****************************************8888
+       //**************************************
 
         DaxDataType valueDataType = DaxDataType.NONE;
         DaxDataType keyDataType = DaxDataType.NONE;;

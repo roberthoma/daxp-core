@@ -112,6 +112,10 @@ public class DaxDataTypeCodec {
 
 
     public  Object convert(String value, Class<?> type) {
+        if (value == null){
+            return null;
+        }
+
         Function<String, Object> fn = CONVERTERS.get(type);
         if (fn != null) {
             return fn.apply(value);
@@ -122,6 +126,7 @@ public class DaxDataTypeCodec {
             Object enumValue = Enum.valueOf((Class<Enum>) type, value);
             return enumValue;
         }
+
         throw new IllegalArgumentException("No converter for type: " + type.getName());
     }
 

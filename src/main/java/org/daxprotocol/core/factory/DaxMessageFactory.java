@@ -344,7 +344,7 @@ public class DaxMessageFactory {
 
                     DaxTag tag;
 
-                    if (field.get(entry) != null){
+               //     if (field.get(entry) != null){
                         tag = tagCodec.decode( fieldAnn);
 
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
@@ -352,7 +352,8 @@ public class DaxMessageFactory {
                         }
 
                         //TODO add refenrens to other oblck using prefix like @ or #....
-                        if (field.get(entry).getClass().isAnnotationPresent(DaxpEntity.class)){
+                        if (field.get(entry) != null &&
+                            field.get(entry).getClass().isAnnotationPresent(DaxpEntity.class)){
                             body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                             int nestedIdx = body.getCurrentIdx();
 
@@ -361,11 +362,10 @@ public class DaxMessageFactory {
                             objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                         }
                         else {
-//                            body.putPair(blogIdx,tag, new DaxValue<>(field.get(entry)));
                             body.putPair(blogIdx, dataTypeCodec.convertToValue(tag,field.get(entry) ));
                         }
-                    }
-                    continue;
+                //    }
+                 //   continue;
                 }
                 if (field.isAnnotationPresent(DaxpValue.class)) {
                     DaxpValue valueAnn = field.getAnnotation(DaxpValue.class);
