@@ -169,7 +169,7 @@ public class DaxCoreTags {
 
 
 
-    public static final DaxTag VALE_IS_EDITABLE   = daxpSysTag(172);
+    public static final DaxTag VALUE_IS_EDITABLE   = daxpSysTag(172);
 
 
     public static final DaxTag COLLECTION_ID = daxpSysTag(129);

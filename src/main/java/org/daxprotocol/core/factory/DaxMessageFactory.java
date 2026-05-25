@@ -25,6 +25,7 @@ import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
+import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
@@ -43,6 +44,8 @@ import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.dictionary.*;
 import org.daxprotocol.core.tool.DaxLangTool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -54,9 +57,8 @@ import java.util.stream.Collectors;
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 public class DaxMessageFactory {
-
+    private static final Logger logger = LoggerFactory.getLogger(DaxMessageFactory.class);
     DaxConfig config;
-//    DaxContextMapper contextMapper;
     DaxTagCodec tagCodec;
     DaxMessageCodec messageCodec;
     DaxHeadCodec     headCodec;
@@ -66,7 +68,6 @@ public class DaxMessageFactory {
     DaxTagParser tagParser;
     DaxDataTypeCodec dataTypeCodec;
     public DaxMessageFactory(DaxConfig config,
-          //  DaxContextMapper contextMapper,
             DaxTagCodec tagCodec,
             DaxMessageCodec messageCodec,
             DaxHeadCodec headCodec,
@@ -78,7 +79,6 @@ public class DaxMessageFactory {
 
             ) {
         this.config = config;
-     //   this.contextMapper = contextMapper;
         this.tagCodec = tagCodec;
         this.messageCodec = messageCodec;
         this.headCodec = headCodec;
@@ -319,15 +319,6 @@ public class DaxMessageFactory {
                 : toDaxMessageFromList( messageType, List.of(daxDataEntry), null );
     }
 
-    //TODO move to tool class
-//    private DaxTag creatTag(String context, int tagId){
-//
-//        int contextId = context.isBlank() ?
-//                config.getAppContextId():
-//                contextMapper.getReferenceId(context);
-//        return DaxTag.of(contextId ,tagId);
-//    }
-
 
 //todo add required tagCollection reqTagSet
     private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry,
@@ -344,13 +335,11 @@ public class DaxMessageFactory {
 
                     DaxTag tag;
 
-               //     if (field.get(entry) != null){
                         tag = tagCodec.decode( fieldAnn);
 
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
                             continue;
                         }
-
                         //TODO add refenrens to other oblck using prefix like @ or #....
                         if (field.get(entry) != null &&
                             field.get(entry).getClass().isAnnotationPresent(DaxpEntity.class)){
@@ -364,8 +353,6 @@ public class DaxMessageFactory {
                         else {
                             body.putPair(blogIdx, dataTypeCodec.convertToValue(tag,field.get(entry) ));
                         }
-                //    }
-                 //   continue;
                 }
                 if (field.isAnnotationPresent(DaxpValue.class)) {
                     DaxpValue valueAnn = field.getAnnotation(DaxpValue.class);
@@ -378,7 +365,6 @@ public class DaxMessageFactory {
                         }
                         body.putPair(blogIdx,dataTypeCodec.convertToValue(tag, field.get(entry) ));
 
-//                        body.putPair(blogIdx,new DaxValue<>(tag, field.get(entry)));
                     }
                 }
                 //----------------------------------------
@@ -388,7 +374,7 @@ public class DaxMessageFactory {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-String methodName= "???";
+        String methodName = "?";
         try {
             for (Method method : entry.getClass().getDeclaredMethods()) {
                 DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
@@ -404,11 +390,7 @@ String methodName= "???";
             }
         }
         catch (IllegalAccessException e){
-
-            //TODO develop DAX_EXCEPTION
-            System.out.println(">>>>>>>>>>>>>>>>> Method is not Public <<<<<<<<<<<<<<<<<<<");
-            System.out.println(">>>>>>>>>>>>>>>>> Method "+ methodName +"  is not Public <<<<<<<<<<<<<<<<<<<");
-            System.out.println(">>>>>>>>>>>>>>>>> Method is not Public <<<<<<<<<<<<<<<<<<<");
+            logger.error("Method {} is not Public ",methodName );
         }
         catch (Exception e) {
             e.printStackTrace();

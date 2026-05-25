@@ -1,7 +1,10 @@
 package org.daxprotocol.core.datatype;
 
+import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -13,6 +16,7 @@ import java.util.function.Function;
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 public class DaxDataTypeCodec {
+    private static final Logger logger = LoggerFactory.getLogger(DaxDataTypeCodec.class);
     private  final Map<Class<?>, Function<String, Object>> CONVERTERS = new HashMap<>();
     DaxDataTypeService dataTypeService;
     public DaxDataTypeCodec(DaxDataTypeService dataTypeService){
@@ -104,11 +108,6 @@ public class DaxDataTypeCodec {
 
         return DaxDataType.UNKNOWN;
     }
-
-
-
-
-
 
 
     public  Object convert(String value, Class<?> type) {
