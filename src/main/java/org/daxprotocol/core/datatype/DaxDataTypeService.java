@@ -2,12 +2,15 @@ package org.daxprotocol.core.datatype;
 
 import org.daxprotocol.core.annotation.DaxpCollection;
 import org.daxprotocol.core.annotation.DaxpEntity;
+import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairBoolean;
 import org.daxprotocol.core.model.pair.DaxPairDataType;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
@@ -25,7 +28,7 @@ import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_KEY_DATA_T
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE_DATA_TYPE;
 
 public class DaxDataTypeService {
-
+    private static final Logger logger = LoggerFactory.getLogger(DaxDataTypeService.class);
     DaxTagCodec tagCodec;
 
     public DaxDataTypeService(DaxTagCodec tagCodec) {
@@ -159,6 +162,9 @@ public class DaxDataTypeService {
         DaxDataType keyDataType = DaxDataType.NONE;;
 
         if (generitType instanceof ParameterizedType pt) {
+
+            logger.info( "GeneritType.getTypeName()= {}", generitType.getTypeName());
+
             Type rawType = pt.getRawType();
             Type[] args = pt.getActualTypeArguments();
 //            Annotation ann;
@@ -195,16 +201,6 @@ public class DaxDataTypeService {
                 }
 
             }
-
-
-
-
-            System.out.println( "**************************************************");
-            System.out.println( "**");
-            System.out.println( "generitType.getTypeName()="+generitType.getTypeName());
-            System.out.println( "**");
-            System.out.println( "**************************************************");
-            //       }
         }
 
 

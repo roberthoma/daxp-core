@@ -102,7 +102,7 @@ public class DaxDictionaryRegister {
 
 
         //Class  change type to char
-
+/*
         if (field.getType().isEnum()){
 
             if (field.getType().isAnnotationPresent(DaxpCollection.class)) {
@@ -124,7 +124,7 @@ public class DaxDictionaryRegister {
                 System.out.println("No annotation ");
             }
         }
-
+*/
         annNote.setGenericType(field.getGenericType());
         annNote.setClazz(field.getType());
 

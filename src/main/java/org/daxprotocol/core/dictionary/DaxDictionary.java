@@ -20,6 +20,7 @@
 
 package org.daxprotocol.core.dictionary;
 
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.datatype.DaxDataType;

@@ -23,6 +23,7 @@ package org.daxprotocol.core.application;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
@@ -41,14 +42,19 @@ import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTrailerCodec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.daxprotocol.core.application.DaxCoreTags.ATR_DATA_TYPE;
 
 public class DaxEngine {
-
+    private static final Logger logger = LoggerFactory.getLogger(DaxEngine.class);
     private final DaxConfig config;
 
     private final DaxPreambleCodec preambleCodec;
 
     private final DaxMessageCodec messageCodec;
+
     private final DaxFrameCodec frameCodec;
 
     private final DaxMessageConverter messageConverter;
@@ -253,5 +259,16 @@ public class DaxEngine {
     public DaxDataTypeService getDataTypeService() {
         return dataTypeService;
     }
+
+    public void checkRegister() {
+
+        dictionary.getTagAttributeMap() .forEach((daxTag, tagDaxPairMap) ->{
+                if (tagDaxPairMap.get(ATR_DATA_TYPE)
+                        .getDataTypeValue().equals(DaxDataType.UNKNOWN)){logger.error(" TAG : {}  UNKNOWN Type", tagCodec.encode( daxTag));
+                }
+            });
+
+        }
+
 
 }

@@ -78,15 +78,15 @@ public class DaxConfigBaseTest {
             System.out.println("*******************************************");
 
             //------------
-            daxEngine.register(DaxpSchema_Base.class);
-            daxEngine.register(DaxAnyTestEntity.class);
             daxEngine.register(DaxpControllerTest.class);
             daxEngine.register(DaxAnyTestEnum.class);
             daxEngine.register(DaxSubEntity.class);
             daxEngine.register(DaxAnyTestDicEnum.class);
-
+            daxEngine.register(DaxpSchema_Base.class);
+            daxEngine.register(DaxAnyTestEntity.class);
             handlerRegistry.registerCtrl(new DaxpControllerTest());  //Autowire in spring
 
+            daxEngine.checkRegister();
 
         }
     }

@@ -77,6 +77,8 @@ public class DaxAnyTestEntity {
     @DaxpField("5099")
     DaxTestEnumNoAnnotation  testEnumNoAnnotation;
 
+    @DaxpField("5100")
+    DaxSubNoTagEntity subNoTagEntity;
 
     public int getAnyInt() {
         return anyInt;
