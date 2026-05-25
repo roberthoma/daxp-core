@@ -63,6 +63,11 @@ public class DaxpSchema_Base {
     @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
     public static final int TEST_SUB_DTO_1_5077 =  5077;
 
+
+    @DaxpTag( description = "Tested not used TAG", daxDataType = DaxDataType.TAG)
+    public static final int TEST_SUB_DTO_1_71234 =  71234;
+
+
     //Messages
     @DaxpMsg(description = "Base DTO Request")
     public static final String MSG_BASE_DTO_Req =  "BDR"; // 	REs 	Customer Data

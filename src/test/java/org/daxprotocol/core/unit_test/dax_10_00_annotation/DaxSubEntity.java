@@ -5,6 +5,7 @@ import org.daxprotocol.core.annotation.DaxpField;
 
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.TEST_TAG_char_5003;
 
+@Deprecated
 @DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_SUB_ENTITY_8000)
 public class DaxSubEntity {
     @DaxpField("8001")

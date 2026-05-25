@@ -53,6 +53,7 @@ public class DaxDictionaryRegisterService {
                                       , dataTypeCodec.encode(annNote.getClazz(), annNote.getGenericType()));
         }
 
+
         if (destiny.equals(DaxTagDestiny.ENTITY_FIELD) ||
             destiny.equals(DaxTagDestiny.ENTITY_VALUE)  ){
             dictionary.putEntityField( annNote.getEntityTag(),annNote.getTag());
@@ -73,14 +74,16 @@ public class DaxDictionaryRegisterService {
             if(annNote.isReadOnly()){
                 dictionary.putTagAtrReadOnly(annNote.getTag(), true);
             }
+
+
+            dictionary.putTagAtrDescription(annNote.getTag(), annNote.getDescription() );
+
+        }
+
+        if (destiny.equals(DaxTagDestiny.TAG) || destiny.equals(DaxTagDestiny.ENTITY)){
             if (annNote.isDeprecated()){
                 dictionary.putTagAtrDeprecated(annNote.getTag());
             }
-
-            if (annNote.isReadOnly()) {
-                dictionary.putTagAtrReadOnly(annNote.getTag(),Boolean.TRUE);
-            }
-
         }
 
 

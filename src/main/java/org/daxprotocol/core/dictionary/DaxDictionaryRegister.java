@@ -277,17 +277,6 @@ public class DaxDictionaryRegister {
 
 
 
-
-
-
-//    private String getName(Class<?> clazz, Class<A extends Annotation> ann  ){
-//
-//        String entityName = !entityAnn.name().isBlank() ? entityAnn.name() :
-//                clazz.getSimpleName();
-//
-//    }
-
-
     private void registerEntity(Class<?> clazz){
         logger.trace("registerEntity class : {}",clazz.getName());
 
@@ -298,17 +287,18 @@ public class DaxDictionaryRegister {
         entityNote.setTag(tagCodec.decode(entityAnn));
         entityNote.setDaxDataType(DaxDataType.ENTITY);
 
-        service.registerByNote(entityNote, DaxRegisterSource.ENTITY, DaxTagDestiny.ENTITY);
-
+        //-----------------------------------------------------------------
+        //TODO develop AtrDeprecated for fields
         if (clazz.isAnnotationPresent(Deprecated.class)) {
-            //putAtrDeprecated(entityTag, clazz.getAnnotation(Deprecated.class));
-            dictionary.putTagAtrDeprecated(entityNote.getTag());
+            entityNote.setDeprecated(true);
         }
-
         if (clazz.isAnnotationPresent(DaxpDeprecated.class)) {
-            //putAtrDeprecated(entityTag, clazz.getAnnotation(DaxpDeprecated.class));
-            dictionary.putTagAtrDeprecated(entityNote.getTag());
+            entityNote.setDeprecated(true);
         }
+        //-----------------------------------------------------------------
+
+
+        service.registerByNote(entityNote, DaxRegisterSource.ENTITY, DaxTagDestiny.ENTITY);
 
        //----------------------------
         List<Field> allFields = DaxLangTool.allFields(clazz);
@@ -409,6 +399,8 @@ public class DaxDictionaryRegister {
     }
 
     public void scanAndRegister(Class<?> clazz) {
+
+        //todo do not join DaxpSchema and DaxpEntity
 
 
         try {
