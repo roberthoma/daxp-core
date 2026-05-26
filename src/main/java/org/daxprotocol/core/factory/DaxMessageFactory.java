@@ -20,17 +20,12 @@
 
 package org.daxprotocol.core.factory;
 
-import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.annotation.DaxpValue;
-import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
-import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.DaxFrame;
-import org.daxprotocol.core.context.DaxContext;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.datatype.DaxBlockType;
@@ -38,21 +33,14 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
-import org.daxprotocol.core.model.pair.DaxPairTag;
-import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.dictionary.*;
-import org.daxprotocol.core.tool.DaxLangTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
@@ -69,6 +57,7 @@ public class DaxMessageFactory {
     DaxDataTypeCodec dataTypeCodec;
 
     DaxDictionaryMessageFactory dicMessageFactory;
+    DaxObjectMessageService objectMessageService;
 
     public DaxMessageFactory(DaxConfig config,
             DaxTagCodec tagCodec,
@@ -91,6 +80,7 @@ public class DaxMessageFactory {
 //        this.tagParser = tagParser;
         this.dataTypeCodec = dataTypeCodec;
         this.dicMessageFactory = new DaxDictionaryMessageFactory(tagCodec,dictionary);
+        this.objectMessageService = new DaxObjectMessageService(tagCodec, dataTypeCodec);
 
     }
 
@@ -132,85 +122,6 @@ public class DaxMessageFactory {
     }
 
     //-----------------------------------------------
-    private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry,
-                                    DaxBody body,
-                                    Set<DaxTag> reqTagSet )
-    {
-        body.putPair(blogIdx, ENTRY_TAG, blockTag);
-        try {
-            for (Field field : DaxLangTool.allFields(entry.getClass())) {
-                //----------------------------------------
-                if (field.isAnnotationPresent(DaxpField.class)) {
-                    DaxpField fieldAnn = field.getAnnotation(DaxpField.class);
-                    field.setAccessible(true);
-
-                    DaxTag tag = tagCodec.decode( fieldAnn);
-
-                    if(reqTagSet != null && !reqTagSet.contains(tag)){
-                        continue;
-                    }
-                    //TODO add refenrens to other oblck using prefix like @ or #....
-                    if (   field.get(entry) != null
-                        && field.get(entry).getClass().isAnnotationPresent(DaxpEntity.class))
-                    {
-                        body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
-                        int nestedIdx = body.getCurrentIdx();
-
-                        body.putTagBlockReference(blogIdx, tag, (nestedIdx+1));
-
-                        objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
-                    }
-                    else {
-                        body.putPair(blogIdx, dataTypeCodec.convertToValue(tag,field.get(entry) ));
-                    }
-                }
-                if (field.isAnnotationPresent(DaxpValue.class)) {
-                    DaxpValue valueAnn = field.getAnnotation(DaxpValue.class);
-                    field.setAccessible(true);
-
-                    if (field.get(entry) != null) {
-                        DaxTag tag = tagCodec.decode( valueAnn);
-
-                        if(reqTagSet != null && !reqTagSet.contains(tag)){
-                            continue;
-                        }
-                        body.putPair(blogIdx,dataTypeCodec.convertToValue(tag, field.get(entry) ));
-
-                    }
-                }
-                //----------------------------------------
-
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        String methodName = "?";
-        try {
-            for (Method method : entry.getClass().getDeclaredMethods()) {
-                DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
-                if (methodAnn == null) continue;
-                Class<?> returnType = method.getReturnType();
-                methodName = method.getName();
-                DaxTag tag = tagCodec.decode( methodAnn);
-
-                if(reqTagSet != null && !reqTagSet.contains(tag)){
-                    continue;
-                }
-                Object o = method.invoke(entry);
-                body.putPair(blogIdx,new DaxPairString(tag,o.toString()));
-            }
-        }
-        catch (IllegalAccessException e){
-            logger.error("Method {} is not Public ",methodName );
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-
-
-    }
     //------------------------------
 
     private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry , Set<DaxTag> reqTagSet){
@@ -223,7 +134,7 @@ public class DaxMessageFactory {
                 DaxpEntity entityAnn = entry.getClass().getAnnotation(DaxpEntity.class);
                 DaxTag tag =  tagCodec.decode( entityAnn);
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
-                objectToMsgBlock(body.getCurrentIdx(),tag, entry, body, reqTagSet);
+                objectMessageService.objectToMsgBlock(body.getCurrentIdx(),tag, entry, body, reqTagSet);
             }
 
         });
