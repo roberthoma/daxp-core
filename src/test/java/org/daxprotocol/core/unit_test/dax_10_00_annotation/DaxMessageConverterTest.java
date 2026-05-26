@@ -21,7 +21,7 @@ public class DaxMessageConverterTest extends DaxConfigBaseTest {
 
         DaxMessage respMsg = frameResp.getFirstMessage();
         String respDataType = respMsg.getMsgType();
-        Assertions.assertEquals(DaxpManifest_Base.MSG_BASE_DTO_DATA, respDataType);
+        Assertions.assertEquals(DaxpManifest_Base.MSG_BASE_ENTITY_DATA, respDataType);
 
         System.out.println("-------------------\n");
         System.out.println("REQ > " + reqMsg);

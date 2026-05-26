@@ -65,7 +65,7 @@ public class DaxMessageFactory {
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
     DaxDictionary dictionary;
-    DaxTagParser tagParser;
+//    DaxTagParser tagParser;
     DaxDataTypeCodec dataTypeCodec;
     public DaxMessageFactory(DaxConfig config,
             DaxTagCodec tagCodec,
@@ -74,7 +74,7 @@ public class DaxMessageFactory {
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
             DaxDictionary dictionary,
-            DaxTagParser tagParser,
+//            DaxTagParser tagParser,
             DaxDataTypeCodec dataTypeCodec
 
             ) {
@@ -85,7 +85,7 @@ public class DaxMessageFactory {
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
         this.dictionary = dictionary;
-        this.tagParser = tagParser;
+//        this.tagParser = tagParser;
         this.dataTypeCodec = dataTypeCodec;
 
     }
@@ -125,21 +125,6 @@ public class DaxMessageFactory {
     }
 
 
-//    private void putEnumDicToEnumBody(DaxBody body, String enumName ,String kValue, String vDesc){
-//        body.nextBlock(DaxBlockType.BLOCK_ENUM_VALUE);
-//        body.putPair(ENUM_NAME,enumName);
-//        body.putPair(FIELD_VALUE,kValue);
-//        body.putPair(FIELD_VALUE_DESCRIPTION,vDesc);
-//    }
-
-//
-//            dictionary.getFieldsGroupMap().forEach((groupId, daxFields) ->
-//    putFieldsGroup(message.getBody(),groupId,daxFields)
-//
-//            );
-
-
-
 
     private void putCollectionToBlock(DaxBody body,
                                         DaxTag tag,
@@ -159,7 +144,7 @@ public class DaxMessageFactory {
                     body.putPair(ENTRY_OWNER_ID, tagCodec.encode(colTag));
                     body.putPair(COLLECTION_VALUE, s);
 
-//TODO put list o enum value if description is empty
+//TODO put value list with descroiption  if description is empty
 //            if (!value.getDesc().isBlank()) {
 //                body.putPair(ENTRY_DESCRIPTION, value.getDesc());
 //            }
@@ -323,8 +308,7 @@ public class DaxMessageFactory {
                 : toDaxMessageFromList( messageType, List.of(daxDataEntry), null );
     }
 
-
-//todo add required tagCollection reqTagSet
+    //-----------------------------------------------
     private void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry,
                                     DaxBody body,
                                     Set<DaxTag> reqTagSet )
@@ -337,30 +321,30 @@ public class DaxMessageFactory {
                     DaxpField fieldAnn = field.getAnnotation(DaxpField.class);
                     field.setAccessible(true);
 
-                    DaxTag tag;
+                    DaxTag tag = tagCodec.decode( fieldAnn);
 
-                        tag = tagCodec.decode( fieldAnn);
+                    if(reqTagSet != null && !reqTagSet.contains(tag)){
+                        continue;
+                    }
+                    //TODO add refenrens to other oblck using prefix like @ or #....
+                    if (   field.get(entry) != null
+                        && field.get(entry).getClass().isAnnotationPresent(DaxpEntity.class))
+                    {
+                        body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
+                        int nestedIdx = body.getCurrentIdx();
 
-                        if(reqTagSet != null && !reqTagSet.contains(tag)){
-                            continue;
-                        }
-                        //TODO add refenrens to other oblck using prefix like @ or #....
-                        if (field.get(entry) != null &&
-                            field.get(entry).getClass().isAnnotationPresent(DaxpEntity.class)){
-                            body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
-                            int nestedIdx = body.getCurrentIdx();
+                        body.putTagBlockReference(blogIdx, tag, (nestedIdx+1));
 
-                            body.putTagBlockReference(blogIdx, tag, (nestedIdx+1));
-
-                            objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
-                        }
-                        else {
-                            body.putPair(blogIdx, dataTypeCodec.convertToValue(tag,field.get(entry) ));
-                        }
+                        objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
+                    }
+                    else {
+                        body.putPair(blogIdx, dataTypeCodec.convertToValue(tag,field.get(entry) ));
+                    }
                 }
                 if (field.isAnnotationPresent(DaxpValue.class)) {
                     DaxpValue valueAnn = field.getAnnotation(DaxpValue.class);
                     field.setAccessible(true);
+
                     if (field.get(entry) != null) {
                         DaxTag tag = tagCodec.decode( valueAnn);
 
@@ -386,6 +370,7 @@ public class DaxMessageFactory {
                 Class<?> returnType = method.getReturnType();
                 methodName = method.getName();
                 DaxTag tag = tagCodec.decode( methodAnn);
+
                 if(reqTagSet != null && !reqTagSet.contains(tag)){
                     continue;
                 }
@@ -403,7 +388,7 @@ public class DaxMessageFactory {
 
 
     }
-
+    //------------------------------
 
     private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry , Set<DaxTag> reqTagSet){
         DaxHead head = new DaxHead(messageType);
@@ -422,15 +407,6 @@ public class DaxMessageFactory {
 
         return new DaxMessage(head,body,trailer);
     }
-
-    @SuppressWarnings("unchecked")
-//    public DaxMessage toDaxMessageFromPairMap( String messageType, Object pairMap)
-//    {
-//        return  pairMap instanceof List<?> ?
-//                 toDaxMessageFromList( messageType, List.of(pairMap) )
-//        : toDaxMessageFromListOfPairMap( messageType, (List<Map<DaxTag,DaxPair<?>>>) pairMap );
-//
-//    }
 
     public DaxMessage toDaxMessageFromPairMap( String messageType, Map<DaxTag, DaxPair<?>> pairMap){
         DaxHead head = new DaxHead(messageType);

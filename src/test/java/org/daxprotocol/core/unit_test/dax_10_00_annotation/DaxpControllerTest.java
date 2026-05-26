@@ -13,9 +13,9 @@ public class DaxpControllerTest extends DaxConfigBaseTest {
     @DaxpHandler(DaxpManifest_Base.MSG_BASE_DTO_Req)
     public void getBaseData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
 
-        DaxAnyTestEntity dtoBase = new DaxAnyTestEntity("Test string",'H',456);
+        DaxAnyTestEntity testEntity = new DaxAnyTestEntity("Test string",'H',456);
 
-        DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame, DaxpManifest_Base.MSG_BASE_DTO_DATA,dtoBase);
+        DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame, DaxpManifest_Base.MSG_BASE_ENTITY_DATA,testEntity);
 
         outcomeFrame.addMessage(message);
         outcomeFrame.addMessage(msgFactory.okMessageType());

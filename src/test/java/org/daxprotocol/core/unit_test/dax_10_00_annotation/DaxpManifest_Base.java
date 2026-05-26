@@ -78,8 +78,8 @@ public class DaxpManifest_Base {
     @DaxpMsg(description = "Base DTO Request")
     public static final String MSG_BASE_DTO_Req =  "BDR"; // 	REs 	Customer Data
 
-    @DaxpMsg(description = "Base DTO DATA")
-    public static final String MSG_BASE_DTO_DATA =   "BD"; // 	REs 	Customer Data
+    @DaxpMsg(description = "Base Entity DATA")
+    public static final String MSG_BASE_ENTITY_DATA =   "BD"; // 	REs 	Customer Data
 
 
     @DaxpSchema(name = "utSchema" ,description = "Base Schema Ut")

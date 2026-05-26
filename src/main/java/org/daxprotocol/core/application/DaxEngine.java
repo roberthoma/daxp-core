@@ -156,7 +156,8 @@ public class DaxEngine {
 
         messageFactory       = new DaxMessageFactory(config,
                 tagCodec,  messageCodec,
-                                                     headCodec, bodyCodec, trailerCodec, dictionary, tagParser,
+                                                     headCodec, bodyCodec, trailerCodec, dictionary,
+//                tagParser,
                 dataTypeCodec
         );
 
