@@ -29,11 +29,14 @@ public class DaxObjectMessageService {
     }
 
 
-    public void objectToMsgBlock(int blogIdx, DaxTag blockTag, Object entry,
-            DaxBody body,
-            Set<DaxTag> reqTagSet )
+    public void objectToMsgBlock(int blockIdx,
+                                DaxTag blockTag,
+                                Object entry,
+                                DaxBody body,
+                                Set<DaxTag> reqTagSet
+                               )
     {
-        body.putPair(blogIdx, ENTRY_TAG, blockTag);
+        body.putPair(blockIdx, ENTRY_TAG, blockTag);
         try {
             for (Field field : DaxLangTool.allFields(entry.getClass())) {
                 //----------------------------------------
@@ -50,15 +53,21 @@ public class DaxObjectMessageService {
                     if (   field.get(entry) != null
                             && field.get(entry).getClass().isAnnotationPresent(DaxpEntity.class))
                     {
-                        body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
+                        body.nextBlock(DaxBlockType.BLOCK_VALUE);
                         int nestedIdx = body.getCurrentIdx();
 
-                        body.putTagBlockReference(blogIdx, tag, (nestedIdx+1));
+                        body.putTagBlockReference(blockIdx, tag, (nestedIdx+1));
 
                         objectToMsgBlock(nestedIdx, tag,  field.get(entry),  body , reqTagSet);
                     }
                     else {
-                        body.putPair(blogIdx, dataTypeCodec.convertToValue(tag,field.get(entry) ));
+                        Object obj = field.get(entry);
+                        if (obj == null){
+                            body.putNullTag(blockIdx,tag);
+                        }
+                        else {
+                           body.putPair(blockIdx, dataTypeCodec.convertToValue(tag,obj ));
+                        }
                     }
                 }
                 if (field.isAnnotationPresent(DaxpValue.class)) {
@@ -71,7 +80,7 @@ public class DaxObjectMessageService {
                         if(reqTagSet != null && !reqTagSet.contains(tag)){
                             continue;
                         }
-                        body.putPair(blogIdx,dataTypeCodec.convertToValue(tag, field.get(entry) ));
+                        body.putPair(blockIdx,dataTypeCodec.convertToValue(tag, field.get(entry) ));
 
                     }
                 }
@@ -87,7 +96,9 @@ public class DaxObjectMessageService {
             for (Method method : entry.getClass().getDeclaredMethods()) {
                 DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
                 if (methodAnn == null) continue;
+
                 Class<?> returnType = method.getReturnType();
+
                 methodName = method.getName();
                 DaxTag tag = tagCodec.decode( methodAnn);
 
@@ -95,7 +106,8 @@ public class DaxObjectMessageService {
                     continue;
                 }
                 Object o = method.invoke(entry);
-                body.putPair(blogIdx,new DaxPairString(tag,o.toString()));
+
+                body.putPair(blockIdx,new DaxPairString(tag,o.toString()));
             }
         }
         catch (IllegalAccessException e){

@@ -28,8 +28,9 @@ import java.util.*;
 
 public class DaxBody {
 
-    Map<Integer,Map<DaxTag, DaxPair<?>>> blockMap = new HashMap<>();
-    Map<Integer,Map<DaxTag, Integer>> blockRefMap = new HashMap<>();
+    Map<Integer,Map<DaxTag, DaxPair<?>>> blockMap      = new HashMap<>();
+    Map<Integer,Map<DaxTag, Integer>>    blockRefMap   = new HashMap<>();
+    Map<Integer, Set<DaxTag>>            blockNullTags = new HashMap<>();
     int blockIdx = -1;
 
     private void checkBlockCounterBeforePut(){
@@ -100,6 +101,7 @@ public class DaxBody {
         blockIdx = blockMap.size();
         blockMap.put(blockIdx,new HashMap<>());
         blockRefMap.put(blockIdx,new HashMap<>());
+        blockNullTags.put(blockIdx, new HashSet<>());
     }
 
     public void nextBlock(DaxBlockType blockType){
@@ -127,6 +129,15 @@ public class DaxBody {
 
     public Map<DaxTag, Integer> getTagBlockRefMap(int blogIdx) {
         return blockRefMap.get(blogIdx);
+    }
+
+    public void putNullTag(int blockIdx, DaxTag tag){
+        checkBlockCounterBeforePut();
+        blockNullTags.get(blockIdx).add(tag);
+    }
+
+    public Set<DaxTag> getBlockNullTags(int blogIdx){
+        return blockNullTags.get(blogIdx);
     }
 
 }

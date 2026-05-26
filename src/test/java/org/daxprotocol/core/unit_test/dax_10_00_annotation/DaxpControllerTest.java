@@ -6,6 +6,8 @@ import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
 
+import java.util.List;
+
 @DaxpController
 public class DaxpControllerTest extends DaxConfigBaseTest {
 
@@ -13,9 +15,13 @@ public class DaxpControllerTest extends DaxConfigBaseTest {
     @DaxpHandler(DaxpManifest_Base.MSG_BASE_DTO_Req)
     public void getBaseData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
 
-        DaxAnyTestEntity testEntity = new DaxAnyTestEntity("Test string",'H',456);
+        DaxAnyTestEntity testEntity  = new DaxAnyTestEntity("Test string",'H',456);
+        DaxAnyTestEntity testEntity2 = new DaxAnyTestEntity("Test2 string2",'R',789);
+        List<DaxAnyTestEntity> testList = List.of(testEntity,testEntity2);
 
-        DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame, DaxpManifest_Base.MSG_BASE_ENTITY_DATA,testEntity);
+        DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame,
+                                        DaxpManifest_Base.MSG_BASE_ENTITY_DATA,
+                                        testList);
 
         outcomeFrame.addMessage(message);
         outcomeFrame.addMessage(msgFactory.okMessageType());

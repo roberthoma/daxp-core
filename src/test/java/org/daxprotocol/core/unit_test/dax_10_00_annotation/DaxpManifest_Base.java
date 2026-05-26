@@ -17,7 +17,7 @@ public class DaxpManifest_Base {
     public static final int TEST_TAG_ENTITY_5000 = 5000;
 
     @DaxpTag( description = "Recursive Entity ")
-    public static final int TEST_RECURSIVE_ENT = 5055;
+    public static final int TEST_RECURSIVE_ENT_5055 = 5055;
 
     @DaxpTag( description = "Test TAG int", clazz = Integer.class)
     public static final int TEST_TAG_int_5001 = 5001;

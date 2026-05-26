@@ -14,7 +14,7 @@ import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpManifest_B
             ,schema= SCHEMA_BASE_UT)
 public class DaxAnyTestEntity {
 
-    @DaxpField(tagId = TEST_RECURSIVE_ENT)
+    @DaxpField(tagId = TEST_RECURSIVE_ENT_5055)
     DaxAnyTestEntity recursiveEntity;
 
     @DaxpField(tagId = TEST_TAG_int_5001)
@@ -53,7 +53,7 @@ public class DaxAnyTestEntity {
     String strValueReadOnly = "Test value string only for read";
 
     @DaxpValue(tagId = 5080)
-   public String getAnyStr() { return "Test method string only for read";}
+   public String getAnyStr() { return "Test method string only for read from method";}
 
     /// Collection test
 
@@ -130,8 +130,12 @@ public class DaxAnyTestEntity {
         this.anyBoolean = true;
         this.fixTestValue = 'X';
         this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
-        this.subEntity = new DaxSubEntity(14,"testSubDTO",12.34);
-        this.subDTO2 = new DaxSubEntity(34,"testSubDTO2",74.56);
+        this.subEntity = new DaxSubEntity(14,"subEntity1",761.24);
+        this.subDTO2   = new DaxSubEntity(34,"subEntity2",654.66);
+
+        this.daxSubEntitySet = new HashSet<>();
+        daxSubEntitySet.add( new DaxSubEntity(57,"set_subEntity3",74.56));
+        daxSubEntitySet.add( new DaxSubEntity(89,"set_subEntity3",22.54));
 
         this.stringList    = List.of("strVal1","strVal2","strVal3","strVal1");
         this.linkedListStr  = new LinkedList<>( List.of("strLinkedVal1","strLinkedVal2","strLinkedVal2","strLinkedVal2"));

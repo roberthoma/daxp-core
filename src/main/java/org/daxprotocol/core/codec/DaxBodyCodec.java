@@ -28,6 +28,8 @@ import org.daxprotocol.core.model.pair.DaxPairString;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 //public class DaxBodyCodec implements DaxCodec<DaxBody> {
@@ -44,6 +46,7 @@ public class DaxBodyCodec {
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
                                       int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
                                       Map<DaxTag, Integer> tagBlockRefMap,
+                                     Set<DaxTag> nullTags,
                                      char pairSeparator)
     {
         if (isBlogIdx) {
@@ -84,8 +87,20 @@ public class DaxBodyCodec {
         );
 
 
+        if (nullTags!=null && !nullTags.isEmpty()){
+            String str;
+//TODO refactor for one
+            //            if (nullTags.size()>1){
+            str = nullTags.stream()
+                    .map(s -> tagCodec.encode(s))
+                    .collect(Collectors.joining(DaxCoreConstants.TAG_LIST_SEPARATOR));
+//            }
+//            else {
+//                str = tagCodec.encode(nullTags.iterator(). )
+//            }
 
-
+           pairCodec.encode(sb, new DaxPairString(VALUE_IS_NULL,str), pairSeparator);
+        }
     }
 
     //@Override
@@ -96,8 +111,12 @@ public class DaxBodyCodec {
 
         body.getBlockMap()
             .forEach((idx, map) ->
-                encodeBodyBlock(sb,isBlockPair,idx, map, body.getTagBlockRefMap(idx), pairSeparator)
+                encodeBodyBlock(sb,isBlockPair,idx, map, body.getTagBlockRefMap(idx),
+                        body.getBlockNullTags(idx),
+                        pairSeparator)
                         );
+
+
 
         return sb.toString();
     }

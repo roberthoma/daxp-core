@@ -130,6 +130,7 @@ public class DaxMessageFactory {
         DaxTrailer trailer = new DaxTrailer();
 
         daxDataEntry.forEach(entry -> {
+
             if (entry.getClass().isAnnotationPresent(DaxpEntity.class)) {
                 DaxpEntity entityAnn = entry.getClass().getAnnotation(DaxpEntity.class);
                 DaxTag tag =  tagCodec.decode( entityAnn);
