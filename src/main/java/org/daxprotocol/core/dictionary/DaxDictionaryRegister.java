@@ -276,6 +276,7 @@ public class DaxDictionaryRegister {
         entityNote.setName(!entityAnn.name().isBlank() ? entityAnn.name() : clazz.getSimpleName());
         entityNote.setTag(tagCodec.decode(entityAnn));
         entityNote.setDaxDataType(DaxDataType.ENTITY);
+        entityNote.setSchemaOwner(entityAnn.schema());
 
         //-----------------------------------------------------------------
         //TODO develop AtrDeprecated for fields

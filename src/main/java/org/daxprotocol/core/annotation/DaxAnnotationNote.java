@@ -20,6 +20,9 @@ public class DaxAnnotationNote {
     boolean readOnly = false;
 
 
+    String schemaOwner = "";
+
+
     ///***************************************************
     /// Annotation  Deprecated or DaxpDeprecated
     ///
@@ -157,6 +160,14 @@ public class DaxAnnotationNote {
 
     public void setGenericType(Type genericType) {
         this.genericType = genericType;
+    }
+
+    public String getSchemaOwner() {
+        return schemaOwner;
+    }
+
+    public void setSchemaOwner(String schemaOwner) {
+        this.schemaOwner = schemaOwner;
     }
 
 }

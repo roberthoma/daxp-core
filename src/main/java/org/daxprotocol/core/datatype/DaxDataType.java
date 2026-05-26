@@ -63,6 +63,7 @@ public enum DaxDataType {
     ENTITY("ENT", "DAXP Entity / Object structure"), //, null),
     COLLECTION("COL", "Universal DAXP Collection (C) with attributes", Collection.class ), //, null),
     TAG("TAG", "Reference to another tag/field within the frame",DaxTag.class), //, DaxTag.class),
+    FIELD("FIELD", "Reference to field within the frame",DaxTag.class), //, DaxTag.class),
 
     MESSAGE_TYPE("MSG","Message type",String.class),
 

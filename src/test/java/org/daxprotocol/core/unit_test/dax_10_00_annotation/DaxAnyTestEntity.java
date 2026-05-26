@@ -4,15 +4,18 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
-import org.daxprotocol.core.datatype.DaxDataType;
 
 import java.util.*;
 
-import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpSchema_Base.*;
+import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpManifest_Base.*;
 
-@DaxpEntity(tagId = DaxpSchema_Base.TEST_TAG_ENTITY_5000, description = "Any desc from entity class")
+@DaxpEntity( tagId = TEST_TAG_ENTITY_5000
+            ,description = "Any desc from entity class"
+            ,schema= SCHEMA_BASE_UT)
 public class DaxAnyTestEntity {
 
+    @DaxpField(tagId = TEST_RECURSIVE_ENT)
+    DaxAnyTestEntity recursiveEntity;
 
     @DaxpField(tagId = TEST_TAG_int_5001)
     int anyInt;

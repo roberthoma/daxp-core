@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ FIELD, TYPE })
 @Documented
 public @interface DaxpManifest {
-    String value() default "";      // Schema symbol
-    String name() default "";       // Use for rename schema name
-    String description() default "";
+//    String value() default "";      // Schema symbol
+//    String name() default "";       // Use for rename schema name
+//    String description() default "";
 }
