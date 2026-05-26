@@ -29,12 +29,7 @@ import java.util.*;
 public class DaxBody {
 
     Map<Integer,Map<DaxTag, DaxPair<?>>> blockMap = new HashMap<>();
-
-
     Map<Integer,Map<DaxTag, Integer>> blockRefMap = new HashMap<>();
-
-//    List<DaxPair<?>> nullPairList = new ArrayList<>();
-//
     int blockIdx = -1;
 
     private void checkBlockCounterBeforePut(){

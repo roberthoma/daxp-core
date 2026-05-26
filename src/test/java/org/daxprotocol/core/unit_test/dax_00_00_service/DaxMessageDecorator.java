@@ -9,6 +9,7 @@ public class DaxMessageDecorator {
         return msgStr.replace("$:1=","\n$:1=")
                      .replace("$:4=","\n$:4=")
                      .replace("$:9=","\n$:9=")
+                     .replace("$:11=","$:11(name)=")
                 ;
 
 

@@ -97,6 +97,7 @@ public class DaxMessageFactory {
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
         body.nextBlock(DaxBlockType.BLOCK_TAG);
         body.putPair(new DaxPairTag(ENTRY_TAG,tag));
+
         map.forEach((atrTag, pair) -> body.putPair(pair));
 
     }
@@ -144,17 +145,10 @@ public class DaxMessageFactory {
                                         DaxTag tag,
                                         Map<DaxTag,DaxPair<?>> atrMap){
         body.nextBlock(DaxBlockType.BLOCK_COLLECTION);
-        body.putPair(COLLECTION_ID, tagCodec.encode(tag));
+//        body.nextBlock(DaxBlockType.BLOCK_TAG);
+        body.putPair(ENTRY_TAG, tagCodec.encode(tag));
         atrMap.forEach((daxTag, pair) ->
                 body.putPair(pair));
-
-//                body.putPair(ENTRY_NAME, daxCollectionTMP.getName());
-//        body.putPair(ENTRY_DESCRIPTION, daxCollectionTMP.getDesc());
-
-//TODO put list o enum value if description is empty
-//        if (enumValueMap != null) {
-//            body.putPair(ENUM_VALUE_LIST, String.join(DaxpConfig.VALUE_LIST_SEPARATOR, enumValueMap.keySet()));
-//        }
 
     }
     private void putCollectionValuesToBody(DaxBody body, DaxTag colTag,DaxBaseDictionary<String> values){
@@ -162,9 +156,10 @@ public class DaxMessageFactory {
         values.getAttributMap().forEach((s, tagDaxPairMap) ->
                 {
                     body.nextBlock(DaxBlockType.BLOCK_VALUE);
-                    body.putPair(COLLECTION_ID, tagCodec.encode(colTag));
+                    body.putPair(ENTRY_OWNER_ID, tagCodec.encode(colTag));
                     body.putPair(COLLECTION_VALUE, s);
 
+//TODO put list o enum value if description is empty
 //            if (!value.getDesc().isBlank()) {
 //                body.putPair(ENTRY_DESCRIPTION, value.getDesc());
 //            }
@@ -238,7 +233,12 @@ public class DaxMessageFactory {
 
 
     }
+    private void  putSchemaToBlock(DaxBody body,  Map<DaxTag, DaxPair<?>> tagDaxPairMap){
+        body.nextBlock(DaxBlockType.BLOCK_SCHEMA);
 
+        tagDaxPairMap.forEach((daxTag, pair) -> body.putPair(pair));
+
+    }
 
     //TODO Develop selective tags
     public DaxMessage dictionaryToMsg() {
@@ -253,6 +253,10 @@ public class DaxMessageFactory {
         );
 
         //TODO SCHEMA
+        dictionary.getSchemaDictionary().getAttributMap()
+                                        .forEach((integer, tagDaxPairMap) ->
+                                                        putSchemaToBlock(message.getBody(), tagDaxPairMap)
+                                        );
 
 
         dictionary.getTagAttributeMap().forEach((tag, atrMap) ->

@@ -1,9 +1,9 @@
 package org.daxprotocol.core.application;
 
-import org.daxprotocol.core.annotation.DaxpSchema;
+import org.daxprotocol.core.annotation.DaxpManifest;
 
 //@DaxpSchema(context = DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX)
-@DaxpSchema()
+@DaxpManifest()
 public class DaxCoreMessages {
 
 

@@ -20,7 +20,6 @@
 
 package org.daxprotocol.core.dictionary;
 
-import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.*;
 import org.daxprotocol.core.datatype.DaxDataType;
@@ -84,7 +83,7 @@ public class DaxDictionary {
     /*****************************************************
      *  Map of schema referenced by integer
      */
-//    Map<Integer, DaxContext> schemaMap = new ConcurrentHashMap<>();
+    DaxBaseDictionary<Integer> schemaDic = new DaxBaseDictionary<>();
 
 
 
@@ -237,8 +236,8 @@ public class DaxDictionary {
         pairMap.forEach(( atrPair) -> putEntityEntryAttribute(entityTag,tag,atrPair));
     };
 
-    public void putEntityEntryAtrDataType(DaxTag entityTag, DaxTag tag, DaxDataType dataType) { putEntityEntryAttribute(entityTag,tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-    public void putEntityEntryAtrSizeMax(DaxTag entityTag, DaxTag tag,  Integer max )         { putEntityEntryAttribute(entityTag,tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
+    public void putEntityEntryAtrDataType(DaxTag entityTag, DaxTag tag, DaxDataType dataType) { putEntityEntryAttribute(entityTag, tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
+    public void putEntityEntryAtrSizeMax(DaxTag entityTag, DaxTag tag,  Integer max )         { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
     public void putEntityEntryAtrSizeMin(DaxTag entityTag, DaxTag tag,  Integer min )         { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
     public void putEntityEntryAtrNullable(DaxTag entityTag, DaxTag tag,  Boolean able)        { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
     public void putEntityEntryAtrName(DaxTag entityTag, DaxTag tag,  String name)             { if(name!= null && !name.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_NAME,name));}}
@@ -345,6 +344,18 @@ public class DaxDictionary {
         tagMap.put(tag,source);
 
 
+    }
+
+    //------------------------
+    public void putSchema(String symbol,String name, String description){
+        int refId = schemaMapper.getReferenceId(name);
+        schemaDic.putAttribute(refId,new DaxPairString(ENTRY_SYMBOL,symbol));
+        schemaDic.putAttribute(refId,new DaxPairString(ENTRY_NAME,name));
+        schemaDic.putAttribute(refId,new DaxPairString(ENTRY_DESCRIPTION,description));
+    }
+
+    public DaxBaseDictionary<Integer> getSchemaDictionary (){
+        return schemaDic;
     }
 
 

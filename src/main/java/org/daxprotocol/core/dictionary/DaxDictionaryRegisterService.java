@@ -1,12 +1,18 @@
 package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.annotation.DaxAnnotationNote;
+import org.daxprotocol.core.annotation.DaxpCollection;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
+import org.daxprotocol.core.model.pair.DaxPairTag;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Set;
 
 public class DaxDictionaryRegisterService {
     private static final Logger logger = LoggerFactory.getLogger(DaxDictionaryRegisterService.class);
@@ -49,8 +55,23 @@ public class DaxDictionaryRegisterService {
 
         //TODO develop uniformity checking of class tags with fields
         if (! annNote.getClazz().equals(Void.class)) {
-            dictionary.putTagAttributes(annNote.getTag()
+
+            //---------
+            //TODO check is reference datatype
+
+            if( annNote.getClazz().isAnnotationPresent(DaxpCollection.class)){
+
+                DaxpCollection dicAnn = annNote.getClazz().getAnnotation(DaxpCollection.class);
+                DaxTag tagTT =  tagCodec.decode(dicAnn);
+                dictionary.putTagAttributes(annNote.getTag()
+                        , Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_DATA_TYPE, tagTT)));
+
+            }
+            else {
+
+               dictionary.putTagAttributes(annNote.getTag()
                                       , dataTypeCodec.encode(annNote.getClazz(), annNote.getGenericType()));
+            }
         }
 
 

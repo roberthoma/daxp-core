@@ -76,6 +76,7 @@ public class DaxCoreTags {
     public static final DaxTag BLOCK_INDEX             = daxpSysTag(4, DaxDataType.QUANTITY);
     public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);
     public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(7);
+    public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(77);
     public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(8);
 
     /******************************
@@ -91,6 +92,7 @@ public class DaxCoreTags {
     public static final DaxTag ENTRY_SYMBOL            = daxpSysTag(15);
 
     public static final DaxTag ENTRY_OWNER_ID          = daxpSysTag(20);
+    public static final DaxTag ENTRY_SCHEMA            = daxpSysTag(21);
 
     public static final DaxTag TAG_OWNER_ID          = daxpSysTag(111);
 
@@ -120,8 +122,8 @@ public class DaxCoreTags {
 
 
     //----
-    //    public static final DaxTag NAMESPACE          = daxpSysTag(144);
-//    public static final DaxTag NAMESPACE_DESC     = daxpSysTag(144);
+    //    public static final DaxTag SCHEMA           = daxpSysTag(144);
+    //    public static final DaxTag SCHEMA_DESC     = daxpSysTag(144);
 
 
     //----
@@ -155,7 +157,7 @@ public class DaxCoreTags {
     public static final DaxTag ATR_SIZE_MIN        = daxpSysTag(168);
     public static final DaxTag ATR_READONLY        = daxpSysTag(169);
 
-    //-----------------------------------------
+    //----------------------------------------------------------------------------------
     public static final DaxTag ATR_IS_DEPRECATED   = daxpSysTag(170);
 /*
     public @interface DaxpDeprecated {
@@ -166,6 +168,7 @@ public class DaxCoreTags {
         String  reason() default "";
     }
 */
+    //----------------------------------------------------------------------------------
 
 
 
@@ -221,6 +224,8 @@ public class DaxCoreTags {
 
 
     //LOGs tags
+    //LOG_LEVEL
+    //LOG_TXT
 
 
 

@@ -3,12 +3,14 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpMsg;
+import org.daxprotocol.core.annotation.DaxpManifest;
 import org.daxprotocol.core.annotation.DaxpSchema;
 import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 
-@DaxpSchema(value = "SCH1", name = "TestSchemaB")
+//Change to manifest
+@DaxpManifest()
 public class DaxpSchema_Base {
 
     @DaxpTag( description = "Base Entity ")
@@ -49,7 +51,9 @@ public class DaxpSchema_Base {
 
 
 
-    @DaxpTag(description = "Test enum", daxDataType = DaxDataType.COLLECTION)
+    @DaxpTag(description = "Test enum", daxDataType = DaxDataType.COLLECTION, clazz = DaxAnyTestEnum.class)
+//    @DaxpTag(description = "Test enum")
+//    @DaxpTag
     public static final  int TEST_COLLECTION_ENUM_6001 = 6001;
 
     @DaxpTag(description = "Test dic enum", daxDataType = DaxDataType.COLLECTION)
@@ -75,6 +79,9 @@ public class DaxpSchema_Base {
     @DaxpMsg(description = "Base DTO DATA")
     public static final String MSG_BASE_DTO_DATA =   "BD"; // 	REs 	Customer Data
 
+
+    @DaxpSchema(name = "utSchema" ,description = "Base Schema Ut")
+    public static final String SCHEMA_BASE_UT =   "SHEMA_UT"; // 	REs 	Customer Data
 
 
     //TODO Create new tested schema for exceptions

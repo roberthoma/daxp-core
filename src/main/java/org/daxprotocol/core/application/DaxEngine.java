@@ -262,9 +262,13 @@ public class DaxEngine {
 
     public void checkRegister() {
 
+        //TODO Develop all references checking
         dictionary.getTagAttributeMap() .forEach((daxTag, tagDaxPairMap) ->{
-                if (tagDaxPairMap.get(ATR_DATA_TYPE)
-                        .getDataTypeValue().equals(DaxDataType.UNKNOWN)){logger.error(" TAG : {}  UNKNOWN Type", tagCodec.encode( daxTag));
+                if (tagDaxPairMap.containsKey(ATR_DATA_TYPE)){
+                    if (tagDaxPairMap.get(ATR_DATA_TYPE)
+                            .getDataTypeValue().equals(DaxDataType.UNKNOWN))
+                          {logger.error(" TAG : {}  UNKNOWN Type", tagCodec.encode( daxTag));
+                    }
                 }
             });
 

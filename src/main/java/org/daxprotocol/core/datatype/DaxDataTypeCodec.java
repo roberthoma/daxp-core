@@ -1,6 +1,25 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2025 DAXPARC Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
+
 package org.daxprotocol.core.datatype;
 
-import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.slf4j.Logger;
@@ -19,6 +38,8 @@ public class DaxDataTypeCodec {
     private static final Logger logger = LoggerFactory.getLogger(DaxDataTypeCodec.class);
     private  final Map<Class<?>, Function<String, Object>> CONVERTERS = new HashMap<>();
     DaxDataTypeService dataTypeService;
+
+    //--------------------------------------------------------------------------------------
     public DaxDataTypeCodec(DaxDataTypeService dataTypeService){
         this.dataTypeService = dataTypeService;
 
@@ -35,7 +56,7 @@ public class DaxDataTypeCodec {
         CONVERTERS.put(char.class, c->c.charAt(0));
 
     }
-
+    //--------------------------------------------------------------------------------------
     private Class<?> decodeCOLLECTION(Map<DaxTag, DaxPair<?>> tagPairMap){
 
         if (tagPairMap.containsKey(COLLECTION_HAS_KEY)) {
@@ -54,7 +75,7 @@ public class DaxDataTypeCodec {
     }
 
 
-
+    //--------------------------------------------------------------------------------------
     public Class<?> decode(Map<DaxTag, DaxPair<?>> tagPairMap){
 
         if (tagPairMap.isEmpty()) return null;
@@ -72,12 +93,13 @@ public class DaxDataTypeCodec {
 
     }
 
+    //--------------------------------------------------------------------------------------
     public Set<DaxPair<?>> encode(Class<?> clazz){
         return encode(clazz, null);
     }
+    //--------------------------------------------------------------------------------------
+
     public Set<DaxPair<?>> encode(Class<?> clazz, Type generitType){
-
-
 
         if (dataTypeService.isCollection(clazz)){
             return dataTypeService.collectionEncode(clazz,generitType);
@@ -90,8 +112,7 @@ public class DaxDataTypeCodec {
                 DaxDataType.fromCode(  dataTypeService.decodeClass(clazz).getCode())));
         return map;
     }
-
-    //--------------------------------
+    //--------------------------------------------------------------------------------------
     private   DaxDataType decodeFromObject(Object obj) {
         if (obj == null) return DaxDataType.STRING; // Default
         if (obj instanceof Integer) return DaxDataType.INTEGER;

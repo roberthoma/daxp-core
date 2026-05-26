@@ -99,32 +99,6 @@ public class DaxDictionaryRegister {
         annNote.setName(annName.isBlank() ? field.getName(): annName );
         annNote.setDescription(annDescription);
         annNote.setTag(tag);
-
-
-        //Class  change type to char
-/*
-        if (field.getType().isEnum()){
-
-            if (field.getType().isAnnotationPresent(DaxpCollection.class)) {
-                DaxpCollection dicAnn = field.getType().getAnnotation(DaxpCollection.class);
-
-                String typeName = !dicAnn.name().isBlank() ? dicAnn.name() :
-                        field.getClass().getSimpleName();
-
-                DaxTag typeTag = tagCodec.decode(dicAnn.value(),dicAnn.context(),  dicAnn.tagId());
-
-
-                dictionary.putCollectionType(tag, typeTag);
-                System.out.println("is Enum >>>>>>>>>>  TO DEVELOP ");
-            //    tagDestiny = DaxTagDestiny.COLLECTION;
-
-            }
-            else {
-                //TODO
-                System.out.println("No annotation ");
-            }
-        }
-*/
         annNote.setGenericType(field.getGenericType());
         annNote.setClazz(field.getType());
 
@@ -224,11 +198,23 @@ public class DaxDictionaryRegister {
             throw new DaxAnnotationException("IllegalAccessException "+field.getName()) ;
         }
     }
-    private void registerDaxpSchema(Class<?> clazz){
-        //Add schame
 
+    private void registerDaxpSchema(Field field, DaxRegisterSource source)  {
+        String symbol = "";
+        try {
+          symbol = (String)( field.get(null));
+        }
+        catch (IllegalAccessException e){
+            e.printStackTrace();
+        }
+
+        DaxpSchema  ann = field.getAnnotation(DaxpSchema.class);
+
+        dictionary.putSchema(symbol , ann.name(), ann.description());
+    }
+
+    private void registerDaxpManifest(Class<?> clazz){
         for (Field field : DaxLangTool.allFields(clazz)) {
-
 
             if (field.isAnnotationPresent(DaxpField.class)){
                 throw new DaxAnnotationException("Can't use annotation DaxpField in Schame class :"+clazz.getName());
@@ -239,11 +225,15 @@ public class DaxDictionaryRegister {
             }
 
             if (field.isAnnotationPresent(DaxpTag.class)) {
-                registerDaxpTag(field, DaxRegisterSource.SCHEMA);
+                registerDaxpTag(field, DaxRegisterSource.MANIFEST);
 
             }
             if (field.isAnnotationPresent(DaxpMsg.class)){
-                registerDaxpMsg(field,DaxRegisterSource.SCHEMA);
+                registerDaxpMsg(field,DaxRegisterSource.MANIFEST);
+            }
+
+            if (field.isAnnotationPresent(DaxpSchema.class)){
+                registerDaxpSchema(field,DaxRegisterSource.MANIFEST);
             }
 
         }
@@ -404,10 +394,10 @@ public class DaxDictionaryRegister {
 
 
         try {
-            if (clazz.isAnnotationPresent(DaxpSchema.class)) {
-                DaxpSchema ann = clazz.getAnnotation(DaxpSchema.class);
-                logger.info("Scanning SCEMA : {}", ann.name());
-                registerDaxpSchema( clazz);
+            if (clazz.isAnnotationPresent(DaxpManifest.class)) {
+                DaxpManifest ann = clazz.getAnnotation(DaxpManifest.class);
+
+                registerDaxpManifest( clazz);
             }
 
             if (clazz.isAnnotationPresent(DaxpEntity.class)) {
