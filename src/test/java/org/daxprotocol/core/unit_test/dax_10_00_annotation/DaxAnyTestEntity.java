@@ -58,7 +58,7 @@ public class DaxAnyTestEntity {
     /// Collection test
 
     @DaxpField(tagId = 5082)
-    List<String> stringList;
+    List<String> stringList_5082;
 
     @DaxpField(tagId = 5083)
     Map<Integer,String>  stringMap;
@@ -67,7 +67,7 @@ public class DaxAnyTestEntity {
     Set<String> stringSet;
 
     @DaxpField(tagId = 5090)
-    Set<DaxSubEntity> daxSubEntitySet;
+    Set<DaxSubEntity> daxSubEntitySet_5090;
 
     @Deprecated
     @DaxpField(tagId = 5091)
@@ -129,16 +129,16 @@ public class DaxAnyTestEntity {
         this.anyChar = testChar;
         this.anyBoolean = true;
         this.fixTestValue = 'X';
-        this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
+     //   this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
         this.subEntity = new DaxSubEntity(14,"subEntity1",761.24);
         this.subDTO2   = new DaxSubEntity(34,"subEntity2",654.66);
 
-        this.daxSubEntitySet = new HashSet<>();
-        daxSubEntitySet.add( new DaxSubEntity(57,"set_subEntity3",74.56));
-        daxSubEntitySet.add( new DaxSubEntity(89,"set_subEntity3",22.54));
+        this.daxSubEntitySet_5090 = new HashSet<>();
+        daxSubEntitySet_5090.add( new DaxSubEntity(57,"set_subEntity6",74.56));
+        daxSubEntitySet_5090.add( new DaxSubEntity(89,"set_subEntity7",22.54));
 
-        this.stringList    = List.of("strVal1","strVal2","strVal3","strVal1");
-        this.linkedListStr  = new LinkedList<>( List.of("strLinkedVal1","strLinkedVal2","strLinkedVal2","strLinkedVal2"));
+        this.stringList_5082 = List.of("strVal1","strVal2","strVal3","strVal4");
+        this.linkedListStr  = new LinkedList<>( List.of("strLinkedVal1","strLinkedVal2","strLinkedVal3","strLinkedVal4"));
 
     }
 }

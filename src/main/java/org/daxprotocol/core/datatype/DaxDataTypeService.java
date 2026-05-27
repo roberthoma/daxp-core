@@ -43,7 +43,7 @@ public class DaxDataTypeService {
         if (clazz.equals(Set.class)) return true;
         if (clazz.equals(Queue.class)) return true;
         if (clazz.equals(Collection.class)) return true;
-        if (clazz.equals(Enum.class)) return true;
+        if (clazz.equals(Enum.class)) return true;    //TODO CHECK again
         if (clazz.isEnum()) return true;
 
         if (Collection.class.isAssignableFrom(clazz)) {

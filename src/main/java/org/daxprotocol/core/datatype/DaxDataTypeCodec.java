@@ -113,7 +113,7 @@ public class DaxDataTypeCodec {
         return map;
     }
     //--------------------------------------------------------------------------------------
-    private   DaxDataType decodeFromObject(Object obj) {
+    public    DaxDataType decodeFromObject(Object obj) {
         if (obj == null) return DaxDataType.STRING; // Default
         if (obj instanceof Integer) return DaxDataType.INTEGER;
         if (obj instanceof Long) return DaxDataType.LONG;
@@ -126,6 +126,8 @@ public class DaxDataTypeCodec {
         if (obj instanceof Character) return DaxDataType.CHARACTER;
 
         if (dataTypeService.isObjInstanceOfCollection( obj )) return DaxDataType.COLLECTION;
+
+        //Add entity ???
 
         return DaxDataType.UNKNOWN;
     }
@@ -157,7 +159,7 @@ public class DaxDataTypeCodec {
     public Set<DaxPair<?>> convertToValue(DaxTag tag,  Object obj) {
         DaxDataType dataType = decodeFromObject(obj);
         return switch (dataType){
-            case COLLECTION ->  encode(obj.getClass());
+            case COLLECTION ->  encode(obj.getClass());   //TODO to change ?????
             case STRING ->  Set.of( new DaxPairString(tag, (String) obj));
             case INTEGER -> Set.of(new DaxPairInteger(tag,(Integer) obj));
             case CHARACTER -> Set.of(new DaxPairCharacter(tag,(Character) obj));
