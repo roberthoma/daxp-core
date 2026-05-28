@@ -23,13 +23,13 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
-import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DaxMessageConverter {
 
@@ -58,30 +58,46 @@ public class DaxMessageConverter {
         try {
             T instance = targetClass.getDeclaredConstructor().newInstance();
 
+            int blockIdx = 0;
             for (Field f : targetClass.getDeclaredFields()) {
                 DaxpField ann = f.getAnnotation(DaxpField.class);
+
                 if (ann == null) continue; // skip non-annotated fields (e.g., town)
 
-//                if (!ann.value().isBlank()){
-//                    ?????
-//                }
 
                 DaxTag tag = tagCodec.decode(ann.value(),ann.context(),ann.tagId());
 
                 var pair = message.get(tag);
 
+
                 //a jeeli jest przez value - string
-                if (pair==null) continue; // gracefully ignore missing tags or empty
+                if (pair!=null) {
 
-                //TODO HERE createFromMessage >>> recursive call method
+                    //TODO HERE createFromMessage >>> recursive call method
+
+                    String raw = pair.getStrValue();
+                    Object converted = dataTypeCodec.convert(raw, f.getType());  // if not ..convert from dictionary
+
+                    f.setAccessible(true);
+                    f.set(instance, converted);
+                    continue; // gracefully ignore missing tags or empty
+                }
+                if ( message.isNullAt(blockIdx, tag)){
+                    f.setAccessible(true);
+                    f.set(instance, null);
+                    continue;
+                }
+
+                if ( message.isAnyReference(tag)){
+                    Set<Integer> refBlocksIdx =  message.getRefBlocksIdx(blockIdx,tag);
+
+                //    Object fInstance = f.getClass().getDeclaredConstructor().newInstance();
+
+                    System.out.println("TODO  > "+ tagCodec.encode(tag)+ " refBlocksIdx = "+refBlocksIdx);
+
+                }
 
 
-
-                String raw = pair.getStrValue();
-                Object converted = dataTypeCodec.convert(raw, f.getType());  // if not ..convert from dictionary
-
-                f.setAccessible(true);
-                f.set(instance, converted);
             }
             return instance;
         } catch (Exception e) {

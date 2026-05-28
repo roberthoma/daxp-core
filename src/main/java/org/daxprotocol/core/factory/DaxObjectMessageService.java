@@ -41,8 +41,7 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.daxprotocol.core.application.DaxCoreTags.ENTRY_OWNER_ID;
-import static org.daxprotocol.core.application.DaxCoreTags.ENTRY_TAG;
+import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 public class DaxObjectMessageService {
     private static final Logger logger = LoggerFactory.getLogger(DaxObjectMessageService.class);
@@ -78,7 +77,7 @@ public class DaxObjectMessageService {
 
 
                         if(dataTypeCodec.decodeFromObject(objVal).equals(DaxDataType.STRING)){
-                            body.putPair(nestedIdx, dataTypeCodec.convertToValue(tag,objVal ));
+                            body.putPair(nestedIdx, dataTypeCodec.convertToValue(COLLECTION_VALUE,objVal ));
                          //   body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
                             body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
                         }

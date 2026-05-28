@@ -25,6 +25,8 @@ import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
+import java.util.Set;
+
 public final class DaxMessage {
     private  DaxHead head;
     private  DaxBody body;
@@ -80,13 +82,8 @@ public final class DaxMessage {
     public DaxPair<?> get(DaxTag tag) {
        return body.getPair(0,tag);
     }
-//    public DaxPair<?> get(int tag) {
-//       return body.getPair(0,tag);
-//    }
 
-//    public String getStrValue(int tag){
-//        return body.getPair(0,tag).getStrValue();
-//    }
+
 
     public boolean containsField(DaxTag tag){
         return body.getBlock(0).containsKey(tag);
@@ -95,5 +92,18 @@ public final class DaxMessage {
 
     public void finish() {
         head.setBlockCount(body.getBlockCount());
+    }
+
+    public boolean isNullAt(int blockIdx, DaxTag tag) {
+        return body.isNullAt(blockIdx,tag);
+    }
+
+    public boolean isAnyReference(DaxTag tag) {
+
+        return body.isAnyReference(tag);
+    }
+
+    public Set<Integer> getRefBlocksIdx(int blockIdx, DaxTag tag) {
+        return body.getRefBlocksIdx(blockIdx, tag);
     }
 }

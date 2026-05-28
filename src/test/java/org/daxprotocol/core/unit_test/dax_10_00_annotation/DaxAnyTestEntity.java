@@ -64,7 +64,7 @@ public class DaxAnyTestEntity {
     Map<Integer,String>  stringMap;
 
     @DaxpField(tagId = 5089)
-    Set<String> stringSet;
+    Set<String> stringSet_5089;
 
     @DaxpField(tagId = 5090)
     Set<DaxSubEntity> daxSubEntitySet_5090;
@@ -129,6 +129,7 @@ public class DaxAnyTestEntity {
         this.anyChar = testChar;
         this.anyBoolean = true;
         this.fixTestValue = 'X';
+        this.stringSet_5089 = new HashSet<>(); //TODO idea how to prezent .. AS NULL or empty . DAXP is universal protocol.
         this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
         this.subEntity = new DaxSubEntity(14,"subEntity1",761.24);
         this.subDTO2   = new DaxSubEntity(34,"subEntity2",654.66);

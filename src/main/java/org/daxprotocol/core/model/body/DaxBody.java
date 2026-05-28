@@ -29,7 +29,7 @@ import java.util.*;
 public class DaxBody {
 
     Map<Integer,Map<DaxTag, DaxPair<?>>> blockMap      = new HashMap<>();
-    Map<Integer,Map<DaxTag, Integer>>    blockRefMap   = new HashMap<>();
+    Map<Integer,Map<DaxTag, Set<Integer>>>    blockRefMap   = new HashMap<>();
     Map<Integer, Set<DaxTag>>            blockNullTags = new HashMap<>();
     int blockIdx = -1;
 
@@ -124,10 +124,14 @@ public class DaxBody {
 
     //TODO Refactor to merge
     public void putTagBlockReference(int blogIdx, DaxTag tag, int refBlockIdx) {
-        blockRefMap.get(blogIdx).put(tag,refBlockIdx);
+        if(!blockRefMap.get(blogIdx).containsKey(tag)){
+            blockRefMap.get(blogIdx).put(tag, new HashSet<>());
+        }
+        blockRefMap.get(blogIdx).get(tag).add( refBlockIdx);
+
     }
 
-    public Map<DaxTag, Integer> getTagBlockRefMap(int blogIdx) {
+    public Map<DaxTag, Set<Integer>> getTagBlockRefMap(int blogIdx) {
         return blockRefMap.get(blogIdx);
     }
 
@@ -140,4 +144,20 @@ public class DaxBody {
         return blockNullTags.get(blogIdx);
     }
 
+    public boolean isNullAt(int i, DaxTag tag) {
+        return blockNullTags.get(i).contains(tag);
+    }
+
+    public boolean isAnyReference(DaxTag tag) {
+        if (!blockRefMap.get(0).containsKey(tag)){
+            return false;
+        }
+       return !( (blockRefMap.get(0).get(tag))).isEmpty();
+
+
+    }
+
+    public Set<Integer> getRefBlocksIdx(int blockIdx, DaxTag tag) {
+      return         blockRefMap.get(blockIdx).get(tag);
+    }
 }

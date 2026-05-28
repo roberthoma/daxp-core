@@ -45,7 +45,7 @@ public class DaxBodyCodec {
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
                                       int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
-                                      Map<DaxTag, Integer> tagBlockRefMap,
+                                      Map<DaxTag, Set<Integer>> tagBlockRefMap,
                                      Set<DaxTag> nullTags,
                                      char pairSeparator)
     {
