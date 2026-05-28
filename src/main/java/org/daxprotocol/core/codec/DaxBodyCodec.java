@@ -89,15 +89,10 @@ public class DaxBodyCodec {
 
         if (nullTags!=null && !nullTags.isEmpty()){
             String str;
-//TODO refactor for one
-            //            if (nullTags.size()>1){
+
             str = nullTags.stream()
                     .map(s -> tagCodec.encode(s))
                     .collect(Collectors.joining(DaxCoreConstants.TAG_LIST_SEPARATOR));
-//            }
-//            else {
-//                str = tagCodec.encode(nullTags.iterator(). )
-//            }
 
            pairCodec.encode(sb, new DaxPairString(VALUE_IS_NULL,str), pairSeparator);
         }

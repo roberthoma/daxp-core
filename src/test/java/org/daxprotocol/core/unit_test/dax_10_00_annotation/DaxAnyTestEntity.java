@@ -129,7 +129,7 @@ public class DaxAnyTestEntity {
         this.anyChar = testChar;
         this.anyBoolean = true;
         this.fixTestValue = 'X';
-     //   this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
+        this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
         this.subEntity = new DaxSubEntity(14,"subEntity1",761.24);
         this.subDTO2   = new DaxSubEntity(34,"subEntity2",654.66);
 

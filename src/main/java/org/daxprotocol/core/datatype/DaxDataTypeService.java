@@ -60,7 +60,7 @@ public class DaxDataTypeService {
         if (obj instanceof Map<?,?>) return true;
         if (obj instanceof Set<?>) return true;
         if (obj instanceof Collection<?>) return true;
-        if (obj instanceof Enum<?>) return true;
+  //      if (obj instanceof Enum<?>) return true;
         return false;
     }
 

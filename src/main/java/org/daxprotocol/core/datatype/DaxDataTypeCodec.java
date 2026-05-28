@@ -124,6 +124,7 @@ public class DaxDataTypeCodec {
         if (obj instanceof LocalDateTime) return DaxDataType.LOCAL_DATE_TIME;
         if (obj instanceof String) return DaxDataType.STRING;
         if (obj instanceof Character) return DaxDataType.CHARACTER;
+        if (obj instanceof Enum<?>) return DaxDataType.STRING;   //?????????
 
         if (dataTypeService.isObjInstanceOfCollection( obj )) return DaxDataType.COLLECTION;
 
@@ -160,7 +161,8 @@ public class DaxDataTypeCodec {
         DaxDataType dataType = decodeFromObject(obj);
         return switch (dataType){
             case COLLECTION ->  encode(obj.getClass());   //TODO to change ?????
-            case STRING ->  Set.of( new DaxPairString(tag, (String) obj));
+            case STRING ->  Set.of( new DaxPairString(tag, obj.toString()));
+//            case STRING ->  Set.of( new DaxPairString(tag, (String) obj));
             case INTEGER -> Set.of(new DaxPairInteger(tag,(Integer) obj));
             case CHARACTER -> Set.of(new DaxPairCharacter(tag,(Character) obj));
             case BOOLEAN -> Set.of(new DaxPairBoolean(tag,(Boolean) obj));

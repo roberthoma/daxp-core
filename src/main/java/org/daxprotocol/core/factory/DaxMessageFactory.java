@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
@@ -122,7 +123,6 @@ public class DaxMessageFactory {
     }
 
     //-----------------------------------------------
-    //------------------------------
 
     private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry , Set<DaxTag> reqTagSet){
         DaxHead head = new DaxHead(messageType);
@@ -135,7 +135,7 @@ public class DaxMessageFactory {
                 DaxpEntity entityAnn = entry.getClass().getAnnotation(DaxpEntity.class);
                 DaxTag tag =  tagCodec.decode( entityAnn);
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
-                objectMessageService.objectToMsgBlock(body.getCurrentIdx(),tag, entry, body, reqTagSet);
+                objectMessageService.objectToMsgBlock(body.getCurrentIdx(),tag, entry, body, reqTagSet, tag);
             }
 
         });
