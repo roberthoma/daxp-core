@@ -75,7 +75,7 @@ public class DaxAnyTestEntity {
 
 
     @DaxpField(tagId = 5092, name = "LinkedNameByAnn", description = "Any Description by Ann :) ")
-    LinkedList<String>  linkedListStr;
+    LinkedList<String> linkedListStr_5092;
 
     @DaxpField("5099")
     DaxTestEnumNoAnnotation  testEnumNoAnnotation;
@@ -117,9 +117,6 @@ public class DaxAnyTestEntity {
     }
 
     public DaxAnyTestEntity(){
-//        this.fixTestValue = 'X';
-//        this.enumValue = DaxEnumSample.ENUM_VALUE1;
-//        this.subDTO = new DaxSubDTO(14,"testSubDTO",12.34);
 
     }
     public DaxAnyTestEntity(String testStr, char testChar, int testInt){
@@ -129,7 +126,12 @@ public class DaxAnyTestEntity {
         this.anyChar = testChar;
         this.anyBoolean = true;
         this.fixTestValue = 'X';
+
         this.stringSet_5089 = new HashSet<>(); //TODO idea how to prezent .. AS NULL or empty . DAXP is universal protocol.
+        this.stringSet_5089.add("ABC");
+        this.stringSet_5089.add("DEF");
+        this.stringSet_5089.add("GHI");
+
         this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
         this.subEntity = new DaxSubEntity(14,"subEntity1",761.24);
         this.subDTO2   = new DaxSubEntity(34,"subEntity2",654.66);
@@ -139,7 +141,7 @@ public class DaxAnyTestEntity {
         daxSubEntitySet_5090.add( new DaxSubEntity(89,"set_subEntity7",22.54));
 
         this.stringList_5082 = List.of("strVal1","strVal2","strVal3","strVal4");
-        this.linkedListStr  = new LinkedList<>( List.of("strLinkedVal1","strLinkedVal2","strLinkedVal3","strLinkedVal4"));
+        this.linkedListStr_5092 = new LinkedList<>( List.of("strLinkedVal1","strLinkedVal2","strLinkedVal3","strLinkedVal4"));
 
     }
 }

@@ -16,8 +16,9 @@ public class DaxpControllerTest extends DaxConfigBaseTest {
     public void getBaseData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
 
         DaxAnyTestEntity testEntity  = new DaxAnyTestEntity("Test string",'H',456);
-        DaxAnyTestEntity testEntity2 = new DaxAnyTestEntity("Test2 string2",'R',789);
-        List<DaxAnyTestEntity> testList = List.of(testEntity,testEntity2);
+     //   DaxAnyTestEntity testEntity2 = new DaxAnyTestEntity("Test2 string2",'R',789);
+//        List<DaxAnyTestEntity> testList = List.of(testEntity,testEntity2);
+        List<DaxAnyTestEntity> testList = List.of(testEntity);
 
         DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame,
                                         DaxpManifest_Base.MSG_BASE_ENTITY_DATA,

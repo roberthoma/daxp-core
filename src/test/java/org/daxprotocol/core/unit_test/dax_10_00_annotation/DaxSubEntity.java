@@ -5,7 +5,7 @@ import org.daxprotocol.core.annotation.DaxpField;
 
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxpManifest_Base.TEST_TAG_char_5003;
 
-@Deprecated
+//@Deprecated
 @DaxpEntity(tagId = DaxpManifest_Base.TEST_TAG_SUB_ENTITY_8000)
 public class DaxSubEntity {
     @DaxpField("8001")
@@ -47,6 +47,9 @@ public class DaxSubEntity {
         return dd;
     }
 
+    public DaxSubEntity(){
+
+    }
 
     public DaxSubEntity(int value_1, String value2, Double dd) {
         this.value_1 = value_1;

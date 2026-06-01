@@ -113,9 +113,14 @@ public class DaxBody {
         return blockMap.get(blockIdx).get(tag);
     }
 
-    public Map<Integer,Map<DaxTag, DaxPair<?>>> getBlockMap() {
+    public Map<Integer,Map<DaxTag, DaxPair<?>>> getAllBlockMap() {
          return blockMap;
     }
+
+    public Map<DaxTag, DaxPair<?>> getBlockMap(int blockIdx) {
+         return blockMap.get(blockIdx);
+    }
+
 
 
     public int getCurrentIdx(){
@@ -144,12 +149,12 @@ public class DaxBody {
         return blockNullTags.get(blogIdx);
     }
 
-    public boolean isNullAt(int i, DaxTag tag) {
-        return blockNullTags.get(i).contains(tag);
+    public boolean isNullAt(int blockIdx, DaxTag tag) {
+        return blockNullTags.get(blockIdx).contains(tag);
     }
 
-    public boolean isAnyReference(DaxTag tag) {
-        if (!blockRefMap.get(0).containsKey(tag)){
+    public boolean isAnyReference(int blockIdx,DaxTag tag) {
+        if (!blockRefMap.get(blockIdx).containsKey(tag)){
             return false;
         }
        return !( (blockRefMap.get(0).get(tag))).isEmpty();

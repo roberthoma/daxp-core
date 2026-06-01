@@ -109,8 +109,8 @@ public class DaxMessageFactory {
     public DaxMessage toDaxRespondMessage( DaxFrame reqFrame , String messageType, Object daxDataEntry ) {
         Set<DaxTag> tagSet;
 
-        if (reqFrame.getFirstMessage().containsField(REQ_FIELD_LIST)) {
-            tagSet = (Set<DaxTag>) (reqFrame.getFirstMessage().get(REQ_FIELD_LIST).getValue());
+        if (reqFrame.getFirstMessage().containsField(0,REQ_FIELD_LIST)) {
+            tagSet = (Set<DaxTag>) (reqFrame.getFirstMessage().get(0,REQ_FIELD_LIST).getValue());
 
             return  daxDataEntry instanceof List<?> ?
                     toDaxMessageFromList( messageType, (List<Object>) daxDataEntry , tagSet)

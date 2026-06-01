@@ -104,7 +104,7 @@ public class DaxBodyCodec {
 
         StringBuilder sb = new StringBuilder();
 
-        body.getBlockMap()
+        body.getAllBlockMap()
             .forEach((idx, map) ->
                 encodeBodyBlock(sb,isBlockPair,idx, map, body.getTagBlockRefMap(idx),
                         body.getBlockNullTags(idx),

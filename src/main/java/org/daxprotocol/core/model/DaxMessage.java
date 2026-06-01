@@ -79,14 +79,14 @@ public final class DaxMessage {
         return trailer.getChecksum();
     }
 
-    public DaxPair<?> get(DaxTag tag) {
-       return body.getPair(0,tag);
+    public DaxPair<?> get(int blockIdx, DaxTag tag) {
+       return body.getPair(blockIdx,tag);
     }
 
 
 
-    public boolean containsField(DaxTag tag){
-        return body.getBlock(0).containsKey(tag);
+    public boolean containsField(int blockIdx,DaxTag tag){
+        return body.getBlock(blockIdx).containsKey(tag);
 
     }
 
@@ -98,9 +98,9 @@ public final class DaxMessage {
         return body.isNullAt(blockIdx,tag);
     }
 
-    public boolean isAnyReference(DaxTag tag) {
+    public boolean isAnyReference(int blockIdx, DaxTag tag) {
 
-        return body.isAnyReference(tag);
+        return body.isAnyReference(blockIdx,tag);
     }
 
     public Set<Integer> getRefBlocksIdx(int blockIdx, DaxTag tag) {

@@ -186,7 +186,7 @@ public class DaxMessagePopulator {
 
     public void populate( DaxPreamble preamble, DaxMessage message) {
         int contextId = preamble.getContextId();
-        message.getBody().getBlockMap().forEach((integer, integerDaxPairMap) ->
+        message.getBody().getAllBlockMap().forEach((integer, integerDaxPairMap) ->
                 populateFromMsgBlock(contextId, integerDaxPairMap)
         );
 

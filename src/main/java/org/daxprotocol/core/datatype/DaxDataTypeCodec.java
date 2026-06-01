@@ -162,7 +162,6 @@ public class DaxDataTypeCodec {
         return switch (dataType){
             case COLLECTION ->  encode(obj.getClass());   //TODO to change ?????
             case STRING ->  Set.of( new DaxPairString(tag, obj.toString()));
-//            case STRING ->  Set.of( new DaxPairString(tag, (String) obj));
             case INTEGER -> Set.of(new DaxPairInteger(tag,(Integer) obj));
             case CHARACTER -> Set.of(new DaxPairCharacter(tag,(Character) obj));
             case BOOLEAN -> Set.of(new DaxPairBoolean(tag,(Boolean) obj));
