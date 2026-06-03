@@ -24,6 +24,7 @@ import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.codec.DaxTagCodec;
+import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
@@ -38,7 +39,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
@@ -47,9 +47,11 @@ public class DaxObjectMessageService {
     private static final Logger logger = LoggerFactory.getLogger(DaxObjectMessageService.class);
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
-    public DaxObjectMessageService(    DaxTagCodec tagCodec,DaxDataTypeCodec dataTypeCodec){
+    DaxValueCodec valueCodec;
+    public DaxObjectMessageService(    DaxTagCodec tagCodec,DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec){
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
+        this.valueCodec = valueCodec;
     }
 
     private void putValueToBlock(int blockIdx,DaxTag tag, DaxBody body, Object object,
@@ -65,8 +67,9 @@ public class DaxObjectMessageService {
         }
         else {
             logger.trace("COL blockIdx={} objName={}",blockIdx,object.getClass().getName());
-            if (dataTypeCodec.decodeFromObject(object).equals(DaxDataType.COLLECTION) ){
 
+            if (dataTypeCodec.decodeBaseDataType(object).equals(DaxDataType.COLLECTION) ){
+//              if ( ){
                 Iterator<?> iterator  = ((Collection<?>)object).iterator();
 
                 iterator.forEachRemaining(objVal ->
@@ -76,8 +79,8 @@ public class DaxObjectMessageService {
                         body.putTagBlockReference(blockIdx, tag, (nestedIdx+1));
 
 
-                        if(dataTypeCodec.decodeFromObject(objVal).equals(DaxDataType.STRING)){
-                            body.putPair(nestedIdx, dataTypeCodec.convertToValue(COLLECTION_VALUE,objVal ));
+                        if(dataTypeCodec.decodeBaseDataType(objVal).equals(DaxDataType.STRING)){
+                            body.putPair(nestedIdx, valueCodec.encode(COLLECTION_VALUE,objVal ));
                          //   body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
                             body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
                         }
@@ -89,7 +92,7 @@ public class DaxObjectMessageService {
 
             }
             else {
-               body.putPair(blockIdx, dataTypeCodec.convertToValue(tag,object ));
+               body.putPair(blockIdx, valueCodec.encode(tag,object ));
             }
         }
 

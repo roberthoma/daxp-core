@@ -62,21 +62,21 @@ public class DaxpManifest_Base {
     public static final  int TEST_COLLECTION_DIC_ENUM_6002 = 6002;
 
 
-    @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
+    @DaxpTag( description = "SUB  ENTITY 8000 ", daxDataType = DaxDataType.ENTITY)
     public static final int TEST_TAG_SUB_ENTITY_8000 = 8000;
 
-//    @DaxpTag( description = "SUB Base DTO ", clazz = DaxSubEntity.class)
-    @DaxpTag( description = "SUB Base DTO ", daxDataType = DaxDataType.ENTITY)
-    public static final int TEST_SUB_DTO_1_5077 =  5077;
+
+    @DaxpTag( description = "VALUE type SUB ENTITY 8000", daxDataType = DaxDataType.ENTITY)
+    public static final int TEST_VALUE_SUB_ENTITY_5077 =  5077;
 
 
     @DaxpTag( description = "Tested not used TAG", daxDataType = DaxDataType.TAG)
-    public static final int TEST_SUB_DTO_1_987654321 =  999999999;
+    public static final int TEST_NOT_USE_TAG_987654321 =  999999999;
 
 
     //Messages
-    @DaxpMsg(description = "Base DTO Request")
-    public static final String MSG_BASE_DTO_Req =  "BDR"; // 	REs 	Customer Data
+    @DaxpMsg(description = "Base ENTITY Request")
+    public static final String MSG_BASE_ENTITY_Req =  "BDR"; // 	REs 	Customer Data
 
     @DaxpMsg(description = "Base Entity DATA")
     public static final String MSG_BASE_ENTITY_DATA =   "BD"; // 	REs 	Customer Data

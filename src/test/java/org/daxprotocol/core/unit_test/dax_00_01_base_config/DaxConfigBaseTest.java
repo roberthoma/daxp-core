@@ -7,7 +7,7 @@ import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
-import org.daxprotocol.core.datatype.DaxDataTypeService;
+import org.daxprotocol.core.datatype.DaxDataTypeCollectionService;
 import org.daxprotocol.core.dictionary.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
@@ -40,7 +40,7 @@ public class DaxConfigBaseTest {
     protected static DaxPreambleFactory preambleFactory;
     protected static DaxDispatcher dispatcher;
     protected static DaxDataTypeCodec dataTypeCodec;
-    protected static DaxDataTypeService dataTypeService;
+    protected static DaxDataTypeCollectionService dataTypeService;
 
 
 
@@ -67,7 +67,7 @@ public class DaxConfigBaseTest {
             preambleFactory = daxEngine.getPreambleFactory();
             dispatcher      = daxEngine.getDispatcher();
             dataTypeCodec   = daxEngine.getDataTypeCodec();
-            dataTypeService = daxEngine.getDataTypeService();
+            dataTypeService = daxEngine.getDataTypeCollectionService();
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");

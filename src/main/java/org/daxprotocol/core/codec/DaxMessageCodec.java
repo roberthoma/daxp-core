@@ -27,7 +27,7 @@ import org.daxprotocol.core.tool.DaxChecksumService;
 
 import java.util.List;
 
-//public class DaxMessageCodec implements DaxCodec<DaxMessage>{
+
 public class DaxMessageCodec {
     DaxConfig        config;
     DaxPairCodec     pairCodec;

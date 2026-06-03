@@ -37,13 +37,13 @@ public class DaxAnyTestEntity {
 
     @Deprecated
     @DaxpField(TEST_CTX_TAG_StrVal_FIX51)
-    char fixTestValue;
+    char fixTestValue_FIX_51;
 
     @DaxpField(tagId = TEST_ENUM_VALUE_5032)
     DaxAnyTestEnum enumValue;
 
 
-    @DaxpField(tagId = TEST_SUB_DTO_1_5077)
+    @DaxpField(tagId = TEST_VALUE_SUB_ENTITY_5077)
     DaxSubEntity subEntity;
 
     @DaxpField(tagId = 5078)
@@ -87,6 +87,10 @@ public class DaxAnyTestEntity {
     String  emptyStringS1;
 
 
+   @DaxpField("5115")
+    Map<Integer,String>  strMap;
+
+
 
     public int getAnyInt() {
         return anyInt;
@@ -104,8 +108,8 @@ public class DaxAnyTestEntity {
         return anyBoolean;
     }
 
-    public char getFixTestValue() {
-        return fixTestValue;
+    public char getFixTestValue_FIX_51() {
+        return fixTestValue_FIX_51;
     }
 
     public DaxAnyTestEnum getEnumValue() {
@@ -125,7 +129,7 @@ public class DaxAnyTestEntity {
         this.anyString = testStr;
         this.anyChar = testChar;
         this.anyBoolean = true;
-        this.fixTestValue = 'X';
+        this.fixTestValue_FIX_51 = 'X';
 
         this.stringSet_5089 = new HashSet<>(); //TODO idea how to prezent .. AS NULL or empty . DAXP is universal protocol.
         this.stringSet_5089.add("ABC");
@@ -139,9 +143,20 @@ public class DaxAnyTestEntity {
         this.daxSubEntitySet_5090 = new HashSet<>();
         daxSubEntitySet_5090.add( new DaxSubEntity(57,"set_subEntity6",74.56));
         daxSubEntitySet_5090.add( new DaxSubEntity(89,"set_subEntity7",22.54));
+        daxSubEntitySet_5090.add( new DaxSubEntity(149,"set_subEntity8",2376.47));
 
         this.stringList_5082 = List.of("strVal1","strVal2","strVal3","strVal4");
-        this.linkedListStr_5092 = new LinkedList<>( List.of("strLinkedVal1","strLinkedVal2","strLinkedVal3","strLinkedVal4"));
+
+        this.linkedListStr_5092 = new LinkedList<>();
+        this.linkedListStr_5092.add("strLinkedVal1");
+        this.linkedListStr_5092.add("strLinkedVal2");
+        this.linkedListStr_5092.add("strLinkedVal3");
+        this.linkedListStr_5092.add("strLinkedVal4");
+
+//        strMap = new HashMap<>();
+//        strMap.put(1,"maoTestString1");
+//        strMap.put(2,"maoTestString2");
+//        strMap.put(3,"maoTestString3");
 
     }
 }

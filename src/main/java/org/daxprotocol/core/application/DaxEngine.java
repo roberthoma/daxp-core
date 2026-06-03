@@ -25,7 +25,7 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
-import org.daxprotocol.core.datatype.DaxDataTypeService;
+import org.daxprotocol.core.datatype.DaxDataTypeCollectionService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
@@ -88,8 +88,10 @@ public class DaxEngine {
     private DaxDispatcher dispatcher;
 
 
-    private DaxDataTypeService dataTypeService;
+    private DaxDataTypeCollectionService dataTypeCollectionService;
     private DaxDataTypeCodec dataTypeCodec;
+
+    private  DaxValueCodec valueCodec;
 
     //TODO move tagParser to tagCodec
 
@@ -110,8 +112,10 @@ public class DaxEngine {
         tagParser  = new DaxTagParser(contextMapper);
         tagCodec      = new DaxTagCodec     (config, contextMapper, tagParser );
 
-        dataTypeService = new DaxDataTypeService(tagCodec);
-        dataTypeCodec = new DaxDataTypeCodec(dataTypeService);
+        dataTypeCollectionService = new DaxDataTypeCollectionService(tagCodec);
+        dataTypeCodec = new DaxDataTypeCodec(dataTypeCollectionService);
+
+        valueCodec = new DaxValueCodec(dataTypeCodec);
 
         dictionary = new DaxDictionary(config, contextMapper, messageMapper,schemaMapper);
         dictionary.putContext(sysContext);
@@ -146,7 +150,7 @@ public class DaxEngine {
         );
 
         messageConverter     = new DaxMessageConverter(config,//contextMapper ,
-                dictionary, tagCodec, dataTypeCodec);
+                dictionary, tagCodec, dataTypeCodec, valueCodec);
 
 
 
@@ -156,9 +160,9 @@ public class DaxEngine {
 
         messageFactory       = new DaxMessageFactory(config,
                 tagCodec,  messageCodec,
-                                                     headCodec, bodyCodec, trailerCodec, dictionary,
-//                tagParser,
-                dataTypeCodec
+                headCodec, bodyCodec, trailerCodec, dictionary,
+                dataTypeCodec,
+                valueCodec
         );
 
 
@@ -257,8 +261,8 @@ public class DaxEngine {
         return dataTypeCodec;
     }
 
-    public DaxDataTypeService getDataTypeService() {
-        return dataTypeService;
+    public DaxDataTypeCollectionService getDataTypeCollectionService() {
+        return dataTypeCollectionService;
     }
 
     public void checkRegister() {

@@ -22,10 +22,13 @@ package org.daxprotocol.core.dictionary;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
+import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -33,32 +36,29 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
+//TODO join with DaxMessageCodec
 public class DaxMessageConverter {
+    private static final Logger logger = LoggerFactory.getLogger(DaxMessageConverter.class);
 
     DaxConfig config;
     DaxDictionary dictionary;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
+    DaxValueCodec valueCodec;
     public DaxMessageConverter(DaxConfig config,
             DaxDictionary dictionary,
             DaxTagCodec tagCodec,
-            DaxDataTypeCodec dataTypeCodec
+            DaxDataTypeCodec dataTypeCodec,
+            DaxValueCodec valueCodec
             ) {
         this.config = config;
         this.dictionary = dictionary;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
+        this.valueCodec = valueCodec;
     }
 
-///idea : create map <tag, field> and next by messa f
-///
      Map<DaxTag, Field> fieldMap = new HashMap<>();
-
-
-
-
-
-
 
     public <T> T createFromMessage(DaxMessage message, Class<T> targetClass, int blockIdx ) {
         try {
@@ -69,7 +69,7 @@ public class DaxMessageConverter {
             for (Field field : targetClass.getDeclaredFields()) {
                 DaxpField ann = field.getAnnotation(DaxpField.class);
 
-                if (ann == null) continue; // skip non-annotated fields (e.g., town)
+                if (ann == null) continue;
 
 
                 DaxTag tag = tagCodec.decode(ann);
@@ -83,22 +83,20 @@ public class DaxMessageConverter {
 
                 var pair = message.get(blockIdx,tag);
 
-
                 if (pair!=null) {
                     String raw = pair.getStrValue();
-                    Object converted = dataTypeCodec.convert(raw, field.getType());  // if not ..convert from dictionary
+                    Object converted = valueCodec.decode(raw, field.getType());  // if not ..convert from dictionary
                     field.set(instance, converted);
-                    continue; // gracefully ignore missing tags or empty
+                    continue;
                 }
 
+                //TODO extend for map
                 if ( message.isAnyReference(blockIdx,tag)){
                     Set<Integer> refBlocksIdx =  message.getRefBlocksIdx(blockIdx,tag);
 
                     if (Collection.class.isAssignableFrom(field.getType())) {
 
                         Collection<Object> collection = createCollectionInstance(field.getType());
-
-                            System.out.println("JEST LISTA >>>>");
 
                         for (Integer refIdx : refBlocksIdx) {
                             int targetBlockIdx = refIdx - 1;
@@ -111,23 +109,15 @@ public class DaxMessageConverter {
                                         .getStrValue();
                             }
                             else {
-
                                 elementValue = createFromMessage(message, elementClass, targetBlockIdx);
                             }
-
-
-
                             collection.add(elementValue);
-
                         }
-
-
-
                         field.set(instance, collection);
                     }
                     else{
 
-                      System.out.println("TODO  > "+ tagCodec.encode(tag)+ " refBlocksIdx = "+refBlocksIdx);
+                      logger.info("Tag :"+ tagCodec.encode(tag)+ " refBlocksIdx = "+refBlocksIdx);
                         if (!refBlocksIdx.isEmpty()) {
                             int targetBlockIdx = refBlocksIdx.iterator().next() - 1;
                             Object nestedObject = createFromMessage(message, field.getType(), targetBlockIdx);
@@ -214,7 +204,7 @@ public class DaxMessageConverter {
             if (pair==null) continue; // gracefully ignore missing tags or empty
 
             String raw = pair.getStrValue();
-            Object converted = dataTypeCodec.convert(raw, f.getType());  // if not ..convert from dictionary
+            Object converted = valueCodec.decode(raw, f.getType());  // if not ..convert from dictionary
 
             f.setAccessible(true);
             f.set(obj, converted);

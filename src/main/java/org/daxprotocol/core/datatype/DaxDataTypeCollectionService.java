@@ -2,17 +2,14 @@ package org.daxprotocol.core.datatype;
 
 import org.daxprotocol.core.annotation.DaxpCollection;
 import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairBoolean;
 import org.daxprotocol.core.model.pair.DaxPairDataType;
 import org.daxprotocol.core.model.pair.DaxPairTag;
-import org.daxprotocol.core.model.tag.DaxTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -27,14 +24,14 @@ import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_NAVIGABLE;
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_KEY_DATA_TYPE;
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE_DATA_TYPE;
 
-public class DaxDataTypeService {
-    private static final Logger logger = LoggerFactory.getLogger(DaxDataTypeService.class);
+public class DaxDataTypeCollectionService {
+    private static final Logger logger = LoggerFactory.getLogger(DaxDataTypeCollectionService.class);
     DaxTagCodec tagCodec;
 
-    public DaxDataTypeService(DaxTagCodec tagCodec) {
+    public DaxDataTypeCollectionService(DaxTagCodec tagCodec) {
         this.tagCodec = tagCodec;
     }
-
+    //--------------------------------------------------------------------------------------
     public boolean isCollection(Class<?> clazz) {
 
 
@@ -54,7 +51,7 @@ public class DaxDataTypeService {
         return false;
     }
 
-
+    //--------------------------------------------------------------------------------------
     public boolean isObjInstanceOfCollection(Object obj){
         if (obj instanceof List<?>) return true;
         if (obj instanceof Map<?,?>) return true;
@@ -63,7 +60,31 @@ public class DaxDataTypeService {
   //      if (obj instanceof Enum<?>) return true;
         return false;
     }
+    //--------------------------------------------------------------------------------------
+  /*
+    public DaxDataType decodeFromObject(Object obj) {
+        return dataTypeCollectionService.decodeClass(obj.getClass());
+        /*
+        if (obj == null) return DaxDataType.STRING; // Default
+        if (obj instanceof Integer) return DaxDataType.INTEGER;
+        if (obj instanceof Long) return DaxDataType.LONG;
+        if (obj instanceof BigDecimal) return DaxDataType.DECIMAL;
+        if (obj instanceof Double) return DaxDataType.DOUBLE;
+        if (obj instanceof Boolean) return DaxDataType.BOOLEAN;
+        if (obj instanceof LocalDate) return DaxDataType.LOCAL_DATE;
+        if (obj instanceof LocalDateTime) return DaxDataType.LOCAL_DATE_TIME;
+        if (obj instanceof String) return DaxDataType.STRING;
+        if (obj instanceof Character) return DaxDataType.CHARACTER;
+        if (obj instanceof Enum<?>) return DaxDataType.STRING;   //?????????
 
+        if (dataTypeCollectionService.isObjInstanceOfCollection( obj )) return DaxDataType.COLLECTION;
+
+        //Add entity ???
+
+        return DaxDataType.UNKNOWN;
+
+    }
+*/
     public    DaxDataType decodeClass(Class<?> clazz) {
         if (clazz == null) { return DaxDataType.UNKNOWN;}
 
@@ -78,6 +99,7 @@ public class DaxDataTypeService {
         if (clazz.equals(LocalDate.class)) return DaxDataType.LOCAL_DATE;
         if (clazz.equals(LocalDateTime.class)) return DaxDataType.LOCAL_DATE_TIME;
         if (clazz.equals(Character.class)) return DaxDataType.CHARACTER;
+        if (clazz.isEnum()) return DaxDataType.STRING;
 
         if(isCollection(clazz)) return DaxDataType.COLLECTION;
 
@@ -86,7 +108,7 @@ public class DaxDataTypeService {
 
         return DaxDataType.UNKNOWN;
     }
-
+    //--------------------------------------------------------------------------------------
     public  Class<?> getClass(Type type) {
         if (type instanceof Class<?>) {
             return (Class<?>) type;
@@ -95,7 +117,7 @@ public class DaxDataTypeService {
         }
         return null;
     }
-
+    //--------------------------------------------------------------------------------------
     public Set<DaxPair<?>> collectionEncode(Class<?> clazz, Type generitType){
         Set< DaxPair<?>> map = new HashSet<>();
         boolean isCollection = false;
@@ -148,8 +170,8 @@ public class DaxDataTypeService {
             throw new RuntimeException("It is NOT COLLECTION !!!");
         }
 
+                                  map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
 
-        map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
         if(isColAllowDuplicates)  map.add(new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
         if(isColHasKey)           map.add(new DaxPairBoolean(COLLECTION_HAS_KEY,true));
         if(isColDictionary)       map.add(new DaxPairBoolean(COLLECTION_IS_DICTIONARY,true));
@@ -203,39 +225,14 @@ public class DaxDataTypeService {
             }
         }
 
-
         if(isJavaEnum){
-
-
             map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,DaxDataType.STRING));
-
-            //        if (clazz.)
-///  Retrun as string val1, Val2,....
-        // If class has implemented DaxpDictionary then value ha each block
-
-//            Object[] constants = clazz.getEnumConstants();
-//
-//            if (constants != null){
-//                    for (Object c : constants) {
-//
-//                        System.out.println(">>>>> ENUM VAL="+c.toString());
-//                    }
-//            }
-//
-//        daxDic.putTagAttributes(enumTag,dataTypeCodec.encode(Enum.class) );
-
-
         }
-
-
-
-
-
 
         return map;
 
     }
-
+    //--------------------------------------------------------------------------------------
 
 
 }

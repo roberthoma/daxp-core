@@ -54,9 +54,8 @@ public class DaxMessageFactory {
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
     DaxDictionary dictionary;
-//    DaxTagParser tagParser;
     DaxDataTypeCodec dataTypeCodec;
-
+    DaxValueCodec valueCodec;
     DaxDictionaryMessageFactory dicMessageFactory;
     DaxObjectMessageService objectMessageService;
 
@@ -67,8 +66,8 @@ public class DaxMessageFactory {
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
             DaxDictionary dictionary,
-//            DaxTagParser tagParser,
-            DaxDataTypeCodec dataTypeCodec
+            DaxDataTypeCodec dataTypeCodec,
+            DaxValueCodec valueCodec
 
             ) {
         this.config = config;
@@ -78,10 +77,10 @@ public class DaxMessageFactory {
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
         this.dictionary = dictionary;
-//        this.tagParser = tagParser;
         this.dataTypeCodec = dataTypeCodec;
-        this.dicMessageFactory = new DaxDictionaryMessageFactory(tagCodec,dictionary);
-        this.objectMessageService = new DaxObjectMessageService(tagCodec, dataTypeCodec);
+        this.valueCodec = valueCodec;
+        this.dicMessageFactory    = new DaxDictionaryMessageFactory(tagCodec,dictionary);
+        this.objectMessageService = new DaxObjectMessageService(tagCodec, dataTypeCodec, valueCodec);
 
     }
 
