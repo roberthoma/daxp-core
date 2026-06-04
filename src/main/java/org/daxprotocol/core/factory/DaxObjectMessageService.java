@@ -55,15 +55,19 @@ public class DaxObjectMessageService {
         this.valueCodec = valueCodec;
     }
 
+
+
+
     private void putValueToBlock(int blockIdx,DaxTag tag, DaxBody body, Object object,
                                  Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
+        boolean isMap = false;
         if (  object.getClass().isAnnotationPresent(DaxpEntity.class))
         {
             body.nextBlock(DaxBlockType.BLOCK_VALUE);
             int nestedIdx = body.getCurrentIdx();
             body.putTagBlockReference(blockIdx, tag, (nestedIdx+1));
-           // body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
+            body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
             objectToMsgBlock(nestedIdx, tag,  object,  body , reqTagSet, ownerTag);
         }
         else {
@@ -76,33 +80,71 @@ public class DaxObjectMessageService {
                 Iterator<?> iterator;
                 if (dataTypeCodec.isMap_TMP(object) ){
                     System.out.println("IT IS MAP >>>>>>>>>>>>> ");
-//                    iterator  = ((Map<?,?>)object).values().iterator();
                     iterator  = ((Map<?,?>)object).entrySet().iterator();
+
+                    iterator.forEachRemaining(objVal ->
+                            {
+                                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) objVal;
+
+                                Object key = entry.getKey();
+                                Object value = entry.getValue();
+                                body.nextBlock(DaxBlockType.BLOCK_VALUE);
+
+                                int nestedIdx = body.getCurrentIdx();
+                                body.putTagBlockReference(blockIdx, tag, (nestedIdx+1));
+
+                                if(dataTypeCodec.isPrimitiveType (value))
+                                {
+                                    body.putPair(nestedIdx, valueCodec.encode(COLLECTION_VALUE,value ));
+                                    body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
+                                    body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
+                                }
+                                else {
+                                    logger.trace("IS NOT primitive 1 {}",object.getClass().getName());
+                                    objectToMsgBlock(nestedIdx, tag,  value,  body , reqTagSet, ownerTag);
+                                }
+
+                                if(dataTypeCodec.isPrimitiveType (key))
+                                {
+                                    body.putPair(nestedIdx, valueCodec.encode(COLLECTION_KEY,key ));
+//                                    body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
+//                                    body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
+                                }
+                                else {
+                                    logger.trace("IS NOT primitive 1.2 {}",object.getClass().getName());
+                                    objectToMsgBlock(nestedIdx, tag,  key,  body , reqTagSet, ownerTag);
+                                }
+
+
+                            }
+                    );
+
+
 
                 }else {
 
+                    iterator  = ((Collection<?>)object).iterator();
 
-                 iterator  = ((Collection<?>)object).iterator();
-                }
-
-                iterator.forEachRemaining(objVal ->
-                    {
-                        body.nextBlock(DaxBlockType.BLOCK_VALUE);
-                        int nestedIdx = body.getCurrentIdx();
-                        body.putTagBlockReference(blockIdx, tag, (nestedIdx+1));
-
-
-                        if(dataTypeCodec.isPrimitiveType (objVal))
+                    iterator.forEachRemaining(objVal ->
                         {
-                            body.putPair(nestedIdx, valueCodec.encode(COLLECTION_VALUE,objVal.toString() ));
-                         //   body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
-                            body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
+
+                            body.nextBlock(DaxBlockType.BLOCK_VALUE);
+                            int nestedIdx = body.getCurrentIdx();
+                            body.putTagBlockReference(blockIdx, tag, (nestedIdx+1));
+
+                            if(dataTypeCodec.isPrimitiveType (objVal))
+                            {
+                                body.putPair(nestedIdx, valueCodec.encode(COLLECTION_VALUE,objVal ));
+                                body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
+                                body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
+                            }
+                            else {
+                               logger.trace("IS NOT primitive 2 {}",object.getClass().getName());
+                               objectToMsgBlock(nestedIdx, tag,  objVal,  body , reqTagSet, ownerTag);
+                            }
                         }
-                        else {
-                           objectToMsgBlock(nestedIdx, tag,  objVal,  body , reqTagSet, ownerTag);
-                        }
-                    }
-                );
+                    );
+                }
 
             }
             else {

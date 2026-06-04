@@ -178,7 +178,8 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_ID = daxpSysTag(129);
     public static final DaxTag COL_NAME               = daxpSysTag(130);
     //    public static final DaxTag COL_DESCRIPTION        = daxpSysTag(131);
-    public static final DaxTag COLLECTION_VALUE = daxpSysTag(132);
+    public static final DaxTag COLLECTION_KEY = daxpSysTag(132);
+    public static final DaxTag COLLECTION_VALUE = daxpSysTag(133);
 
 //    public static final DaxTag COL_VALUE_DESCRIPTION  = daxpSysTag(133);
 //    public static final DaxTag COL_VALUE_SYMBOL       = daxpSysTag(134);
