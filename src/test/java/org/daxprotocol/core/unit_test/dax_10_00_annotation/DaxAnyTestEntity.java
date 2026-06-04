@@ -83,7 +83,7 @@ public class DaxAnyTestEntity {
     @DaxpField("5100")
     DaxSubNoTagEntity subNoTagEntity;
 
-    @DaxpField("5112")
+    @DaxpField("FIX:5112")
     String  emptyStringS1;
 
 

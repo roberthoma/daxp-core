@@ -51,7 +51,6 @@ public class DaxFrameParser {
     DaxMessageFactory messageFactory;
     DaxPreambleCodec preambleCodec;
 
-    //char[] separators = { DaxCoreConstants.DEFAULT_PAIR_SEPARATOR,'|','^','#'};
     public DaxFrameParser(DaxConfig config,
                             DaxTagParser tagParser,
                             DaxDictionary daxDic,
@@ -142,16 +141,57 @@ public class DaxFrameParser {
                 continue;
             }
 
+            //===============================================================
+
+            int operatorIdx = -1;
+            char foundOperator = 0;
+
+// Jeden, szybki skan w poszukiwaniu najbliższego operatora
+            for (int i = prevIdx; i < idx; i++) {
+                char c = frameStr.charAt(i);
+                if (c == DaxCoreConstants.EQUAL || c == '@' || c == '#') {
+                    operatorIdx = i;
+                    foundOperator = c;
+                    break; // Znaleziony! Przerywamy pętlę, oszczędzamy CPU.
+                }
+            }
+
+// Logika maszyny stanów oparta na znalezionym operatorze
+//            if (operatorIdx != -1) {
+//                // Wyciągasz ID tagu bez substringa - np. metodą matematyczną bezpośrednio z pozycji (prevIdx do operatorIdx)
+//                int tagId = parseTagIdMath(frameStr, prevIdx, operatorIdx);
+//
+//                switch (foundOperator) {
+//                    case '=':
+//                        // Logika dla wartości prostej (szukasz końca segmentu '|' od pozycji operatorIdx + 1)
+//                        break;
+//                    case '@':
+//                        // Logika dla relacji blokowej '@['
+//                        break;
+//                    case '#':
+//                        // Logika dla akcji systemowej '#'
+//                        break;
+//                }
+//            }
+
+            //========================================<<
 
 
-            int equalChar = frameStr.substring(prevIdx, idx).indexOf(DaxCoreConstants.EQUAL) + prevIdx;
-            if ( prevIdx > equalChar) {
+//            int equalChar    = frameStr.substring(prevIdx, idx).indexOf(DaxCoreConstants.EQUAL) + prevIdx;
+//            int equalChar    =   frameStr.indexOf(DaxCoreConstants.EQUAL, prevIdx);
+//            int blockRefChar =   frameStr.indexOf('@', prevIdx);
+//            int actionChar   =   frameStr.indexOf('#', prevIdx);
+
+
+
+
+            if ( prevIdx > operatorIdx) {
                 throw new DaxFrameParserException("IT IS ANY INCOMPATIBLE MESSAGE !!!");
             }
 
 
-            tagStr = frameStr.substring(prevIdx, equalChar).trim();
-            valueStr = frameStr.substring(equalChar + 1, idx);
+            tagStr = frameStr.substring(prevIdx, operatorIdx).trim();
+            valueStr = frameStr.substring(operatorIdx + 1, idx);
 
             sum += DaxChecksumService.calculateSum(tagStr);
             sum += DaxChecksumService.calculateSum(valueStr);
@@ -194,7 +234,7 @@ public class DaxFrameParser {
                         pair = new DaxPairTagSet(tag, daxTagSet);
                     }
                     else {
-                        pair = new DaxPairString(tag, valueStr );
+                        pair = new DaxPairString(tag, valueStr ,foundOperator);
                     }
 
                     listOfPair.add(pair);

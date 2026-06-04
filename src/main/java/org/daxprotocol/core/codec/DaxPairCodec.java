@@ -30,19 +30,18 @@ public class DaxPairCodec {
     public DaxPairCodec(  DaxTagCodec tagCodec) {
         this.tagCodec = tagCodec;
     }
-
-    public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator) {
+    public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator, char operator) {
 
         if (strValue == null || strValue.trim().isBlank())
         {
             sb.append(tagCodec.encode(DaxCoreTags.VALUE_IS_NULL))
-                    .append(DaxCoreConstants.EQUAL)
+                    .append(operator)
                     .append(tagCodec.encode(tag))
                     .append(pairSeparator);
         }
         else {
             sb.append(tagCodec.encode(tag))
-                    .append(DaxCoreConstants.EQUAL)
+                    .append(operator)
                     .append(strValue)
                     .append(pairSeparator);
         }
@@ -50,20 +49,24 @@ public class DaxPairCodec {
         return sb.toString() ;
     }
 
+    public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator) {
+        return encode(sb, tag, strValue , pairSeparator, DaxCoreConstants.EQUAL);
+    }
+
 
     public   String encode(StringBuilder sb, DaxPair<?> daxPair, char pairSeparator ) {
         String value;
         if (daxPair.getValue() instanceof DaxTag){
             value = tagCodec.encode((DaxTag) daxPair.getValue());
-            return encode(sb,daxPair.getTag(),value ,pairSeparator );
+            return encode(sb,daxPair.getTag(),value ,pairSeparator , daxPair.getOperator());
         }
         if (daxPair.getValue() instanceof DaxDataType){
             value =  daxPair.getDataTypeValue().getCode();
-            return encode(sb,daxPair.getTag(),value ,pairSeparator );
+            return encode(sb,daxPair.getTag(),value ,pairSeparator , daxPair.getOperator());
 
         }
 
         value = daxPair.getStrValue();
-        return encode(sb,daxPair.getTag(),value ,pairSeparator );
+        return encode(sb,daxPair.getTag(),value ,pairSeparator, daxPair.getOperator() );
     }
 }

@@ -26,4 +26,9 @@ public class DaxPairString extends DaxPair<String> {
         super(tag, value);
     }
 
+    public DaxPairString(DaxTag tag, String value,char operator){
+        super(tag, value, operator);
+    }
+
+
 }

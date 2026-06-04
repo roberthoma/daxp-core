@@ -19,16 +19,25 @@
  */
 package org.daxprotocol.core.model.pair;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 public abstract class DaxPair<T>{
     DaxTag tag;
+    char operator;
     protected T value;
 
     public DaxPair(DaxTag tag, T value){
         this.tag = tag;
         this.value = value;
+        this.operator = DaxCoreConstants.EQUAL;
+    }
+
+    public DaxPair(DaxTag tag, T value, char operator){
+        this.tag = tag;
+        this.value = value;
+        this.operator = operator;
     }
 
     public Class<?> getClazz(){
@@ -54,6 +63,9 @@ public abstract class DaxPair<T>{
         return value.toString().charAt(0);
     };
 
+    public char getOperator(){
+        return operator;
+    }
 
     public void setValue(T value) {
         this.value = value;

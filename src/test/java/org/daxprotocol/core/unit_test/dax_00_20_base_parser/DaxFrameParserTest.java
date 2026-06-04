@@ -190,5 +190,24 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
 
     }
 
+    @Test
+    void parseFrame_06(){
+
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|MQ=1|"+
+                "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|2005@4;5|$:9=177|";
+        DaxFrame frame;
+        try {
+            frame = frameParser.parseFrame(msgStr);
+            DaxMessage msg = frame.getFirstMessage();
+            Assertions.assertEquals ("CDD", msg.getMsgType());
+
+
+        } catch (DaxException e) {
+            System.out.println(e.getDaxErrorCode());
+            System.out.println(e.getMessage());
+            Assertions.fail();
+        }
+
+    }
 }
 

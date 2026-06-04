@@ -80,21 +80,21 @@ public class DaxBodyCodec {
             }
         });
 
-        tagBlockRefMap.forEach((tag, i)
-                -> pairCodec.encode(sb, new DaxPairString(DaxCoreTags.REFERENCE_BLOCK,
-                                             tagCodec.encode(tag) + DaxCoreConstants.REFERENCE_AT_BLOCK_CHAR +i)
-                                    , pairSeparator)
+        //TODO Refactor blockSet.toString to own method
+        tagBlockRefMap.forEach((tag, blockSet)
+                -> pairCodec.encode(sb, new DaxPairString(tag,blockSet.toString(),
+                                                           DaxCoreConstants.REFERENCE_AT_BLOCK_CHAR)
+                                    ,pairSeparator )
         );
 
 
+
+
         if (nullTags!=null && !nullTags.isEmpty()){
-            String str;
 
-            str = nullTags.stream()
-                    .map(s -> tagCodec.encode(s))
-                    .collect(Collectors.joining(DaxCoreConstants.TAG_LIST_SEPARATOR));
-
-           pairCodec.encode(sb, new DaxPairString(VALUE_IS_NULL,str), pairSeparator);
+            nullTags.forEach(daxTag ->
+                  pairCodec.encode(sb, new DaxPairString(daxTag,"N", '#'), pairSeparator)
+            );
         }
     }
 

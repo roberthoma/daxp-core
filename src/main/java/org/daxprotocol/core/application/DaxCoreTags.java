@@ -77,7 +77,7 @@ public class DaxCoreTags {
     public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);
     public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(7);
     public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(77);
-    public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(8);
+  //  public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(8);   is free :)
 
     /******************************
      * Trailer tag
