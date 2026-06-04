@@ -61,7 +61,7 @@ public class DaxCoreTags {
     /**********************************
      * UNKNOW_TAG  ;(
      */
-     public static final DaxTag UNKNOW_TAG             = daxpSysTag(-1);
+     public static final DaxTag UNKNOWN_TAG             = daxpSysTag(-1);
 
     /**
      * Head TAGS

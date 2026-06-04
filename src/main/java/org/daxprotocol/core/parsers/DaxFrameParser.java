@@ -33,7 +33,6 @@ import org.daxprotocol.core.exceptions.DaxPreambleException;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.exceptions.DaxFrameParserException;
-import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -48,20 +47,17 @@ public class DaxFrameParser {
     private static final Logger logger = LoggerFactory.getLogger(DaxFrameParser.class);
 
     DaxTagParser tagParser;
-    //DaxContextMapper contextMapper;
     DaxConfig config;
     DaxMessageFactory messageFactory;
     DaxPreambleCodec preambleCodec;
 
     //char[] separators = { DaxCoreConstants.DEFAULT_PAIR_SEPARATOR,'|','^','#'};
     public DaxFrameParser(DaxConfig config,
-                          //  DaxContextMapper contextMapper,
                             DaxTagParser tagParser,
                             DaxDictionary daxDic,
             DaxMessageFactory messageFactory,
             DaxPreambleCodec preambleCodec) {
         this.tagParser = tagParser;
-        //this.contextMapper = contextMapper;
         this.config = config;
         this.messageFactory = messageFactory;
         this.preambleCodec = preambleCodec;
@@ -148,7 +144,7 @@ public class DaxFrameParser {
 
 
 
-            int equalChar = frameStr.substring(prevIdx, idx).indexOf('=') + prevIdx;
+            int equalChar = frameStr.substring(prevIdx, idx).indexOf(DaxCoreConstants.EQUAL) + prevIdx;
             if ( prevIdx > equalChar) {
                 throw new DaxFrameParserException("IT IS ANY INCOMPATIBLE MESSAGE !!!");
             }

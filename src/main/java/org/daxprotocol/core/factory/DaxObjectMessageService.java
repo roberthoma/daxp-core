@@ -61,7 +61,7 @@ public class DaxObjectMessageService {
     private void putValueToBlock(int blockIdx,DaxTag tag, DaxBody body, Object object,
                                  Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
-        boolean isMap = false;
+
         if (  object.getClass().isAnnotationPresent(DaxpEntity.class))
         {
             body.nextBlock(DaxBlockType.BLOCK_VALUE);
@@ -73,7 +73,6 @@ public class DaxObjectMessageService {
         else {
             logger.trace("OBJECT TEST blockIdx={} objName={}",blockIdx,object.getClass().getName());
 
-//            if (dataTypeCodec.decodeBaseDataType(object).equals(DaxDataType.COLLECTION) ){
             if (dataTypeCodec.isCollection(object)){
                 logger.trace("IS COLLECTION objName={}",object.getClass().getName());
 
@@ -107,8 +106,7 @@ public class DaxObjectMessageService {
                                 if(dataTypeCodec.isPrimitiveType (key))
                                 {
                                     body.putPair(nestedIdx, valueCodec.encode(COLLECTION_KEY,key ));
-//                                    body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
-//                                    body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
+
                                 }
                                 else {
                                     logger.trace("IS NOT primitive 1.2 {}",object.getClass().getName());

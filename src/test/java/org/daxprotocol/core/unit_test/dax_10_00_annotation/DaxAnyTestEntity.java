@@ -91,6 +91,8 @@ public class DaxAnyTestEntity {
     Map<Integer,String>  strMap;
 
 
+    @DaxpField("5116")
+    Map<Integer,DaxSubEntity>  subEntityMap;
 
     public int getAnyInt() {
         return anyInt;
@@ -157,6 +159,11 @@ public class DaxAnyTestEntity {
         strMap.put(1,"mapTestString1");
         strMap.put(2,"mapTestString2");
         strMap.put(3,"mapTestString3");
+
+        subEntityMap = new HashMap<>();
+        subEntityMap.put(11,new DaxSubEntity(237,"set_subEntity11",72.56));
+        subEntityMap.put(12, new DaxSubEntity(849,"set_subEntity12",55.54));
+        subEntityMap.put(14, new DaxSubEntity(69,"set_subEntity14",234.47));
 
     }
 }
