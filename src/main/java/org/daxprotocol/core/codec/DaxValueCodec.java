@@ -36,9 +36,23 @@ public class DaxValueCodec {
     }
 
     //--------------------------------------------------------------------------------------
-
+//TODO refactor
     public Set<DaxPair<?>> encode(DaxTag tag,  Object obj) {
+        if(obj == null){
+            return Set.of(new DaxPairString(tag, "N",'#'));
+        }
+
         DaxDataType dataType = dataTypeCodec.decodeBaseDataType(obj);
+
+        if (dataType.equals(DaxDataType.STRING) &&  obj.toString().trim().isBlank()){
+            return Set.of(new DaxPairString(tag, "N",'#'));
+        }
+
+        if (dataType.equals(DaxDataType.CHARACTER) && ((Character) obj)==0){
+            return Set.of(new DaxPairString(tag, "N",'#'));
+        }
+
+
         return switch (dataType){
             case COLLECTION ->  dataTypeCodec.encode(obj.getClass());   //TODO to change ?????
             case STRING ->  Set.of( new DaxPairString(tag, obj.toString()));

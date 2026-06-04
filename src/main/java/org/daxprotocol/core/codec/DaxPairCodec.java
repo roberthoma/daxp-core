@@ -32,7 +32,7 @@ public class DaxPairCodec {
     }
     public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator, char operator) {
 
-        if (strValue == null || strValue.trim().isBlank())
+        /*if (strValue == null || strValue.trim().isBlank())
         {
             sb.append(tagCodec.encode(DaxCoreTags.VALUE_IS_NULL))
                     .append(operator)
@@ -40,11 +40,12 @@ public class DaxPairCodec {
                     .append(pairSeparator);
         }
         else {
+        */
             sb.append(tagCodec.encode(tag))
                     .append(operator)
                     .append(strValue)
                     .append(pairSeparator);
-        }
+        //}
 
         return sb.toString() ;
     }
