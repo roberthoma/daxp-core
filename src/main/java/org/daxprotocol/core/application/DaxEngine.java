@@ -25,7 +25,7 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
-import org.daxprotocol.core.datatype.DaxDataTypeCollectionService;
+import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
@@ -88,7 +88,7 @@ public class DaxEngine {
     private DaxDispatcher dispatcher;
 
 
-    private DaxDataTypeCollectionService dataTypeCollectionService;
+    private DaxDataTypeService dataTypeCollectionService;
     private DaxDataTypeCodec dataTypeCodec;
 
     private  DaxValueCodec valueCodec;
@@ -112,8 +112,8 @@ public class DaxEngine {
         tagParser  = new DaxTagParser(contextMapper);
         tagCodec      = new DaxTagCodec     (config, contextMapper, tagParser );
 
-        dataTypeCollectionService = new DaxDataTypeCollectionService(tagCodec);
-        dataTypeCodec = new DaxDataTypeCodec(dataTypeCollectionService);
+        dataTypeCollectionService = new DaxDataTypeService();
+        dataTypeCodec = new DaxDataTypeCodec(dataTypeCollectionService, tagCodec);
 
         valueCodec = new DaxValueCodec(dataTypeCodec);
 
@@ -261,7 +261,7 @@ public class DaxEngine {
         return dataTypeCodec;
     }
 
-    public DaxDataTypeCollectionService getDataTypeCollectionService() {
+    public DaxDataTypeService getDataTypeCollectionService() {
         return dataTypeCollectionService;
     }
 

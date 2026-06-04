@@ -47,7 +47,7 @@ public class DaxValueCodec {
             case BOOLEAN -> Set.of(new DaxPairBoolean(tag,(Boolean) obj));
             case DOUBLE -> Set.of(new DaxPairDouble(tag,(Double) obj));
             case TAG       -> Set.of(new DaxPairTag(tag,(DaxTag) obj));
-            default      -> { //TODO Logger
+            default      -> { logger.error(" NO DATA TYPE CONVERTING {}",obj.getClass().getName());
                 throw new RuntimeException("NO DATA TYPE CONVERTING !!!");}
         };
 

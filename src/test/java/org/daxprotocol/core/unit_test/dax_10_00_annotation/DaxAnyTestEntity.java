@@ -40,7 +40,7 @@ public class DaxAnyTestEntity {
     char fixTestValue_FIX_51;
 
     @DaxpField(tagId = TEST_ENUM_VALUE_5032)
-    DaxAnyTestEnum enumValue;
+    DaxAnyTestEnum enumValue_5032;
 
 
     @DaxpField(tagId = TEST_VALUE_SUB_ENTITY_5077)
@@ -112,8 +112,8 @@ public class DaxAnyTestEntity {
         return fixTestValue_FIX_51;
     }
 
-    public DaxAnyTestEnum getEnumValue() {
-        return enumValue;
+    public DaxAnyTestEnum getEnumValue_5032() {
+        return enumValue_5032;
     }
 
     public DaxSubEntity getSubEntity() {
@@ -136,7 +136,7 @@ public class DaxAnyTestEntity {
         this.stringSet_5089.add("DEF");
         this.stringSet_5089.add("GHI");
 
-        this.enumValue = DaxAnyTestEnum.ENUM_VALUE1;
+        this.enumValue_5032 = DaxAnyTestEnum.ENUM_VALUE1;
         this.subEntity = new DaxSubEntity(14,"subEntity1",761.24);
         this.subDTO2   = new DaxSubEntity(34,"subEntity2",654.66);
 
@@ -153,10 +153,10 @@ public class DaxAnyTestEntity {
         this.linkedListStr_5092.add("strLinkedVal3");
         this.linkedListStr_5092.add("strLinkedVal4");
 
-//        strMap = new HashMap<>();
-//        strMap.put(1,"maoTestString1");
-//        strMap.put(2,"maoTestString2");
-//        strMap.put(3,"maoTestString3");
+        strMap = new HashMap<>();
+        strMap.put(1,"mapTestString1");
+        strMap.put(2,"mapTestString2");
+        strMap.put(3,"mapTestString3");
 
     }
 }

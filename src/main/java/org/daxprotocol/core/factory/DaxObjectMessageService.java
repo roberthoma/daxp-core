@@ -39,6 +39,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
@@ -66,11 +67,23 @@ public class DaxObjectMessageService {
             objectToMsgBlock(nestedIdx, tag,  object,  body , reqTagSet, ownerTag);
         }
         else {
-            logger.trace("COL blockIdx={} objName={}",blockIdx,object.getClass().getName());
+            logger.trace("OBJECT TEST blockIdx={} objName={}",blockIdx,object.getClass().getName());
 
-            if (dataTypeCodec.decodeBaseDataType(object).equals(DaxDataType.COLLECTION) ){
-//              if ( ){
-                Iterator<?> iterator  = ((Collection<?>)object).iterator();
+//            if (dataTypeCodec.decodeBaseDataType(object).equals(DaxDataType.COLLECTION) ){
+            if (dataTypeCodec.isCollection(object)){
+                logger.trace("IS COLLECTION objName={}",object.getClass().getName());
+
+                Iterator<?> iterator;
+                if (dataTypeCodec.isMap_TMP(object) ){
+                    System.out.println("IT IS MAP >>>>>>>>>>>>> ");
+//                    iterator  = ((Map<?,?>)object).values().iterator();
+                    iterator  = ((Map<?,?>)object).entrySet().iterator();
+
+                }else {
+
+
+                 iterator  = ((Collection<?>)object).iterator();
+                }
 
                 iterator.forEachRemaining(objVal ->
                     {
@@ -79,8 +92,9 @@ public class DaxObjectMessageService {
                         body.putTagBlockReference(blockIdx, tag, (nestedIdx+1));
 
 
-                        if(dataTypeCodec.decodeBaseDataType(objVal).equals(DaxDataType.STRING)){
-                            body.putPair(nestedIdx, valueCodec.encode(COLLECTION_VALUE,objVal ));
+                        if(dataTypeCodec.isPrimitiveType (objVal))
+                        {
+                            body.putPair(nestedIdx, valueCodec.encode(COLLECTION_VALUE,objVal.toString() ));
                          //   body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
                             body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
                         }
@@ -92,6 +106,7 @@ public class DaxObjectMessageService {
 
             }
             else {
+               logger.trace("IS VALUE objName={}",object.getClass().getName());
                body.putPair(blockIdx, valueCodec.encode(tag,object ));
             }
         }

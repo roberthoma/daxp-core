@@ -20,25 +20,30 @@
 
 package org.daxprotocol.core.datatype;
 
+import org.daxprotocol.core.annotation.DaxpCollection;
+import org.daxprotocol.core.annotation.DaxpEntity;
+import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.function.Function;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
 public class DaxDataTypeCodec {
     private static final Logger logger = LoggerFactory.getLogger(DaxDataTypeCodec.class);
-    DaxDataTypeCollectionService dataTypeCollectionService;
+    DaxDataTypeService dataTypeService;
+    DaxTagCodec tagCodec;
+
 
     //--------------------------------------------------------------------------------------
-    public DaxDataTypeCodec(DaxDataTypeCollectionService dataTypeCollectionService){
-        this.dataTypeCollectionService = dataTypeCollectionService;
-
+    public DaxDataTypeCodec(DaxDataTypeService dataTypeService, DaxTagCodec tagCodec){
+        this.dataTypeService = dataTypeService;
+        this.tagCodec = tagCodec;
 
     }
     //--------------------------------------------------------------------------------------
@@ -86,20 +91,34 @@ public class DaxDataTypeCodec {
 
     public Set<DaxPair<?>> encode(Class<?> clazz, Type generitType){
 
-        if (dataTypeCollectionService.isCollection(clazz)){
-            return dataTypeCollectionService.collectionEncode(clazz,generitType);
+        if (dataTypeService.isCollection(clazz)){
+            return collectionEncode(clazz,generitType);
         }
 
         //develop as generic collection
         Set< DaxPair<?>> map = new HashSet<>();
 
         map.add( new DaxPairDataType(ATR_DATA_TYPE,
-                DaxDataType.fromCode(  dataTypeCollectionService.decodeClass(clazz).getCode())));
+                DaxDataType.fromCode(  dataTypeService.decodeClass(clazz).getCode())));
         return map;
     }
     //--------------------------------------------------------------------------------------
     public DaxDataType decodeBaseDataType(Object obj) {
-        return dataTypeCollectionService.decodeClass(obj.getClass());
+        return dataTypeService.decodeClass(obj.getClass());
+    }
+    //--------------------------------------------------------------------------------------
+    public boolean isCollection(Object object){
+//        return dataTypeService.decodeClass(object.getClass()).equals(DaxDataType.COLLECTION) ;
+        return dataTypeService.decodeFromObject(object).equals(DaxDataType.COLLECTION) ;
+    }
+    //--------------------------------------------------------------------------------------
+    public boolean isCollection(Class<?> clazz){
+        return dataTypeService.decodeClass(clazz).equals(DaxDataType.COLLECTION) ;
+    }
+
+    //--------------------------------------------------------------------------------------
+    public boolean isPrimitiveType(Object obj){
+        return  dataTypeService.isPrimitiveType(obj.getClass());
     }
 
     //--------------------------------------------------------------------------------------
@@ -107,6 +126,79 @@ public class DaxDataTypeCodec {
 
     public Map<DaxTag, DaxPair<?>> encode(DaxDataType daxDataType) {
         throw new RuntimeException("Map<DaxTag, DaxPair<?>> encode  NOT IMPLEMENTED JED");
+    }
+
+    public boolean isMap_TMP(Object object) {
+        DaxCollectionInfo info = dataTypeService.getCollectionInfo(object.getClass());
+
+        return info.isColHasKey && !info.isJavaEnum;
+    }
+    //--------------------------------------------------------------------------------------
+    public Set<DaxPair<?>> collectionEncode(Class<?> clazz, Type generitType){
+        Set< DaxPair<?>> map = new HashSet<>();
+        DaxCollectionInfo colInfo = dataTypeService.getCollectionInfo(clazz);
+
+        map.add(new DaxPairDataType(ATR_DATA_TYPE,DaxDataType.COLLECTION));
+
+        if(colInfo.isColAllowDuplicates)  map.add(new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
+        if(colInfo.isColHasKey)           map.add(new DaxPairBoolean(COLLECTION_HAS_KEY,true));
+        if(colInfo.isColDictionary)       map.add(new DaxPairBoolean(COLLECTION_IS_DICTIONARY,true));
+        if(colInfo.isColNavigable)        map.add(new DaxPairBoolean(COLLECTION_NAVIGABLE,true));
+
+
+        //**************************************
+
+        DaxDataType valueDataType = DaxDataType.NONE;
+        DaxDataType keyDataType = DaxDataType.NONE;
+
+        if (generitType instanceof ParameterizedType pt) {
+
+            logger.info( "GeneritType.getTypeName()= {}", generitType.getTypeName());
+
+            Type rawType = pt.getRawType();
+            Type[] args = pt.getActualTypeArguments();
+//            Annotation ann;
+            if (colInfo.isColHasKey){
+                keyDataType   = dataTypeService.decodeClass( args[0]);
+                valueDataType = dataTypeService.decodeClass( args[1]);
+
+                map.add(new DaxPairDataType(COLLECTION_KEY_DATA_TYPE,keyDataType));
+                map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,valueDataType));
+
+                if(valueDataType.equals(DaxDataType.ENTITY))
+                {
+                    DaxpEntity entAnn =  dataTypeService.castToClass(args[1]).getAnnotation(DaxpEntity.class);
+                    map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(entAnn)));
+                }
+
+
+                if(valueDataType.equals(DaxDataType.COLLECTION))
+                {
+                    if (dataTypeService.castToClass(args[1]).isAnnotationPresent(DaxpCollection.class)){
+                        DaxpCollection colAnn =  dataTypeService.castToClass(args[1]).getAnnotation(DaxpCollection.class);
+                        map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(colAnn)));
+                    }
+                }
+
+
+            }else {
+                valueDataType = dataTypeService.decodeClass( args[0]);
+                map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,valueDataType));
+                if(valueDataType.equals(DaxDataType.ENTITY))
+                {
+                    DaxpEntity entAnn =  dataTypeService.castToClass(args[0]).getAnnotation(DaxpEntity.class);
+                    map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(entAnn)));
+                }
+
+            }
+        }
+
+        if(colInfo.isJavaEnum){
+            map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,DaxDataType.STRING));
+        }
+
+        return map;
+
     }
     //--------------------------------------------------------------------------------------
 
