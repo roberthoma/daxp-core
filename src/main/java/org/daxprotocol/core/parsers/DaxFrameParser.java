@@ -27,8 +27,6 @@ import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.pair.DaxPairString;
-import org.daxprotocol.core.model.pair.DaxPairTagSet;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -42,7 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import static org.daxprotocol.core.application.DaxCoreConstants.*;
 
 public class DaxFrameParser {
@@ -252,6 +249,6 @@ public class DaxFrameParser {
 
 
     public DaxFrame parseFromMap(Map<String, String> params) {
-        throw new RuntimeException("parseFromMap not implemented jet !!!");
+        throw new RuntimeException("ParseFromMap not implemented jet !!!");
     }
 }

@@ -62,7 +62,7 @@ public class DaxMessageConverter {
 
     public <T> T createFromMessage(DaxMessage message, Class<T> targetClass, int blockIdx ) {
         try {
-            // TODO Check tha exist default contractor
+            // TODO Check tha exist default constructor
             T instance = targetClass.getDeclaredConstructor().newInstance();
 
 

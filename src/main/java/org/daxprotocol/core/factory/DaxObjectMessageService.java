@@ -26,7 +26,6 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.datatype.DaxBlockType;
-import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPairTag;
@@ -94,7 +93,7 @@ public class DaxObjectMessageService {
 
                                 if(dataTypeCodec.isPrimitiveType (value))
                                 {
-                                    body.putPair(nestedIdx, valueCodec.encode(COLLECTION_VALUE,value ));
+                                    body.putPair(nestedIdx, valueCodec.encodeToPairs(COLLECTION_VALUE,value ));
                                     body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
                                     body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
                                 }
@@ -105,7 +104,7 @@ public class DaxObjectMessageService {
 
                                 if(dataTypeCodec.isPrimitiveType (key))
                                 {
-                                    body.putPair(nestedIdx, valueCodec.encode(COLLECTION_KEY,key ));
+                                    body.putPair(nestedIdx, valueCodec.encodeToPairs(COLLECTION_KEY,key ));
 
                                 }
                                 else {
@@ -132,7 +131,7 @@ public class DaxObjectMessageService {
 
                             if(dataTypeCodec.isPrimitiveType (objVal))
                             {
-                                body.putPair(nestedIdx, valueCodec.encode(COLLECTION_VALUE,objVal ));
+                                body.putPair(nestedIdx, valueCodec.encodeToPairs(COLLECTION_VALUE,objVal ));
                                 body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID,ownerTag));
                                 body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG,tag));
                             }
@@ -147,7 +146,7 @@ public class DaxObjectMessageService {
             }
             else {
                logger.trace("IS VALUE objName={}",object.getClass().getName());
-               body.putPair(blockIdx, valueCodec.encode(tag,object ));
+               body.putPair(blockIdx, valueCodec.encodeToPairs(tag,object ));
             }
         }
 

@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+
+//TODO DaxMessagePopulator joint  with message codec
 public class DaxMessagePopulator {
     DaxTagParser tagParser;
     DaxDictionary daxDic;

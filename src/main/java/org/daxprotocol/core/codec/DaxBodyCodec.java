@@ -36,10 +36,12 @@ public class DaxBodyCodec {
 
     DaxPairCodec pairCodec;
     DaxTagCodec tagCodec;
+    DaxValueCodec valueCodec;
 
-    public DaxBodyCodec(DaxPairCodec pairCodec, DaxTagCodec tagCodec) {
+    public DaxBodyCodec(DaxPairCodec pairCodec, DaxTagCodec tagCodec, DaxValueCodec valueCodec) {
         this.pairCodec = pairCodec;
         this.tagCodec = tagCodec;
+        this.valueCodec = valueCodec;
     }
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
@@ -81,7 +83,7 @@ public class DaxBodyCodec {
 
         //TODO Refactor blockSet.toString to own method
         tagBlockRefMap.forEach((tag, blockSet)
-                -> pairCodec.encode(sb, new DaxPairString(tag,blockSet.toString(),
+                -> pairCodec.encode(sb, new DaxPairString(tag,valueCodec.toBlockRefString(blockSet),
                                                            DaxCoreConstants.OPERATOR_BLOCK_REFERENCE)
                                     ,pairSeparator )
         );
