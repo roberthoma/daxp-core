@@ -116,4 +116,10 @@ public class DaxTagCodec {
         return tag;
     }
 
+    public DaxTag decode(
+            String value,
+            int contextId
+    ){
+      return  tagParser.parseDaxTag(value,contextId);
+    }
 }

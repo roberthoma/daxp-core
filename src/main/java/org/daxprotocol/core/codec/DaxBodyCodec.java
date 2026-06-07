@@ -28,7 +28,6 @@ import org.daxprotocol.core.model.pair.DaxPairString;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
@@ -83,7 +82,7 @@ public class DaxBodyCodec {
         //TODO Refactor blockSet.toString to own method
         tagBlockRefMap.forEach((tag, blockSet)
                 -> pairCodec.encode(sb, new DaxPairString(tag,blockSet.toString(),
-                                                           DaxCoreConstants.REFERENCE_AT_BLOCK_CHAR)
+                                                           DaxCoreConstants.OPERATOR_BLOCK_REFERENCE)
                                     ,pairSeparator )
         );
 

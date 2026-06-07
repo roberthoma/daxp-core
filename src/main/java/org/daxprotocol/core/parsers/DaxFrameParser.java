@@ -22,6 +22,7 @@
 package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
+import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
@@ -42,6 +43,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import static org.daxprotocol.core.application.DaxCoreConstants.*;
 
 public class DaxFrameParser {
     private static final Logger logger = LoggerFactory.getLogger(DaxFrameParser.class);
@@ -50,16 +52,20 @@ public class DaxFrameParser {
     DaxConfig config;
     DaxMessageFactory messageFactory;
     DaxPreambleCodec preambleCodec;
-
+    DaxPairCodec pairCodec;
     public DaxFrameParser(DaxConfig config,
                             DaxTagParser tagParser,
                             DaxDictionary daxDic,
             DaxMessageFactory messageFactory,
-            DaxPreambleCodec preambleCodec) {
+            DaxPreambleCodec preambleCodec,
+            DaxPairCodec pairCodec)
+    {
         this.tagParser = tagParser;
         this.config = config;
         this.messageFactory = messageFactory;
         this.preambleCodec = preambleCodec;
+        this.pairCodec = pairCodec;
+
     }
 
     private int findFirstSeparator(String input, char[] separators) {
@@ -126,6 +132,8 @@ public class DaxFrameParser {
         int lastIdx = indList.get(inxSize - 1);
         boolean isPreableParsing = true;
         boolean isChecksumLast = true;
+        int operatorIdx = -1;
+        char foundOperator = 0;
 
         DaxPreamble preamble = new DaxPreamble();
         preamble.setPairSeparator(pairSeparator);
@@ -141,48 +149,20 @@ public class DaxFrameParser {
                 continue;
             }
 
-            //===============================================================
 
-            int operatorIdx = -1;
-            char foundOperator = 0;
-
-// Jeden, szybki skan w poszukiwaniu najbliższego operatora
+            operatorIdx = -1;
+            foundOperator = 0;
             for (int i = prevIdx; i < idx; i++) {
                 char c = frameStr.charAt(i);
-                if (c == DaxCoreConstants.EQUAL || c == '@' || c == '#') {
+                if (   c == OPERATOR_EQUAL
+                    || c == OPERATOR_BLOCK_REFERENCE
+                    || c == OPERATOR_ACTION)
+                {
                     operatorIdx = i;
                     foundOperator = c;
-                    break; // Znaleziony! Przerywamy pętlę, oszczędzamy CPU.
+                    break;
                 }
             }
-
-// Logika maszyny stanów oparta na znalezionym operatorze
-//            if (operatorIdx != -1) {
-//                // Wyciągasz ID tagu bez substringa - np. metodą matematyczną bezpośrednio z pozycji (prevIdx do operatorIdx)
-//                int tagId = parseTagIdMath(frameStr, prevIdx, operatorIdx);
-//
-//                switch (foundOperator) {
-//                    case '=':
-//                        // Logika dla wartości prostej (szukasz końca segmentu '|' od pozycji operatorIdx + 1)
-//                        break;
-//                    case '@':
-//                        // Logika dla relacji blokowej '@['
-//                        break;
-//                    case '#':
-//                        // Logika dla akcji systemowej '#'
-//                        break;
-//                }
-//            }
-
-            //========================================<<
-
-
-//            int equalChar    = frameStr.substring(prevIdx, idx).indexOf(DaxCoreConstants.EQUAL) + prevIdx;
-//            int equalChar    =   frameStr.indexOf(DaxCoreConstants.EQUAL, prevIdx);
-//            int blockRefChar =   frameStr.indexOf('@', prevIdx);
-//            int actionChar   =   frameStr.indexOf('#', prevIdx);
-
-
 
 
             if ( prevIdx > operatorIdx) {
@@ -222,27 +202,11 @@ public class DaxFrameParser {
                             listOfPair.clear();
                         }
                     }
-                    //------------
-                    //TODO  move to msgCodec and develop
-                    DaxPair<?> pair;
-                    if(tag.equals(DaxCoreTags.REQ_FIELD_LIST)){
-                        Set<DaxTag> daxTagSet =
-                                Arrays.stream(valueStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
-                                        .map(String::trim)
-                                        .map(s ->  tagParser.parseDaxTag(s,preamble.getContextId()))
-                                        .collect(Collectors.toSet());
-                        pair = new DaxPairTagSet(tag, daxTagSet);
-                    }
-                    else {
-                        pair = new DaxPairString(tag, valueStr ,foundOperator);
-                    }
-
+                    DaxPair<?> pair = pairCodec.decode(tag, valueStr ,foundOperator, preamble.getContextId());
                     listOfPair.add(pair);
 
                     if (tag.equals(DaxCoreTags.CHECKSUM)){
-
                         int checksum = DaxChecksumService.calculateModulo(sum);
-
                         if(checksum!=Integer.parseInt(valueStr)){
                             logger.error("BAD CHECKSUM {} ,  correct is {} .", valueStr, checksum);
                         }

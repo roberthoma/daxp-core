@@ -171,7 +171,8 @@ public class DaxEngine {
                                                  tagParser,
                 dictionary,
                                                  messageFactory,
-                                                 preambleCodec) ;
+                                                 preambleCodec,
+                pairCodec) ;
 
         //-----------------
         //Registration

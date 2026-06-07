@@ -25,6 +25,7 @@ import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -159,13 +160,43 @@ public class DaxTagParser {
                   DaxTag.of(contextId, tagId);
     }
 
-    public List<DaxTag> parseDaxTagList (String tagListStr, int msgContextId){
 
-//TODO refactor : remove split
-        return Arrays.stream(tagListStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
-                .map(String::trim)
-                .map(s ->  parseDaxTag(s,msgContextId))
-                .collect(Collectors.toList());
+public List<DaxTag> parseDaxTagList(String tagListStr, int msgContextId) {
+    if (tagListStr == null || tagListStr.isEmpty()) {
+        return new ArrayList<>();
+    }
+
+    List<DaxTag> result = new ArrayList<>();
+    char separator = DaxCoreConstants.TAG_LIST_SEPARATOR_CHAR;
+    StringBuilder currentTag = new StringBuilder();
+
+    // Iterate through the string character by character (byte-equivalent for UTF-16)
+    for (int i = 0; i < tagListStr.length(); i++) {
+        char c = tagListStr.charAt(i);
+
+        if (c == separator) {
+            // When separator is found, process the accumulated token if it's not empty
+            processAndAddTag(currentTag, result, msgContextId);
+            currentTag.setLength(0); // Reset the buffer for the next tag
+        } else {
+            currentTag.append(c);
+        }
+    }
+
+    // Don't forget to process the very last tag after the loop ends
+    processAndAddTag(currentTag, result, msgContextId);
+
+    return result;
+}
+
+    private void processAndAddTag(StringBuilder sb, List<DaxTag> result, int msgContextId) {
+        // Trim the string manually or use trim() on the string representation
+        String trimmed = sb.toString().trim();
+
+        // Optional: Avoid processing empty strings if your original split omitted them
+        if (!trimmed.isEmpty()) {
+            result.add(parseDaxTag(trimmed, msgContextId));
+        }
     }
 
 }

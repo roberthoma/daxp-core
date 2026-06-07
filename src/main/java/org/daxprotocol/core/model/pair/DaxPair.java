@@ -31,7 +31,7 @@ public abstract class DaxPair<T>{
     public DaxPair(DaxTag tag, T value){
         this.tag = tag;
         this.value = value;
-        this.operator = DaxCoreConstants.EQUAL;
+        this.operator = DaxCoreConstants.OPERATOR_EQUAL;
     }
 
     public DaxPair(DaxTag tag, T value, char operator){

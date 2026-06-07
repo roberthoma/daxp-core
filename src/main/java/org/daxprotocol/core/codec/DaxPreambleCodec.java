@@ -21,7 +21,6 @@ package org.daxprotocol.core.codec;
 
 
 import org.daxprotocol.core.application.DaxCoreConstants;
-import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxFrameParserException;
 import org.daxprotocol.core.mapper.DaxContextMapper;
@@ -31,7 +30,7 @@ import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.daxprotocol.core.application.DaxCoreConstants.EQUAL;
+import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_EQUAL;
 
 /**
  * Encodes and decodes the PREAMBLE section of a DAXP message.
@@ -51,7 +50,7 @@ public class DaxPreambleCodec {
             return ;
         }
         sb.append(tag)
-                .append(EQUAL)
+                .append(OPERATOR_EQUAL)
                 .append(value)
                 .append(pairSeparator);
     }

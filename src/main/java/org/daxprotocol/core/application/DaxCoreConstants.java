@@ -10,11 +10,12 @@ public class DaxCoreConstants {
     public static final String DAXP_SYMBOL              = "DAXP";
     public static final String DAXP_CONTEXT_DESCRIPTION = "Data & Attribute eXchange Protocol";
     /*****************************************************
+    *  Operators
     *
-    *  key=value
     * */
-    public static final char EQUAL = '=';
-    public static final char REFERENCE_AT_BLOCK_CHAR = '@';
+    public static final char OPERATOR_EQUAL = '=';
+    public static final char OPERATOR_BLOCK_REFERENCE = '@';
+    public static final char OPERATOR_ACTION = '#';
 
 
     /*****************************************************
@@ -22,10 +23,11 @@ public class DaxCoreConstants {
      */
     /**  Pair separator on the WIRE (binary, non-printable). */
     public static char DEFAULT_PAIR_SEPARATOR = 0x0001;
-    public static char[] ALLOWED_PAIR_SEPARATORS = { DEFAULT_PAIR_SEPARATOR,'|','^','#'};
+    public static char[] ALLOWED_PAIR_SEPARATORS = { DEFAULT_PAIR_SEPARATOR,'|','^'};
 
     public static final char CONTEXT_TAG_SEPARATOR = ':';
     public static final CharSequence TAG_LIST_SEPARATOR    = ";";
+    public static final char TAG_LIST_SEPARATOR_CHAR    = ';';
 
     public static final char DECIMAL_SEPARATOR    = '.';
 
@@ -37,7 +39,6 @@ public class DaxCoreConstants {
 //    public static final CharSequence VALUE_LIST_SEPARATOR    = ";";
 //    public static final CharSequence CONTEXT_TAG_SEPARATOR = ":";
 
-    public static final char TAG_LIST_SEPARATOR_CHAR    = ';';
 
     /*****************************************************
      *     DAXP  mappers

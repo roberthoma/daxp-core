@@ -28,9 +28,9 @@ import java.util.*;
 
 public class DaxBody {
 
-    Map<Integer,Map<DaxTag, DaxPair<?>>> blockMap      = new HashMap<>();
-    Map<Integer,Map<DaxTag, Set<Integer>>>    blockRefMap   = new HashMap<>();
-    Map<Integer, Set<DaxTag>>            blockNullTags = new HashMap<>();
+    Map<Integer,Map<DaxTag, DaxPair<?>>>    blockMap      = new HashMap<>();
+    Map<Integer,Map<DaxTag, Set<Integer>>>  blockRefMap   = new HashMap<>();
+    Map<Integer, Set<DaxTag>>               blockNullTags = new HashMap<>();
     int blockIdx = -1;
 
     private void checkBlockCounterBeforePut(){

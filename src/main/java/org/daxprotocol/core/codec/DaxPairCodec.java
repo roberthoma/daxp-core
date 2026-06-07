@@ -23,7 +23,13 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.pair.DaxPairString;
+import org.daxprotocol.core.model.pair.DaxPairTagSet;
 import org.daxprotocol.core.model.tag.DaxTag;
+
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DaxPairCodec {
     DaxTagCodec tagCodec;
@@ -32,26 +38,16 @@ public class DaxPairCodec {
     }
     public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator, char operator) {
 
-        /*if (strValue == null || strValue.trim().isBlank())
-        {
-            sb.append(tagCodec.encode(DaxCoreTags.VALUE_IS_NULL))
-                    .append(operator)
-                    .append(tagCodec.encode(tag))
-                    .append(pairSeparator);
-        }
-        else {
-        */
             sb.append(tagCodec.encode(tag))
                     .append(operator)
                     .append(strValue)
                     .append(pairSeparator);
-        //}
 
         return sb.toString() ;
     }
 
     public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator) {
-        return encode(sb, tag, strValue , pairSeparator, DaxCoreConstants.EQUAL);
+        return encode(sb, tag, strValue , pairSeparator, DaxCoreConstants.OPERATOR_EQUAL);
     }
 
 
@@ -70,4 +66,23 @@ public class DaxPairCodec {
         value = daxPair.getStrValue();
         return encode(sb,daxPair.getTag(),value ,pairSeparator, daxPair.getOperator() );
     }
+
+
+    public  DaxPair<?>  decode(DaxTag tag, String valueStr, char operator, int contextId){
+//TODO    check mode list
+        DaxPair<?> pair;
+        if(tag.equals(DaxCoreTags.REQ_FIELD_LIST)){
+            Set<DaxTag> daxTagSet =
+                    Arrays.stream(valueStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
+                            .map(String::trim)
+                            .map(s ->  tagCodec.decode(s,contextId))
+                            .collect(Collectors.toSet());
+            pair = new DaxPairTagSet(tag, daxTagSet);
+        }
+        else {
+            pair = new DaxPairString(tag, valueStr ,operator);
+        }
+       return pair;
+    }
+
 }
