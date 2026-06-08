@@ -167,15 +167,15 @@ public class DaxDataTypeCodec {
 
                 if(valueDataType.equals(DaxDataType.ENTITY))
                 {
-                    DaxpEntity entAnn =  dataTypeService.castToClass(args[1]).getAnnotation(DaxpEntity.class);
+                    DaxpEntity entAnn =  dataTypeService.castReflectTypeToClass(args[1]).getAnnotation(DaxpEntity.class);
                     map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(entAnn)));
                 }
 
 
                 if(valueDataType.equals(DaxDataType.COLLECTION))
                 {
-                    if (dataTypeService.castToClass(args[1]).isAnnotationPresent(DaxpCollection.class)){
-                        DaxpCollection colAnn =  dataTypeService.castToClass(args[1]).getAnnotation(DaxpCollection.class);
+                    if (dataTypeService.castReflectTypeToClass(args[1]).isAnnotationPresent(DaxpCollection.class)){
+                        DaxpCollection colAnn =  dataTypeService.castReflectTypeToClass(args[1]).getAnnotation(DaxpCollection.class);
                         map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(colAnn)));
                     }
                 }
@@ -186,7 +186,7 @@ public class DaxDataTypeCodec {
                 map.add(new DaxPairDataType(COLLECTION_VALUE_DATA_TYPE,valueDataType));
                 if(valueDataType.equals(DaxDataType.ENTITY))
                 {
-                    DaxpEntity entAnn =  dataTypeService.castToClass(args[0]).getAnnotation(DaxpEntity.class);
+                    DaxpEntity entAnn =  dataTypeService.castReflectTypeToClass(args[0]).getAnnotation(DaxpEntity.class);
                     map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(entAnn)));
                 }
 

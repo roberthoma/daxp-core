@@ -44,10 +44,10 @@ public class DaxAnyTestEntity {
 
 
     @DaxpField(tagId = TEST_VALUE_SUB_ENTITY_5077)
-    DaxSubEntity subEntity;
+    DaxSubEntity subEntity_5077;
 
     @DaxpField(tagId = 5078)
-    DaxSubEntity subDTO2;
+    DaxSubEntity subEntity_5078;
 
     @DaxpValue(tagId = 5079)
     String strValueReadOnly = "Test value string only for read";
@@ -88,11 +88,11 @@ public class DaxAnyTestEntity {
 
 
    @DaxpField("5115")
-    Map<Integer,String>  strMap;
+    Map<Integer,String> strMap_5115;
 
 
     @DaxpField("5116")
-    Map<Integer,DaxSubEntity>  subEntityMap;
+    Map<Integer,DaxSubEntity> subEntityMap_5116;
 
     public int getAnyInt() {
         return anyInt;
@@ -118,8 +118,8 @@ public class DaxAnyTestEntity {
         return enumValue_5032;
     }
 
-    public DaxSubEntity getSubEntity() {
-        return subEntity;
+    public DaxSubEntity getSubEntity_5077() {
+        return subEntity_5077;
     }
 
     public DaxAnyTestEntity(){
@@ -139,13 +139,14 @@ public class DaxAnyTestEntity {
         this.stringSet_5089.add("GHI");
 
         this.enumValue_5032 = DaxAnyTestEnum.ENUM_VALUE1;
-        this.subEntity = new DaxSubEntity(14,"subEntity1",761.24);
-        this.subDTO2   = new DaxSubEntity(34,"subEntity2",654.66);
+
+        this.subEntity_5077 = new DaxSubEntity(14,"Kowalski#N",761.24);
+        this.subEntity_5078 = new DaxSubEntity(34,"subEntity@2=",654.66);
 
         this.daxSubEntitySet_5090 = new HashSet<>();
-        daxSubEntitySet_5090.add( new DaxSubEntity(57,"set_subEntity6",74.56));
-        daxSubEntitySet_5090.add( new DaxSubEntity(89,"set_subEntity7",22.54));
-        daxSubEntitySet_5090.add( new DaxSubEntity(149,"set_subEntity8",2376.47));
+        daxSubEntitySet_5090.add( new DaxSubEntity(57,"set_@subEntity6",74.56));
+        daxSubEntitySet_5090.add( new DaxSubEntity(89,"set_=subEntity7",22.54));
+        daxSubEntitySet_5090.add( new DaxSubEntity(149,"set_#subEntity8",2376.47));
 
         this.stringList_5082 = List.of("strVal1","strVal2","strVal3","strVal4");
 
@@ -155,15 +156,15 @@ public class DaxAnyTestEntity {
         this.linkedListStr_5092.add("strLinkedVal3");
         this.linkedListStr_5092.add("strLinkedVal4");
 
-        strMap = new HashMap<>();
-        strMap.put(1,"mapTestString1");
-        strMap.put(2,"mapTestString2");
-        strMap.put(3,"mapTestString3");
+        strMap_5115 = new HashMap<>();
+        strMap_5115.put(1,"mapTestString1");
+        strMap_5115.put(2,"mapTestString2");
+        strMap_5115.put(3,"mapTestString3");
 
-        subEntityMap = new HashMap<>();
-        subEntityMap.put(11,new DaxSubEntity(237,"set_subEntity11",72.56));
-        subEntityMap.put(12, new DaxSubEntity(849,"set_subEntity12",55.54));
-        subEntityMap.put(14, new DaxSubEntity(69,"set_subEntity14",234.47));
+//        subEntityMap_5116 = new HashMap<>();
+//        subEntityMap_5116.put(11,new DaxSubEntity(237,"set_subEntity11",72.56));
+//        subEntityMap_5116.put(12, new DaxSubEntity(849,"set_subEntity12",55.54));
+//        subEntityMap_5116.put(14, new DaxSubEntity(69,"set_subEntity14",234.47));
 
     }
 }

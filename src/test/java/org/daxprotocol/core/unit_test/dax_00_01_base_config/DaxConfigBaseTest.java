@@ -67,7 +67,7 @@ public class DaxConfigBaseTest {
             preambleFactory = daxEngine.getPreambleFactory();
             dispatcher      = daxEngine.getDispatcher();
             dataTypeCodec   = daxEngine.getDataTypeCodec();
-            dataTypeService = daxEngine.getDataTypeCollectionService();
+            dataTypeService = daxEngine.getDaxDataTypeService();
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");

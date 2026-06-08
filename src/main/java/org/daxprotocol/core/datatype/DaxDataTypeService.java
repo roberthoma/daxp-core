@@ -77,7 +77,7 @@ public class DaxDataTypeService {
     }
     //--------------------------------------------------------------------------------------
     public    DaxDataType decodeClass(Type type) {
-        return decodeClass(castToClass(type));
+        return decodeClass(castReflectTypeToClass(type));
     }
     //--------------------------------------------------------------------------------------
     public    DaxDataType decodeClass(Class<?> clazz) {
@@ -122,7 +122,7 @@ public class DaxDataTypeService {
     }
 
     //--------------------------------------------------------------------------------------
-    public  Class<?> castToClass(Type type) {
+    public  Class<?> castReflectTypeToClass(Type type) {
         if (type instanceof Class<?>) {
             return (Class<?>) type;
         } else if (type instanceof ParameterizedType) {

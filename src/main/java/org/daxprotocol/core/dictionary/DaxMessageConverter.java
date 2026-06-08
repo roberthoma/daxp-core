@@ -25,6 +25,7 @@ import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
+import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.slf4j.Logger;
@@ -36,7 +37,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
-//TODO join with DaxMessageCodec
+//TODO join with or move to DaxMessageCodec
+//TODO check references block if not exist then DaxException
+
 public class DaxMessageConverter {
     private static final Logger logger = LoggerFactory.getLogger(DaxMessageConverter.class);
 
@@ -45,17 +48,20 @@ public class DaxMessageConverter {
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
     DaxValueCodec valueCodec;
+    DaxDataTypeService daxDataTypeService;
     public DaxMessageConverter(DaxConfig config,
             DaxDictionary dictionary,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec,
-            DaxValueCodec valueCodec
+            DaxValueCodec valueCodec,
+            DaxDataTypeService daxDataTypeService
             ) {
         this.config = config;
         this.dictionary = dictionary;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
+        this.daxDataTypeService = daxDataTypeService;
     }
 
      Map<DaxTag, Field> fieldMap = new HashMap<>();
@@ -67,7 +73,7 @@ public class DaxMessageConverter {
 
 
             for (Field field : targetClass.getDeclaredFields()) {
-                DaxpField ann = field.getAnnotation(DaxpField.class);
+                DaxpField ann = field.getAnnotation(DaxpField.class); // TODO add DaxpValue
 
                 if (ann == null) continue;
 
@@ -102,7 +108,9 @@ public class DaxMessageConverter {
                             int targetBlockIdx = refIdx - 1;
                             Class<?> elementClass = getGenericElementType(field);
                             Object elementValue = null;
-                            if (elementClass == String.class) {
+
+                            if (daxDataTypeService.isPrimitiveType( elementClass))
+                            {
                                 elementValue = message.getBody()
                                         .getBlockMap(targetBlockIdx)
                                         .get(DaxCoreTags.COLLECTION_VALUE)
@@ -114,16 +122,49 @@ public class DaxMessageConverter {
                             collection.add(elementValue);
                         }
                         field.set(instance, collection);
+                        continue;
                     }
-                    else{
 
+                    //else{
+                     if (Map.class.isAssignableFrom(field.getType())) {
                       logger.info("Tag :"+ tagCodec.encode(tag)+ " refBlocksIdx = "+refBlocksIdx);
+
                         if (!refBlocksIdx.isEmpty()) {
-                            int targetBlockIdx = refBlocksIdx.iterator().next() - 1;
-                            Object nestedObject = createFromMessage(message, field.getType(), targetBlockIdx);
-                            field.set(instance, nestedObject);
+                            if (Map.class.isAssignableFrom(field.getType())) {
+                                Map<Object,Object> map = createMapInstance(field.getType());
+                                for (Integer refIdx : refBlocksIdx) {
+                                    int targetBlockIdx  = refIdx - 1;
+                                    Object key =
+                                            message.getBody()
+                                                    .getBlockMap(targetBlockIdx)
+                                                    .get(DaxCoreTags.COLLECTION_KEY)
+                                                    .getStrValue();
+
+                                    Object nestedObject;
+                                    nestedObject =  message.getBody()
+                                            .getBlockMap(targetBlockIdx)
+                                            .get(DaxCoreTags.COLLECTION_VALUE)
+                                            .getStrValue();
+
+                                            //createFromMessage(message, field.getType(), targetBlockIdx);
+                                    map.put(key,nestedObject);
+                                }
+
+                                field.set(instance, map);
+                            }
                         }
+                        continue;
                     }
+                    //Here should be single reference
+                    refBlocksIdx.forEach(integer ->
+                            {
+                                try {
+                                    field.set(instance, createFromMessage(message, field.getType(), integer-1));
+                                } catch (IllegalAccessException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                    );
 
                 }
 
@@ -131,6 +172,7 @@ public class DaxMessageConverter {
             }
             return instance;
         } catch (Exception e) {
+            logger.error(e.getMessage());
             throw new RuntimeException("Failed to map DAXP to " + targetClass.getSimpleName(), e);
         }
     }
@@ -189,28 +231,33 @@ public class DaxMessageConverter {
       public  void updateFromMessage(DaxMessage message, Object obj){
         Class<?> clazz = obj.getClass();
         try {
+            for (Field f : clazz.getDeclaredFields()) {
+                DaxpField ann = f.getAnnotation(DaxpField.class);
+                if (ann == null) continue;
 
-        for (Field f : clazz.getDeclaredFields()) {
-            DaxpField ann = f.getAnnotation(DaxpField.class);
-            if (ann == null) continue;
+                int contextId = config.getAppContextId() ;
 
-            int contextId = config.getAppContextId() ;
+                DaxTag tag = DaxTag.of(contextId , ann.tagId());
+                if(! message.getBody().getBlock(0).containsKey(tag)) continue;
 
-            DaxTag tag = DaxTag.of(contextId , ann.tagId());
-            if(! message.getBody().getBlock(0).containsKey(tag)) continue;
+                var pair = message.get(0,tag);
 
-            var pair = message.get(0,tag);
+                if (pair==null) continue; // gracefully ignore missing tags or empty
 
-            if (pair==null) continue; // gracefully ignore missing tags or empty
+                String raw = pair.getStrValue();
+                Object converted = valueCodec.decode(raw, f.getType());  // if not ..convert from dictionary
 
-            String raw = pair.getStrValue();
-            Object converted = valueCodec.decode(raw, f.getType());  // if not ..convert from dictionary
-
-            f.setAccessible(true);
-            f.set(obj, converted);
+                f.setAccessible(true);
+                f.set(obj, converted);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to map DAXP to " + clazz.getSimpleName(), e);
         }
-    } catch (Exception e) {
-        throw new RuntimeException("Failed to map DAXP to " + clazz.getSimpleName(), e);
-    }
- }
+   }
+   public Class<?>  getObjectFromMsgByTag(DaxMessage msg , DaxTag tag){
+
+        return null;
+   }
+
+
 }

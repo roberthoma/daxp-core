@@ -88,7 +88,7 @@ public class DaxEngine {
     private DaxDispatcher dispatcher;
 
 
-    private DaxDataTypeService dataTypeCollectionService;
+    private DaxDataTypeService daxDataTypeService;
     private DaxDataTypeCodec dataTypeCodec;
 
     private  DaxValueCodec valueCodec;
@@ -112,8 +112,8 @@ public class DaxEngine {
         tagParser  = new DaxTagParser(contextMapper);
         tagCodec      = new DaxTagCodec     (config, contextMapper, tagParser );
 
-        dataTypeCollectionService = new DaxDataTypeService();
-        dataTypeCodec = new DaxDataTypeCodec(dataTypeCollectionService, tagCodec);
+        daxDataTypeService = new DaxDataTypeService();
+        dataTypeCodec = new DaxDataTypeCodec(daxDataTypeService, tagCodec);
 
         valueCodec = new DaxValueCodec(dataTypeCodec);
 
@@ -150,7 +150,7 @@ public class DaxEngine {
         );
 
         messageConverter     = new DaxMessageConverter(config,//contextMapper ,
-                dictionary, tagCodec, dataTypeCodec, valueCodec);
+                dictionary, tagCodec, dataTypeCodec, valueCodec, daxDataTypeService);
 
 
 
@@ -262,8 +262,8 @@ public class DaxEngine {
         return dataTypeCodec;
     }
 
-    public DaxDataTypeService getDataTypeCollectionService() {
-        return dataTypeCollectionService;
+    public DaxDataTypeService getDaxDataTypeService() {
+        return daxDataTypeService;
     }
 
     public void checkRegister() {
