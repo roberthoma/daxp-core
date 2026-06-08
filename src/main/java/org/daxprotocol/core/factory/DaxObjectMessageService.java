@@ -77,7 +77,6 @@ public class DaxObjectMessageService {
 
                 Iterator<?> iterator;
                 if (dataTypeCodec.isMap_TMP(object) ){
-                    System.out.println("IT IS MAP >>>>>>>>>>>>> ");
                     iterator  = ((Map<?,?>)object).entrySet().iterator();
 
                     iterator.forEachRemaining(objVal ->

@@ -18,14 +18,14 @@ public class DaxAnyTestEntity {
     DaxAnyTestEntity recursiveEntity;
 
     @DaxpField(tagId = TEST_TAG_int_5001)
-    int anyInt;
+    int anyInt_5001;
 
     @DaxpField(tagId = TEST_TAG_String_5002)
-    String anyString;
+    String anyString_5002;
 
     @Deprecated
     @DaxpField(tagId = TEST_TAG_Deprecated_String_5005)
-    String anyDeprecatedString;
+    String anyDeprecatedString_5005;
 
     //@Deprecated
     @DaxpField(tagId = TEST_TAG_char_5003, description = "Desc from main test Entity")
@@ -94,12 +94,12 @@ public class DaxAnyTestEntity {
     @DaxpField("5116")
     Map<Integer,DaxSubEntity> subEntityMap_5116;
 
-    public int getAnyInt() {
-        return anyInt;
+    public int getAnyInt_5001() {
+        return anyInt_5001;
     }
 
-    public String getAnyString() {
-        return anyString;
+    public String getAnyString_5002() {
+        return anyString_5002;
     }
 
     public char getAnyChar() {
@@ -127,8 +127,8 @@ public class DaxAnyTestEntity {
     }
     public DaxAnyTestEntity(String testStr, char testChar, int testInt){
 
-        this.anyInt = testInt;
-        this.anyString = testStr;
+        this.anyInt_5001 = testInt;
+        this.anyString_5002 = testStr;
         this.anyChar = testChar;
         this.anyBoolean = true;
         this.fixTestValue_FIX_51 = 'X';

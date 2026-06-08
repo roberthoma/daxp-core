@@ -134,6 +134,7 @@ public class DaxMessageConverter {
                                 Map<Object,Object> map = createMapInstance(field.getType());
                                 for (Integer refIdx : refBlocksIdx) {
                                     int targetBlockIdx  = refIdx - 1;
+                                    //TODO REFACTOR . check key and datatype is  primitive then....if not call createFromMessage
                                     Object key =
                                             message.getBody()
                                                     .getBlockMap(targetBlockIdx)

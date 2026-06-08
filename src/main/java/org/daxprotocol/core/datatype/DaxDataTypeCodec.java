@@ -108,7 +108,6 @@ public class DaxDataTypeCodec {
     }
     //--------------------------------------------------------------------------------------
     public boolean isCollection(Object object){
-//        return dataTypeService.decodeClass(object.getClass()).equals(DaxDataType.COLLECTION) ;
         return dataTypeService.decodeFromObject(object).equals(DaxDataType.COLLECTION) ;
     }
     //--------------------------------------------------------------------------------------
