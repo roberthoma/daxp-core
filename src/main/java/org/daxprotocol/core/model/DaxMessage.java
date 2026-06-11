@@ -95,7 +95,9 @@ public final class DaxMessage {
     }
 
     public boolean isNullAt(int blockIdx, DaxTag tag) {
+
         return body.isNullAt(blockIdx,tag);
+
     }
 
     public boolean isAnyReference(int blockIdx, DaxTag tag) {

@@ -47,7 +47,7 @@ public class DaxBodyCodec {
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
                                       int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
                                       Map<DaxTag, Set<Integer>> tagBlockRefMap,
-                                     Set<DaxTag> nullTags,
+                                     //Set<DaxTag> nullTags,
                                      char pairSeparator)
     {
         if (isBlogIdx) {
@@ -90,13 +90,14 @@ public class DaxBodyCodec {
 
 
 
-
+/*
         if (nullTags!=null && !nullTags.isEmpty()){
 
             nullTags.forEach(daxTag ->
                   pairCodec.encode(sb, new DaxPairString(daxTag,"N", DaxCoreConstants.OPERATOR_ACTION), pairSeparator)
             );
         }
+        */
     }
 
     //@Override
@@ -108,7 +109,7 @@ public class DaxBodyCodec {
         body.getAllBlockMap()
             .forEach((idx, map) ->
                 encodeBodyBlock(sb,isBlockPair,idx, map, body.getTagBlockRefMap(idx),
-                                                         body.getBlockNullTags(idx),
+                                                         //body.getBlockNullTags(idx),
                         pairSeparator)
                         );
 

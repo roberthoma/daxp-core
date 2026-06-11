@@ -23,11 +23,13 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.body.DaxBody;
+import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.tool.DaxLangTool;
@@ -192,7 +194,8 @@ public class DaxObjectMessageService {
                 object = field.get(entry);
 
                 if(object == null){
-                    body.putNullTag(blockIdx,tag);
+//                    body.putNullTag(blockIdx,tag);
+                    body.putPair(blockIdx,new DaxPairString(tag, "N", DaxCoreConstants.OPERATOR_ACTION));
                     continue;
                 }
 
@@ -221,7 +224,8 @@ public class DaxObjectMessageService {
                 Object object = method.invoke(entry);
 
                 if(object == null){
-                    body.putNullTag(blockIdx,tag);
+//                    body.putNullTag(blockIdx,tag);
+                    body.putPair(blockIdx,new DaxPairString(tag, "N", DaxCoreConstants.OPERATOR_ACTION));
                     continue;
                 }
                 putValueToBlock(blockIdx, tag,  body,
