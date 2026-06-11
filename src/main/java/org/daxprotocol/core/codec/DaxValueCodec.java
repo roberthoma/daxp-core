@@ -8,6 +8,7 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -147,5 +148,23 @@ public class DaxValueCodec {
         }
 
         return result;
+    }
+
+    public <T> void setNull(T instance, Field field) throws IllegalAccessException {
+        if (field.getType().isPrimitive()) {
+            // Handle the case where we want to set null, but the field is primitive
+            if (field.getType() == char.class) {
+                field.setChar(instance, '\0'); // Set default null character
+            } else if (field.getType() == boolean.class) {
+                field.setBoolean(instance, false);
+            } else {
+                // For byte, short, int, long, float, double
+                field.set(instance, 0);
+            }
+        } else {
+            // If it's not a primitive, or the value isn't null, set it normally
+            field.set(instance, null);
+        }
+
     }
 }

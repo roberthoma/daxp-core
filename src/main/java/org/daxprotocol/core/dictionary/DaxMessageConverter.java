@@ -82,27 +82,7 @@ public class DaxMessageConverter {
                 field.setAccessible(true);
 
                 if ( message.isNullAt(blockIdx, tag)){
-
-                    //field.set(instance, null);
-                //    field.set(instance, '\0');
-//--------------------------------------------------
-
-                    if (field.getType().isPrimitive()) {
-                        // Handle the case where we want to set null, but the field is primitive
-                        if (field.getType() == char.class) {
-                            field.setChar(instance, '\0'); // Set default null character
-                        } else if (field.getType() == boolean.class) {
-                            field.setBoolean(instance, false);
-                        } else {
-                            // For byte, short, int, long, float, double
-                            field.set(instance, 0);
-                        }
-                    } else {
-                        // If it's not a primitive, or the value isn't null, set it normally
-                        field.set(instance, null);
-                    }
-
-//------------------------------
+                    valueCodec.setNull(instance,field );
                     continue;
                 }
 
