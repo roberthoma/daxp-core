@@ -96,7 +96,7 @@ public class DaxMessageConverter {
                     continue;
                 }
 
-                //TODO extend for map
+                //TODO REFACTOR ALL LOOP
                 if ( message.isAnyReference(blockIdx,tag)){
                     Set<Integer> refBlocksIdx =  message.getRefBlocksIdx(blockIdx,tag);
 

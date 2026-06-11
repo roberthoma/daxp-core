@@ -75,8 +75,6 @@ public class DaxCoreTags {
      */
     public static final DaxTag BLOCK_INDEX             = daxpSysTag(4, DaxDataType.QUANTITY);
     public static final DaxTag BLOCK_TYPE              = daxpSysTag(5);
-    public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(7);
-    public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(77);
   //  public static final DaxTag REFERENCE_BLOCK         = daxpSysTag(8);   is free :)
 
     /******************************
@@ -91,7 +89,7 @@ public class DaxCoreTags {
     public static final DaxTag ENTRY_DESCRIPTION       = daxpSysTag(12);
     public static final DaxTag ENTRY_SYMBOL            = daxpSysTag(15);
 
-    public static final DaxTag ENTRY_OWNER_ID          = daxpSysTag(20);
+    public static final DaxTag ENTRY_OWNER_ID          = daxpSysTag(7);
     public static final DaxTag ENTRY_SCHEMA            = daxpSysTag(21);
 
     public static final DaxTag TAG_OWNER_ID          = daxpSysTag(111);
@@ -147,6 +145,9 @@ public class DaxCoreTags {
     /*****************************
      * Attributes
      */
+    public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(20);
+    public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(77);
+
     public static final DaxTag ATR_RANGE_MIN_VALUE = daxpSysTag(161);
     public static final DaxTag ATR_RANGE_MAX_VALUE = daxpSysTag(162);
     public static final DaxTag ATR_PRECISION       = daxpSysTag(163);

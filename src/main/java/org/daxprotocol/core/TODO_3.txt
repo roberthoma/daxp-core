@@ -1,0 +1,8 @@
+Add to preamble
+
+1) protocol version
+$V=0.9
+
+2) V= .... implementation java version
+an others
+

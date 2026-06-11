@@ -94,7 +94,7 @@ public class DaxBodyCodec {
         if (nullTags!=null && !nullTags.isEmpty()){
 
             nullTags.forEach(daxTag ->
-                  pairCodec.encode(sb, new DaxPairString(daxTag,"N", '#'), pairSeparator)
+                  pairCodec.encode(sb, new DaxPairString(daxTag,"N", DaxCoreConstants.OPERATOR_ACTION), pairSeparator)
             );
         }
     }
@@ -108,7 +108,7 @@ public class DaxBodyCodec {
         body.getAllBlockMap()
             .forEach((idx, map) ->
                 encodeBodyBlock(sb,isBlockPair,idx, map, body.getTagBlockRefMap(idx),
-                        body.getBlockNullTags(idx),
+                                                         body.getBlockNullTags(idx),
                         pairSeparator)
                         );
 

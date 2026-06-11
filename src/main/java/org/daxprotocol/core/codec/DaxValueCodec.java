@@ -39,17 +39,17 @@ public class DaxValueCodec {
 //TODO refactor
     public Set<DaxPair<?>> encodeToPairs(DaxTag tag,  Object obj) {
         if(obj == null){
-            return Set.of(new DaxPairString(tag, "N",'#'));
+            return Set.of(new DaxPairString(tag, "N",DaxCoreConstants.OPERATOR_ACTION));
         }
 
         DaxDataType dataType = dataTypeCodec.decodeBaseDataType(obj);
 
         if (dataType.equals(DaxDataType.STRING) &&  obj.toString().trim().isBlank()){
-            return Set.of(new DaxPairString(tag, "N",'#'));
+            return Set.of(new DaxPairString(tag, "N",DaxCoreConstants.OPERATOR_ACTION));
         }
 
         if (dataType.equals(DaxDataType.CHARACTER) && ((Character) obj)==0){
-            return Set.of(new DaxPairString(tag, "N",'#'));
+            return Set.of(new DaxPairString(tag, "N",DaxCoreConstants.OPERATOR_ACTION));
         }
 
 

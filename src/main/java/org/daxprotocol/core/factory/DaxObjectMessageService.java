@@ -184,7 +184,7 @@ public class DaxObjectMessageService {
                 else {
                     continue;
                 }
-
+                ///Tag Selection : TODO develop, check first entry
                 if(reqTagSet != null && !reqTagSet.contains(tag)){
                     continue;
                 }

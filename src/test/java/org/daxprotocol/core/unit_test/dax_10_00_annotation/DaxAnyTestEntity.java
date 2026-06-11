@@ -4,6 +4,7 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
+import org.daxprotocol.core.application.DaxCoreConstants;
 
 import java.util.*;
 
@@ -29,7 +30,7 @@ public class DaxAnyTestEntity {
 
     //@Deprecated
     @DaxpField(tagId = TEST_TAG_char_5003, description = "Desc from main test Entity")
-    char anyChar;
+    char anyChar_5003;
 
     @DaxpField(tagId = TEST_TAG_Boolean_5004, description = "Any tested boolean from entity")
     Boolean anyBoolean;
@@ -102,8 +103,8 @@ public class DaxAnyTestEntity {
         return anyString_5002;
     }
 
-    public char getAnyChar() {
-        return anyChar;
+    public char getAnyChar_5003() {
+        return anyChar_5003;
     }
 
     public Boolean getAnyBoolean() {
@@ -129,7 +130,7 @@ public class DaxAnyTestEntity {
 
         this.anyInt_5001 = testInt;
         this.anyString_5002 = testStr;
-        this.anyChar = testChar;
+        this.anyChar_5003 = testChar;
         this.anyBoolean = true;
         this.fixTestValue_FIX_51 = 'X';
 
@@ -140,7 +141,7 @@ public class DaxAnyTestEntity {
 
         this.enumValue_5032 = DaxAnyTestEnum.ENUM_VALUE1;
 
-        this.subEntity_5077 = new DaxSubEntity(14,"Kowalski#N",761.24);
+        this.subEntity_5077 = new DaxSubEntity(14,"Kowalski"+ DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX +"N",761.24);
         this.subEntity_5078 = new DaxSubEntity(34,"subEntity@2=",654.66);
 
         this.daxSubEntitySet_5090 = new HashSet<>();

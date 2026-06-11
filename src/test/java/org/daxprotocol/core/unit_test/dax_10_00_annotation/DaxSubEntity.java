@@ -19,7 +19,7 @@ public class DaxSubEntity {
 
     @Deprecated
     @DaxpField(tagId = TEST_TAG_char_5003, description = "Desc from subEntity")
-    char anyChar;
+    char anyChar_5003;
 
 
     public void setValue_1(int value_1) {
