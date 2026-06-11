@@ -6,3 +6,21 @@ $V=0.9
 2) V= .... implementation java version
 an others
 
+--------------------------
+Create example by
+json{
+  "uzytkownik": {
+    "id": 12345,
+    "imie": "Jan",
+    "nazwisko": "Kowalski",
+    "aktywny": true,
+    "punkty": 85.5
+  },
+  "zainteresowania": ["programowanie", "podróże", "czytanie"],
+  "adres": {
+    "miasto": "Sanok",
+    "kod_pocztowy": "38-500",
+    "kraj": "Polska"
+  },
+  "data_rejestracji": null
+}
