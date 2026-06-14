@@ -12,8 +12,9 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ FIELD, TYPE })
 @Documented
-public @interface DaxpManifest {
+public @interface DaxpContext {
 //    String value() default "";      // Schema symbol
 //    String name() default "";       // Use for rename schema name
 //    String description() default "";
 }
+

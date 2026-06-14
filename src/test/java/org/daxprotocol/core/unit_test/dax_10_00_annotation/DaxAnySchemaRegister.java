@@ -3,15 +3,13 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.DaxpMsg;
-import org.daxprotocol.core.annotation.DaxpManifest;
-import org.daxprotocol.core.annotation.DaxpSchema;
+import org.daxprotocol.core.annotation.DaxpRegister;
 import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 
-//Change to manifest
-@DaxpManifest()
-public class DaxpManifest_Base {
+@DaxpRegister(DaxAnyManifest.SCHEMA_BASE_UT)
+public class DaxAnySchemaRegister {
 
     @DaxpTag( description = "Base Entity ")
     public static final int TEST_TAG_ENTITY_5000 = 5000;
@@ -80,10 +78,6 @@ public class DaxpManifest_Base {
 
     @DaxpMsg(description = "Base Entity DATA")
     public static final String MSG_BASE_ENTITY_DATA =   "BD"; // 	REs 	Customer Data
-
-
-    @DaxpSchema(name = "utSchema" ,description = "Base Schema Ut")
-    public static final String SCHEMA_BASE_UT =   "SHEMA_UT"; // 	REs 	Customer Data
 
 
     //TODO Create new tested schema for exceptions

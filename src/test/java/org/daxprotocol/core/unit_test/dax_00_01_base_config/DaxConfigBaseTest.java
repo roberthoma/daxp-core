@@ -82,7 +82,7 @@ public class DaxConfigBaseTest {
             daxEngine.register(DaxAnyTestEnum.class);
             daxEngine.register(DaxSubEntity.class);
             daxEngine.register(DaxAnyTestDicEnum.class);
-            daxEngine.register(DaxpManifest_Base.class);
+            daxEngine.register(DaxAnySchemaRegister.class);
             daxEngine.register(DaxAnyTestEntity.class);
             handlerRegistry.registerCtrl(new DaxpControllerTest());  //Autowire in spring
 

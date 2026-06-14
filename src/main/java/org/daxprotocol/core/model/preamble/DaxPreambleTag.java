@@ -7,6 +7,7 @@ public enum DaxPreambleTag {
     VERSION("V"),
     ENCODING("EN"),
     MSG_QUANTITY("MQ"),
+    MSG_SCHEMA("SX"),
     MSG_CONTEXT("CX"),
     MSG_SENDER("SN");
 

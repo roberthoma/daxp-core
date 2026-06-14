@@ -208,7 +208,7 @@ public class DaxDictionaryRegister {
             e.printStackTrace();
         }
 
-        DaxpSchema  ann = field.getAnnotation(DaxpSchema.class);
+        DaxpSchema ann = field.getAnnotation(DaxpSchema.class);
 
         dictionary.putSchema(symbol , ann.name(), ann.description());
     }
@@ -225,15 +225,15 @@ public class DaxDictionaryRegister {
             }
 
             if (field.isAnnotationPresent(DaxpTag.class)) {
-                registerDaxpTag(field, DaxRegisterSource.MANIFEST);
+                registerDaxpTag(field, DaxRegisterSource.SCHEMA);
 
             }
             if (field.isAnnotationPresent(DaxpMsg.class)){
-                registerDaxpMsg(field,DaxRegisterSource.MANIFEST);
+                registerDaxpMsg(field,DaxRegisterSource.SCHEMA);
             }
 
             if (field.isAnnotationPresent(DaxpSchema.class)){
-                registerDaxpSchema(field,DaxRegisterSource.MANIFEST);
+                registerDaxpSchema(field,DaxRegisterSource.SCHEMA);
             }
 
         }
@@ -395,8 +395,8 @@ public class DaxDictionaryRegister {
 
 
         try {
-            if (clazz.isAnnotationPresent(DaxpManifest.class)) {
-                DaxpManifest ann = clazz.getAnnotation(DaxpManifest.class);
+            if (clazz.isAnnotationPresent(DaxpRegister.class)) {
+                DaxpRegister ann = clazz.getAnnotation(DaxpRegister.class);
 
                 registerDaxpManifest( clazz);
             }

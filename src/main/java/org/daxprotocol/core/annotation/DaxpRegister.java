@@ -25,12 +25,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.TYPE;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ FIELD })
+@Target({ TYPE })
 @Documented
-public @interface DaxpSchema {
-    String name() default "";       // Use for rename schema name
-    String description() default "";
+public @interface DaxpRegister {
+    String value() ;      // Schema symbol from
 }

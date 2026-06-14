@@ -12,7 +12,7 @@ import java.util.List;
 public class DaxpControllerTest extends DaxConfigBaseTest {
 
 
-    @DaxpHandler(DaxpManifest_Base.MSG_BASE_ENTITY_Req)
+    @DaxpHandler(DaxAnySchemaRegister.MSG_BASE_ENTITY_Req)
     public void getBaseData(DaxFrame incomeFrame, DaxFrame outcomeFrame){
 
         DaxAnyTestEntity testEntity  = new DaxAnyTestEntity("Test string",'H',456);
@@ -21,7 +21,7 @@ public class DaxpControllerTest extends DaxConfigBaseTest {
         List<DaxAnyTestEntity> testList = List.of(testEntity);
 
         DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame,
-                                        DaxpManifest_Base.MSG_BASE_ENTITY_DATA,
+                                        DaxAnySchemaRegister.MSG_BASE_ENTITY_DATA,
                                         testList);
 
         outcomeFrame.addMessage(message);

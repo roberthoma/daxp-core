@@ -3,7 +3,7 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 import org.daxprotocol.core.annotation.DaxpCollection;
 import org.daxprotocol.core.annotation.DaxpDictionaryEntry;
 
-@DaxpCollection(tagId = DaxpManifest_Base.TEST_COLLECTION_DIC_ENUM_6002)
+@DaxpCollection(tagId = DaxAnySchemaRegister.TEST_COLLECTION_DIC_ENUM_6002)
 public enum DaxAnyTestDicEnum implements DaxpDictionaryEntry<Integer, String> {
 
     DIC_VAL1(341, "DIC_SYMB_VAL1", "Test dic 1 value"),
