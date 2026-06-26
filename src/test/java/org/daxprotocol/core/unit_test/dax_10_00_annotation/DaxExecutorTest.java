@@ -73,14 +73,19 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
     void executorTestSelectReqSubDto(){
         String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|CX=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
                 "|$:108=5001;8000|$:9=123|";
-        DaxFrame frameReq = frameParser.parseFrame(reqMsg);
 
+        DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
         frameResp.setPreamble(preambleFactory.createRespPreamble(frameReq));
-
         handlerRegistry.executor(frameReq, frameResp);
 
+        //---------------------
+
         DaxMessage respMsg = frameResp.getFirstMessage();
+
+
+
+
         String respDataType = respMsg.getMsgType();
         Assertions.assertEquals(DaxAnySchemaRegister.MSG_BASE_ENTITY_DATA, respDataType);
 

@@ -35,11 +35,6 @@ public final class DaxConfig {
 
     private int appContextId = 1;
 
-    public int getNextContextId() {
-        return appContextId + 1;
-    }
-
-//    private int   nextContextId = 2;
     private String appContextSymbol;
     private String appContextTagPrefix;
     private String appContextDescription;
@@ -71,6 +66,10 @@ public final class DaxConfig {
     }
 
     public int getAppContextId(){
+        if(appContextId == -1){
+            throw new RuntimeException("NOT INIT APPLICATION CONTEXT");
+        }
+
         return appContextId;  // todo put in config file
     }
     public void setAppContextId(int appContextId) {

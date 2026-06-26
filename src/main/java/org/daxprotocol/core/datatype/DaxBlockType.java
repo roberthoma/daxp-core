@@ -24,16 +24,16 @@ package org.daxprotocol.core.datatype;
 
 public enum DaxBlockType {//extends DaxValue<String> {
 
+    BLOCK_MESSAGE('M',"Message block"), /// Only in dictionary type message
+    BLOCK_CONTEXT('X',"Context block"), /// Only in dictionary type message
     BLOCK_ENTITY('E', "Entity block"),
-    BLOCK_MESSAGE('M',"Message block"),
-    BLOCK_CONTEXT('X',"Context block"),
-    BLOCK_INSTANCE('I',"Instance of entity block"),
-    BLOCK_TAG('T',"Tag definition block"),
+    BLOCK_TAG('T',"Tag definition block"), /// Only in dictionary type message
     BLOCK_FIELD('F',"Field definition block"),
+    BLOCK_VALUE('V',"Value definition block"),   // for example Collection value
     BLOCK_COLLECTION('C',"Definition block of collection : Name , Allow duplication , has key ...."),
-    BLOCK_VALUE('V',"Value block"),   // for example Collection value
-    BLOCK_SCHEMA('S',"Schema block");   // for example Collection value
-
+    BLOCK_SCHEMA('S',"Schema block"),   // for example Collection value
+    BLOCK_INSTANCE('I',"Instance of entity block")
+   ;
     private final Character code;
     private final String description;
     /**

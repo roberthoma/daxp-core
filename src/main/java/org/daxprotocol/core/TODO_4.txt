@@ -1,0 +1,25 @@
+1) Critical
+daxEngine.getConfig().getAppContextId();  -- is wrong
+
+2) No getLongValue
+ Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
+
+
+
+
+3) Develop DaxTagFactory.
+
+
+
+
+4) Work mode .. DEBUGING ...
+- sending logs
+- sending ttags with FieldName
+-
+
+
+5) Empty $:151=|$:152=
+$:4=2|$:5=X|$:15=CUSTOMER|$:107=CRM|$:12=Customer Relationship Management|
+$:4=3|$:5=M|$:15=CRM.DATA|$:151=|$:152=|$:12=Customer Data|
+$:4=4|$:5=M|$:15=CRM.NEW|$:151=|$:152=|$:12=New Customer|
+

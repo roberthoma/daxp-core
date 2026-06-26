@@ -7,21 +7,19 @@ import org.daxprotocol.core.annotation.DaxpRegister;
 public class DaxCoreMessages {
 
 
-    private static final String daxPrefix = DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX+ DaxCoreConstants.CONTEXT_TAG_SEPARATOR;
+    private static final String daxPrefix = DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX+DaxCoreConstants.CONTEXT_TAG_SEPARATOR;
 
-    public static final String  DIC_REQ     =  "DR"; // 	REQ 	Request for a dictionary
-    public static final String  DATA_DIC    =  "DD";  // 	RES 	Dictionary of data types and their attributes
-    public static final String  CONTEXT_DIC =  "XD";  // 	RES 	Dictionary of data types and their attributes
 
-    public static final String  OK_RES      =  "OK";  // 	RES 	Error request
-    public static final String  ERR_RES     =  "ERR";  // 	RES 	Error respond
-    public static final String  DIC_RELOAD  =  "RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
-    public static final String  DIC_LOG     =  "LOG";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
+    public static final String  DIC_REQ     =  daxPrefix+"DIC_REQ"; // 	REQ 	Request for a dictionary
+    public static final String  DATA_DIC    =  daxPrefix+"DIC_DATA";  // 	RES 	Dictionary of data types and their attributes
+    public static final String  OK_RES      =  daxPrefix+"OK";  // 	RES 	Error request
+    public static final String  ERR_RES     =  daxPrefix+"ERR";  // 	RES 	Error respond
+    public static final String  LOG         =  daxPrefix+"LOG";   //	EVN 	Log
 
-    // new sys message .. daxp configuration  : set pairSeparator ..
+    public static final String  ABOUT_REQ     =  daxPrefix+"ABOUT_REQ";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
+    public static final String  ABOUT_RESP    =  daxPrefix+"ABOUT";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
+    public static final String  PING_REQ      =  daxPrefix+"PING";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
 
-    //ABOUT
-    //
 
 }
 
@@ -31,6 +29,7 @@ public class DaxCoreMessages {
     //TODO Message respond
     //TODO Add to preferences
 
+    public static final String  DIC_RELOAD  =  "RL";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
 
 GET	Read (retrieve data)	/customers/123
 POST	Create (new resource)	/orders

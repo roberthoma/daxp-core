@@ -102,17 +102,9 @@ public class DaxCoreTags {
     public static final DaxTag REQ_FIELD_LIST          = daxpSysTag(108);
 
 
-
-
-
     public static final DaxTag TAG_LIST                = daxpSysTag(115);
+
     public static final DaxTag ENTITY_DATA_TYPE_ID     = daxpSysTag(118);
-
-//    public static final DaxTag VALUE_IS_NULL     = daxpSysTag(119);
-
-
-//    public static final DaxTag REFERENCE_ENTITY         = daxpSysTag(15);
-
 
     public static final DaxTag FIELD_ROLE         = daxpSysTag(122);
 

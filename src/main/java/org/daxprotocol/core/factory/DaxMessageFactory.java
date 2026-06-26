@@ -21,12 +21,15 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpEntity;
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.pair.DaxPairCharacter;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
@@ -190,7 +193,8 @@ public class DaxMessageFactory {
 
     public DaxMessage errorInvalidMessageType() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
-        message.getBody().nextBlock();
+        //message.getBody().nextBlock();
+        message.getBody().nextBlock(DaxBlockType.BLOCK_VALUE);
         message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Invalid Message Type"));
         return message;
     }
@@ -223,5 +227,13 @@ public class DaxMessageFactory {
     }
 
 
+    public DaxMessage aboutToMsg() {
+        DaxMessage message = new DaxMessage(DaxCoreMessages.ABOUT_RESP);
+        message.getBody().nextBlock(DaxBlockType.BLOCK_VALUE);
+        message.getBody().putPair(new DaxPairString(ENTRY_DESCRIPTION, DaxCoreConstants.DAXP_CONTEXT_DESCRIPTION));
 
+     //TODO add dedicated tags :)
+
+        return message;
+    }
 }

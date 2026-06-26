@@ -22,6 +22,7 @@ package org.daxprotocol.core.application;
 
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.context.DaxContextFactory;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
@@ -44,6 +45,8 @@ import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTrailerCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
 
 import static org.daxprotocol.core.application.DaxCoreTags.ATR_DATA_TYPE;
 
@@ -96,8 +99,10 @@ public class DaxEngine {
     //TODO move tagParser to tagCodec
 
 
-    public DaxEngine(DaxConfig config){
-        this.config = config;
+//    public DaxEngine(DaxConfig config){
+    public DaxEngine(Properties properties){
+
+        this.config = DaxpConfigFactory.createConfig(properties);
 
         DaxContext appContext = DaxContextFactory.createAppContext(config);
         DaxContext sysContext = DaxContextFactory.createSysContext();
@@ -109,8 +114,11 @@ public class DaxEngine {
         contextMapper.registerPredefined(sysContext);
         contextMapper.registerPredefined(appContext);
 
+//        config.setAppContextId( contextMapper.getReferenceId(appContext.getTagPrefix()));
+//        appContext.setId(config.getAppContextId());
+
         tagParser  = new DaxTagParser(contextMapper);
-        tagCodec      = new DaxTagCodec     (config, contextMapper, tagParser );
+        tagCodec   = new DaxTagCodec(config, contextMapper, tagParser );
 
         daxDataTypeService = new DaxDataTypeService();
         dataTypeCodec = new DaxDataTypeCodec(daxDataTypeService, tagCodec);
@@ -264,6 +272,10 @@ public class DaxEngine {
 
     public DaxDataTypeService getDaxDataTypeService() {
         return daxDataTypeService;
+    }
+
+    public int getAppContextId(){
+      return config.getAppContextId();
     }
 
     public void checkRegister() {

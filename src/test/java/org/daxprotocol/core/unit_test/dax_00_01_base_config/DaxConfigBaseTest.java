@@ -47,9 +47,9 @@ public class DaxConfigBaseTest {
     @BeforeAll
     public static void initAll() {
         if (daxEngine == null) {
+
             daxEngine = new DaxEngine(DaxpConfigFactory
-                    .createConfig(DaxpConfigFactory
-                            .createProperties("application_BASE.properties")));
+                    .createProperties("application_BASE.properties"));
 
             appContextId    = daxEngine.getConfig().getAppContextId();
             dictionary      = daxEngine.getDictionary();
