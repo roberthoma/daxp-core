@@ -1,28 +1,38 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'org.daxprotocol'
-version = '0.7.1'
+version = '0.7.1-beta'
 
-repositories {
-    mavenCentral()
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
-
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 
-    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.23.1'
-    implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
-
+    implementation 'org.slf4j:slf4j-api:2.0.12'
     testImplementation 'org.apache.logging.log4j:log4j-core:2.24.1'
     testImplementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.24.1'
-
 }
 
 test {

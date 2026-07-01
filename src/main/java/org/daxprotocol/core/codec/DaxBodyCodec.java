@@ -47,11 +47,10 @@ public class DaxBodyCodec {
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
                                       int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
                                       Map<DaxTag, Set<Integer>> tagBlockRefMap,
-                                     //Set<DaxTag> nullTags,
                                      char pairSeparator)
     {
         if (isBlogIdx) {
-
+           // sb.append("\n");  only for debug mode
             pairCodec.encode(sb, DaxCoreTags.BLOCK_INDEX, String.valueOf(blockIdx+1), pairSeparator);
        }
 

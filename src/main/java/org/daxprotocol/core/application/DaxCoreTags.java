@@ -32,6 +32,7 @@ import java.util.Map;
  */
 
 //TODO Add name for each tag
+//TODO rebuid to DaxBaseDictionary
 public class DaxCoreTags {
 
     private static final Map<Integer, DaxTag> SYS_TAG_CACHE = new HashMap<>();
@@ -85,11 +86,11 @@ public class DaxCoreTags {
 
     ///Universal tag
     public static final DaxTag ENTRY_TAG               = daxpSysTag(6);
+    public static final DaxTag ENTRY_OWNER_ID          = daxpSysTag(7);
     public static final DaxTag ENTRY_NAME              = daxpSysTag(11);
     public static final DaxTag ENTRY_DESCRIPTION       = daxpSysTag(12);
     public static final DaxTag ENTRY_SYMBOL            = daxpSysTag(15);
 
-    public static final DaxTag ENTRY_OWNER_ID          = daxpSysTag(7);
     public static final DaxTag ENTRY_SCHEMA            = daxpSysTag(21);
 
     public static final DaxTag TAG_OWNER_ID          = daxpSysTag(111);
@@ -109,8 +110,6 @@ public class DaxCoreTags {
     public static final DaxTag FIELD_ROLE         = daxpSysTag(122);
 
 
-
-
     //----
     //    public static final DaxTag SCHEMA           = daxpSysTag(144);
     //    public static final DaxTag SCHEMA_DESC     = daxpSysTag(144);
@@ -118,8 +117,6 @@ public class DaxCoreTags {
 
     //----
     public static final DaxTag ENTITY_NAME = daxpSysTag(143);
-    public static final DaxTag DTO_NAMESPACE   = daxpSysTag(144);
-  //  public static final DaxTag ENTITY_DESCRIPTION = daxpSysTag(145);
 
     //----------
     //Use in multi message transaction , tag is head item
@@ -195,10 +192,6 @@ public class DaxCoreTags {
 
     // COLLECTION_PK,  ATTR_UNIQUE
     //Foreign Key	ATTR_REF_CONTEXT	Points to a different context (e.g., CRM:ID) as a relational constraint.
-
-    //TODO
-//    $:121=tag - ustawia NULL
-//    $:122=tag - usuwa pole
 
     /*****************************
      * Attributes of UI

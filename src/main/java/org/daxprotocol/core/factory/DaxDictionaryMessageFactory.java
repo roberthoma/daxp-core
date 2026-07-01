@@ -16,6 +16,7 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.tag.DaxTagDestiny;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -106,10 +107,16 @@ public class DaxDictionaryMessageFactory {
     private void putMsgItem(DaxBody body,  DaxMessageItem msgItem){
         body.nextBlock(DaxBlockType.BLOCK_MESSAGE);
         body.putPair(ENTRY_SYMBOL, msgItem.getMsgType());
-        body.putPair(ENTRY_DESCRIPTION, msgItem.getMsgDesc());
 
-        body.putPair(MESSAGE_TAGS, createTagListStr(msgItem.getMsgFields()));
-        body.putPair(MESSAGE_RELATED_MSGS, createStringValueListStr(msgItem.getRelatedMsgType()));
+        if (!msgItem.getMsgDesc().isEmpty()){
+            body.putPair(ENTRY_DESCRIPTION, msgItem.getMsgDesc());
+        }
+        if (!msgItem.getMsgFields().isEmpty()){
+            body.putPair(MESSAGE_TAGS, createTagListStr(msgItem.getMsgFields()));
+        }
+        if (!msgItem.getRelatedMsgType().isEmpty()){
+            body.putPair(MESSAGE_RELATED_MSGS, createStringValueListStr(msgItem.getRelatedMsgType()));
+        }
 
     }
 

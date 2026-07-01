@@ -4,11 +4,13 @@ import java.util.*;
 
 public enum DaxPreambleTag {
     DAXP("DAXP"),
-    VERSION("V"),
-    ENCODING("EN"),
-    MSG_QUANTITY("MQ"),
-    MSG_SCHEMA("SX"),
+    VERSION("V"),  // DAXP rules Version
+    IMPLEMENTATION("I"),  //Implementation Version
+    ENCODING("EN"),       //Encoding
+    MSG_DOMAIN("DX"),
     MSG_CONTEXT("CX"),
+    MSG_SCHEMA("SX"),
+    MSG_QUANTITY("MQ"),
     MSG_SENDER("SN");
 
 

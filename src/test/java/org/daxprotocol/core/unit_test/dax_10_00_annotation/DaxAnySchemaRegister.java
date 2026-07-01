@@ -72,12 +72,13 @@ public class DaxAnySchemaRegister {
     public static final int TEST_NOT_USE_TAG_987654321 =  999999999;
 
 
-    //Messages
-    @DaxpMsg(description = "Base ENTITY Request")
-    public static final String MSG_BASE_ENTITY_Req =  "BDR"; // 	REs 	Customer Data
-
     @DaxpMsg(description = "Base Entity DATA")
-    public static final String MSG_BASE_ENTITY_DATA =   "BD"; // 	REs 	Customer Data
+    public static final String MSG_BASE_ENTITY_DATA =   "BD.DATA"; // 	REs 	Customer Data
+
+    //Messages
+    @DaxpMsg(description = "Base ENTITY Request", respMsg = {MSG_BASE_ENTITY_DATA})
+    public static final String MSG_BASE_ENTITY_Req =  "BD.REQ"; // 	REs 	Customer Data
+
 
 
     //TODO Create new tested schema for exceptions

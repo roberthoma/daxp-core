@@ -1,5 +1,3 @@
-1) Critical
-daxEngine.getConfig().getAppContextId();  -- is wrong
 
 2) No getLongValue
  Long customerId = Long.valueOf(  msg.get(0, customerIdTag).getIntegerValue());
