@@ -31,3 +31,5 @@ DAXP|V=v0.1.0|CX=CRM|
 9=DAX_ERR|
 7=1|150=DAXP-5001|151=4|152=Customer ID 123 not found in Sanok DB|
 99=122|
+
+Create dedicated tags
