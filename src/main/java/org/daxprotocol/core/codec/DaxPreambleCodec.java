@@ -70,7 +70,7 @@ public class DaxPreambleCodec {
 
 
         StringBuilder sb = new StringBuilder();
-        sb.append(DaxCoreConstants.DAXP_namespace_SYMBOL)
+        sb.append(DaxCoreConstants.DAXP_NAMESPACE_SYMBOL)
           .append(preamble.getPairSeparator());
         encode(sb, DaxPreambleTag.VERSION.getTag(), preamble.getProtocolVersion() ,preamble.getPairSeparator()); //Always first
 

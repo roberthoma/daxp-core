@@ -153,7 +153,7 @@ public class DaxTagParser {
         }
 
         //6. Is ok return new DaxTag
-        return namespaceId == DaxCoreConstants.DAXP_namespace_ID
+        return namespaceId == DaxCoreConstants.DAXP_NAMESPACE_ID
                 ? DaxTag.createCoreTag(tagId):
                   DaxTag.of(namespaceId, tagId);
     }

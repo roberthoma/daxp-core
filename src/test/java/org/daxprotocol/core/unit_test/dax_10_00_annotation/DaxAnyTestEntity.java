@@ -142,7 +142,7 @@ public class DaxAnyTestEntity {
 
         this.enumValue_5032 = DaxAnyTestEnum.ENUM_VALUE1;
 
-        this.subEntity_5077 = new DaxSubEntity(14,"Kowalski"+ DaxCoreConstants.DAXP_namespace_TAG_PREFIX +"N",761.24);
+        this.subEntity_5077 = new DaxSubEntity(14,"Kowalski"+ DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX +"N",761.24);
         this.subEntity_5078 = new DaxSubEntity(34,"subEntity@2=",654.66);
 
         this.daxSubEntitySet_5090 = new HashSet<>();

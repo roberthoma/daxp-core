@@ -19,7 +19,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag11(){
         String tagStr = "1";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, DaxCoreConstants.DAXP_namespace_ID);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, DaxCoreConstants.DAXP_NAMESPACE_ID);
         Assertions.assertEquals(DaxCoreTags.MSG_TYPE ,tag);
     }
     @Test
@@ -108,7 +108,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
 
         //Assertions.assertEquals(expectedTag ,tag);
         Assertions.assertNotEquals(appnamespaceId,tag.getNamespaceId());
-        Assertions.assertNotEquals(DaxCoreConstants.DAXP_namespace_ID,tag.getNamespaceId());
+        Assertions.assertNotEquals(DaxCoreConstants.DAXP_NAMESPACE_ID,tag.getNamespaceId());
 
     }
 
@@ -121,7 +121,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
 
         Assertions.assertNotEquals(expectedTag ,tag);
         Assertions.assertNotEquals(appnamespaceId,tag.getNamespaceId());
-        Assertions.assertNotEquals(DaxCoreConstants.DAXP_namespace_ID,tag.getNamespaceId());
+        Assertions.assertNotEquals(DaxCoreConstants.DAXP_NAMESPACE_ID,tag.getNamespaceId());
 
     }   @Test
     void parseTag102(){

@@ -23,13 +23,11 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
-import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.pair.DaxPairCharacter;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.model.DaxMessage;
@@ -43,7 +41,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
@@ -230,7 +227,7 @@ public class DaxMessageFactory {
     public DaxMessage aboutToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ABOUT_RESP);
         message.getBody().nextBlock(DaxBlockType.BLOCK_VALUE);
-        message.getBody().putPair(new DaxPairString(ENTRY_DESCRIPTION, DaxCoreConstants.DAXP_namespace_DESCRIPTION));
+        message.getBody().putPair(new DaxPairString(ENTRY_DESCRIPTION, DaxCoreConstants.DAXP_NAMESPACE_DESCRIPTION));
 
      //TODO add dedicated tags :)
 

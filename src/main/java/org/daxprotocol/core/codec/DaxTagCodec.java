@@ -44,8 +44,8 @@ public class DaxTagCodec {
     }
 
     public String encode( DaxTag tag){
-        if(tag.getNamespaceId() == DaxCoreConstants.DAXP_namespace_ID){
-            return  DaxCoreConstants.DAXP_namespace_TAG_PREFIX+
+        if(tag.getNamespaceId() == DaxCoreConstants.DAXP_NAMESPACE_ID){
+            return  DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX +
                     DaxCoreConstants.namespace_TAG_SEPARATOR + tag.getTagId();
         }
 

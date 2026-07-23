@@ -37,7 +37,7 @@ public final class DaxTag {
 
     // Public factory method for user-defined tags
     public static DaxTag of(int namespaceId, int tagId) {
-        if (namespaceId <= DaxCoreConstants.DAXP_namespace_ID) {
+        if (namespaceId <= DaxCoreConstants.DAXP_NAMESPACE_ID) {
             throw new DaxTagException("User tags must have namespaceId > 0");
         }
         return new DaxTag(namespaceId, tagId);
@@ -45,7 +45,7 @@ public final class DaxTag {
 
     // Internal system tags reserved for the protocol (e.g., used within the same package)
     public static DaxTag createCoreTag(int tagId) {
-        return new DaxTag(DaxCoreConstants.DAXP_namespace_ID, tagId);
+        return new DaxTag(DaxCoreConstants.DAXP_NAMESPACE_ID, tagId);
     }
 
     @Override

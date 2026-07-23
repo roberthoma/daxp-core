@@ -4,11 +4,11 @@ public class DaxCoreConstants {
     /*****************************************************
      *  DAXP namespace
      */
-    public static final int    DAXP_namespace_ID          = 0;
-    public static final String DAXP_namespace_SYMBOL      = "DAXP";
-    public static final String DAXP_namespace_TAG_PREFIX  = "$" ;
+    public static final int DAXP_NAMESPACE_ID = 0;
+    public static final String DAXP_NAMESPACE_SYMBOL = "DAXP";
+    public static final String DAXP_NAMESPACE_TAG_PREFIX = "$" ;
     public static final String DAXP_SYMBOL              = "DAXP";
-    public static final String DAXP_namespace_DESCRIPTION = "Data & Attribute eXchange Protocol";
+    public static final String DAXP_NAMESPACE_DESCRIPTION = "Data & Attribute eXchange Protocol";
     /*****************************************************
     *  Operators
     *

@@ -16,10 +16,10 @@ public class DaxNamespaceFactory {
 
     public static DaxNamespace createSysNamespace(){
         DaxNamespace namespace = new DaxNamespace();
-        namespace.setId(DaxCoreConstants.DAXP_namespace_ID);
-        namespace.setSymbol(DaxCoreConstants.DAXP_namespace_SYMBOL);
-        namespace.setTagPrefix(DaxCoreConstants.DAXP_namespace_TAG_PREFIX);
-        namespace.setDescription(DaxCoreConstants.DAXP_namespace_DESCRIPTION);
+        namespace.setId(DaxCoreConstants.DAXP_NAMESPACE_ID);
+        namespace.setSymbol(DaxCoreConstants.DAXP_NAMESPACE_SYMBOL);
+        namespace.setTagPrefix(DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX);
+        namespace.setDescription(DaxCoreConstants.DAXP_NAMESPACE_DESCRIPTION);
        return namespace;
     }
 

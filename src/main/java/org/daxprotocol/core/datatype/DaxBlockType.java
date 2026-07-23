@@ -25,13 +25,12 @@ package org.daxprotocol.core.datatype;
 public enum DaxBlockType {//extends DaxValue<String> {
 
     BLOCK_MESSAGE('M',"Message block"), /// Only in dictionary type message
-    BLOCK_namespace('X',"namespace block"), /// Only in dictionary type message
+    BLOCK_NAMESPACE('S',"Namespace block"), /// Only in dictionary type message
     BLOCK_ENTITY('E', "Entity block"),
     BLOCK_TAG('T',"Tag definition block"), /// Only in dictionary type message
     BLOCK_FIELD('F',"Field definition block"),
     BLOCK_VALUE('V',"Value definition block"),   // for example Collection value
     BLOCK_COLLECTION('C',"Definition block of collection : Name , Allow duplication , has key ...."),
-    BLOCK_SCHEMA('S',"Schema block"),   // for example Collection value
     BLOCK_INSTANCE('I',"Instance of entity block")
    ;
     private final Character code;
@@ -66,13 +65,12 @@ public enum DaxBlockType {//extends DaxValue<String> {
         return switch (code){
             case 'E' -> BLOCK_ENTITY;
             case 'M' -> BLOCK_MESSAGE;
-            case 'X' -> BLOCK_namespace;
+            case 'X' -> BLOCK_NAMESPACE;
             case 'I' -> BLOCK_INSTANCE;
             case 'T' -> BLOCK_TAG;
             case 'F' -> BLOCK_FIELD;
             case 'C' -> BLOCK_COLLECTION;
             case 'V' -> BLOCK_VALUE;
-            case 'S' -> BLOCK_SCHEMA;
             default ->  throw new IllegalArgumentException("Unknown DAXP data type code: " + code);
 
         };

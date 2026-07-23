@@ -16,7 +16,6 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.tag.DaxTagDestiny;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -120,8 +119,8 @@ public class DaxDictionaryMessageFactory {
 
     }
 
-    private void putnamespaceToBody(DaxBody body, DaxNamespace daxnamespace) {
-        body.nextBlock(DaxBlockType.BLOCK_namespace);
+    private void putNamespaceToBody(DaxBody body, DaxNamespace daxnamespace) {
+        body.nextBlock(DaxBlockType.BLOCK_NAMESPACE);
         body.putPair(ENTRY_SYMBOL, daxnamespace.getSymbol());
         body.putPair(FIELD_VALUE_PREFIX, daxnamespace.getTagPrefix());
         body.putPair(ENTRY_DESCRIPTION, daxnamespace.getDescription());
@@ -164,19 +163,19 @@ public class DaxDictionaryMessageFactory {
 
 
     }
-    private void  putSchemaToBlock(DaxBody body,  Map<DaxTag, DaxPair<?>> tagDaxPairMap){
-        body.nextBlock(DaxBlockType.BLOCK_SCHEMA);
-
-        tagDaxPairMap.forEach((daxTag, pair) -> body.putPair(pair));
-
-    }
+//    private void  putSchemaToBlock(DaxBody body,  Map<DaxTag, DaxPair<?>> tagDaxPairMap){
+//        body.nextBlock(DaxBlockType.BLOCK_SCHEMA);
+//
+//        tagDaxPairMap.forEach((daxTag, pair) -> body.putPair(pair));
+//
+//    }
 
 
     public DaxMessage dictionaryToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_DIC);
 
         dictionary.getnamespaceMap().forEach((idCtx, namespace) ->
-                putnamespaceToBody(message.getBody(), namespace)
+                putNamespaceToBody(message.getBody(), namespace)
         );
 
         dictionary.getMsgMap().forEach((s, messageDicItem) ->
@@ -184,10 +183,10 @@ public class DaxDictionaryMessageFactory {
         );
 
         //TODO SCHEMA
-        dictionary.getSchemaDictionary().getAttributMap()
-                .forEach((integer, tagDaxPairMap) ->
-                        putSchemaToBlock(message.getBody(), tagDaxPairMap)
-                );
+//        dictionary.getSchemaDictionary().getAttributMap()
+//                .forEach((integer, tagDaxPairMap) ->
+//                        putSchemaToBlock(message.getBody(), tagDaxPairMap)
+//                );
 
 
         dictionary.getTagAttributeMap().forEach((tag, atrMap) ->

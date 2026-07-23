@@ -1,0 +1,19 @@
+TF Y Tag Format Format of tag identifiers: D=Decimal, H=Hexadecimal. TF=D
+EN Y Encoding Character encoding used in the message (full name). EN=UTF8
+MC N Message Count Number of messages following this preamble (batch size). MC=5
+CX N Context Logical or domain context (Subsystem or namespace) CX=TRD
+TS N Timestamp UTC timestamp when the preamble was generated. TS=20251105-18:45:11.123
+SN N Sender Identifier of the sending component or system. SN=RxGateway
+TG N Target Identifier of the target component or system. TG=RxTrader
+TK N Token Authentication, session, or correlation token. TK=abc123
+Design Rules
+
+Two-letter uppercase tags are reserved for preamble metadata.
+Values may be compact (D, H) or descriptive (UTF8, ASCII).
+Recommended tag order:
+
+DAXP → TF → EN → MC → CX → TS → SN → TG → TK
+
+Unknown tags must be ignored gracefully by parsers.
+Pairs are separated by | or SOH (0x01) in binary mode.
+The two-letter tag convention is mandatory for future extensions.
