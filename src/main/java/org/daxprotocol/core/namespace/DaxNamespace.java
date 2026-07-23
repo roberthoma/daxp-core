@@ -1,8 +1,8 @@
-package org.daxprotocol.core.context;
+package org.daxprotocol.core.namespace;
 
 import org.daxprotocol.core.mapper.DaxReference;
 
-public class DaxContext implements DaxReference<String> {
+public class DaxNamespace implements DaxReference<String> {
     private int id;
     private String tagPrefix;
     private String symbol;
@@ -49,15 +49,15 @@ public class DaxContext implements DaxReference<String> {
 // String serviceSymbol ....
     //URL address / IP / port for service  ...  List of alternative address
 
-    //IDEA  it passible define context and point service, for example
+    //IDEA  it passible define namespace and point service, for example
     /*
-       <context_symbol>.<service_symbol>:<tag>=<value>
+       <namespace_symbol>.<service_symbol>:<tag>=<value>
 CRM.S2:130=Jon
 
      */
     @Override
     public String toString() {
-        return "DaxContext{id=" + id +
+        return "Daxnamespace{id=" + id +
                 ", tagPrefix='" + tagPrefix + '\'' +
                 ", symbol='" + symbol + '\'' +
                 ", description='" + description + '\'' +

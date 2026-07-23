@@ -9,7 +9,7 @@ public enum DaxTagDestiny {
     COLLECTION_VALUE,
     TAG,
     MSG,
-    CONTEXT,
+    namespace,
     SCHEMA,
     UNKNOW;
 }

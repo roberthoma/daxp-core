@@ -11,9 +11,9 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.FIELD })
 public @interface DaxpCollectionValue {
 
-    String value() default "";      //context plus tagId "FIX:53"
+    String value() default "";      //namespace plus tagId "FIX:53"
     int tagId() default -1;                   // It can be define by @DaxpTag
-    String context() default "";   // Empty mean  DaxpConfig.APP_CONTEXT_SYMBOL;
+    String namespace() default "";   // Empty mean  DaxpConfig.APP_namespace_SYMBOL;
     String name() default "";      //Use for rename field name , example :used for JSON cast.
     String description() default "";
 }

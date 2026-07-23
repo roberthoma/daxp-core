@@ -16,8 +16,8 @@ public class DaxTagCodecTest extends DaxConfigBaseTest {
     }
     @Test
     void tagCodec_2(){
-        int contextId = contextMapper.getReferenceId("FIX");
-        DaxTag tag = DaxTag.of(contextId, 45 );
+        int namespaceId = namespaceMapper.getReferenceId("FIX");
+        DaxTag tag = DaxTag.of(namespaceId, 45 );
         String tagStr = "FIX:45";
         Assertions.assertEquals(tagStr, tagCodec.encode(tag));
     }

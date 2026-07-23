@@ -235,9 +235,9 @@ public class DaxMessageConverter {
                 DaxpField ann = f.getAnnotation(DaxpField.class);
                 if (ann == null) continue;
 
-                int contextId = config.getAppContextId() ;
+                int namespaceId = config.getAppnamespaceId() ;
 
-                DaxTag tag = DaxTag.of(contextId , ann.tagId());
+                DaxTag tag = DaxTag.of(namespaceId , ann.tagId());
                 if(! message.getBody().getBlock(0).containsKey(tag)) continue;
 
                 var pair = message.get(0,tag);

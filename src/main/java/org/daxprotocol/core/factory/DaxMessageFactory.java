@@ -230,7 +230,7 @@ public class DaxMessageFactory {
     public DaxMessage aboutToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ABOUT_RESP);
         message.getBody().nextBlock(DaxBlockType.BLOCK_VALUE);
-        message.getBody().putPair(new DaxPairString(ENTRY_DESCRIPTION, DaxCoreConstants.DAXP_CONTEXT_DESCRIPTION));
+        message.getBody().putPair(new DaxPairString(ENTRY_DESCRIPTION, DaxCoreConstants.DAXP_namespace_DESCRIPTION));
 
      //TODO add dedicated tags :)
 

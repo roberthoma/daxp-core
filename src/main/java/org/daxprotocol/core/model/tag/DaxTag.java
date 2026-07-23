@@ -26,26 +26,26 @@ import org.daxprotocol.core.exceptions.DaxTagException;
 import java.util.Objects;
 
 public final class DaxTag {
-    private final int contextId;
+    private final int namespaceId;
     private final int tagId;
 
     // Private constructor to prevent external instantiation via 'new'
-    private DaxTag(int contextId, int tagId) {
-        this.contextId = contextId;
+    private DaxTag(int namespaceId, int tagId) {
+        this.namespaceId = namespaceId;
         this.tagId = tagId;
     }
 
     // Public factory method for user-defined tags
-    public static DaxTag of(int contextId, int tagId) {
-        if (contextId <= DaxCoreConstants.DAXP_CONTEXT_ID) {
-            throw new DaxTagException("User tags must have contextId > 0");
+    public static DaxTag of(int namespaceId, int tagId) {
+        if (namespaceId <= DaxCoreConstants.DAXP_namespace_ID) {
+            throw new DaxTagException("User tags must have namespaceId > 0");
         }
-        return new DaxTag(contextId, tagId);
+        return new DaxTag(namespaceId, tagId);
     }
 
     // Internal system tags reserved for the protocol (e.g., used within the same package)
     public static DaxTag createCoreTag(int tagId) {
-        return new DaxTag(DaxCoreConstants.DAXP_CONTEXT_ID, tagId);
+        return new DaxTag(DaxCoreConstants.DAXP_namespace_ID, tagId);
     }
 
     @Override
@@ -53,16 +53,16 @@ public final class DaxTag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DaxTag daxTag = (DaxTag) o;
-        return contextId == daxTag.contextId && tagId == daxTag.tagId;
+        return namespaceId == daxTag.namespaceId && tagId == daxTag.tagId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contextId, tagId);
+        return Objects.hash(namespaceId, tagId);
     }
 
-    public int getContextId() {
-        return contextId;
+    public int getNamespaceId() {
+        return namespaceId;
     }
 
     public int getTagId() {

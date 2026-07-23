@@ -23,7 +23,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
             preamble    = frameParser.parsePreamble(msgStr);
             Assertions.assertEquals("V1.2.3",preamble.getProtocolVersion());
             Assertions.assertEquals(DaxCharacterEncoding.UTF_16, preamble.getEncoding());
-            Assertions.assertEquals(contextMapper.getReferenceId("FIX"), preamble.getContextId());
+            Assertions.assertEquals(namespaceMapper.getReferenceId("FIX"), preamble.getnamespaceId());
         } catch (DaxException e) {
             System.out.println(e.getDaxErrorCode());
             Assertions.fail();
@@ -38,7 +38,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
             preamble    = frameParser.parsePreamble(msgStr);
             Assertions.assertEquals("V0.1.0",preamble.getProtocolVersion());
             Assertions.assertEquals(DaxCharacterEncoding.UTF_8, preamble.getEncoding());
-            Assertions.assertEquals(contextMapper.getReferenceId("CRM"), preamble.getContextId());
+            Assertions.assertEquals(namespaceMapper.getReferenceId("CRM"), preamble.getnamespaceId());
         } catch (DaxException e) {
             System.out.println(e.getDaxErrorCode());
             Assertions.fail();
@@ -60,7 +60,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
                 preamble    = frameParser.parsePreamble(msgStr);
                 Assertions.assertEquals("V0.1.0",preamble.getProtocolVersion());
                 Assertions.assertEquals(DaxCharacterEncoding.UTF_8, preamble.getEncoding());
-                Assertions.assertEquals(contextMapper.getReferenceId("CRM"), preamble.getContextId());
+                Assertions.assertEquals(namespaceMapper.getReferenceId("CRM"), preamble.getnamespaceId());
             } catch (DaxException e) {
                 System.out.println(e.getDaxErrorCode());
                 Assertions.fail();
@@ -104,7 +104,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
             frame = frameParser.parseFrame(msgStr);
             DaxMessage msg = frame.getFirstMessage();
             Assertions.assertEquals ("CDD", msg.getMsgType());
-            DaxTag t2080tag = DaxTag.of(contextMapper.getReferenceId("CRM") ,2080);
+            DaxTag t2080tag = DaxTag.of(namespaceMapper.getReferenceId("CRM") ,2080);
 
 
             Assertions.assertEquals ("Big bike",  msg.getBody()

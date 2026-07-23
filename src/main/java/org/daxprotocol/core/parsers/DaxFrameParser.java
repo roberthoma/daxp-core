@@ -180,7 +180,7 @@ public class DaxFrameParser {
 
                 } else {
 
-                    DaxTag tag = tagParser.parseDaxTag(tagStr, preamble.getContextId());
+                    DaxTag tag = tagParser.parseDaxTag(tagStr, preamble.getnamespaceId());
                     if (workMode == 'P'){
                         break;
                     }
@@ -199,7 +199,7 @@ public class DaxFrameParser {
                             listOfPair.clear();
                         }
                     }
-                    DaxPair<?> pair = pairCodec.decode(tag, valueStr ,foundOperator, preamble.getContextId());
+                    DaxPair<?> pair = pairCodec.decode(tag, valueStr ,foundOperator, preamble.getnamespaceId());
                     listOfPair.add(pair);
 
                     if (tag.equals(DaxCoreTags.CHECKSUM)){

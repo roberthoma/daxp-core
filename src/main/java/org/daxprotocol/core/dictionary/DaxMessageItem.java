@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class DaxMessageItem {
 
-    private int   contextId;
+    private int   namespaceId;
     private final String msgType;
     private final String msgDesc;
 
@@ -37,12 +37,12 @@ public class DaxMessageItem {
         return msgType;
     }
 
-    public int getContextId() {
-        return contextId;
+    public int getnamespaceId() {
+        return namespaceId;
     }
 
-    public void setContextId(int contextId) {
-        this.contextId = contextId;
+    public void setnamespaceId(int namespaceId) {
+        this.namespaceId = namespaceId;
     }
 
     public void addReqTag(DaxTag daxTag) {

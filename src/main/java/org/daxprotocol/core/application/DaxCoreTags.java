@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Predefined DAXP Core tags reserved by context $:
+ * Predefined DAXP Core tags reserved by namespace $:
  * These tags are owned by the DAXP protocol and must not be reused
  * by application/domain dictionaries.
  */
@@ -191,7 +191,7 @@ public class DaxCoreTags {
 
 
     // COLLECTION_PK,  ATTR_UNIQUE
-    //Foreign Key	ATTR_REF_CONTEXT	Points to a different context (e.g., CRM:ID) as a relational constraint.
+    //Foreign Key	ATTR_REF_namespace	Points to a different namespace (e.g., CRM:ID) as a relational constraint.
 
     /*****************************
      * Attributes of UI
@@ -204,7 +204,7 @@ public class DaxCoreTags {
     /*****************************
      * Errors
      */
-    //TODO create list of exception - errors like DAX-34444 or . context CRN-020202
+    //TODO create list of exception - errors like DAX-34444 or . namespace CRN-020202
     public static final DaxTag ERR_FIELD_NR        = daxpSysTag(224);
     public static final DaxTag ERR_FIELD_ID        = daxpSysTag(225);
     public static final DaxTag ERR_DESCRIPTION     = daxpSysTag(226);

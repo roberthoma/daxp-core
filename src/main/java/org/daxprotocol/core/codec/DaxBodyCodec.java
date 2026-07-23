@@ -120,7 +120,7 @@ public class DaxBodyCodec {
     //todo refactor. move to head codec
     private  final Set<DaxTag> headSet = Set.of(MSG_TYPE,
             MSG_BLOCK_QUANTITY
-            //new DaxTag(MSG_CONTEXT)
+            //new DaxTag(MSG_namespace)
     );
 
 

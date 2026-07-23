@@ -33,7 +33,7 @@ public class DaxPreamble {
     private String protocolVersion =  DaxConfig.PROTOCOL_VERSION;
     private int msgCnt = -1;  //quantity                 //CNT  Number of item messages following preamble. Default 1
     private DaxCharacterEncoding encoding;
-    private int contextId = -1;
+    private int namespaceId = -1;
     //TODO Add Token !!!
 
     public DaxPreamble(){
@@ -75,12 +75,12 @@ public class DaxPreamble {
         return encoding;
     }
 
-    public int getContextId(){
-        return contextId;
+    public int getnamespaceId(){
+        return namespaceId;
     }
 
-    public void setContextId(int contextId){
-        this.contextId = contextId;
+    public void setnamespaceId(int namespaceId){
+        this.namespaceId = namespaceId;
     }
 
 

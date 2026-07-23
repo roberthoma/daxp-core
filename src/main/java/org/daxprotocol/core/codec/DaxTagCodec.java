@@ -24,54 +24,53 @@ import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
-import org.daxprotocol.core.mapper.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxTagParser;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 public class DaxTagCodec {
     DaxConfig config;
-    DaxContextMapper contextMapper;
+    DaxNamespaceMapper namespaceMapper;
     DaxTagParser tagParser;
     public DaxTagCodec(DaxConfig config,
-                       DaxContextMapper contextMapper,
+                       DaxNamespaceMapper namespaceMapper,
                        DaxTagParser tagParser
     ){
       this.config = config;
-      this.contextMapper = contextMapper;
+      this.namespaceMapper = namespaceMapper;
       this.tagParser = tagParser;
     }
 
     public String encode( DaxTag tag){
-        if(tag.getContextId() == DaxCoreConstants.DAXP_CONTEXT_ID){
-            return  DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX+
-                    DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
+        if(tag.getNamespaceId() == DaxCoreConstants.DAXP_namespace_ID){
+            return  DaxCoreConstants.DAXP_namespace_TAG_PREFIX+
+                    DaxCoreConstants.namespace_TAG_SEPARATOR + tag.getTagId();
         }
 
-        if(tag.getContextId() != config.getAppContextId())
+        if(tag.getNamespaceId() != config.getAppnamespaceId())
         {
-            return  contextMapper.getReference(tag.getContextId()) +
-                    DaxCoreConstants.CONTEXT_TAG_SEPARATOR + tag.getTagId();
+            return  namespaceMapper.getReference(tag.getNamespaceId()) +
+                    DaxCoreConstants.namespace_TAG_SEPARATOR + tag.getTagId();
         }
         return String.valueOf(tag.getTagId());
     }
 
 //    public DaxTag decode(Annotation ann){
-//        return decode(ann.value(),ann.context(), ann.tagId());
+//        return decode(ann.value(),ann.namespace(), ann.tagId());
 //    }
     public DaxTag decode(DaxpField ann){
-        return decode(ann.value(),ann.context(), ann.tagId());
+        return decode(ann.value(),ann.namespace(), ann.tagId());
     }
     public DaxTag decode(DaxpCollection ann){
-        return decode(ann.value(),ann.context(), ann.tagId());
+        return decode(ann.value(),ann.namespace(), ann.tagId());
     }
     public DaxTag decode(DaxpValue ann){
-        return decode(ann.value(),ann.context(), ann.tagId());
+        return decode(ann.value(),ann.namespace(), ann.tagId());
     }
     public DaxTag decode(DaxpEntity ann){
-        return decode(ann.value(),ann.context(), ann.tagId());
+        return decode(ann.value(),ann.namespace(), ann.tagId());
     }
 
     public DaxTag decode(DaxpTag tagAnn, Field field) {
@@ -92,25 +91,25 @@ public class DaxTagCodec {
             throw new DaxAnnotationException("RegisterDaxpTagException "+field.getName()) ;
         }
 
-        return decode(value,tagAnn.context(), tagId);
+        return decode(value,tagAnn.namespace(), tagId);
 
     }
 
     public DaxTag decode(
             String value,
-            String context,
+            String namespace,
             int tagId
     ){
         DaxTag tag;
-        int contextId = context.isBlank() ?
-                config.getAppContextId():
-                contextMapper.getReferenceId(context);
+        int namespaceId = namespace.isBlank() ?
+                config.getAppnamespaceId():
+                namespaceMapper.getReferenceId(namespace);
 
         if (!value.isBlank()){
-            tag = tagParser.parseDaxTag(value,config.getAppContextId());
+            tag = tagParser.parseDaxTag(value,config.getAppnamespaceId());
         }
         else {
-            tag = DaxTag.of(contextId ,tagId);
+            tag = DaxTag.of(namespaceId ,tagId);
         }
 
         return tag;
@@ -118,8 +117,8 @@ public class DaxTagCodec {
 
     public DaxTag decode(
             String value,
-            int contextId
+            int namespaceId
     ){
-      return  tagParser.parseDaxTag(value,contextId);
+      return  tagParser.parseDaxTag(value,namespaceId);
     }
 }

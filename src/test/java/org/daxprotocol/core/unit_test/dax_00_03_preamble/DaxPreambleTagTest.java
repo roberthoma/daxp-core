@@ -22,7 +22,7 @@ public class DaxPreambleTagTest {
 
         Assertions.assertEquals(DaxPreambleTag.DAXP, DaxPreambleTag.fromTag("DAXP"));
         Assertions.assertEquals(DaxPreambleTag.DAXP, DaxPreambleTag.fromTag(" DAXP "));
-        Assertions.assertEquals(DaxPreambleTag.MSG_CONTEXT, DaxPreambleTag.fromTag(" cx "));
+        Assertions.assertEquals(DaxPreambleTag.MSG_namespace, DaxPreambleTag.fromTag(" cx "));
 
     }
 

@@ -2,12 +2,12 @@ package org.daxprotocol.core.application;
 
 import org.daxprotocol.core.annotation.DaxpRegister;
 
-//@DaxpSchema(context = DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX)
+//@DaxpSchema(namespace = DaxCoreConstants.DAXP_namespace_TAG_PREFIX)
 @DaxpRegister("$.MSG")
 public class DaxCoreMessages {
 
 
-    private static final String daxPrefix = DaxCoreConstants.DAXP_CONTEXT_TAG_PREFIX+DaxCoreConstants.CONTEXT_TAG_SEPARATOR;
+    private static final String daxPrefix = DaxCoreConstants.DAXP_namespace_TAG_PREFIX+DaxCoreConstants.namespace_TAG_SEPARATOR;
 
 
     public static final String  DIC_REQ     =  daxPrefix+"DIC_REQ"; // 	REQ 	Request for a dictionary

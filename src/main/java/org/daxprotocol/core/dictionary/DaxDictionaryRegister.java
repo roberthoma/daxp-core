@@ -190,7 +190,7 @@ public class DaxDictionaryRegister {
             Arrays.stream(msgAnn.respMsg()).forEach(mgs::addRelatedMsgType);
 
             Arrays.stream(msgAnn.reqTag()).forEach(tagStr ->
-                    mgs.addReqTag(tagParser.parseDaxTag(tagStr, config.getAppContextId())));
+                    mgs.addReqTag(tagParser.parseDaxTag(tagStr, config.getAppnamespaceId())));
 
             dictionary.putMsgItem(mgs);
 
@@ -359,7 +359,7 @@ public class DaxDictionaryRegister {
         String name = !colAtn.name().isBlank() ? colAtn.name() :
                 clazz.getSimpleName();
 
-        DaxTag colTag =  tagCodec.decode(colAtn.value(),colAtn.context(),colAtn.tagId());
+        DaxTag colTag =  tagCodec.decode(colAtn.value(),colAtn.namespace(),colAtn.tagId());
 
 
         dictionary.putCollectionAtrName(colTag, name);

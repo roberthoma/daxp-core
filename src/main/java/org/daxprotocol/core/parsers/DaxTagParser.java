@@ -22,7 +22,7 @@ package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.exceptions.DaxTagParserException;
-import org.daxprotocol.core.mapper.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.ArrayList;
@@ -30,10 +30,10 @@ import java.util.List;
 
 public class DaxTagParser {
 
-    DaxContextMapper contextMapper;
+    DaxNamespaceMapper namespaceMapper;
 
-    public DaxTagParser(DaxContextMapper contextMapper) {
-        this.contextMapper = contextMapper;
+    public DaxTagParser(DaxNamespaceMapper namespaceMapper) {
+        this.namespaceMapper = namespaceMapper;
     }
 
 
@@ -78,11 +78,11 @@ public class DaxTagParser {
      * - Single-character separator defined in config.
      *
      * @param tagStr The raw tag string to parse.
-     * @return A new DaxTag object with mapped contextId and tagId.
+     * @return A new DaxTag object with mapped namespaceId and tagId.
      * @throws DaxTagParserException if the format is invalid or tagId is not a numerical value.
      */
 
-    public DaxTag parseDaxTag(String tagStr, int msgContextId) {
+    public DaxTag parseDaxTag(String tagStr, int msgnamespaceId) {
 
         if (tagStr == null) {
             throw new DaxTagParserException("NOT correct DaxTag: Input is null");
@@ -98,7 +98,7 @@ public class DaxTagParser {
             throw new DaxTagParserException("NOT correct DaxTag: Input is empty or only whitespace");
         }
 
-        char separator = DaxCoreConstants.CONTEXT_TAG_SEPARATOR;
+        char separator = DaxCoreConstants.namespace_TAG_SEPARATOR;
         int separatorPos = -1;
 
         // 2. Search for the separator only within the trimmed range
@@ -109,25 +109,25 @@ public class DaxTagParser {
             }
         }
 
-        String contextSymbol = null;
+        String namespaceSymbol = null;
         int tagIdStart;
 
         if (separatorPos != -1) {
-            // --- Context Prefix Found ---
-            // Trim the context symbol (handle "CTX :")
+            // --- namespace Prefix Found ---
+            // Trim the namespace symbol (handle "CTX :")
             int ctxEnd = separatorPos;
             while (ctxEnd > start && tagStr.charAt(ctxEnd - 1) <= ' ') {
                 ctxEnd--;
             }
 
             if (ctxEnd > start) {
-                contextSymbol = tagStr.substring(start, ctxEnd);
+                namespaceSymbol = tagStr.substring(start, ctxEnd);
             }
 
             // Tag ID starts after the separator
             tagIdStart = separatorPos + 1;
         } else {
-            // --- No Context Prefix ---
+            // --- No namespace Prefix ---
             tagIdStart = start;
         }
 
@@ -144,22 +144,22 @@ public class DaxTagParser {
             throw new DaxTagParserException("NOT correct DaxTag: " + tagStr, e);
         }
 
-        // 5. Context ID resolution logic
-        int contextId ;
-        if (contextSymbol == null || contextSymbol.isEmpty()) {
-            contextId = msgContextId ; // config.getAppContextId();
+        // 5. namespace ID resolution logic
+        int namespaceId ;
+        if (namespaceSymbol == null || namespaceSymbol.isEmpty()) {
+            namespaceId = msgnamespaceId ; // config.getAppnamespaceId();
         } else {
-            contextId = contextMapper.getReferenceId(contextSymbol);
+            namespaceId = namespaceMapper.getReferenceId(namespaceSymbol);
         }
 
         //6. Is ok return new DaxTag
-        return contextId == DaxCoreConstants.DAXP_CONTEXT_ID
+        return namespaceId == DaxCoreConstants.DAXP_namespace_ID
                 ? DaxTag.createCoreTag(tagId):
-                  DaxTag.of(contextId, tagId);
+                  DaxTag.of(namespaceId, tagId);
     }
 
 
-public List<DaxTag> parseDaxTagList(String tagListStr, int msgContextId) {
+public List<DaxTag> parseDaxTagList(String tagListStr, int msgnamespaceId) {
     if (tagListStr == null || tagListStr.isEmpty()) {
         return new ArrayList<>();
     }
@@ -174,7 +174,7 @@ public List<DaxTag> parseDaxTagList(String tagListStr, int msgContextId) {
 
         if (c == separator) {
             // When separator is found, process the accumulated token if it's not empty
-            processAndAddTag(currentTag, result, msgContextId);
+            processAndAddTag(currentTag, result, msgnamespaceId);
             currentTag.setLength(0); // Reset the buffer for the next tag
         } else {
             currentTag.append(c);
@@ -182,18 +182,18 @@ public List<DaxTag> parseDaxTagList(String tagListStr, int msgContextId) {
     }
 
     // Don't forget to process the very last tag after the loop ends
-    processAndAddTag(currentTag, result, msgContextId);
+    processAndAddTag(currentTag, result, msgnamespaceId);
 
     return result;
 }
 
-    private void processAndAddTag(StringBuilder sb, List<DaxTag> result, int msgContextId) {
+    private void processAndAddTag(StringBuilder sb, List<DaxTag> result, int msgnamespaceId) {
         // Trim the string manually or use trim() on the string representation
         String trimmed = sb.toString().trim();
 
         // Optional: Avoid processing empty strings if your original split omitted them
         if (!trimmed.isEmpty()) {
-            result.add(parseDaxTag(trimmed, msgContextId));
+            result.add(parseDaxTag(trimmed, msgnamespaceId));
         }
     }
 

@@ -8,8 +8,8 @@ public enum DaxPreambleTag {
     IMPLEMENTATION("I"),  //Implementation Version
     ENCODING("EN"),       //Encoding
     MSG_DOMAIN("DX"),
-    MSG_CONTEXT("CX"),
-    MSG_SCHEMA("SX"),
+    MSG_namespace("CX"),
+    MSG_SCHEMA("SX"), // Change to DATA_MODEL or MODEL ...... .....
     MSG_QUANTITY("MQ"),
     MSG_SENDER("SN");
 

@@ -3,7 +3,7 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.DaxTagCodec;
-import org.daxprotocol.core.context.DaxContext;
+import org.daxprotocol.core.namespace.DaxNamespace;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.dictionary.DaxBaseDictionary;
 import org.daxprotocol.core.dictionary.DaxDictionary;
@@ -120,11 +120,11 @@ public class DaxDictionaryMessageFactory {
 
     }
 
-    private void putContextToBody(DaxBody body, DaxContext daxContext) {
-        body.nextBlock(DaxBlockType.BLOCK_CONTEXT);
-        body.putPair(ENTRY_SYMBOL, daxContext.getSymbol());
-        body.putPair(FIELD_VALUE_PREFIX, daxContext.getTagPrefix());
-        body.putPair(ENTRY_DESCRIPTION, daxContext.getDescription());
+    private void putnamespaceToBody(DaxBody body, DaxNamespace daxnamespace) {
+        body.nextBlock(DaxBlockType.BLOCK_namespace);
+        body.putPair(ENTRY_SYMBOL, daxnamespace.getSymbol());
+        body.putPair(FIELD_VALUE_PREFIX, daxnamespace.getTagPrefix());
+        body.putPair(ENTRY_DESCRIPTION, daxnamespace.getDescription());
 
     }
 
@@ -175,8 +175,8 @@ public class DaxDictionaryMessageFactory {
     public DaxMessage dictionaryToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_DIC);
 
-        dictionary.getContextMap().forEach((idCtx, context) ->
-                putContextToBody(message.getBody(), context)
+        dictionary.getnamespaceMap().forEach((idCtx, namespace) ->
+                putnamespaceToBody(message.getBody(), namespace)
         );
 
         dictionary.getMsgMap().forEach((s, messageDicItem) ->

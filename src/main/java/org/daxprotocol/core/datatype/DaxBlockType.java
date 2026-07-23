@@ -25,7 +25,7 @@ package org.daxprotocol.core.datatype;
 public enum DaxBlockType {//extends DaxValue<String> {
 
     BLOCK_MESSAGE('M',"Message block"), /// Only in dictionary type message
-    BLOCK_CONTEXT('X',"Context block"), /// Only in dictionary type message
+    BLOCK_namespace('X',"namespace block"), /// Only in dictionary type message
     BLOCK_ENTITY('E', "Entity block"),
     BLOCK_TAG('T',"Tag definition block"), /// Only in dictionary type message
     BLOCK_FIELD('F',"Field definition block"),
@@ -66,7 +66,7 @@ public enum DaxBlockType {//extends DaxValue<String> {
         return switch (code){
             case 'E' -> BLOCK_ENTITY;
             case 'M' -> BLOCK_MESSAGE;
-            case 'X' -> BLOCK_CONTEXT;
+            case 'X' -> BLOCK_namespace;
             case 'I' -> BLOCK_INSTANCE;
             case 'T' -> BLOCK_TAG;
             case 'F' -> BLOCK_FIELD;

@@ -23,7 +23,7 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxFrameParserException;
-import org.daxprotocol.core.mapper.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.preamble.DaxPreambleTag;
 
@@ -39,10 +39,10 @@ import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_EQUAL;
 //public class DaxPreambleCodec implements DaxCodec<DaxPreamble> {
 public class DaxPreambleCodec {
 
-    DaxContextMapper contextMapper;
+    DaxNamespaceMapper namespaceMapper;
 
-    public DaxPreambleCodec( DaxContextMapper contextMapper) {
-        this.contextMapper = contextMapper;
+    public DaxPreambleCodec( DaxNamespaceMapper namespaceMapper) {
+        this.namespaceMapper = namespaceMapper;
     }
 
     private  void encode(StringBuilder sb, String tag, String value , char pairSeparator) {
@@ -62,7 +62,7 @@ public class DaxPreambleCodec {
         Map<String,String> map = new LinkedHashMap<>();
         map.put(DaxPreambleTag.ENCODING.getTag(), preamble.getEncoding().getCanonicalName());
 
-        map.put(DaxPreambleTag.MSG_CONTEXT.getTag(),contextMapper.getReference(preamble.getContextId()));
+        map.put(DaxPreambleTag.MSG_namespace.getTag(),namespaceMapper.getReference(preamble.getnamespaceId()));
 
         if (preamble.getMsgCnt() > 1){
             map.put(DaxPreambleTag.MSG_QUANTITY.getTag(), String.valueOf(preamble.getMsgCnt()));
@@ -70,7 +70,7 @@ public class DaxPreambleCodec {
 
 
         StringBuilder sb = new StringBuilder();
-        sb.append(DaxCoreConstants.DAXP_CONTEXT_SYMBOL)
+        sb.append(DaxCoreConstants.DAXP_namespace_SYMBOL)
           .append(preamble.getPairSeparator());
         encode(sb, DaxPreambleTag.VERSION.getTag(), preamble.getProtocolVersion() ,preamble.getPairSeparator()); //Always first
 
@@ -92,7 +92,7 @@ public class DaxPreambleCodec {
                 case VERSION      -> preamble.setProtocolVersion(valueStr);
                 case ENCODING    -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
                 case MSG_QUANTITY   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
-                case MSG_CONTEXT -> preamble.setContextId(contextMapper.getReferenceId(valueStr));
+                case MSG_namespace -> preamble.setnamespaceId(namespaceMapper.getReferenceId(valueStr));
                 //case MSG_SENDER  -> preamble.setSe System.out.println("Sender: " + value);
             }
         }

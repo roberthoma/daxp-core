@@ -33,47 +33,47 @@ public final class DaxConfig {
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
-    private int appContextId = 1;
+    private int appnamespaceId = 1;
 
-    private String appContextSymbol;
-    private String appContextTagPrefix;
-    private String appContextDescription;
-
-
+    private String appnamespaceSymbol;
+    private String appnamespaceTagPrefix;
+    private String appnamespaceDescription;
 
 
-    public String getAppContextTagPrefix() {
-        return appContextTagPrefix;
+
+
+    public String getAppnamespaceTagPrefix() {
+        return appnamespaceTagPrefix;
     }
 
-    public void setAppContextTagPrefix(String appContextTagPrefix) {
-        this.appContextTagPrefix = appContextTagPrefix;
+    public void setAppnamespaceTagPrefix(String appnamespaceTagPrefix) {
+        this.appnamespaceTagPrefix = appnamespaceTagPrefix;
     }
 
-    public void setAppContextSymbol(String appContextSymbol) {
-        this.appContextSymbol = appContextSymbol;
+    public void setAppnamespaceSymbol(String appnamespaceSymbol) {
+        this.appnamespaceSymbol = appnamespaceSymbol;
     }
 
-    public String getAppContextSymbol() {
-        return appContextSymbol;
+    public String getAppnamespaceSymbol() {
+        return appnamespaceSymbol;
     }
-    public String getAppContextDescription() {
-        return appContextDescription;
-    }
-
-    public void setAppContextDescription(String appContextDescription) {
-        this.appContextDescription = appContextDescription;
+    public String getAppnamespaceDescription() {
+        return appnamespaceDescription;
     }
 
-    public int getAppContextId(){
-        if(appContextId == -1){
-            throw new RuntimeException("NOT INIT APPLICATION CONTEXT");
+    public void setAppnamespaceDescription(String appnamespaceDescription) {
+        this.appnamespaceDescription = appnamespaceDescription;
+    }
+
+    public int getAppnamespaceId(){
+        if(appnamespaceId == -1){
+            throw new RuntimeException("NOT INIT APPLICATION namespace");
         }
 
-        return appContextId;  // todo put in config file
+        return appnamespaceId;  // todo put in config file
     }
-    public void setAppContextId(int appContextId) {
-        this.appContextId = appContextId;
+    public void setAppnamespaceId(int appnamespaceId) {
+        this.appnamespaceId = appnamespaceId;
     }
 
     public DaxCharacterEncoding getDefaultEncoding() {

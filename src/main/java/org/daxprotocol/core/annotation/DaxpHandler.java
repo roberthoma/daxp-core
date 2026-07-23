@@ -1,7 +1,7 @@
 package org.daxprotocol.core.annotation;
 
 // TODO DaxpHandler
-//(context = "CMR", operation = "findById")
+//(namespace = "CMR", operation = "findById")
 
 //    String messageType();
 
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD })
 public @interface DaxpHandler {
     String value();
-//    String context() default "";
+//    String namespace() default "";
 }
 
     /*

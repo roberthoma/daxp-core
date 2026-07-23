@@ -27,8 +27,8 @@ import java.util.Properties;
  *
  org.daxprotocol.core.config.defaultEncoding="UTF-8"
  org.daxprotocol.core.config.tagPrefix=CRN
- org.daxprotocol.core.config.context.symbol=CUSTOMER
- org.daxprotocol.core.config.context.description=Customer data
+ org.daxprotocol.core.config.namespace.symbol=CUSTOMER
+ org.daxprotocol.core.config.namespace.description=Customer data
 
  */
 
@@ -63,7 +63,7 @@ public class DaxpConfigFactory {
         String group;
         String parDomain = "org.daxprotocol.core.config.";
 
-        group = "context.";
+        group = "namespace.";
         String ctxTagPrefix   = props.getProperty(parDomain+group+"tag_prefix");
         String ctxSymbol      = props.getProperty(parDomain+group+"symbol");
         String ctxDescription = props.getProperty(parDomain+group+"description");
@@ -75,9 +75,9 @@ public class DaxpConfigFactory {
             throw new IllegalStateException("Missing "+parDomain+".* properties");
         }
 
-        config.setAppContextTagPrefix(ctxTagPrefix);
-        config.setAppContextSymbol(ctxSymbol);
-        config.setAppContextDescription(ctxDescription);
+        config.setAppnamespaceTagPrefix(ctxTagPrefix);
+        config.setAppnamespaceSymbol(ctxSymbol);
+        config.setAppnamespaceDescription(ctxDescription);
 
         return config;
     }

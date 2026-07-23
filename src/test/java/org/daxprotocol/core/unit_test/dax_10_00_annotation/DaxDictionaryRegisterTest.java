@@ -12,18 +12,18 @@ public class DaxDictionaryRegisterTest extends DaxConfigBaseTest {
 //
 //    @Test
 //     void  checkIntAnnotation (){
-//        DaxDataType dataType =  dictionary.getAtrDataType(DaxTag.of( appContextId, DaxpSchema_Base.TEST_TAG_int));
+//        DaxDataType dataType =  dictionary.getAtrDataType(DaxTag.of( appnamespaceId, DaxpSchema_Base.TEST_TAG_int));
 //        Assertions.assertEquals(DaxDataType.INTEGER,dataType);
 //    }
 //
 //    @Test
 //    void  checkStringAnnotation (){
-//        DaxDataType_OLD dataType =  dictionary.getAtrDataType(DaxTag.of( appContextId, DaxpSchema_Base.TEST_TAG_String));
+//        DaxDataType_OLD dataType =  dictionary.getAtrDataType(DaxTag.of( appnamespaceId, DaxpSchema_Base.TEST_TAG_String));
 //        Assertions.assertEquals(DaxDataType_OLD.STRING,dataType);
 //    }
 //    @Test
 //    void  checkCharAnnotation (){
-//        DaxDataType_OLD dataType =  dictionary.getAtrDataType(DaxTag.of( appContextId, DaxpSchema_Base.TEST_TAG_char));
+//        DaxDataType_OLD dataType =  dictionary.getAtrDataType(DaxTag.of( appnamespaceId, DaxpSchema_Base.TEST_TAG_char));
 //        Assertions.assertEquals(DaxDataType_OLD.CHAR,dataType);
 //    }
 //

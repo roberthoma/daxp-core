@@ -13,7 +13,7 @@ import java.util.List;
 
 public @interface DaxpMsg {
     String description();
-    String context() default "";
+    String namespace() default "";
     String[] reqTag() default {};
     String[] respMsg() default {};
 

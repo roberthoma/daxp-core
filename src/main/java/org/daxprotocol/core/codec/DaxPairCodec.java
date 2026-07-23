@@ -68,14 +68,14 @@ public class DaxPairCodec {
     }
 
 
-    public  DaxPair<?>  decode(DaxTag tag, String valueStr, char operator, int contextId){
+    public  DaxPair<?>  decode(DaxTag tag, String valueStr, char operator, int namespaceId){
 //TODO    check mode list, check operator
         DaxPair<?> pair;
         if(tag.equals(DaxCoreTags.REQ_FIELD_LIST)){
             Set<DaxTag> daxTagSet =
                     Arrays.stream(valueStr.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
                             .map(String::trim)
-                            .map(s ->  tagCodec.decode(s,contextId))
+                            .map(s ->  tagCodec.decode(s,namespaceId))
                             .collect(Collectors.toSet());
             pair = new DaxPairTagSet(tag, daxTagSet);
         }

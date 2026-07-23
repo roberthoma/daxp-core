@@ -24,7 +24,7 @@ public class DaxMessagePopulator {
         this.daxDic =  daxDic;
     }
 
-    private void populateFromMsgBlock(int msgContextId , Map<DaxTag, DaxPair<?>> blockPairMap) {
+    private void populateFromMsgBlock(int msgnamespaceId , Map<DaxTag, DaxPair<?>> blockPairMap) {
 
         Character blockType =   blockPairMap.get(DaxCoreTags.BLOCK_TYPE).getCharValue();
 
@@ -41,7 +41,7 @@ public class DaxMessagePopulator {
 
                 tagParser.parseDaxTagList(
                         blockPairMap.get(DaxCoreTags.MESSAGE_TAGS)
-                                .getStrValue(), msgContextId)
+                                .getStrValue(), msgnamespaceId)
                         .forEach(msgItem::addReqTag);
 
             }
@@ -63,7 +63,7 @@ public class DaxMessagePopulator {
         if(blockType.equals(DaxBlockType.BLOCK_COLLECTION.getCode())){
 
             DaxTag enumTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgContextId
+                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgnamespaceId
             ) ;
 
             daxDic.putTag( enumTag, DaxRegisterSource.MESSAGE, DaxTagDestiny.COLLECTION);
@@ -82,7 +82,7 @@ public class DaxMessagePopulator {
 
         if(blockType.equals(DaxBlockType.BLOCK_VALUE)){
             DaxTag enumTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgContextId
+                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgnamespaceId
             ) ;
 
             String valueDesc = "";
@@ -101,7 +101,7 @@ public class DaxMessagePopulator {
         if(blockType.equals(DaxBlockType.BLOCK_TAG)){
 
             DaxTag tag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgContextId
+                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgnamespaceId
             ) ;
 
             daxDic.putTag( tag, DaxRegisterSource.MESSAGE, DaxTagDestiny.TAG);
@@ -120,7 +120,7 @@ public class DaxMessagePopulator {
 
             else if(blockPairMap.containsKey(DaxCoreTags.ENTITY_DATA_TYPE_ID)) {
                 DaxTag tag3 = tagParser.parseDaxTag(
-                        blockPairMap.get(DaxCoreTags.ENTITY_DATA_TYPE_ID).getStrValue(), msgContextId);
+                        blockPairMap.get(DaxCoreTags.ENTITY_DATA_TYPE_ID).getStrValue(), msgnamespaceId);
 
                 daxDic.putAtrEntityDataTypeId(tag, tag3);
             }
@@ -156,7 +156,7 @@ public class DaxMessagePopulator {
 
             if(blockPairMap.containsKey(DaxCoreTags.COLLECTION_ID)) {
                 daxDic.putCollectionType(tag,
-                        tagParser.parseDaxTag(blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue(), msgContextId)
+                        tagParser.parseDaxTag(blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue(), msgnamespaceId)
                 );
             }
 
@@ -171,14 +171,14 @@ public class DaxMessagePopulator {
 
             //int groupId = groupMapper.getReferenceId(groupName);
             DaxTag groupTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue(), msgContextId
+                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue(), msgnamespaceId
             ) ;
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
 
             daxDic.putTag(groupTag, DaxRegisterSource.MESSAGE, DaxTagDestiny.ENTITY);
             String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
-            List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgContextId);
+            List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgnamespaceId);
             tagList.forEach(tag -> daxDic.putEntityField(groupTag, tag));
             return;
         }
@@ -187,9 +187,9 @@ public class DaxMessagePopulator {
     }
 
     public void populate( DaxPreamble preamble, DaxMessage message) {
-        int contextId = preamble.getContextId();
+        int namespaceId = preamble.getnamespaceId();
         message.getBody().getAllBlockMap().forEach((integer, integerDaxPairMap) ->
-                populateFromMsgBlock(contextId, integerDaxPairMap)
+                populateFromMsgBlock(namespaceId, integerDaxPairMap)
         );
 
     }

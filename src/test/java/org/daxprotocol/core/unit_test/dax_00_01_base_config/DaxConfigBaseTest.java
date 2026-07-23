@@ -14,7 +14,7 @@ import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
-import org.daxprotocol.core.mapper.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.application.DaxEngine;
 
 import org.daxprotocol.core.parsers.DaxFrameParser;
@@ -24,9 +24,9 @@ import org.junit.jupiter.api.*;
 
 public class DaxConfigBaseTest {
     protected static DaxEngine daxEngine;
-    protected static int appContextId;
+    protected static int appnamespaceId;
     protected static DaxDictionary dictionary;
-    protected static DaxContextMapper contextMapper;
+    protected static DaxNamespaceMapper namespaceMapper;
     protected static DaxMessageCodec messageCodec;
     protected static DaxPreambleCodec preambleCodec;
     protected static DaxConfig config;
@@ -51,9 +51,9 @@ public class DaxConfigBaseTest {
             daxEngine = new DaxEngine(DaxpConfigFactory
                     .createProperties("application_BASE.properties"));
 
-            appContextId    = daxEngine.getConfig().getAppContextId();
+            appnamespaceId    = daxEngine.getConfig().getAppnamespaceId();
             dictionary      = daxEngine.getDictionary();
-            contextMapper   = daxEngine.getContextMapper();
+            namespaceMapper   = daxEngine.getnamespaceMapper();
             messageCodec    = daxEngine.getMessageCodec();
             preambleCodec   = daxEngine.getPreambleCodec();
             config          = daxEngine.getConfig();
@@ -71,10 +71,10 @@ public class DaxConfigBaseTest {
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");
-            System.out.println(" Description  = "+ daxEngine.getConfig().getAppContextDescription());
-            System.out.println(" Symbol       = "+ daxEngine.getConfig().getAppContextSymbol());
-            System.out.println(" Tag Prefix   = "+ daxEngine.getConfig().getAppContextTagPrefix());
-            System.out.println(" Context Id   = "+ daxEngine.getConfig().getAppContextId());
+            System.out.println(" Description  = "+ daxEngine.getConfig().getAppnamespaceDescription());
+            System.out.println(" Symbol       = "+ daxEngine.getConfig().getAppnamespaceSymbol());
+            System.out.println(" Tag Prefix   = "+ daxEngine.getConfig().getAppnamespaceTagPrefix());
+            System.out.println(" namespace Id   = "+ daxEngine.getConfig().getAppnamespaceId());
             System.out.println("*******************************************");
 
             //------------
@@ -94,11 +94,11 @@ public class DaxConfigBaseTest {
 
 
 //    @Test
-//    void checkContextList(){
+//    void checknamespaceList(){
 //        System.out.println("*************************************************");
-//        System.out.println("               Context list");
+//        System.out.println("               namespace list");
 //        System.out.println();
-//        daxEngine.getContextMapper().getAllMappings().forEach((s, id) -> System.out.println(s +" id="+id));
+//        daxEngine.getnamespaceMapper().getAllMappings().forEach((s, id) -> System.out.println(s +" id="+id));
 //        System.out.println("*************************************************");
 //    }
 

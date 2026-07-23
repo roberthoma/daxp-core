@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DaxMessageRegister {
-     int contextId;
+     int namespaceId;
     /*****************************************************
      * Dictionary of messages type, required and respond tags
      * Key: Message type
@@ -12,11 +12,11 @@ public class DaxMessageRegister {
     Map<String, DaxMessageItem> msgMap = new HashMap<>();
 
 
-    // MSG ContextId, mapperId ,
+    // MSG namespaceId, mapperId ,
     Map<Integer, Map<Integer, DaxMessageItem> > msgMap2 = new HashMap<>();
 
-    public DaxMessageRegister(Integer contextId){
-        this.contextId = contextId;
+    public DaxMessageRegister(Integer namespaceId){
+        this.namespaceId = namespaceId;
     }
 
     public void putMsgItem(DaxMessageItem messageDicItem){

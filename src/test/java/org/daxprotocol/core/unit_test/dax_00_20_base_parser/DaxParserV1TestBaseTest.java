@@ -26,7 +26,7 @@ public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
 //
 //        List<DaxPair<?>>  pairList = parserService. parsePairs(msgStr,  4 );
 //
-//        pairList.forEach((pair) -> System.out.println(pair.getTag().getContextId()+":"+
+//        pairList.forEach((pair) -> System.out.println(pair.getTag().getnamespaceId()+":"+
 //                pair.getTag().getTagId()+"="+pair.getStrValue()));
 //
 //        Assertions.assertEquals(10,pairList.size());
@@ -42,7 +42,7 @@ public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
 //        DaxParserService parserService = crmProvider.getParserService();
 //
 //        List<DaxPair<?>> pairsList = parserService
-//                .parsePairs(msgPairs, config.getAppContextId());//(DaxPatternFactory.compileMessagePairPattern('|') ,
+//                .parsePairs(msgPairs, config.getAppnamespaceId());//(DaxPatternFactory.compileMessagePairPattern('|') ,
 //
 //        long equalChar = msgPairs.chars()
 //                .filter(c -> c == '|')

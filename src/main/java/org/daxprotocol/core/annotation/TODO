@@ -15,11 +15,11 @@ $:99=150|
 @Target(ElementType.PARAMETER)
 public @interface DaxpParam {
     int tagId();
-    String context() default "";
+    String namespace() default "";
     boolean required() default true;
 }
 
-@DaxpHandler(context = "CMR", operation = "createCustomer")
+@DaxpHandler(namespace = "CMR", operation = "createCustomer")
 public CustomerResult createCustomer(
         @DaxpParam(tagId = 2001) String firstName,
         @DaxpParam(tagId = 2002) String lastName,
@@ -28,7 +28,7 @@ public CustomerResult createCustomer(
 }
 
 /////////////////////////
-@DaxpEndpoint(context = "CMR")
+@DaxpEndpoint(namespace = "CMR")
 public class CustomerService {
 
     @DaxpHandler(operation = "findById")

@@ -10,8 +10,8 @@ public class DaxDictionaryTestBaseTest extends DaxConfigBaseTest {
 
     @Test
     void testDic_01(){
-      int contextId = contextMapper.getReferenceId("$");
-      Assertions.assertThrowsExactly(DaxTagException.class, () -> DaxTag.of(contextId,999));
+      int namespaceId = namespaceMapper.getReferenceId("$");
+      Assertions.assertThrowsExactly(DaxTagException.class, () -> DaxTag.of(namespaceId,999));
     }
 
 

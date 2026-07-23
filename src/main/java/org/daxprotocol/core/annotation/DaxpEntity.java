@@ -29,7 +29,7 @@ import static java.lang.annotation.ElementType.TYPE;
 public @interface DaxpEntity {
     String value() default "";
     int    tagId() default -1;
-    String context() default "";
+    String namespace() default "";
     String name() default "";
     String description() default "";
     String schema() default "";

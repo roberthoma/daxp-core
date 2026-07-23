@@ -38,12 +38,12 @@ public class DaxAnySchemaRegister {
 
     public static final String CTX_FIX= "FIX";
 
-    @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class, context = CTX_FIX)
+    @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class, namespace = CTX_FIX)
     public static final int TEST_CTX_TAG_String            = 5050;
 
 
     @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class)
-    public static final String TEST_CTX_TAG_StrVal_FIX51 = CTX_FIX + DaxCoreConstants.CONTEXT_TAG_SEPARATOR +  "51";
+    public static final String TEST_CTX_TAG_StrVal_FIX51 = CTX_FIX + DaxCoreConstants.namespace_TAG_SEPARATOR +  "51";
 
     @DaxpTag( description = "Test enum value", clazz = DaxAnyTestEnum.class)
     public static final int TEST_ENUM_VALUE_5032 = 5032;

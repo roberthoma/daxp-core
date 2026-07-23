@@ -23,7 +23,7 @@ package org.daxprotocol.core.application;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
-import org.daxprotocol.core.context.DaxContextFactory;
+import org.daxprotocol.core.namespace.DaxNamespaceFactory;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
@@ -35,11 +35,11 @@ import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.dictionary.DaxDictionaryRegister;
 import org.daxprotocol.core.dictionary.DaxMessagePopulator;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
-import org.daxprotocol.core.mapper.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.dictionary.DaxMessageConverter;
 import org.daxprotocol.core.dictionary.DaxDictionary;
 import org.daxprotocol.core.factory.DaxMessageFactory;
-import org.daxprotocol.core.context.DaxContext;
+import org.daxprotocol.core.namespace.DaxNamespace;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTrailerCodec;
@@ -68,7 +68,7 @@ public class DaxEngine {
 
     private final DaxMessageFactory messageFactory;
 
-    private final DaxContextMapper contextMapper;
+    private final DaxNamespaceMapper namespaceMapper;
 
     private final DaxMessageMapper messageMapper;
 
@@ -104,30 +104,30 @@ public class DaxEngine {
 
         this.config = DaxpConfigFactory.createConfig(properties);
 
-        DaxContext appContext = DaxContextFactory.createAppContext(config);
-        DaxContext sysContext = DaxContextFactory.createSysContext();
+        DaxNamespace appnamespace = DaxNamespaceFactory.createAppNamespace(config);
+        DaxNamespace sysnamespace = DaxNamespaceFactory.createSysNamespace();
 
-        contextMapper = new DaxContextMapper();
+        namespaceMapper = new DaxNamespaceMapper();
         messageMapper = new DaxMessageMapper();
         schemaMapper  = new DaxSchemaMapper();
 
-        contextMapper.registerPredefined(sysContext);
-        contextMapper.registerPredefined(appContext);
+        namespaceMapper.registerPredefined(sysnamespace);
+        namespaceMapper.registerPredefined(appnamespace);
 
-//        config.setAppContextId( contextMapper.getReferenceId(appContext.getTagPrefix()));
-//        appContext.setId(config.getAppContextId());
+//        config.setAppnamespaceId( namespaceMapper.getReferenceId(appnamespace.getTagPrefix()));
+//        appnamespace.setId(config.getAppnamespaceId());
 
-        tagParser  = new DaxTagParser(contextMapper);
-        tagCodec   = new DaxTagCodec(config, contextMapper, tagParser );
+        tagParser  = new DaxTagParser(namespaceMapper);
+        tagCodec   = new DaxTagCodec(config, namespaceMapper, tagParser );
 
         daxDataTypeService = new DaxDataTypeService();
         dataTypeCodec = new DaxDataTypeCodec(daxDataTypeService, tagCodec);
 
         valueCodec = new DaxValueCodec(dataTypeCodec);
 
-        dictionary = new DaxDictionary(config, contextMapper, messageMapper,schemaMapper);
-        dictionary.putContext(sysContext);
-        dictionary.putContext(appContext);
+        dictionary = new DaxDictionary(config, namespaceMapper, messageMapper,schemaMapper);
+        dictionary.putnamespace(sysnamespace);
+        dictionary.putnamespace(appnamespace);
         DaxCoreTags.init(dictionary);
 
 
@@ -135,7 +135,7 @@ public class DaxEngine {
 
 
         pairCodec     = new DaxPairCodec    (tagCodec);
-        preambleCodec = new DaxPreambleCodec( contextMapper);
+        preambleCodec = new DaxPreambleCodec( namespaceMapper);
 
         DaxHeadCodec    headCodec    = new DaxHeadCodec(pairCodec);
         DaxBodyCodec    bodyCodec    = new DaxBodyCodec(pairCodec, tagCodec, valueCodec);
@@ -151,13 +151,13 @@ public class DaxEngine {
         messagePopulator    = new DaxMessagePopulator( tagParser, dictionary);
         annotationRegister = new DaxDictionaryRegister(tagParser ,
                                                         config,
-//                                                        contextMapper,
+//                                                        namespaceMapper,
                 dictionary,
                                                         handlerRegistry,
                 tagCodec, dataTypeCodec
         );
 
-        messageConverter     = new DaxMessageConverter(config,//contextMapper ,
+        messageConverter     = new DaxMessageConverter(config,//namespaceMapper ,
                 dictionary, tagCodec, dataTypeCodec, valueCodec, daxDataTypeService);
 
 
@@ -175,7 +175,7 @@ public class DaxEngine {
 
 
         frameParser =  new DaxFrameParser( config,
-                                             //    contextMapper,
+                                             //    namespaceMapper,
                                                  tagParser,
                 dictionary,
                                                  messageFactory,
@@ -225,8 +225,8 @@ public class DaxEngine {
         return messageFactory;
     }
 
-    public DaxContextMapper getContextMapper() {
-        return contextMapper;
+    public DaxNamespaceMapper getnamespaceMapper() {
+        return namespaceMapper;
     }
 
     public DaxPairCodec getPairCodec() {
@@ -274,8 +274,8 @@ public class DaxEngine {
         return daxDataTypeService;
     }
 
-    public int getAppContextId(){
-      return config.getAppContextId();
+    public int getAppnamespaceId(){
+      return config.getAppnamespaceId();
     }
 
     public void checkRegister() {

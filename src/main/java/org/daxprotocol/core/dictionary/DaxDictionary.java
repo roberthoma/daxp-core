@@ -21,9 +21,9 @@
 package org.daxprotocol.core.dictionary;
 
 import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.context.*;
+import org.daxprotocol.core.namespace.*;
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.mapper.DaxContextMapper;
+import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.model.pair.*;
@@ -57,7 +57,7 @@ public class DaxDictionary {
     private static final Logger logger = LoggerFactory.getLogger(DaxDictionary.class);
 
     DaxConfig        config;
-    DaxContextMapper contextMapper;
+    DaxNamespaceMapper namespaceMapper;
     DaxMessageMapper messageMapper;
     DaxSchemaMapper  schemaMapper;
 
@@ -74,10 +74,10 @@ public class DaxDictionary {
 
 
     /*****************************************************
-     *  Map of context referenced by integer
+     *  Map of namespace referenced by integer
      */
-    //TODO refactor DaxContext to DaxBaseDictionary
-    Map<Integer, DaxContext> contextMap = new ConcurrentHashMap<>();
+    //TODO refactor DaxNamespace to DaxBaseDictionary
+    Map<Integer, DaxNamespace> namespaceMap = new ConcurrentHashMap<>();
 
 
     /*****************************************************
@@ -128,7 +128,7 @@ public class DaxDictionary {
     /******************************************************/
 
     public DaxDictionary(DaxConfig config,
-            DaxContextMapper contextMapper ,
+            DaxNamespaceMapper namespaceMapper ,
             DaxMessageMapper messageMapper ,
             DaxSchemaMapper schemaMapper
     )
@@ -136,27 +136,27 @@ public class DaxDictionary {
         logger.info("Init DaxDictionary ...");
         this.config = config;
 
-        this.contextMapper = contextMapper;
+        this.namespaceMapper = namespaceMapper;
         this.messageMapper = messageMapper;
         this.schemaMapper  = schemaMapper;
 
 
-        msgMap = new DaxMessageRegister(config.getAppContextId());
-        messageDicMap.put(config.getAppContextId(),msgMap);
+        msgMap = new DaxMessageRegister(config.getAppnamespaceId());
+        messageDicMap.put(config.getAppnamespaceId(),msgMap);
 
 
     }
 
     //**********************************************************************
-    // Context
+    // namespace
 
-    public Map<Integer, DaxContext> getContextMap() {
-        return contextMap;
+    public Map<Integer, DaxNamespace> getnamespaceMap() {
+        return namespaceMap;
     }
 
 
-    public void putContext(DaxContext context){
-        contextMap.put(contextMapper.getReferenceId(context.getTagPrefix()),context);
+    public void putnamespace(DaxNamespace namespace){
+        namespaceMap.put(namespaceMapper.getReferenceId(namespace.getTagPrefix()),namespace);
     }
 
 
@@ -267,7 +267,7 @@ public class DaxDictionary {
         tagAttributes.putAttribute(tag, new DaxPairTag(COLLECTION_ID,typeTag));
     }
 
-    //TODO getters and setter for other context enumDic;
+    //TODO getters and setter for other namespace enumDic;
 
     public void putCollectionAttributes(DaxTag colTag, DaxPair<?> atrPair ){
         collectionAttributes.putAttribute(colTag, atrPair);
