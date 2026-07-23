@@ -1,6 +1,6 @@
 /************************************************************************
  * DAXP – Data & Attribute eXchange Protocol
- * Copyright 2025 DAXPARC Robert Homa
+ * Copyright 2026 DAXPARC Robert Homa
  *
  * SPDX-License-Identifier: Apache-2.0
  *
