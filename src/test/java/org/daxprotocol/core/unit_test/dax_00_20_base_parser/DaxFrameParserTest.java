@@ -16,7 +16,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     @Test
     void parsePreambleTest01(){
         //Task is parse only PREAMBLE
-        String msgStr = "DAXP|V=v1.2.3|EN=UTF-16|CX=FIX|MQ=1|9=$:DR|2001=123|99=177|";
+        String msgStr = "DAXP|V=v1.2.3|EN=UTF-16|NS=FIX|MQ=1|9=$:DR|2001=123|99=177|";
         DaxPreamble preamble ;
         try {
            // msgStr = DaxMessageNormalizer.normalize(msgStr);
@@ -32,7 +32,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
 
     @Test
     void parsePreambleTest05(){
-        String msgStr = "  DAXP|V=v0.1.0 |  EN =UTF-8|CX=CRM|MQ=1|9=$:DR|2001=123|99=177|";
+        String msgStr = "  DAXP|V=v0.1.0 |  EN =UTF-8|NS=CRM|MQ=1|9=$:DR|2001=123|99=177|";
         DaxPreamble preamble ;
         try {
             preamble    = frameParser.parsePreamble(msgStr);
@@ -48,13 +48,13 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
 
     @Test
     void parsePreambleTest10_(){
-        String msgStr = "  DAXP|V=v0.1.0 |  ExN =UTF-8|CX=CRM|MC=1|9=$:DR|2001=123|99=177|";
+        String msgStr = "  DAXP|V=v0.1.0 |  ExN =UTF-8|NS=CRM|MC=1|9=$:DR|2001=123|99=177|";
         Assertions.assertThrows(DaxException.class,()->frameParser.parsePreamble(msgStr));
     }
 
     @Test
     void parsePreambleTest50(){
-            String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|";
+            String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|";
             DaxPreamble preamble ;
             try {
                 preamble    = frameParser.parsePreamble(msgStr);
@@ -69,7 +69,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
 
     @Test
     void parsePreambleTest60(){
-        String msgStr = "DxAXP|V=v0.1.0|EN=UTF-8|CX=CRM|";
+        String msgStr = "DxAXP|V=v0.1.0|EN=UTF-8|NS=CRM|";
         try {
             Assertions.assertThrowsExactly(DaxFrameParserException.class,() -> frameParser.parsePreamble(msgStr));
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_02(){
         try {
 
-            String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|"+
+            String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|"+
                     "1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
             Assertions.assertThrowsExactly(DaxFrameParserException.class, () ->   frameParser.parseFrame(msgStr));
 
@@ -96,7 +96,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     @Test
     void parseFrame_01(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|"+
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|"+
                 "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
 
         DaxFrame frame;
@@ -125,7 +125,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     @Test
     void parseFrame_04(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|MQ=1|"+
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|"+
                 "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
         DaxFrame frame;
         try {
@@ -145,7 +145,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     @Test
     void parseFrame_05_msg_quantity(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|MQ=2|"+
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=2|"+
                 "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=134|"+
                 "$:1=CDD|$:5=INST|$:8=2000|2080=A kuku|2001=334|2002=Ola|$:9=177|";
         DaxFrame frame;
@@ -166,7 +166,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     @Test
     void parseFrame_05_expected3Msg(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|MC=3|"+
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MC=3|"+
                 "1=CDD|" +
                 "7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|9=177|"+
                 "7=2|5=INST|100=2000|2080=Big bike|2001=125|2002=Marzena|9=134|";
@@ -180,7 +180,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     @Test
     void parseFrame_05_expected2Msg(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|MC=2|"+
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MC=2|"+
                 "1=CDD|" +
                 "7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|9=177|"+
                 "7=2|5=INST|100=2000|2080=Big bike|2001=124|2002=Piotr|9=172|"+
@@ -193,7 +193,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     @Test
     void parseFrame_06(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|CX=CRM|MQ=1|"+
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|"+
                 "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|2005@4;5|$:9=177|";
         DaxFrame frame;
         try {

@@ -27,7 +27,7 @@ Range	Owner	Purpose
 9000 – 9999	Experimental	Reserved for temporary or testing purposes.
 
 
-DAXP|V=v0.1.0|CX=CRM|
+DAXP|V=v0.1.0|NS=CRM|
 9=DAX_ERR|
 7=1|150=DAXP-5001|151=4|152=Customer ID 123 not found in Sanok DB|
 99=122|

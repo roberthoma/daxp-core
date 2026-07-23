@@ -62,7 +62,7 @@ public class DaxPreambleCodec {
         Map<String,String> map = new LinkedHashMap<>();
         map.put(DaxPreambleTag.ENCODING.getTag(), preamble.getEncoding().getCanonicalName());
 
-        map.put(DaxPreambleTag.MSG_namespace.getTag(),namespaceMapper.getReference(preamble.getnamespaceId()));
+        map.put(DaxPreambleTag.MSG_NAMESPACE.getTag(),namespaceMapper.getReference(preamble.getnamespaceId()));
 
         if (preamble.getMsgCnt() > 1){
             map.put(DaxPreambleTag.MSG_QUANTITY.getTag(), String.valueOf(preamble.getMsgCnt()));
@@ -92,7 +92,7 @@ public class DaxPreambleCodec {
                 case VERSION      -> preamble.setProtocolVersion(valueStr);
                 case ENCODING    -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
                 case MSG_QUANTITY   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
-                case MSG_namespace -> preamble.setnamespaceId(namespaceMapper.getReferenceId(valueStr));
+                case MSG_NAMESPACE -> preamble.setnamespaceId(namespaceMapper.getReferenceId(valueStr));
                 //case MSG_SENDER  -> preamble.setSe System.out.println("Sender: " + value);
             }
         }

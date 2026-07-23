@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class DaxMessageConverterTest extends DaxConfigBaseTest {
     @Test
     void msgConverterTest(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|CX=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
+        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
                 "|$:9=123|";
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
 

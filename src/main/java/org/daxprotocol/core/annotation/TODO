@@ -5,7 +5,7 @@ Host: example.com
 Content-Type: application/daxp
 Accept: application/daxp
 
-DAXP|V=v0.1.0|EN=UTF-8|CX=FXG|
+DAXP|V=v0.1.0|EN=UTF-8|NS=FXG|
 $:9=US|143=Application state|4005=Init|
 $:99=150|
 
