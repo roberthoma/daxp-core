@@ -174,7 +174,7 @@ public class DaxDictionaryMessageFactory {
     public DaxMessage dictionaryToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_DIC);
 
-        dictionary.getnamespaceMap().forEach((idCtx, namespace) ->
+        dictionary.getNamespaceMap().forEach((nsId, namespace) ->
                 putNamespaceToBody(message.getBody(), namespace)
         );
 

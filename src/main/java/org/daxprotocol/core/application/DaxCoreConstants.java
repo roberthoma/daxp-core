@@ -25,12 +25,14 @@ public class DaxCoreConstants {
     public static char DEFAULT_PAIR_SEPARATOR = 0x0001;
     public static char[] ALLOWED_PAIR_SEPARATORS = { DEFAULT_PAIR_SEPARATOR,'|','#'};
 
-    public static final char namespace_TAG_SEPARATOR = ':';
+    public static final char NAMESPACE_TAG_SEPARATOR = ':';
     public static final CharSequence TAG_LIST_SEPARATOR    = ";";
     public static final char TAG_LIST_SEPARATOR_CHAR    = ';';
 
     public static final char DECIMAL_SEPARATOR    = '.';
 
+    public static char 	RECORD_SEPARATOR =    0x0036; //	1E	00011110	RS	&#30;	 	Record Separator
+    public static char 	UNIT_SEPARATOR   =    0x0037; //	1F	00011111	US	&#31;	 	Unit Separator
 
 
 //    public static final char TAG_LIST_SEPARATOR    = ';';

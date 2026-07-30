@@ -8,7 +8,7 @@ import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 
-@DaxpRegister(DaxAnyManifest.SCHEMA_BASE_UT)
+@DaxpRegister(DaxAnyManifest.MODEL_BASE_UT)
 public class DaxAnySchemaRegister {
 
     @DaxpTag( description = "Base Entity ")
@@ -43,7 +43,7 @@ public class DaxAnySchemaRegister {
 
 
     @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class)
-    public static final String TEST_CTX_TAG_StrVal_FIX51 = CTX_FIX + DaxCoreConstants.namespace_TAG_SEPARATOR +  "51";
+    public static final String TEST_CTX_TAG_StrVal_FIX51 = CTX_FIX + DaxCoreConstants.NAMESPACE_TAG_SEPARATOR +  "51";
 
     @DaxpTag( description = "Test enum value", clazz = DaxAnyTestEnum.class)
     public static final int TEST_ENUM_VALUE_5032 = 5032;

@@ -208,7 +208,7 @@ public class DaxDictionaryRegister {
             e.printStackTrace();
         }
 
-        DaxpSchema ann = field.getAnnotation(DaxpSchema.class);
+        DaxpModel ann = field.getAnnotation(DaxpModel.class);
 
         dictionary.putSchema(symbol , ann.name(), ann.description());
     }
@@ -232,7 +232,7 @@ public class DaxDictionaryRegister {
                 registerDaxpMsg(field,DaxRegisterSource.SCHEMA);
             }
 
-            if (field.isAnnotationPresent(DaxpSchema.class)){
+            if (field.isAnnotationPresent(DaxpModel.class)){
                 registerDaxpSchema(field,DaxRegisterSource.SCHEMA);
             }
 

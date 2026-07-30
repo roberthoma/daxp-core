@@ -8,12 +8,12 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 
 import java.util.*;
 
-import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxAnyManifest.SCHEMA_BASE_UT;
+import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxAnyManifest.MODEL_BASE_UT;
 import static org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxAnySchemaRegister.*;
 
 @DaxpEntity( tagId = TEST_TAG_ENTITY_5000
             ,description = "Any desc from entity class"
-            ,schema= SCHEMA_BASE_UT)
+            ,schema= MODEL_BASE_UT)
 public class DaxAnyTestEntity {
 
     @DaxpField(tagId = TEST_RECURSIVE_ENT_5055)

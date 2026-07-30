@@ -113,11 +113,8 @@ public class DaxObjectMessageService {
                                     objectToMsgBlock(nestedIdx, tag,  key,  body , reqTagSet, ownerTag);
                                 }
 
-
                             }
                     );
-
-
 
                 }else {
 

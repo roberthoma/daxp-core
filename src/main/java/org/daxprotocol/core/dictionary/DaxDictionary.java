@@ -150,12 +150,12 @@ public class DaxDictionary {
     //**********************************************************************
     // namespace
 
-    public Map<Integer, DaxNamespace> getnamespaceMap() {
+    public Map<Integer, DaxNamespace> getNamespaceMap() {
         return namespaceMap;
     }
 
 
-    public void putnamespace(DaxNamespace namespace){
+    public void putNamespace(DaxNamespace namespace){
         namespaceMap.put(namespaceMapper.getReferenceId(namespace.getTagPrefix()),namespace);
     }
 

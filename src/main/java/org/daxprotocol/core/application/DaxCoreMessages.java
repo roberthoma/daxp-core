@@ -7,7 +7,7 @@ import org.daxprotocol.core.annotation.DaxpRegister;
 public class DaxCoreMessages {
 
 
-    private static final String daxPrefix = DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX +DaxCoreConstants.namespace_TAG_SEPARATOR;
+    private static final String daxPrefix = DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX +DaxCoreConstants.NAMESPACE_TAG_SEPARATOR;
 
 
     public static final String  DIC_REQ     =  daxPrefix+"DIC_REQ"; // 	REQ 	Request for a dictionary

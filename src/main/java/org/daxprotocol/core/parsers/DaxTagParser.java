@@ -98,7 +98,7 @@ public class DaxTagParser {
             throw new DaxTagParserException("NOT correct DaxTag: Input is empty or only whitespace");
         }
 
-        char separator = DaxCoreConstants.namespace_TAG_SEPARATOR;
+        char separator = DaxCoreConstants.NAMESPACE_TAG_SEPARATOR;
         int separatorPos = -1;
 
         // 2. Search for the separator only within the trimmed range

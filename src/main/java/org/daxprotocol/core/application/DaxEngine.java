@@ -104,18 +104,18 @@ public class DaxEngine {
 
         this.config = DaxpConfigFactory.createConfig(properties);
 
-        DaxNamespace appnamespace = DaxNamespaceFactory.createAppNamespace(config);
-        DaxNamespace sysnamespace = DaxNamespaceFactory.createSysNamespace();
+        DaxNamespace appNamespace = DaxNamespaceFactory.createAppNamespace(config);
+        DaxNamespace sysNamespace = DaxNamespaceFactory.createSysNamespace();
 
         namespaceMapper = new DaxNamespaceMapper();
         messageMapper = new DaxMessageMapper();
         schemaMapper  = new DaxSchemaMapper();
 
-        namespaceMapper.registerPredefined(sysnamespace);
-        namespaceMapper.registerPredefined(appnamespace);
+        namespaceMapper.registerPredefined(sysNamespace);
+        namespaceMapper.registerPredefined(appNamespace);
 
-//        config.setAppnamespaceId( namespaceMapper.getReferenceId(appnamespace.getTagPrefix()));
-//        appnamespace.setId(config.getAppnamespaceId());
+//        config.setAppnamespaceId( namespaceMapper.getReferenceId(appNamespace.getTagPrefix()));
+//        appNamespace.setId(config.getAppnamespaceId());
 
         tagParser  = new DaxTagParser(namespaceMapper);
         tagCodec   = new DaxTagCodec(config, namespaceMapper, tagParser );
@@ -126,8 +126,8 @@ public class DaxEngine {
         valueCodec = new DaxValueCodec(dataTypeCodec);
 
         dictionary = new DaxDictionary(config, namespaceMapper, messageMapper,schemaMapper);
-        dictionary.putnamespace(sysnamespace);
-        dictionary.putnamespace(appnamespace);
+        dictionary.putNamespace(sysNamespace);
+        dictionary.putNamespace(appNamespace);
         DaxCoreTags.init(dictionary);
 
 

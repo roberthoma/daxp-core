@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Predefined DAXP Core tags reserved by namespace $:
+ * Predefined DAXP Core tags reserved by namespace alias $:
  * These tags are owned by the DAXP protocol and must not be reused
  * by application/domain dictionaries.
  */
@@ -166,7 +166,7 @@ public class DaxCoreTags {
 
 
     public static final DaxTag COLLECTION_ID = daxpSysTag(129);
-    public static final DaxTag COL_NAME               = daxpSysTag(130);
+    public static final DaxTag COLLECTION_NAME               = daxpSysTag(130);
     //    public static final DaxTag COL_DESCRIPTION        = daxpSysTag(131);
     public static final DaxTag COLLECTION_KEY = daxpSysTag(132);
     public static final DaxTag COLLECTION_VALUE = daxpSysTag(133);
@@ -188,6 +188,7 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_VALUE_DATA_TYPE = daxpSysTag(217);
     public static final DaxTag COLLECTION_VALUE_TYPE_ID = daxpSysTag(218);
 
+    public static final DaxTag COLLECTION_BULK_VALUE = daxpSysTag(230);
 
 
     // COLLECTION_PK,  ATTR_UNIQUE
@@ -211,6 +212,7 @@ public class DaxCoreTags {
 
 
     //LOGs tags
+    public static final DaxTag LOG_LEVEL        = daxpSysTag(250);
     //LOG_LEVEL
     //LOG_TXT
 

@@ -46,13 +46,13 @@ public class DaxTagCodec {
     public String encode( DaxTag tag){
         if(tag.getNamespaceId() == DaxCoreConstants.DAXP_NAMESPACE_ID){
             return  DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX +
-                    DaxCoreConstants.namespace_TAG_SEPARATOR + tag.getTagId();
+                    DaxCoreConstants.NAMESPACE_TAG_SEPARATOR + tag.getTagId();
         }
 
         if(tag.getNamespaceId() != config.getAppnamespaceId())
         {
             return  namespaceMapper.getReference(tag.getNamespaceId()) +
-                    DaxCoreConstants.namespace_TAG_SEPARATOR + tag.getTagId();
+                    DaxCoreConstants.NAMESPACE_TAG_SEPARATOR + tag.getTagId();
         }
         return String.valueOf(tag.getTagId());
     }

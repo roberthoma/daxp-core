@@ -17,3 +17,6 @@ DAXP → TF → EN → MC → CX → TS → SN → TG → TK
 Unknown tags must be ignored gracefully by parsers.
 Pairs are separated by | or SOH (0x01) in binary mode.
 The two-letter tag convention is mandatory for future extensions.
+
+
+Create definition of namespace : ->System -> Domain -> Context -> Model or schema ???

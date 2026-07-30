@@ -88,7 +88,7 @@ public class DaxMessageFactory {
         return new DaxMessage(DaxCoreMessages.DIC_REQ);
     }
 
-
+    //TODO Add selective model
     public DaxMessage dictionaryToMsg() {
         return dicMessageFactory.dictionaryToMsg();
     }
@@ -233,4 +233,15 @@ public class DaxMessageFactory {
 
         return message;
     }
+
+    public DaxMessage logMessage(int level, String log){
+        DaxMessage message = new DaxMessage(DaxCoreMessages.LOG);
+        message.getBody().nextBlock(DaxBlockType.BLOCK_VALUE);
+       // message.getBody().nextBlock();
+        message.getBody().putPair(new DaxPairString(LOG_LEVEL, "TRACE"));
+        message.getBody().putPair(new DaxPairString(ENTRY_DESCRIPTION, log));
+
+        return message;
+    }
+
 }

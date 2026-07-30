@@ -7,15 +7,10 @@ public enum DaxPreambleTag {
     VERSION("V"),  // DAXP rules Version
     IMPLEMENTATION("I"),  //Implementation Version
     ENCODING("EN"),       //Encoding
-//    MSG_DOMAIN("DX"),
     MSG_NAMESPACE("NS"),
-   // MSG_SCHEMA("SX"), // Change to DATA_MODEL or MODEL ...... .....
     MSG_QUANTITY("MQ"),
     MSG_SENDER("SN");
 
-
-
-    //TODO Ignore no correct
 
     private final String tag;
 

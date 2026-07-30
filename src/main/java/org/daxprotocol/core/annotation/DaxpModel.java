@@ -30,7 +30,7 @@ import static java.lang.annotation.ElementType.FIELD;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ FIELD })
 @Documented
-public @interface DaxpSchema {
+public @interface DaxpModel {
     String name() default "";       // Use for rename schema name
     String description() default "";
 }

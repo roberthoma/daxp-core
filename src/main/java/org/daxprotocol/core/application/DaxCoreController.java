@@ -21,6 +21,8 @@ public class DaxCoreController {
 
         DaxMessage message = messageFactory.dictionaryToMsg();
         outcomeFrame.addMessage(message);
+        DaxMessage messageLog = messageFactory.logMessage(1,"Test dictionary log");
+        outcomeFrame.addMessage(messageLog);
 
     }
 
