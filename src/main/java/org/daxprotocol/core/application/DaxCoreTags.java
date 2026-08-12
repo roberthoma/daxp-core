@@ -206,9 +206,9 @@ public class DaxCoreTags {
      * Errors
      */
     //TODO create list of exception - errors like DAX-34444 or . namespace CRN-020202
-    public static final DaxTag ERR_FIELD_NR        = daxpSysTag(224);
-    public static final DaxTag ERR_FIELD_ID        = daxpSysTag(225);
-    public static final DaxTag ERR_DESCRIPTION     = daxpSysTag(226);
+    public static final DaxTag ERR_FIELD_NR        = daxpSysTag(324);
+    public static final DaxTag ERR_FIELD_ID        = daxpSysTag(325);
+    public static final DaxTag ERR_DESCRIPTION     = daxpSysTag(326);
 
 
     //LOGs tags

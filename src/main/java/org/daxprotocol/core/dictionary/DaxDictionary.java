@@ -69,7 +69,7 @@ public class DaxDictionary {
 
     Map<DaxTag,DaxRegisterSource> tagMap         = new ConcurrentHashMap<>();
 
-    DaxBaseDictionary<DaxTag> tagAttributes = new DaxBaseDictionary<>();
+    DaxBaseDictionary<DaxTag>     tagAttributes = new DaxBaseDictionary<>();
 
 
 
@@ -94,8 +94,6 @@ public class DaxDictionary {
 
     Map<Integer, DaxMessageRegister> messageDicMap = new ConcurrentHashMap<>();
     DaxMessageRegister msgMap;
-
-
 
 
 

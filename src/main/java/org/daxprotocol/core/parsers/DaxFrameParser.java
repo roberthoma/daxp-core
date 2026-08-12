@@ -45,6 +45,9 @@ import static org.daxprotocol.core.application.DaxCoreConstants.*;
 public class DaxFrameParser {
     private static final Logger logger = LoggerFactory.getLogger(DaxFrameParser.class);
 
+    final char  WORK_MODE_PREAMBLE_ONLY = 'P';
+    final char  WORK_MODE_FULL_FRAME = 'F';
+
     DaxTagParser tagParser;
     DaxConfig config;
     DaxMessageFactory messageFactory;
@@ -91,13 +94,13 @@ public class DaxFrameParser {
     }
 
     public DaxPreamble parsePreamble(String msg) {
-        DaxFrame frame = parse(msg,'P');
+        DaxFrame frame = parse(msg, WORK_MODE_PREAMBLE_ONLY);
         return frame.getPreamble();
     }
 
     @SuppressWarnings("unchecked")
     public DaxFrame parseFrame(String msg) {
-        return parse(msg,'M');
+        return parse(msg,WORK_MODE_FULL_FRAME);
     }
 
 
@@ -181,7 +184,7 @@ public class DaxFrameParser {
                 } else {
 
                     DaxTag tag = tagParser.parseDaxTag(tagStr, preamble.getnamespaceId());
-                    if (workMode == 'P'){
+                    if (workMode == WORK_MODE_PREAMBLE_ONLY){
                         break;
                     }
 
@@ -220,7 +223,7 @@ public class DaxFrameParser {
             prevIdx = idx + 1;
         }
 
-        if (workMode == 'M') {
+        if (workMode == WORK_MODE_FULL_FRAME) {
             // Preamble message counter checking
             int mListSize = messageList.size();
             if (preamble.getMsgCnt() == -1) {
