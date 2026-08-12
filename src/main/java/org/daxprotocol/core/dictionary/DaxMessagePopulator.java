@@ -187,7 +187,7 @@ public class DaxMessagePopulator {
     }
 
     public void populate( DaxPreamble preamble, DaxMessage message) {
-        int namespaceId = preamble.getnamespaceId();
+        int namespaceId = preamble.getNamespaceId();
         message.getBody().getAllBlockMap().forEach((integer, integerDaxPairMap) ->
                 populateFromMsgBlock(namespaceId, integerDaxPairMap)
         );

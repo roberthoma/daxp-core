@@ -12,7 +12,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
 
     @Test
     void executorTestDictionaryReq(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxCoreMessages.DIC_REQ +"|$:9=123|";
+        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxCoreMessages.DIC_REQ +"|$:9=4|";
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
 
@@ -32,7 +32,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
 
     @Test
     void executorTestSimpleReq(){
-        String reqMsg = "DAXP|V=v0.1.0|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +"|$:9=123|";
+        String reqMsg = "DAXP|V=v0.1.0|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +"|$:9=43|";
 
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
@@ -51,7 +51,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
     @Test
     void executorTestSelectReq(){
         String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
-                "|$:108=5001;5002|$:9=123|";
+                "|$:108=5001;5002|$:9=234|";
 
         DaxFrame reqFrame = frameParser.parseFrame(reqMsg);
 
@@ -72,7 +72,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
     @Test
     void executorTestSelectReqSubDto(){
         String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
-                "|$:108=5001;8000|$:9=123|";
+                "|$:108=5001;8000|$:9=235|";
 
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();

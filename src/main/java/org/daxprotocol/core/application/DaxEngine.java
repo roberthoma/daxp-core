@@ -177,7 +177,7 @@ public class DaxEngine {
         frameParser =  new DaxFrameParser( config,
                                              //    namespaceMapper,
                                                  tagParser,
-                dictionary,
+             //   dictionary,
                                                  messageFactory,
                                                  preambleCodec,
                 pairCodec) ;

@@ -23,7 +23,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
             preamble    = frameParser.parsePreamble(msgStr);
             Assertions.assertEquals("V1.2.3",preamble.getProtocolVersion());
             Assertions.assertEquals(DaxCharacterEncoding.UTF_16, preamble.getEncoding());
-            Assertions.assertEquals(namespaceMapper.getReferenceId("FIX"), preamble.getnamespaceId());
+            Assertions.assertEquals(namespaceMapper.getReferenceId("FIX"), preamble.getNamespaceId());
         } catch (DaxException e) {
             System.out.println(e.getDaxErrorCode());
             Assertions.fail();
@@ -38,7 +38,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
             preamble    = frameParser.parsePreamble(msgStr);
             Assertions.assertEquals("V0.1.0",preamble.getProtocolVersion());
             Assertions.assertEquals(DaxCharacterEncoding.UTF_8, preamble.getEncoding());
-            Assertions.assertEquals(namespaceMapper.getReferenceId("CRM"), preamble.getnamespaceId());
+            Assertions.assertEquals(namespaceMapper.getReferenceId("CRM"), preamble.getNamespaceId());
         } catch (DaxException e) {
             System.out.println(e.getDaxErrorCode());
             Assertions.fail();
@@ -60,7 +60,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
                 preamble    = frameParser.parsePreamble(msgStr);
                 Assertions.assertEquals("V0.1.0",preamble.getProtocolVersion());
                 Assertions.assertEquals(DaxCharacterEncoding.UTF_8, preamble.getEncoding());
-                Assertions.assertEquals(namespaceMapper.getReferenceId("CRM"), preamble.getnamespaceId());
+                Assertions.assertEquals(namespaceMapper.getReferenceId("CRM"), preamble.getNamespaceId());
             } catch (DaxException e) {
                 System.out.println(e.getDaxErrorCode());
                 Assertions.fail();
@@ -97,7 +97,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_01(){
 
         String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|"+
-                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
+                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|";
 
         DaxFrame frame;
         try {
@@ -126,7 +126,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_04(){
 
         String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|"+
-                "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
+                "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=107|";
         DaxFrame frame;
         try {
             frame = frameParser.parseFrame(msgStr);
@@ -146,8 +146,8 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_05_msg_quantity(){
 
         String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=2|"+
-                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=134|"+
-                "$:1=CDD|$:5=INST|$:8=2000|2080=A kuku|2001=334|2002=Ola|$:9=177|";
+                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|"+
+                "$:1=CDD|$:5=INST|$:8=2000|2080=A kuku|2001=334|2002=Ola|$:9=171|";
         DaxFrame frame;
         try {
             frame = frameParser.parseFrame(msgStr);
@@ -194,7 +194,7 @@ public class DaxFrameParserTest extends DaxConfigBaseTest {
     void parseFrame_06(){
 
         String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|"+
-                "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|2005@4;5|$:9=177|";
+                "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|2005@4;5|$:9=214|";
         DaxFrame frame;
         try {
             frame = frameParser.parseFrame(msgStr);

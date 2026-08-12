@@ -19,11 +19,11 @@ public class DaxDispatcher {
         DaxFrame respFrame = new DaxFrame();
 
 
-        if (body != null && !body.isEmpty()) {
+      //  if (body != null && !body.isEmpty()) {
             reqFrame = frameParser.parseFrame(body);
-        } else {
-            reqFrame = frameParser.parseFromMap(params);
-        }
+//        } else {
+//            reqFrame = frameParser.parseFromMap(params);
+//        }
         DaxFrame frameResp = new DaxFrame();
         frameResp.setPreamble(preambleFactory.createRespPreamble(reqFrame));
 

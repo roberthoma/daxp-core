@@ -75,11 +75,11 @@ public class DaxPreamble {
         return encoding;
     }
 
-    public int getnamespaceId(){
+    public int getNamespaceId(){
         return namespaceId;
     }
 
-    public void setnamespaceId(int namespaceId){
+    public void setNamespaceId(int namespaceId){
         this.namespaceId = namespaceId;
     }
 
