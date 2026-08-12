@@ -16,13 +16,13 @@ public class DaxPreambleFactory {
 
     public DaxPreamble createPreamble(){
         DaxPreamble preamble = new DaxPreamble(config.getDefaultEncoding());
-        preamble.setNamespaceId(config.getAppnamespaceId());
+        preamble.setNamespaceId(config.getAppNamespaceId());
         return preamble;
     }
 
     public DaxPreamble createRespPreamble(DaxFrame frameReq) {
         DaxPreamble preamble = new DaxPreamble(config.getDefaultEncoding());
-        preamble.setNamespaceId(config.getAppnamespaceId());
+        preamble.setNamespaceId(config.getAppNamespaceId());
         preamble.setPairSeparator(frameReq.getPreamble().getPairSeparator());
         return preamble;
     }

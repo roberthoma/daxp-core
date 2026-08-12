@@ -7,10 +7,10 @@ public class DaxNamespaceFactory {
 
     public static DaxNamespace createAppNamespace(DaxConfig config){
         DaxNamespace namespace = new DaxNamespace();
-        namespace.setId(config.getAppnamespaceId());
-        namespace.setSymbol(config.getAppnamespaceSymbol());
-        namespace.setTagPrefix(config.getAppnamespaceTagPrefix());
-        namespace.setDescription(config.getAppnamespaceDescription());
+        namespace.setId(config.getAppNamespaceId());
+        namespace.setSymbol(config.getAppNamespaceSymbol());
+        namespace.setTagPrefix(config.getAppNamespaceTagPrefix());
+        namespace.setDescription(config.getAppNamespaceDescription());
        return namespace;
     }
 

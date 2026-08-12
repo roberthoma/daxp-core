@@ -139,8 +139,8 @@ public class DaxDictionary {
         this.schemaMapper  = schemaMapper;
 
 
-        msgMap = new DaxMessageRegister(config.getAppnamespaceId());
-        messageDicMap.put(config.getAppnamespaceId(),msgMap);
+        msgMap = new DaxMessageRegister(config.getAppNamespaceId());
+        messageDicMap.put(config.getAppNamespaceId(),msgMap);
 
 
     }

@@ -275,7 +275,7 @@ public class DaxEngine {
     }
 
     public int getAppnamespaceId(){
-      return config.getAppnamespaceId();
+      return config.getAppNamespaceId();
     }
 
     public void checkRegister() {

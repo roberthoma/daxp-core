@@ -75,9 +75,9 @@ public class DaxpConfigFactory {
             throw new IllegalStateException("Missing "+parDomain+".* properties");
         }
 
-        config.setAppnamespaceTagPrefix(ctxTagPrefix);
-        config.setAppnamespaceSymbol(ctxSymbol);
-        config.setAppnamespaceDescription(ctxDescription);
+        config.setAppNamespaceTagPrefix(ctxTagPrefix);
+        config.setAppNamespaceSymbol(ctxSymbol);
+        config.setAppNamespaceDescription(ctxDescription);
 
         return config;
     }

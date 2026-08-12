@@ -17,7 +17,6 @@
  * limitations under the License.
  * ***********************************************************************
  */
-
 package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
@@ -40,7 +39,9 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.daxprotocol.core.application.DaxCoreConstants.*;
+import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_ACTION;
+import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_BLOCK_REFERENCE;
+import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_EQUAL;
 
 public class DaxFrameParser {
     private static final Logger logger = LoggerFactory.getLogger(DaxFrameParser.class);
@@ -68,33 +69,8 @@ public class DaxFrameParser {
         this.pairCodec = pairCodec;
     }
 
-    private int findFirstSeparator(String input, char[] separators) {
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-            for (char sep : separators) {
-                if (c == sep) return i;
-            }
-        }
-        return -1;
-    }
-
-    private List<Integer> getSeparatorIndices(String str, char pairSeparator) {
-        if (str == null || str.isEmpty()) {
-            throw new DaxFrameParserException("Frame is EMPTY!");
-        }
-
-        List<Integer> indexList = new ArrayList<>();
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == pairSeparator) {
-                indexList.add(i);
-            }
-        }
-        return indexList;
-    }
-
     public DaxPreamble parsePreamble(String msg) {
-        DaxFrame frame = parse(msg, WorkMode.PREAMBLE_ONLY);
-        return frame.getPreamble();
+        return parse(msg, WorkMode.PREAMBLE_ONLY).getPreamble();
     }
 
     public DaxFrame parseFrame(String msg) {
@@ -102,8 +78,9 @@ public class DaxFrameParser {
     }
 
     private DaxFrame parse(String frameStr, WorkMode workMode) {
-        DaxFrame frame = new DaxFrame();
-        List<DaxMessage> messageList = new ArrayList<>();
+        if (frameStr == null || frameStr.isEmpty()) {
+            throw new DaxFrameParserException("Frame is EMPTY!");
+        }
 
         int sepPos = findFirstSeparator(frameStr, DaxCoreConstants.ALLOWED_PAIR_SEPARATORS);
         if (sepPos <= 0) {
@@ -112,7 +89,11 @@ public class DaxFrameParser {
         }
 
         char pairSeparator = frameStr.charAt(sepPos);
-        List<Integer> indList = getSeparatorIndices(frameStr, pairSeparator);
+        DaxPreamble preamble = new DaxPreamble();
+        preamble.setPairSeparator(pairSeparator);
+
+        DaxFrame frame = new DaxFrame();
+        List<DaxMessage> messageList = new ArrayList<>();
         List<DaxPair<?>> listOfPair = new ArrayList<>();
 
         int sum = 0;
@@ -120,26 +101,24 @@ public class DaxFrameParser {
         boolean isPreambleParsing = true;
         boolean isChecksumLast = true;
 
-        DaxPreamble preamble = new DaxPreamble();
-        preamble.setPairSeparator(pairSeparator);
-
-        for (int idx : indList) {
+        int nextIdx;
+        while ((nextIdx = frameStr.indexOf(pairSeparator, prevIdx)) != -1) {
 
             // Header Check (First Token)
             if (prevIdx == 0) {
-                String header = frameStr.substring(prevIdx, idx).trim();
+                String header = frameStr.substring(prevIdx, nextIdx).trim();
                 if (!header.equals(DaxCoreConstants.DAXP_SYMBOL)) {
                     logger.error("Not a DAXP message, expected header '{}': {}", DaxCoreConstants.DAXP_SYMBOL, frameStr);
                     throw new DaxFrameParserException("Invalid DAXP message header!");
                 }
-                prevIdx = idx + 1;
+                prevIdx = nextIdx + 1;
                 continue;
             }
 
-            // Locate Operator (=, Block, or Action)
+            // Locate Operator
             int operatorIdx = -1;
             char foundOperator = 0;
-            for (int i = prevIdx; i < idx; i++) {
+            for (int i = prevIdx; i < nextIdx; i++) {
                 char c = frameStr.charAt(i);
                 if (c == OPERATOR_EQUAL || c == OPERATOR_BLOCK_REFERENCE || c == OPERATOR_ACTION) {
                     operatorIdx = i;
@@ -148,12 +127,12 @@ public class DaxFrameParser {
                 }
             }
 
-            if (operatorIdx == -1 || prevIdx > operatorIdx) {
+            if (operatorIdx == -1) {
                 throw new DaxFrameParserException("Incompatible or missing operator in DAXP message tag!");
             }
 
             String tagStr = frameStr.substring(prevIdx, operatorIdx).trim();
-            String valueStr = frameStr.substring(operatorIdx + 1, idx);
+            String valueStr = frameStr.substring(operatorIdx + 1, nextIdx);
 
             try {
                 if (isPreambleParsing && preambleCodec.isTagPreamble(tagStr)) {
@@ -181,56 +160,72 @@ public class DaxFrameParser {
 
                     if (tag.equals(DaxCoreTags.CHECKSUM)) {
                         int expectedChecksum = DaxChecksumService.calculateModulo(sum);
-                        int actualChecksum = Integer.parseInt(valueStr);
+                        int actualChecksum;
+                        try {
+                            actualChecksum = Integer.parseInt(valueStr);
+                        } catch (NumberFormatException e) {
+                            throw new DaxFrameParserException("Invalid Checksum format: " + valueStr, e);
+                        }
 
                         if (expectedChecksum != actualChecksum) {
                             logger.error("BAD CHECKSUM {}. Expected checksum is {}.", actualChecksum, expectedChecksum);
                             throw new DaxFrameParserException("Checksum validation failed!");
                         }
 
-                        // Create message with a defensive copy of pairs
                         messageList.add(messageFactory.createMsg(new ArrayList<>(listOfPair)));
                         listOfPair.clear();
                         sum = 0;
                         isChecksumLast = true;
                     } else {
-                        // Accumulate checksum sum for payload tags (excluding CHECKSUM tag itself)
                         sum += DaxChecksumService.calculateSum(tagStr);
                         sum += DaxChecksumService.calculateSum(valueStr);
                     }
                 }
+            } catch (DaxFrameParserException e) {
+                throw e;
             } catch (Exception e) {
-                if (e instanceof DaxFrameParserException) {
-                    throw (DaxFrameParserException) e;
-                }
                 throw new DaxFrameParserException("Error parsing frame body", e);
             }
 
-            prevIdx = idx + 1;
+            prevIdx = nextIdx + 1;
         }
 
         if (workMode == WorkMode.FULL_FRAME) {
-            if (preamble.getMsgCnt() == -1) {
-                if (messageList.size() > 1) {
-                    logger.info("Preamble did not specify message quantity.");
-                }
-                preamble.setMsgCnt(messageList.size());
-            }
-
-            if (!isChecksumLast) {
-                logger.error("Frame does not end with CHECKSUM!");
-                throw new DaxFrameParserException("Malformed frame: Missing trailing CHECKSUM tag!");
-            }
-
-            if (preamble.getMsgCnt() != messageList.size()) {
-                logger.error("Preamble message count {} does not match actual count {}", preamble.getMsgCnt(), messageList.size());
-                throw new DaxFrameParserException("Message count mismatch against preamble!");
-            }
-
-            frame.setMessageList(messageList);
+            validateAndFinalizeFrame(frame, preamble, messageList, isChecksumLast);
         }
 
         frame.setPreamble(preamble);
         return frame;
+    }
+
+    private void validateAndFinalizeFrame(DaxFrame frame, DaxPreamble preamble, List<DaxMessage> messageList, boolean isChecksumLast) {
+        if (preamble.getMsgCnt() == -1) {
+            if (messageList.size() > 1) {
+                logger.info("Preamble did not specify message quantity.");
+            }
+            preamble.setMsgCnt(messageList.size());
+        }
+
+        if (!isChecksumLast) {
+            logger.error("Frame does not end with CHECKSUM!");
+            throw new DaxFrameParserException("Malformed frame: Missing trailing CHECKSUM tag!");
+        }
+
+        if (preamble.getMsgCnt() != messageList.size()) {
+            logger.error("Preamble message count {} does not match actual count {}", preamble.getMsgCnt(), messageList.size());
+            throw new DaxFrameParserException("Message count mismatch against preamble!");
+        }
+
+        frame.setMessageList(messageList);
+    }
+
+    private int findFirstSeparator(String input, char[] separators) {
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            for (char sep : separators) {
+                if (c == sep) return i;
+            }
+        }
+        return -1;
     }
 }

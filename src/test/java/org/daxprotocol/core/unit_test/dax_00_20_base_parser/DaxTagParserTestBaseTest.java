@@ -137,7 +137,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag110(){
         String tagStr = "XYZ:1029";
         DaxTag tag = tagParser.parseDaxTag(tagStr, 4); //namespaceId = 4 is only for test lower 100
-        int expnamespaceId = daxEngine.getConfig().getAppnamespaceId();
+        int expnamespaceId = daxEngine.getConfig().getAppNamespaceId();
         DaxTag expectedTag  = DaxTag.of(expnamespaceId,1029);
 
         Assertions.assertEquals(expectedTag ,tag);

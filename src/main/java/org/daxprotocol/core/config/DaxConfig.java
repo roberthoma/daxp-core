@@ -20,7 +20,6 @@
 
 package org.daxprotocol.core.config;
 
-import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
 public final class DaxConfig {
@@ -33,47 +32,47 @@ public final class DaxConfig {
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file
 
-    private int appnamespaceId = 1;
+    private int appNamespaceId = 1;
 
-    private String appnamespaceSymbol;
-    private String appnamespaceTagPrefix;
-    private String appnamespaceDescription;
-
-
+    private String appNamespaceSymbol;
+    private String appNamespaceTagPrefix;
+    private String appNamespaceDescription;
 
 
-    public String getAppnamespaceTagPrefix() {
-        return appnamespaceTagPrefix;
+
+
+    public String getAppNamespaceTagPrefix() {
+        return appNamespaceTagPrefix;
     }
 
-    public void setAppnamespaceTagPrefix(String appnamespaceTagPrefix) {
-        this.appnamespaceTagPrefix = appnamespaceTagPrefix;
+    public void setAppNamespaceTagPrefix(String appNamespaceTagPrefix) {
+        this.appNamespaceTagPrefix = appNamespaceTagPrefix;
     }
 
-    public void setAppnamespaceSymbol(String appnamespaceSymbol) {
-        this.appnamespaceSymbol = appnamespaceSymbol;
+    public void setAppNamespaceSymbol(String appNamespaceSymbol) {
+        this.appNamespaceSymbol = appNamespaceSymbol;
     }
 
-    public String getAppnamespaceSymbol() {
-        return appnamespaceSymbol;
+    public String getAppNamespaceSymbol() {
+        return appNamespaceSymbol;
     }
-    public String getAppnamespaceDescription() {
-        return appnamespaceDescription;
-    }
-
-    public void setAppnamespaceDescription(String appnamespaceDescription) {
-        this.appnamespaceDescription = appnamespaceDescription;
+    public String getAppNamespaceDescription() {
+        return appNamespaceDescription;
     }
 
-    public int getAppnamespaceId(){
-        if(appnamespaceId == -1){
+    public void setAppNamespaceDescription(String appNamespaceDescription) {
+        this.appNamespaceDescription = appNamespaceDescription;
+    }
+
+    public int getAppNamespaceId(){
+        if(appNamespaceId == -1){
             throw new RuntimeException("NOT INIT APPLICATION namespace");
         }
 
-        return appnamespaceId;  // todo put in config file
+        return appNamespaceId;  // todo put in config file
     }
-    public void setAppnamespaceId(int appnamespaceId) {
-        this.appnamespaceId = appnamespaceId;
+    public void setAppNamespaceId(int appNamespaceId) {
+        this.appNamespaceId = appNamespaceId;
     }
 
     public DaxCharacterEncoding getDefaultEncoding() {

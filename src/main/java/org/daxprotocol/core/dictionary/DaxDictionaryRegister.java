@@ -190,7 +190,7 @@ public class DaxDictionaryRegister {
             Arrays.stream(msgAnn.respMsg()).forEach(mgs::addRelatedMsgType);
 
             Arrays.stream(msgAnn.reqTag()).forEach(tagStr ->
-                    mgs.addReqTag(tagParser.parseDaxTag(tagStr, config.getAppnamespaceId())));
+                    mgs.addReqTag(tagParser.parseDaxTag(tagStr, config.getAppNamespaceId())));
 
             dictionary.putMsgItem(mgs);
 

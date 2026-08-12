@@ -49,7 +49,7 @@ public class DaxTagCodec {
                     DaxCoreConstants.NAMESPACE_TAG_SEPARATOR + tag.getTagId();
         }
 
-        if(tag.getNamespaceId() != config.getAppnamespaceId())
+        if(tag.getNamespaceId() != config.getAppNamespaceId())
         {
             return  namespaceMapper.getReference(tag.getNamespaceId()) +
                     DaxCoreConstants.NAMESPACE_TAG_SEPARATOR + tag.getTagId();
@@ -102,11 +102,11 @@ public class DaxTagCodec {
     ){
         DaxTag tag;
         int namespaceId = namespace.isBlank() ?
-                config.getAppnamespaceId():
+                config.getAppNamespaceId():
                 namespaceMapper.getReferenceId(namespace);
 
         if (!value.isBlank()){
-            tag = tagParser.parseDaxTag(value,config.getAppnamespaceId());
+            tag = tagParser.parseDaxTag(value,config.getAppNamespaceId());
         }
         else {
             tag = DaxTag.of(namespaceId ,tagId);

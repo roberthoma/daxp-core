@@ -26,15 +26,15 @@ public class DaxNamespaceMapperTest extends DaxConfigBaseTest {
 
     @Test
     void checkAppnamespaceId(){
-        System.out.println("CheckAppnamespaceId app Id = "+daxEngine.getConfig().getAppnamespaceId());
-        Assertions.assertEquals(1, daxEngine.getConfig().getAppnamespaceId());
+        System.out.println("CheckAppnamespaceId app Id = "+daxEngine.getConfig().getAppNamespaceId());
+        Assertions.assertEquals(1, daxEngine.getConfig().getAppNamespaceId());
     }
 
     @Test
     void checkAppTagPrefix(){
         String appCtx = "XYZ";
-        Assertions.assertEquals(appCtx, config.getAppnamespaceTagPrefix());
-        Assertions.assertEquals(config.getAppnamespaceId(),namespaceMapper.getReferenceId(appCtx));
+        Assertions.assertEquals(appCtx, config.getAppNamespaceTagPrefix());
+        Assertions.assertEquals(config.getAppNamespaceId(),namespaceMapper.getReferenceId(appCtx));
     }
 
 

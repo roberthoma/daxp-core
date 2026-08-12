@@ -235,7 +235,7 @@ public class DaxMessageConverter {
                 DaxpField ann = f.getAnnotation(DaxpField.class);
                 if (ann == null) continue;
 
-                int namespaceId = config.getAppnamespaceId() ;
+                int namespaceId = config.getAppNamespaceId() ;
 
                 DaxTag tag = DaxTag.of(namespaceId , ann.tagId());
                 if(! message.getBody().getBlock(0).containsKey(tag)) continue;

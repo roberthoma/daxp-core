@@ -51,7 +51,7 @@ public class DaxConfigBaseTest {
             daxEngine = new DaxEngine(DaxpConfigFactory
                     .createProperties("application_BASE.properties"));
 
-            appnamespaceId    = daxEngine.getConfig().getAppnamespaceId();
+            appnamespaceId    = daxEngine.getConfig().getAppNamespaceId();
             dictionary      = daxEngine.getDictionary();
             namespaceMapper   = daxEngine.getnamespaceMapper();
             messageCodec    = daxEngine.getMessageCodec();
@@ -71,10 +71,10 @@ public class DaxConfigBaseTest {
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");
-            System.out.println(" Description  = "+ daxEngine.getConfig().getAppnamespaceDescription());
-            System.out.println(" Symbol       = "+ daxEngine.getConfig().getAppnamespaceSymbol());
-            System.out.println(" Tag Prefix   = "+ daxEngine.getConfig().getAppnamespaceTagPrefix());
-            System.out.println(" namespace Id   = "+ daxEngine.getConfig().getAppnamespaceId());
+            System.out.println(" Description  = "+ daxEngine.getConfig().getAppNamespaceDescription());
+            System.out.println(" Symbol       = "+ daxEngine.getConfig().getAppNamespaceSymbol());
+            System.out.println(" Tag Prefix   = "+ daxEngine.getConfig().getAppNamespaceTagPrefix());
+            System.out.println(" namespace Id   = "+ daxEngine.getConfig().getAppNamespaceId());
             System.out.println("*******************************************");
 
             //------------
