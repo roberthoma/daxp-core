@@ -26,6 +26,7 @@ import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
+import org.daxprotocol.core.exceptions.DaxException;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
@@ -190,11 +191,19 @@ public class DaxMessageFactory {
 
     public DaxMessage errorInvalidMessageType() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
-        //message.getBody().nextBlock();
-        message.getBody().nextBlock(DaxBlockType.BLOCK_VALUE);
+        message.getBody().nextBlock(DaxBlockType.BLOCK_INSTANCE);
         message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,"Invalid Message Type"));
         return message;
     }
+
+    public DaxMessage errorMessage(DaxException daxException) {
+        DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
+        message.getBody().nextBlock(DaxBlockType.BLOCK_INSTANCE);
+        message.getBody().putPair(new DaxPairString(ERR_FIELD_ID,daxException.getDaxErrorCode()));
+        message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION,daxException.getMessage()));
+        return message;
+    }
+
 
     public DaxMessage createMsg(String messageType,List<DaxPair<?>> listOfPair){
         DaxHead head;

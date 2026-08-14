@@ -84,8 +84,8 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag80(){
         String tagStr = "FIX:9";
         DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
-        int expnamespaceId = daxEngine.getnamespaceMapper().getReferenceId("FIX");
-        DaxTag expectedTag  = DaxTag.of(expnamespaceId,9);
+        int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("FIX");
+        DaxTag expectedTag  = DaxTag.of(expNamespaceId,9);
 
         Assertions.assertEquals(expectedTag ,tag);
     }
@@ -93,8 +93,8 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag90(){
         String tagStr = "CRM:1029";
         DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
-        int expnamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
-        DaxTag expectedTag  = DaxTag.of(expnamespaceId,1029);
+        int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
+        DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         Assertions.assertEquals(expectedTag ,tag);
     }
@@ -103,8 +103,8 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag100(){
         String tagStr = "$CRM:1029";
         DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
-        int expnamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
-        DaxTag expectedTag  = DaxTag.of(expnamespaceId,1029);
+        int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
+        DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         //Assertions.assertEquals(expectedTag ,tag);
         Assertions.assertNotEquals(appnamespaceId,tag.getNamespaceId());
@@ -116,8 +116,8 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag101(){
         String tagStr = "$CRM$:1029";
         DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
-        int expnamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
-        DaxTag expectedTag  = DaxTag.of(expnamespaceId,1029);
+        int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
+        DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         Assertions.assertNotEquals(expectedTag ,tag);
         Assertions.assertNotEquals(appnamespaceId,tag.getNamespaceId());
@@ -127,8 +127,8 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag102(){
         String tagStr = "$CRM$:1029";
         DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
-        int expnamespaceId = daxEngine.getnamespaceMapper().getReferenceId("$CRM$");
-        DaxTag expectedTag  = DaxTag.of(expnamespaceId,1029);
+        int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("$CRM$");
+        DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         Assertions.assertEquals(expectedTag ,tag);
     }
@@ -137,8 +137,8 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag110(){
         String tagStr = "XYZ:1029";
         DaxTag tag = tagParser.parseDaxTag(tagStr, 4); //namespaceId = 4 is only for test lower 100
-        int expnamespaceId = daxEngine.getConfig().getAppNamespaceId();
-        DaxTag expectedTag  = DaxTag.of(expnamespaceId,1029);
+        int expNamespaceId = daxEngine.getConfig().getAppNamespaceId();
+        DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         Assertions.assertEquals(expectedTag ,tag);
         Assertions.assertEquals(appnamespaceId,tag.getNamespaceId());
@@ -147,11 +147,11 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag120(){
         String abcCtx = "ABC";
-        int abcnamespaceId = namespaceMapper.getReferenceId(abcCtx);
+        int abcNamespaceId = namespaceMapper.getReferenceId(abcCtx);
         String tagStr = "1029";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, abcnamespaceId);
-        DaxTag expectedTag  = DaxTag.of(abcnamespaceId,1029);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, abcNamespaceId);
+        DaxTag expectedTag  = DaxTag.of(abcNamespaceId,1029);
         Assertions.assertEquals(expectedTag ,tag);
-        Assertions.assertEquals(abcnamespaceId,tag.getNamespaceId());
+        Assertions.assertEquals(abcNamespaceId,tag.getNamespaceId());
     }
 }

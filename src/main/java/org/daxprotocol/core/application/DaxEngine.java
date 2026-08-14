@@ -23,6 +23,8 @@ package org.daxprotocol.core.application;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
+import org.daxprotocol.core.exceptions.DaxException;
+import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.namespace.DaxNamespaceFactory;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
@@ -274,9 +276,45 @@ public class DaxEngine {
         return daxDataTypeService;
     }
 
-    public int getAppnamespaceId(){
+    public int getAppNamespaceId(){
       return config.getAppNamespaceId();
     }
+
+
+
+    public void execute(DaxFrame reqFrame, DaxFrame respFrame ){
+        if (respFrame == null){
+            respFrame = new DaxFrame();
+        }
+        respFrame.setPreamble(preambleFactory.createRespPreamble(reqFrame));
+        handlerRegistry.executor(reqFrame,respFrame);
+    }
+
+    public void execute(String  reqFrameString, DaxFrame respFrame ){
+
+        // check parsing if is bad  create maessage with error
+        try {
+
+        DaxFrame reqFrame = frameParser.parseFrame(reqFrameString);
+
+        execute(reqFrame,respFrame);
+
+
+        }
+        catch (DaxException e) {
+            logger.error(e.getMessage());
+            respFrame.setPreamble(preambleFactory.createPreamble());
+            respFrame.addMessage(messageFactory.errorMessage(e));
+        }
+
+        catch (Exception e) {
+            logger.error(e.getMessage());
+            respFrame.setPreamble(preambleFactory.createPreamble());
+            respFrame.addMessage(messageFactory.logMessage(3,e.getMessage()));
+        }
+    }
+
+
 
     public void checkRegister() {
 

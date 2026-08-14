@@ -102,35 +102,5 @@ public class DaxHandlerRegistry {
         }
     }
 }
-//////////////////////////////////////
-public Object executor(DaxMessage reqMsg) {
-    try {
-        String msgType = reqMsg.getMsgType();
-        Method method = handlerMap.get(msgType);
-        Object obj = daxControllerMap.get(method.getDeclaringClass());
-
-        // Invoke the controller method
-        Object respObj = method.invoke(obj, reqMsg);
-
-        // --- THE CHECK ---
-        if (respObj instanceof DaxMessage) {
-            // Single message logic
-            return (DaxMessage) respObj;
-        }
-        else if (respObj instanceof List) {
-            // List logic (e.g., search results or batch updates)
-            return (List<?>) respObj;
-        }
-        else if (respObj == null) {
-            // Handle void/null returns (e.g., an ACK)
-            return null;
-        }
-
-        throw new DAXPException("DAXP-0022", "Unsupported return type: " + respObj.getClass().getName());
-
-    } catch (Exception e) {
-        throw new DAXPException("DAXP-0099", "Execution failed", e);
-    }
-}
 
         */

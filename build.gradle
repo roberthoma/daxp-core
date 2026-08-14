@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.daxprotocol'
-version = '0.7.1-beta'
+version = '0.8.0-beta'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

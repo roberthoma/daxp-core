@@ -27,7 +27,7 @@ public final class DaxConfig {
     /*****************************************************
      *   DAXP Version
      */
-    public static final String PROTOCOL_VERSION = "0.7beta";
+    public static final String PROTOCOL_VERSION = "0.8beta";
 
 
     private DaxCharacterEncoding defaultEncoding = DaxCharacterEncoding.UTF_8; //TODO from config file

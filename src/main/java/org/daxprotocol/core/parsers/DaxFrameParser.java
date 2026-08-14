@@ -135,6 +135,8 @@ public class DaxFrameParser {
             String valueStr = frameStr.substring(operatorIdx + 1, nextIdx);
 
             try {
+
+
                 if (isPreambleParsing && preambleCodec.isTagPreamble(tagStr)) {
                     preambleCodec.decodeTag(tagStr, valueStr, preamble);
                 } else {
@@ -144,8 +146,11 @@ public class DaxFrameParser {
                         break;
                     }
 
+                    //TODO Refactor checking preamble tag before throwing exception
+                    // for DAXP|V=v0.7|EN=UTF-8|sNS=XYZ|$:1=$:ABOUT_REQ|$:9=175|
+                    // is [DAXP-0011] Tag Parser : Invalid character: s   ... Is not good solution
                     if ((isPreambleParsing || isChecksumLast) && !tag.equals(DaxCoreTags.MSG_TYPE)) {
-                        throw new DaxPreambleException("First tag in message is not MSG_TYPE");
+                        throw new DaxPreambleException("First tag in message is not PREAMBLE_TAG and MSG_TYPE");
                     }
 
                     isPreambleParsing = false;
