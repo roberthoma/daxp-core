@@ -31,7 +31,7 @@ public class DaxHandlerRegistry {
 
     public void executor( DaxFrame reqFrame, DaxFrame respFrame){
 
-
+        //TODO develop in message can be more that one message
         try {
             DaxMessage  reqMsg = reqFrame.getFirstMessage();
 

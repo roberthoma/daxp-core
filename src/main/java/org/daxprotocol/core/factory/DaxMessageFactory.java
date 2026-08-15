@@ -124,7 +124,8 @@ public class DaxMessageFactory {
 
     //-----------------------------------------------
 
-    private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry , Set<DaxTag> reqTagSet){
+    private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntry , Set<DaxTag> reqTagSet)
+    {
         DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
         DaxTrailer trailer = new DaxTrailer();
@@ -183,7 +184,7 @@ public class DaxMessageFactory {
         return message;
     }
 
-    public DaxMessage okMessageType() {
+    public DaxMessage okMessage() {
         return new DaxMessage(DaxCoreMessages.OK_RES);
 
     }
@@ -196,7 +197,7 @@ public class DaxMessageFactory {
         return message;
     }
 
-    public DaxMessage errorMessage(DaxException daxException) {
+    public DaxMessage daxExceptionMessage(DaxException daxException) {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
         message.getBody().nextBlock(DaxBlockType.BLOCK_INSTANCE);
         message.getBody().putPair(new DaxPairString(ERR_FIELD_ID,daxException.getDaxErrorCode()));
@@ -235,7 +236,7 @@ public class DaxMessageFactory {
 
     public DaxMessage aboutToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.ABOUT_RESP);
-        message.getBody().nextBlock(DaxBlockType.BLOCK_VALUE);
+        message.getBody().nextBlock(DaxBlockType.BLOCK_INSTANCE);
         message.getBody().putPair(new DaxPairString(ENTRY_DESCRIPTION, DaxCoreConstants.DAXP_NAMESPACE_DESCRIPTION));
 
      //TODO add dedicated tags :)
@@ -245,8 +246,7 @@ public class DaxMessageFactory {
 
     public DaxMessage logMessage(int level, String log){
         DaxMessage message = new DaxMessage(DaxCoreMessages.LOG);
-        message.getBody().nextBlock(DaxBlockType.BLOCK_VALUE);
-       // message.getBody().nextBlock();
+        message.getBody().nextBlock(DaxBlockType.BLOCK_INSTANCE);
         message.getBody().putPair(new DaxPairString(LOG_LEVEL, "TRACE"));
         message.getBody().putPair(new DaxPairString(ENTRY_DESCRIPTION, log));
 

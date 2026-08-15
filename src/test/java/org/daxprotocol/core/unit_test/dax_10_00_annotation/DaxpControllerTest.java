@@ -25,7 +25,7 @@ public class DaxpControllerTest extends DaxConfigBaseTest {
                                         testList);
 
         outcomeFrame.addMessage(message);
-        outcomeFrame.addMessage(msgFactory.okMessageType());
+        outcomeFrame.addMessage(msgFactory.okMessage());
 
     }
 

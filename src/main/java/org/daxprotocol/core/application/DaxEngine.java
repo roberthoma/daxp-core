@@ -304,7 +304,7 @@ public class DaxEngine {
         catch (DaxException e) {
             logger.error(e.getMessage());
             respFrame.setPreamble(preambleFactory.createPreamble());
-            respFrame.addMessage(messageFactory.errorMessage(e));
+            respFrame.addMessage(messageFactory.daxExceptionMessage(e));
         }
 
         catch (Exception e) {

@@ -31,8 +31,6 @@ public class DaxCoreConstants {
 
     public static final char DECIMAL_SEPARATOR    = '.';
 
-    public static char 	RECORD_SEPARATOR =    0x0036; //	1E	00011110	RS	&#30;	 	Record Separator
-    public static char 	UNIT_SEPARATOR   =    0x0037; //	1F	00011111	US	&#31;	 	Unit Separator
 
 
 //    public static final char TAG_LIST_SEPARATOR    = ';';
@@ -40,6 +38,18 @@ public class DaxCoreConstants {
 //    public static final char namespace_TAG_SEPARATOR = ',';
 //    public static final CharSequence VALUE_LIST_SEPARATOR    = ";";
 //    public static final CharSequence namespace_TAG_SEPARATOR = ":";
+
+    /****************************************************
+    *     BULK collection separators
+    *      HEX value
+    */
+    public static char SEPARATOR_START_OF_TEXT = 0x0002; //Start of Text
+    public static char SEPARATOR_END_OF_TEXT =  0x0003;	//End of Text
+    public static char SEPARATOR_GROUP =  0x001D;//Group Separator
+    public static char SEPARATOR_RECORD = 0x001E; //Record Separator
+    public static char SEPARATOR_UNIT = 0x001F; //	Unit Separator
+
+
 
 
     /*****************************************************

@@ -78,7 +78,7 @@ public class DaxObjectMessageService {
                 logger.trace("IS COLLECTION objName={}",object.getClass().getName());
 
                 Iterator<?> iterator;
-                if (dataTypeCodec.isMap_TMP(object) ){
+                if (dataTypeCodec.isMap(object) ){
                     iterator  = ((Map<?,?>)object).entrySet().iterator();
 
                     iterator.forEachRemaining(objVal ->

@@ -5,9 +5,6 @@ not regirestion tag in type in group
 
 -----------------------
 
-Create again annotation 
-@DaxpGroup  and keep DaxpType
-
 
 If calss has only DaxpValue without daxpField then  throw exeption :(
 

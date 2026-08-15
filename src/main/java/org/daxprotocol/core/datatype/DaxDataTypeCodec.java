@@ -127,7 +127,7 @@ public class DaxDataTypeCodec {
         throw new RuntimeException("Map<DaxTag, DaxPair<?>> encode  NOT IMPLEMENTED JED");
     }
 
-    public boolean isMap_TMP(Object object) {
+    public boolean isMap(Object object) {
         DaxCollectionInfo info = dataTypeService.getCollectionInfo(object.getClass());
 
         return info.isColHasKey && !info.isJavaEnum;
