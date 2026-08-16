@@ -20,7 +20,7 @@ public class DaxpControllerTest extends DaxConfigBaseTest {
 //        List<DaxAnyTestEntity> testList = List.of(testEntity,testEntity2);
         List<DaxAnyTestEntity> testList = List.of(testEntity);
 
-        DaxMessage message = msgFactory.toDaxRespondMessage(incomeFrame,
+        DaxMessage message = msgFactory.toDaxMessage(incomeFrame,
                                         DaxAnySchemaRegister.MSG_BASE_ENTITY_DATA,
                                         testList);
 

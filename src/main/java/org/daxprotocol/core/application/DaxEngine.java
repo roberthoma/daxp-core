@@ -168,8 +168,8 @@ public class DaxEngine {
         preambleFactory = new DaxPreambleFactory(config, preambleCodec);
 
 
-        messageFactory       = new DaxMessageFactory(config,
-                tagCodec,  messageCodec,
+        messageFactory       = new DaxMessageFactory(
+                tagCodec,
                 headCodec, bodyCodec, trailerCodec, dictionary,
                 dataTypeCodec,
                 valueCodec

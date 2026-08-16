@@ -24,7 +24,7 @@ package org.daxprotocol.core.exceptions;
  * Base class for all DAXP protocol related issues.
  * Uses RuntimeException for flexible error handling in stream processing.
  */
-public abstract class DaxException extends RuntimeException {
+public  class DaxException extends RuntimeException {
     private final String daxErrorCode;
 
     // 1. Basic: Code + Message
