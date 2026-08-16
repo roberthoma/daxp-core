@@ -28,10 +28,13 @@ import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.exceptions.DaxException;
+import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
+import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.daxprotocol.core.tool.DaxLangTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -214,4 +217,29 @@ public class DaxFactoryObjectService {
     private record AnnotatedField(Field field, DaxTag tag) {}
     private record AnnotatedMethod(Method method, DaxTag tag) {}
     private record ClassMetadata(List<AnnotatedField> fields, List<AnnotatedMethod> methods) {}
+
+    @SuppressWarnings("unchecked")
+    private List<Object> normalizeToList(Object daxDataEntry) {
+        if (daxDataEntry instanceof List<?>) {
+            return (List<Object>) daxDataEntry;
+        }
+        return daxDataEntry != null ? List.of(daxDataEntry) : List.of();
+    }
+
+    public DaxMessage toDaxMessageFromList(String messageType, Object daxDataEntries, Set<DaxTag> reqTagSet) {
+        DaxHead head = new DaxHead(messageType);
+        DaxBody body = new DaxBody();
+        DaxTrailer trailer = new DaxTrailer();
+
+        for (Object entry : normalizeToList(daxDataEntries)) {
+            if (entry != null && entry.getClass().isAnnotationPresent(org.daxprotocol.core.annotation.DaxpEntity.class)) {
+                var entityAnn = entry.getClass().getAnnotation(org.daxprotocol.core.annotation.DaxpEntity.class);
+                DaxTag tag = tagCodec.decode(entityAnn);
+                body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
+                objectToMsgBlock(body.getCurrentIdx(), tag, entry, body, reqTagSet, tag);
+            }
+        }
+
+        return new DaxMessage(head, body, trailer);
+    }
 }

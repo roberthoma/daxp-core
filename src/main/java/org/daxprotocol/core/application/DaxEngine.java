@@ -24,6 +24,8 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.exceptions.DaxException;
+import org.daxprotocol.core.factory.DaxDictionaryMessageFactory;
+import org.daxprotocol.core.factory.DaxFactoryObjectService;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.namespace.DaxNamespaceFactory;
 import org.daxprotocol.core.datatype.DaxDataType;
@@ -168,12 +170,17 @@ public class DaxEngine {
         preambleFactory = new DaxPreambleFactory(config, preambleCodec);
 
 
-        messageFactory       = new DaxMessageFactory(
-                tagCodec,
-                headCodec, bodyCodec, trailerCodec, dictionary,
-                dataTypeCodec,
-                valueCodec
-        );
+        messageFactory       = new  DaxMessageFactory(
+                                            dictionary,
+                                            tagCodec,
+                                            headCodec,
+                                            bodyCodec,
+                                            trailerCodec,
+                                            valueCodec,
+                                            dataTypeCodec
+                                    );
+
+
 
 
         frameParser =  new DaxFrameParser( config,

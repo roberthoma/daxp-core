@@ -54,36 +54,23 @@ public class DaxMessageFactory {
     private final DaxDictionaryMessageFactory dicMessageFactory;
     private final DaxFactoryObjectService objectService;
 
-    public DaxMessageFactory(
-            DaxTagCodec tagCodec,
-            DaxHeadCodec headCodec,
-            DaxBodyCodec bodyCodec,
-            DaxTrailerCodec trailerCodec,
-            DaxDictionary dictionary,
-            DaxDataTypeCodec dataTypeCodec,
-            DaxValueCodec valueCodec
-    ) {
-        this(
-                tagCodec, headCodec, bodyCodec, trailerCodec,
-                new DaxDictionaryMessageFactory(tagCodec, dictionary),
-                new DaxFactoryObjectService(tagCodec, dataTypeCodec, valueCodec)
-        );
-    }
+
 
     public DaxMessageFactory(
+            DaxDictionary dictionary,
             DaxTagCodec tagCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
-            DaxDictionaryMessageFactory dicMessageFactory,
-            DaxFactoryObjectService objectService
+            DaxValueCodec valueCodec,
+            DaxDataTypeCodec dataTypeCodec
     ) {
         this.tagCodec = tagCodec;
         this.headCodec = headCodec;
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
-        this.dicMessageFactory = dicMessageFactory;
-        this.objectService = objectService;
+        this.dicMessageFactory =  new DaxDictionaryMessageFactory(tagCodec, dictionary);
+        this.objectService = new DaxFactoryObjectService(tagCodec, dataTypeCodec, valueCodec);
     }
 
     public DaxMessage createDictionaryReq() {
@@ -95,7 +82,7 @@ public class DaxMessageFactory {
     }
 
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry) {
-        return toDaxMessageFromList(messageType, normalizeToList(daxDataEntry), null);
+        return objectService.toDaxMessageFromList(messageType, daxDataEntry, null);
     }
 
     @SuppressWarnings("unchecked")
@@ -106,25 +93,10 @@ public class DaxMessageFactory {
             tagSet = (Set<DaxTag>) reqFrame.getFirstMessage().get(0, REQ_FIELD_LIST).getValue();
         }
 
-        return toDaxMessageFromList(messageType, normalizeToList(daxDataEntry), tagSet);
+        return objectService.toDaxMessageFromList(messageType, daxDataEntry, tagSet);
     }
 
-    private DaxMessage toDaxMessageFromList(String messageType, List<Object> daxDataEntries, Set<DaxTag> reqTagSet) {
-        DaxHead head = new DaxHead(messageType);
-        DaxBody body = new DaxBody();
-        DaxTrailer trailer = new DaxTrailer();
 
-        for (Object entry : daxDataEntries) {
-            if (entry != null && entry.getClass().isAnnotationPresent(org.daxprotocol.core.annotation.DaxpEntity.class)) {
-                var entityAnn = entry.getClass().getAnnotation(org.daxprotocol.core.annotation.DaxpEntity.class);
-                DaxTag tag = tagCodec.decode(entityAnn);
-                body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
-                objectService.objectToMsgBlock(body.getCurrentIdx(), tag, entry, body, reqTagSet, tag);
-            }
-        }
-
-        return new DaxMessage(head, body, trailer);
-    }
 
     public DaxMessage toDaxMessageFromPairMap(String messageType, Map<DaxTag, DaxPair<?>> pairMap) {
         DaxHead head = new DaxHead(messageType);
@@ -205,11 +177,6 @@ public class DaxMessageFactory {
         return message;
     }
 
-    @SuppressWarnings("unchecked")
-    private List<Object> normalizeToList(Object daxDataEntry) {
-        if (daxDataEntry instanceof List<?>) {
-            return (List<Object>) daxDataEntry;
-        }
-        return daxDataEntry != null ? List.of(daxDataEntry) : List.of();
-    }
+
+
 }
