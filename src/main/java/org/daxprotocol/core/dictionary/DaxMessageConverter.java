@@ -64,9 +64,13 @@ public class DaxMessageConverter {
         this.daxDataTypeService = daxDataTypeService;
     }
 
-     Map<DaxTag, Field> fieldMap = new HashMap<>();
+//     Map<DaxTag, Field> fieldMap = new HashMap<>();
 
-    public <T> T createFromMessage(DaxMessage message, Class<T> targetClass, int blockIdx ) {
+    public <T> T createFromMessage(DaxMessage message, Class<T> targetClass) {
+        return  createFromMessage(message,targetClass, 0 ) ;
+    }
+
+    private  <T> T createFromMessage(DaxMessage message, Class<T> targetClass, int blockIdx ) {
         try {
             // TODO Check tha exist default constructor
             T instance = targetClass.getDeclaredConstructor().newInstance();
@@ -133,7 +137,7 @@ public class DaxMessageConverter {
                                 Map<Object,Object> map = createMapInstance(field.getType());
                                 for (Integer refIdx : refBlocksIdx) {
                                     int targetBlockIdx  = refIdx - 1;
-                                    //TODO REFACTOR . check key and datatype is  primitive then....if not call createFromMessage
+                                    //>>>TODO REFACTOR . check key and datatype is  primitive then....if not call createFromMessage
                                     Object key =
                                             message.getBody()
                                                     .getBlockMap(targetBlockIdx)
@@ -141,10 +145,15 @@ public class DaxMessageConverter {
                                                     .getStrValue();
 
                                     Object nestedObject;
+
+                                    //TODO Refactor COLLECTION_VALUE is only for primitive values
                                     nestedObject =  message.getBody()
                                             .getBlockMap(targetBlockIdx)
                                             .get(DaxCoreTags.COLLECTION_VALUE)
                                             .getStrValue();
+
+                                    //TODO if not primitive check COLLECTION_BULK_VALUE
+                                    //TODO ELSE is entity
 
                                             //createFromMessage(message, field.getType(), targetBlockIdx);
                                     map.put(key,nestedObject);

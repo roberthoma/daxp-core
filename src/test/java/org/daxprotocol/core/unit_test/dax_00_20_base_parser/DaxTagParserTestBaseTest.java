@@ -13,7 +13,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag10(){
         String tagStr = "$:1";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         Assertions.assertEquals(DaxCoreTags.MSG_TYPE ,tag);
     }
     @Test
@@ -25,65 +25,65 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag20(){
         String tagStr = " 8";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
-        DaxTag expectedTag  = DaxTag.of(appnamespaceId,8);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
+        DaxTag expectedTag  = DaxTag.of(appNamespaceId,8);
         Assertions.assertEquals(expectedTag ,tag);
     }
 
     @Test
     void parseTag30(){
         String tagStr = " 2000 ";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
-        DaxTag expectedTag  = DaxTag.of(appnamespaceId,2000);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
+        DaxTag expectedTag  = DaxTag.of(appNamespaceId,2000);
         Assertions.assertEquals(expectedTag ,tag);
     }
 
     @Test
     void parseTag40(){
         String tagStr = "$:"+DaxCoreTags.CHECKSUM.getTagId();
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         Assertions.assertEquals(DaxCoreTags.CHECKSUM ,tag);
     }
 
     @Test
     void parseTag45(){
         String tagStr = "$\n:\n\n"+DaxCoreTags.CHECKSUM.getTagId();
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         Assertions.assertEquals(DaxCoreTags.CHECKSUM ,tag);
     }
 
     @Test
     void parseTag51(){
         String tagStr = "$\n : "+DaxCoreTags.MSG_TYPE.getTagId();;
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         Assertions.assertEquals(DaxCoreTags.MSG_TYPE ,tag);
     }
 
     @Test
     void parseTag52(){
         String tagStr = "X\n : "+DaxCoreTags.MSG_TYPE.getTagId();
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         Assertions.assertNotEquals(DaxCoreTags.MSG_TYPE ,tag);
     }
 
     @Test
     void parseTag60(){
         String tagStr = " : 1029";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
-        DaxTag expectedTag  = DaxTag.of(appnamespaceId,1029);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
+        DaxTag expectedTag  = DaxTag.of(appNamespaceId,1029);
         Assertions.assertEquals(expectedTag ,tag);
     }
     @Test
     void parseTag70(){
         String tagStr = " w 9";
         Assertions.assertThrows(DaxTagParserException.class, () ->
-                tagParser.parseDaxTag(tagStr, appnamespaceId));
+                tagParser.parseDaxTag(tagStr, appNamespaceId));
     }
 
     @Test
     void parseTag80(){
         String tagStr = "FIX:9";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("FIX");
         DaxTag expectedTag  = DaxTag.of(expNamespaceId,9);
 
@@ -92,7 +92,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag90(){
         String tagStr = "CRM:1029";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
         DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
@@ -102,12 +102,12 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag100(){
         String tagStr = "$CRM:1029";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
         DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         //Assertions.assertEquals(expectedTag ,tag);
-        Assertions.assertNotEquals(appnamespaceId,tag.getNamespaceId());
+        Assertions.assertNotEquals(appNamespaceId,tag.getNamespaceId());
         Assertions.assertNotEquals(DaxCoreConstants.DAXP_NAMESPACE_ID,tag.getNamespaceId());
 
     }
@@ -115,18 +115,18 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     @Test
     void parseTag101(){
         String tagStr = "$CRM$:1029";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("CRM");
         DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         Assertions.assertNotEquals(expectedTag ,tag);
-        Assertions.assertNotEquals(appnamespaceId,tag.getNamespaceId());
+        Assertions.assertNotEquals(appNamespaceId,tag.getNamespaceId());
         Assertions.assertNotEquals(DaxCoreConstants.DAXP_NAMESPACE_ID,tag.getNamespaceId());
 
     }   @Test
     void parseTag102(){
         String tagStr = "$CRM$:1029";
-        DaxTag tag = tagParser.parseDaxTag(tagStr, appnamespaceId);
+        DaxTag tag = tagParser.parseDaxTag(tagStr, appNamespaceId);
         int expNamespaceId = daxEngine.getnamespaceMapper().getReferenceId("$CRM$");
         DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
@@ -141,7 +141,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
         DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         Assertions.assertEquals(expectedTag ,tag);
-        Assertions.assertEquals(appnamespaceId,tag.getNamespaceId());
+        Assertions.assertEquals(appNamespaceId,tag.getNamespaceId());
 
     }
     @Test

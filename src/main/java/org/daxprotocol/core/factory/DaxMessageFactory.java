@@ -82,18 +82,20 @@ public class DaxMessageFactory {
     }
 
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry) {
-        return objectService.toDaxMessageFromList(messageType, daxDataEntry, null);
+        return objectService.toDaxMessageFromObject(messageType, daxDataEntry, null);
     }
 
     @SuppressWarnings("unchecked")
-    public DaxMessage toDaxMessage(DaxFrame reqFrame, String messageType, Object daxDataEntry) {
+//    public DaxMessage toDaxMessage(DaxFrame reqFrame, String messageType, Object daxDataEntry) {
+    public DaxMessage toDaxMessage(DaxMessage reqMsg, String respMsgType, Object daxDataEntry) {
         Set<DaxTag> tagSet = null;
 
-        if (reqFrame != null && reqFrame.getFirstMessage() != null && reqFrame.getFirstMessage().containsField(0, REQ_FIELD_LIST)) {
-            tagSet = (Set<DaxTag>) reqFrame.getFirstMessage().get(0, REQ_FIELD_LIST).getValue();
+        if (reqMsg.containsField(0, REQ_FIELD_LIST))
+        {
+            tagSet = (Set<DaxTag>) reqMsg.get(0, REQ_FIELD_LIST).getValue();
         }
 
-        return objectService.toDaxMessageFromList(messageType, daxDataEntry, tagSet);
+        return objectService.toDaxMessageFromObject(respMsgType, daxDataEntry, tagSet);
     }
 
 

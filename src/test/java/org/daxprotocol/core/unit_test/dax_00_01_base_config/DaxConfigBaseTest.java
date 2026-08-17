@@ -24,7 +24,7 @@ import org.junit.jupiter.api.*;
 
 public class DaxConfigBaseTest {
     protected static DaxEngine daxEngine;
-    protected static int appnamespaceId;
+    protected static int appNamespaceId;
     protected static DaxDictionary dictionary;
     protected static DaxNamespaceMapper namespaceMapper;
     protected static DaxMessageCodec messageCodec;
@@ -51,7 +51,7 @@ public class DaxConfigBaseTest {
             daxEngine = new DaxEngine(DaxpConfigFactory
                     .createProperties("application_BASE.properties"));
 
-            appnamespaceId    = daxEngine.getConfig().getAppNamespaceId();
+            appNamespaceId = daxEngine.getConfig().getAppNamespaceId();
             dictionary      = daxEngine.getDictionary();
             namespaceMapper   = daxEngine.getnamespaceMapper();
             messageCodec    = daxEngine.getMessageCodec();

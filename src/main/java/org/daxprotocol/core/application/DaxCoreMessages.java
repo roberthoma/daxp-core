@@ -10,13 +10,13 @@ public class DaxCoreMessages {
     private static final String daxPrefix = DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX +DaxCoreConstants.NAMESPACE_TAG_SEPARATOR;
 
 
-    public static final String  DIC_REQ     =  daxPrefix+"DIC_REQ"; // 	REQ 	Request for a dictionary
-    public static final String  DATA_DIC    =  daxPrefix+"DIC_DATA";  // 	RES 	Dictionary of data types and their attributes
+    public static final String  DIC_REQ     =  daxPrefix+"DIC.REQ"; // 	REQ 	Request for a dictionary
+    public static final String  DATA_DIC    =  daxPrefix+"DIC.DATA";  // 	RES 	Dictionary of data types and their attributes
     public static final String  OK_RES      =  daxPrefix+"OK";  // 	RES 	Error request
     public static final String  ERR_RES     =  daxPrefix+"ERR";  // 	RES 	Error respond
     public static final String  LOG         =  daxPrefix+"LOG";   //	EVN 	Log
 
-    public static final String  ABOUT_REQ     =  daxPrefix+"ABOUT_REQ";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
+    public static final String  ABOUT_REQ     =  daxPrefix+"ABOUT.REQ";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
     public static final String  ABOUT_RESP    =  daxPrefix+"ABOUT";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
     public static final String  PING_REQ      =  daxPrefix+"PING";   //	EVN 	Dictionary or attributes change, dictionary reload recommended
 

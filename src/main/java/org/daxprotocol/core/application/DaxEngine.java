@@ -298,7 +298,7 @@ public class DaxEngine {
     }
 
     public void execute(String  reqFrameString, DaxFrame respFrame ){
-
+        logger.trace("Engine Executor reqFrameString= {}",reqFrameString);
         // check parsing if is bad  create maessage with error
         try {
 

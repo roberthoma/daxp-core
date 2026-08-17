@@ -1,16 +1,20 @@
 package org.daxprotocol.core.dispatcher;
 
 import org.daxprotocol.core.exceptions.DaxExecutorException;
+import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 //rules
 // One   DaxpHandler ca be use with one message
 public class DaxHandlerRegistry {
-
+    private static final Logger logger = LoggerFactory.getLogger(DaxHandlerRegistry.class);
     /*****************************************************
      *  Handler And controller maps
      */
@@ -29,16 +33,39 @@ public class DaxHandlerRegistry {
         daxControllerMap.put(daxpController.getClass(), daxpController);
     }
 
+    private void exeMsg(DaxMessage message, DaxFrame respFrame)  {
+try {
+
+
+        String msgType = message.getMsgType();
+        Method method  = handlerMap.get(msgType);
+        logger.trace("method {}",method.getName());
+        Object obj = daxControllerMap.get(method.getDeclaringClass());
+
+        method.invoke(obj, message, respFrame);
+
+    } catch (Exception e) {
+        throw new DaxExecutorException(e);
+    }
+}
+
+
     public void executor( DaxFrame reqFrame, DaxFrame respFrame){
 
         //TODO develop in message can be more that one message
-        try {
+      //  try {
+            logger.trace("Start executor 01");
+
+            reqFrame.getAllMessage().forEach(msg -> exeMsg(msg, respFrame));
+
+
+/*
             DaxMessage  reqMsg = reqFrame.getFirstMessage();
 
             String msgType = reqMsg.getMsgType();
 
             Method method  = handlerMap.get(msgType);
-
+            logger.trace("method {}",method.getName());
             Object obj = daxControllerMap.get(method.getDeclaringClass());
 
             method.invoke(obj, reqFrame, respFrame);
@@ -46,7 +73,7 @@ public class DaxHandlerRegistry {
         } catch (Exception e) {
             throw new DaxExecutorException(e);
         }
-
+*/
     }
 
 }

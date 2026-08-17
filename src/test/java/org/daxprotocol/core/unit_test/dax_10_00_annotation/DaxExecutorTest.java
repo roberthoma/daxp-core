@@ -12,7 +12,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
 
     @Test
     void executorTestDictionaryReq(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxCoreMessages.DIC_REQ +"|$:9=4|";
+        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxCoreMessages.DIC_REQ +"|$:9=211|";
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
 

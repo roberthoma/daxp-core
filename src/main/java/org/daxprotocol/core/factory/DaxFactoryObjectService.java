@@ -54,6 +54,10 @@ public class DaxFactoryObjectService {
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
 
+    private record AnnotatedField(Field field, DaxTag tag) {}
+    private record AnnotatedMethod(Method method, DaxTag tag) {}
+    private record ClassMetadata(List<AnnotatedField> fields, List<AnnotatedMethod> methods) {}
+
     // Cache reflected fields and methods per class to prevent expensive introspection overhead
     private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
 
@@ -63,7 +67,35 @@ public class DaxFactoryObjectService {
         this.valueCodec = valueCodec;
     }
 
-    public void objectToMsgBlock(
+    @SuppressWarnings("unchecked")
+    private List<Object> normalizeToList(Object daxDataEntry) {
+        if (daxDataEntry instanceof List<?>) {
+            return (List<Object>) daxDataEntry;
+        }
+        return daxDataEntry != null ? List.of(daxDataEntry) : List.of();
+    }
+
+    public DaxMessage toDaxMessageFromObject(String messageType,
+                                             Object daxDataEntries,
+                                             Set<DaxTag> reqTagSet)
+    {
+        DaxHead head = new DaxHead(messageType);
+        DaxBody body = new DaxBody();
+        DaxTrailer trailer = new DaxTrailer();
+
+        for (Object entry : normalizeToList(daxDataEntries)) {
+            if (entry != null && entry.getClass().isAnnotationPresent(org.daxprotocol.core.annotation.DaxpEntity.class)) {
+                var entityAnn = entry.getClass().getAnnotation(org.daxprotocol.core.annotation.DaxpEntity.class);
+                DaxTag tag = tagCodec.decode(entityAnn);
+                body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
+                objectToMsgBlock(body.getCurrentIdx(), tag, entry, body, reqTagSet, tag);
+            }
+        }
+
+        return new DaxMessage(head, body, trailer);
+    }
+
+    private void objectToMsgBlock(
             int blockIdx,
             DaxTag blockTag,
             Object entry,
@@ -86,6 +118,8 @@ public class DaxFactoryObjectService {
             try {
                 Object fieldValue = annotatedField.field().get(entry);
                 if (fieldValue == null) {
+                    //TODO create action MAP. Map should be extendable by USER.
+                    // Default maps values : N null, R- reset (or set default), increment, decrement
                     body.putPair(blockIdx, new DaxPairString(tag, "N", DaxCoreConstants.OPERATOR_ACTION));
                 } else {
                     putValueToBlock(blockIdx, tag, body, fieldValue, reqTagSet, ownerTag);
@@ -146,7 +180,9 @@ public class DaxFactoryObjectService {
             Set<DaxTag> reqTagSet,
             DaxTag ownerTag
     ) {
+        logger.trace("begin processCollection block {}, tag {}",blockIdx, tag.getTagId());
         if (dataTypeCodec.isMap(object)) {
+            logger.trace("processCollection IS MAP block {}, tag {}",blockIdx, tag.getTagId());
             Map<?, ?> map = (Map<?, ?>) object;
             map.forEach((key, value) -> {
                 body.nextBlock(DaxBlockType.BLOCK_VALUE);
@@ -157,6 +193,7 @@ public class DaxFactoryObjectService {
                 appendElementToBlock(nestedIdx, tag, body, key, COLLECTION_KEY, reqTagSet, ownerTag);
             });
         } else if (object instanceof Iterable<?>) {
+            logger.trace("processCollection IS Iterable block {}, tag {}",blockIdx, tag.getTagId());
             Iterable<?> collection = (Iterable<?>) object;
             for (Object objVal : collection) {
                 body.nextBlock(DaxBlockType.BLOCK_VALUE);
@@ -164,6 +201,10 @@ public class DaxFactoryObjectService {
                 body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
                 appendElementToBlock(nestedIdx, tag, body, objVal, COLLECTION_VALUE, reqTagSet, ownerTag);
             }
+        }
+        else {
+            logger.debug ("processCollection something  WRONG");
+
         }
     }
 
@@ -214,32 +255,4 @@ public class DaxFactoryObjectService {
         });
     }
 
-    private record AnnotatedField(Field field, DaxTag tag) {}
-    private record AnnotatedMethod(Method method, DaxTag tag) {}
-    private record ClassMetadata(List<AnnotatedField> fields, List<AnnotatedMethod> methods) {}
-
-    @SuppressWarnings("unchecked")
-    private List<Object> normalizeToList(Object daxDataEntry) {
-        if (daxDataEntry instanceof List<?>) {
-            return (List<Object>) daxDataEntry;
-        }
-        return daxDataEntry != null ? List.of(daxDataEntry) : List.of();
-    }
-
-    public DaxMessage toDaxMessageFromList(String messageType, Object daxDataEntries, Set<DaxTag> reqTagSet) {
-        DaxHead head = new DaxHead(messageType);
-        DaxBody body = new DaxBody();
-        DaxTrailer trailer = new DaxTrailer();
-
-        for (Object entry : normalizeToList(daxDataEntries)) {
-            if (entry != null && entry.getClass().isAnnotationPresent(org.daxprotocol.core.annotation.DaxpEntity.class)) {
-                var entityAnn = entry.getClass().getAnnotation(org.daxprotocol.core.annotation.DaxpEntity.class);
-                DaxTag tag = tagCodec.decode(entityAnn);
-                body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
-                objectToMsgBlock(body.getCurrentIdx(), tag, entry, body, reqTagSet, tag);
-            }
-        }
-
-        return new DaxMessage(head, body, trailer);
-    }
 }

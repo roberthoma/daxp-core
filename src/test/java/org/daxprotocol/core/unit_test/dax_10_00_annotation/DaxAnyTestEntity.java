@@ -55,7 +55,7 @@ public class DaxAnyTestEntity {
     String strValueReadOnly = "Test value string only for read";
 
     @DaxpValue(tagId = 5080)
-   public String getAnyStr() { return "Test method string only for read from method";}
+    public String getAnyStr() { return "Test method string only for read from method";}
 
     /// Collection test
 
@@ -89,7 +89,7 @@ public class DaxAnyTestEntity {
     String  emptyStringS1;
 
 
-   @DaxpField("5115")
+    @DaxpField("5115")
     Map<Integer,String> strMap_5115;
 
 
