@@ -9,9 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-//rules
+/// RULES
 // One   DaxpHandler ca be use with one message
 public class DaxHandlerRegistry {
     private static final Logger logger = LoggerFactory.getLogger(DaxHandlerRegistry.class);
@@ -33,47 +34,43 @@ public class DaxHandlerRegistry {
         daxControllerMap.put(daxpController.getClass(), daxpController);
     }
 
-    private void exeMsg(DaxMessage message, DaxFrame respFrame)  {
-try {
-
-
+    private void exeMsg(DaxMessage message, DaxFrame respFrame, Map<String, Object> txContext) {
         String msgType = message.getMsgType();
-        Method method  = handlerMap.get(msgType);
-        logger.trace("method {}",method.getName());
+        Method method = handlerMap.get(msgType);
+
+        if (method == null) {
+            throw new DaxExecutorException("No handler registered for message type: " + msgType);
+        }
+
         Object obj = daxControllerMap.get(method.getDeclaringClass());
+        if (obj == null) {
+            throw new DaxExecutorException("No controller instance found for " + method.getDeclaringClass().getName());
+        }
 
-        method.invoke(obj, message, respFrame);
+        logger.trace("Executing handler method: {}", method.getName());
 
-    } catch (Exception e) {
-        throw new DaxExecutorException(e);
+        try {
+            // Inspect method signature instead of catching invocation failures
+            if (method.getParameterCount() == 3) {
+                method.invoke(obj, message, respFrame, txContext);
+            } else {
+                method.invoke(obj, message, respFrame);
+            }
+        } catch (InvocationTargetException e) {
+            // Unwrap to reveal the actual exception thrown inside your controller
+            Throwable targetException = e.getCause();
+            throw new DaxExecutorException("Error executing message handler for " + msgType,
+                    targetException != null ? targetException : e);
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            // Reflection setup error (wrong args, private method access, etc.)
+            throw new DaxExecutorException("Reflection invocation failed for " + msgType, e);
+        }
     }
-}
-
 
     public void executor( DaxFrame reqFrame, DaxFrame respFrame){
-
-        //TODO develop in message can be more that one message
-      //  try {
-            logger.trace("Start executor 01");
-
-            reqFrame.getAllMessage().forEach(msg -> exeMsg(msg, respFrame));
-
-
-/*
-            DaxMessage  reqMsg = reqFrame.getFirstMessage();
-
-            String msgType = reqMsg.getMsgType();
-
-            Method method  = handlerMap.get(msgType);
-            logger.trace("method {}",method.getName());
-            Object obj = daxControllerMap.get(method.getDeclaringClass());
-
-            method.invoke(obj, reqFrame, respFrame);
-
-        } catch (Exception e) {
-            throw new DaxExecutorException(e);
-        }
-*/
+            logger.trace("Start executor");
+            Map<String, Object> txContext = new HashMap<>();
+            reqFrame.getAllMessage().forEach(msg -> exeMsg(msg, respFrame, txContext));
     }
 
 }

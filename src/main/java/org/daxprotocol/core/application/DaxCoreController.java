@@ -28,17 +28,9 @@ public class DaxCoreController {
 
 
     @DaxpHandler(DaxCoreMessages.ABOUT_REQ)
-    public void getAbout(DaxFrame incomeFrame, DaxFrame outcomeFrame){
-
+    public void getAbout(DaxMessage incomeMsg, DaxFrame outcomeFrame){
         DaxMessage message = messageFactory.aboutToMsg();
-
         outcomeFrame.addMessage(message);
-
     }
-
-
-
-
-
 
 }

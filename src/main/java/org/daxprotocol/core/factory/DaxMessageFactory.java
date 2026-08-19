@@ -86,7 +86,6 @@ public class DaxMessageFactory {
     }
 
     @SuppressWarnings("unchecked")
-//    public DaxMessage toDaxMessage(DaxFrame reqFrame, String messageType, Object daxDataEntry) {
     public DaxMessage toDaxMessage(DaxMessage reqMsg, String respMsgType, Object daxDataEntry) {
         Set<DaxTag> tagSet = null;
 
@@ -149,6 +148,14 @@ public class DaxMessageFactory {
         message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION, daxException.getMessage()));
         return message;
     }
+
+    public DaxMessage exceptionMessage(Exception exception) {
+        DaxMessage message = new DaxMessage(DaxCoreMessages.ERR_RES);
+        message.getBody().nextBlock(DaxBlockType.BLOCK_INSTANCE);
+        message.getBody().putPair(new DaxPairString(ERR_DESCRIPTION, exception.getMessage()));
+        return message;
+    }
+
 
     public DaxMessage createMsg(String messageType, List<DaxPair<?>> listOfPair) {
         DaxHead head = headCodec.createHead(listOfPair);

@@ -68,12 +68,12 @@ public enum DaxDataType {
     MESSAGE_TYPE("MSG","Message type",String.class),
 
     QUANTITY("QNT", "Quantity",Integer.class),
-
-    BINARY("RAW", "Quantity",byte[].class),
-
+    BINARY("RAW", "Quantity",byte[].class), // ?????????
     NONE("NONE","None, not try detected"),
-
+    BASE64("B64", "Base 64"),  ///maybe byte[]
     UNKNOWN("UNKNOWN", "Unknown");  ///maybe byte[]
+
+    //BASE64
 
 
     private final String code;
