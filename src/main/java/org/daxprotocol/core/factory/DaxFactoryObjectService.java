@@ -181,10 +181,12 @@ public class DaxFactoryObjectService {
             DaxTag ownerTag
     ) {
         logger.trace("begin processCollection block {}, tag {}",blockIdx, tag.getTagId());
+  //  ---> check nested entity
         if (dataTypeCodec.isMap(object)) {
             logger.trace("processCollection IS MAP block {}, tag {}",blockIdx, tag.getTagId());
             Map<?, ?> map = (Map<?, ?>) object;
             map.forEach((key, value) -> {
+
                 body.nextBlock(DaxBlockType.BLOCK_VALUE);
                 int nestedIdx = body.getCurrentIdx();
                 body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
@@ -196,14 +198,16 @@ public class DaxFactoryObjectService {
             logger.trace("processCollection IS Iterable block {}, tag {}",blockIdx, tag.getTagId());
             Iterable<?> collection = (Iterable<?>) object;
             for (Object objVal : collection) {
+
                 body.nextBlock(DaxBlockType.BLOCK_VALUE);
                 int nestedIdx = body.getCurrentIdx();
                 body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
+
                 appendElementToBlock(nestedIdx, tag, body, objVal, COLLECTION_VALUE, reqTagSet, ownerTag);
             }
         }
         else {
-            logger.debug ("processCollection something  WRONG");
+            logger.error ("processCollection something  WRONG");
 
         }
     }

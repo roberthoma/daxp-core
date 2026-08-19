@@ -56,7 +56,7 @@ public final class DaxMessage {
         this.head = head;
         this.body = body;
         this.trailer = trailer;
-        this.head.setBlockCount(body.getBlockCount());
+        this.head.setBlockCount(body.getBlocksCount());
     }
 
     public DaxMessage( DaxHead head, DaxTrailer trailer) {
@@ -91,7 +91,7 @@ public final class DaxMessage {
     }
 
     public void finish() {
-        head.setBlockCount(body.getBlockCount());
+        head.setBlockCount(body.getBlocksCount());
     }
 
     public boolean isNullAt(int blockIdx, DaxTag tag) {

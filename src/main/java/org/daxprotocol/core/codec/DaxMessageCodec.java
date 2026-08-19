@@ -60,7 +60,7 @@ public class DaxMessageCodec {
         StringBuilder msgSb = new StringBuilder();
         char pS = preamble.getPairSeparator();
 
-        msgSb.append(headCodec.encode(message.getHead(), message.getBody().getBlockCount(), pS))
+        msgSb.append(headCodec.encode(message.getHead(), message.getBody().getBlocksCount(), pS))
              .append(bodyCodec.encode(message.getBody(), pS));
 
         DaxTrailer trailer = new DaxTrailer();

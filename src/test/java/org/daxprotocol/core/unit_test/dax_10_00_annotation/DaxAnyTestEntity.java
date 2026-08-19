@@ -163,10 +163,10 @@ public class DaxAnyTestEntity {
         strMap_5115.put(2,"mapTestString2");
         strMap_5115.put(3,"mapTestString3");
 
-//        subEntityMap_5116 = new HashMap<>();
-//        subEntityMap_5116.put(11,new DaxSubEntity(237,"set_subEntity11",72.56));
-//        subEntityMap_5116.put(12, new DaxSubEntity(849,"set_subEntity12",55.54));
-//        subEntityMap_5116.put(14, new DaxSubEntity(69,"set_subEntity14",234.47));
+        subEntityMap_5116 = new HashMap<>();
+        subEntityMap_5116.put(11,new DaxSubEntity(237,"set_subEntity11",72.56));
+        subEntityMap_5116.put(12, new DaxSubEntity(849,"set_subEntity12",55.54));
+        subEntityMap_5116.put(14, new DaxSubEntity(69,"set_subEntity14",234.47));
 
     }
 }

@@ -101,7 +101,7 @@ public class DaxBodyCodec {
 
     //@Override
     public String encode(DaxBody body,char pairSeparator) {
-        boolean isBlockPair = body.getBlockCount() > 1;
+        boolean isBlockPair = body.getBlocksCount() > 1;
 
         StringBuilder sb = new StringBuilder();
 

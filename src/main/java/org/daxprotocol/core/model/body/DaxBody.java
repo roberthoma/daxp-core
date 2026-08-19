@@ -39,7 +39,7 @@ public class DaxBody {
         }
     }
 
-    public int getBlockCount() {
+    public int getBlocksCount() {
         return blockMap.size()  ;
     }
 
