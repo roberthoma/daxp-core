@@ -135,7 +135,7 @@ public class DaxAnyTestEntity {
         this.anyBoolean = true;
         this.fixTestValue_FIX_51 = 'X';
 
-        this.stringSet_5089 = new HashSet<>(); //TODO idea how to prezent .. AS NULL or empty . DAXP is universal protocol.
+        this.stringSet_5089 = new HashSet<>(); //TODO idea how to present .. AS NULL or empty . DAXP is universal protocol.
         this.stringSet_5089.add("ABC");
         this.stringSet_5089.add("DEF");
         this.stringSet_5089.add("GHI");

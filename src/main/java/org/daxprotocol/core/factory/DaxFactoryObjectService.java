@@ -94,7 +94,20 @@ public class DaxFactoryObjectService {
 
         return new DaxMessage(head, body, trailer);
     }
+    ///--------------------------------------------------------------------------
+    private void valueToBlock(int blockIdx,DaxBody body, DaxTag tag,Object value, Set<DaxTag> reqTagSet, DaxTag ownerTag){
 
+        if (value == null) {
+//                    //TODO create action MAP. Map should be extendable by USER.
+//                    // Default maps values : N null, R- reset (or set default), increment, decrement
+
+            body.putPair(blockIdx, new DaxPairString(tag, "N", DaxCoreConstants.OPERATOR_ACTION));
+        } else {
+            putValueToBlock(blockIdx, tag, body, value, reqTagSet, ownerTag);
+        }
+    }
+
+    ///--------------------------------------------------------------------------
     private void objectToMsgBlock(
             int blockIdx,
             DaxTag blockTag,
@@ -117,16 +130,11 @@ public class DaxFactoryObjectService {
 
             try {
                 Object fieldValue = annotatedField.field().get(entry);
-                if (fieldValue == null) {
-                    //TODO create action MAP. Map should be extendable by USER.
-                    // Default maps values : N null, R- reset (or set default), increment, decrement
-                    body.putPair(blockIdx, new DaxPairString(tag, "N", DaxCoreConstants.OPERATOR_ACTION));
-                } else {
-                    putValueToBlock(blockIdx, tag, body, fieldValue, reqTagSet, ownerTag);
-                }
+                valueToBlock(blockIdx,body, tag,fieldValue, reqTagSet, ownerTag);
+
             } catch (IllegalAccessException e) {
                 logger.error("Failed to access field {} on {}", annotatedField.field().getName(), entry.getClass().getName(), e);
-                throw new DaxException("Field access security exception", e);
+                throw new DaxException("DAXP-SSSS2 Field access security exception", e);
             }
         }
 
@@ -139,11 +147,7 @@ public class DaxFactoryObjectService {
 
             try {
                 Object methodValue = annotatedMethod.method().invoke(entry);
-                if (methodValue == null) {
-                    body.putPair(blockIdx, new DaxPairString(tag, "N", DaxCoreConstants.OPERATOR_ACTION));
-                } else {
-                    putValueToBlock(blockIdx, tag, body, methodValue, reqTagSet, ownerTag);
-                }
+                valueToBlock(blockIdx,body, tag,methodValue, reqTagSet, ownerTag);
             } catch (Exception e) {
                 logger.error("Failed to invoke method {} on {}", annotatedMethod.method().getName(), entry.getClass().getName(), e);
                 throw new DaxException("Method invocation failure", e);
@@ -181,7 +185,7 @@ public class DaxFactoryObjectService {
             DaxTag ownerTag
     ) {
         logger.trace("begin processCollection block {}, tag {}",blockIdx, tag.getTagId());
-  //  ---> check nested entity
+
         if (dataTypeCodec.isMap(object)) {
             logger.trace("processCollection IS MAP block {}, tag {}",blockIdx, tag.getTagId());
             Map<?, ?> map = (Map<?, ?>) object;
@@ -191,8 +195,8 @@ public class DaxFactoryObjectService {
                 int nestedIdx = body.getCurrentIdx();
                 body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
 
+                appendElementToBlock(nestedIdx, tag, body, key,   COLLECTION_KEY,   reqTagSet, ownerTag);
                 appendElementToBlock(nestedIdx, tag, body, value, COLLECTION_VALUE, reqTagSet, ownerTag);
-                appendElementToBlock(nestedIdx, tag, body, key, COLLECTION_KEY, reqTagSet, ownerTag);
             });
         } else if (object instanceof Iterable<?>) {
             logger.trace("processCollection IS Iterable block {}, tag {}",blockIdx, tag.getTagId());
@@ -208,6 +212,7 @@ public class DaxFactoryObjectService {
         }
         else {
             logger.error ("processCollection something  WRONG");
+            throw new DaxException("DAXP-XX432","processCollection something  WRONG");
 
         }
     }

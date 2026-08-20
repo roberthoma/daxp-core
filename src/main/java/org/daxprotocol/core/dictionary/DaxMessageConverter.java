@@ -106,7 +106,7 @@ public class DaxMessageConverter {
                     }
                 }
             } catch (Exception e) {
-                throw new DaxException("Failed to map field '" + field.getName() + "' on class " + targetClass.getSimpleName(), e);
+                throw new DaxException("DAXP-XXXX2 Failed to map field '" + field.getName() + "' on class " + targetClass.getSimpleName(), e);
             }
         }
 
@@ -132,7 +132,7 @@ public class DaxMessageConverter {
                 f.set(obj, converted);
             }
         } catch (Exception e) {
-            throw new DaxException("Failed to update object of type " + clazz.getSimpleName() + " from message", e);
+            throw new DaxException("DAXP-XXXX1 Failed to update object of type " + clazz.getSimpleName() + " from message", e);
         }
     }
 
