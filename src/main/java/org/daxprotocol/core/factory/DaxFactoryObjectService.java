@@ -25,6 +25,7 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
+import org.daxprotocol.core.collection.DaxBulkCollectionBuilder;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.exceptions.DaxException;
@@ -61,12 +62,14 @@ public class DaxFactoryObjectService {
     // Cache reflected fields and methods per class to prevent expensive introspection overhead
     private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
 
+    private DaxBulkCollectionBuilder bulkCollectionBuilder = new DaxBulkCollectionBuilder(); //tmp
+    ///----------------------------------------------------------------------------------------
     public DaxFactoryObjectService(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec) {
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
     }
-
+    ///----------------------------------------------------------------------------------------
     @SuppressWarnings("unchecked")
     private List<Object> normalizeToList(Object daxDataEntry) {
         if (daxDataEntry instanceof List<?>) {
@@ -74,7 +77,7 @@ public class DaxFactoryObjectService {
         }
         return daxDataEntry != null ? List.of(daxDataEntry) : List.of();
     }
-
+    ///----------------------------------------------------------------------------------------
     public DaxMessage toDaxMessageFromObject(String messageType,
                                              Object daxDataEntries,
                                              Set<DaxTag> reqTagSet)
@@ -94,7 +97,7 @@ public class DaxFactoryObjectService {
 
         return new DaxMessage(head, body, trailer);
     }
-    ///--------------------------------------------------------------------------
+    ///----------------------------------------------------------------------------------------
     private void valueToBlock(int blockIdx,DaxBody body, DaxTag tag,Object value, Set<DaxTag> reqTagSet, DaxTag ownerTag){
 
         if (value == null) {
@@ -105,7 +108,7 @@ public class DaxFactoryObjectService {
         }
     }
 
-    ///--------------------------------------------------------------------------
+    ///----------------------------------------------------------------------------------------
     private void objectToMsgBlock(
             int blockIdx,
             DaxTag blockTag,
@@ -152,7 +155,7 @@ public class DaxFactoryObjectService {
             }
         }
     }
-
+    ///----------------------------------------------------------------------------------------
     private void putValueToBlock(
             int blockIdx,
             DaxTag tag,
@@ -175,10 +178,9 @@ public class DaxFactoryObjectService {
     }
 
     ///----------------------------------------------------------------------------------------
-    public void collectionElementToBlock( int blockIdx, DaxTag tag,DaxBody body,Object key,Object value,
-            Set<DaxTag> reqTagSet,
-            DaxTag ownerTag
-            ){
+    private void collectionElementToBlock( int blockIdx, DaxTag tag,DaxBody body,Object key,Object value,
+                                          Set<DaxTag> reqTagSet,DaxTag ownerTag)
+    {
 
         body.nextBlock(DaxBlockType.BLOCK_VALUE);
         int nestedIdx = body.getCurrentIdx();
@@ -190,34 +192,89 @@ public class DaxFactoryObjectService {
         appendElementToBlock(nestedIdx, tag, body, value, COLLECTION_VALUE, reqTagSet, ownerTag);
     }
     ///----------------------------------------------------------------------------------------
-    private void processCollection(
-            int blockIdx,
-            DaxTag tag,
-            DaxBody body,
-            Object object,
-            Set<DaxTag> reqTagSet,
-            DaxTag ownerTag
-    ) {
-        logger.trace("begin processCollection block {}, tag {}",blockIdx, tag.getTagId());
+
+    private void bulkCollectionToBlock( int blockIdx, DaxTag tag,DaxBody body,Object value,
+                                       DaxTag ownerTag)
+    {
+
+        body.nextBlock(DaxBlockType.BLOCK_VALUE);
+        int nestedIdx = body.getCurrentIdx();
+        body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
+
+        appendElementToBlock(nestedIdx, tag, body, value, COLLECTION_BULK_VALUE, null, ownerTag);
+    }
+
+    ///----------------------------------------------------------------------------------------
+    private void processCollection( int blockIdx,DaxTag tag,DaxBody body,Object object,
+                                   Set<DaxTag> reqTagSet,DaxTag ownerTag)
+    {
+        logger.trace("begin processCollection block {}, tag {}", blockIdx, tag.getTagId());
 
         if (dataTypeCodec.isMap(object)) {
-            logger.trace("processCollection IS MAP block {}, tag {}",blockIdx, tag.getTagId());
-            Map<?, ?> map = (Map<?, ?>) object;
-            map.forEach((key, value) ->
-                collectionElementToBlock( blockIdx, tag,body,key,value,reqTagSet,ownerTag)
-            );
-        } else if (object instanceof Iterable<?>) {
-            logger.trace("processCollection IS Iterable block {}, tag {}",blockIdx, tag.getTagId());
-            Iterable<?> collection = (Iterable<?>) object;
-            collection.forEach(objVal ->
-                    collectionElementToBlock( blockIdx, tag,body,null,objVal,reqTagSet,ownerTag));
-        }
-        else {
-            logger.error ("processCollection something  WRONG");
-            throw new DaxException("DAXP-XX432","processCollection something  WRONG");
-
+            processMapBlock(blockIdx, tag, body, (Map<?, ?>) object, reqTagSet, ownerTag);
+        } else if (object instanceof Iterable<?> iterable) {
+            processIterableBlock(blockIdx, tag, body, iterable, reqTagSet, ownerTag);
+        } else if (object != null && object.getClass().isArray()) {
+            processIterableBlock(blockIdx, tag, body, arrayToIterable(object), reqTagSet, ownerTag);
+        } else {
+            logger.error("processCollection standard failure for object type: {}",
+                    object != null ? object.getClass().getName() : "null");
+            throw new DaxException("DAXP-XX432", "Invalid collection payload provided to processCollection");
         }
     }
+    ///----------------------------------------------------------------------------------------
+    private void processMapBlock(int blockIdx, DaxTag tag, DaxBody body, Map<?, ?> map,
+                                Set<DaxTag> reqTagSet, DaxTag ownerTag)
+    {
+        if (map.size() > 1) {
+            bulkCollectionToBlock(blockIdx, tag, body, mapToBulk(map), ownerTag);
+        } else {
+            map.forEach((key, value) ->
+                    collectionElementToBlock(blockIdx, tag, body, key, value, reqTagSet, ownerTag)
+            );
+        }
+    }
+    ///----------------------------------------------------------------------------------------
+    private void processIterableBlock(int blockIdx, DaxTag tag, DaxBody body, Iterable<?> collection,
+                                     Set<DaxTag> reqTagSet, DaxTag ownerTag)
+    {
+        int size = getIterableSize(collection);
+
+        if (size > 1) {
+            bulkCollectionToBlock(blockIdx, tag, body, collectionToBulk(collection), ownerTag);
+        } else {
+            collection.forEach(objVal ->
+                    collectionElementToBlock(blockIdx, tag, body, null, objVal, reqTagSet, ownerTag)
+            );
+        }
+    }
+    ///----------------------------------------------------------------------------------------
+
+    /**
+     * Determines size without traversing the whole sequence if the instance implements Collection.
+     */
+    private int getIterableSize(Iterable<?> iterable) {
+        if (iterable instanceof Collection<?> col) {
+            return col.size();
+        }
+        int count = 0;
+        for (Object ignored : iterable) {
+            count++;
+            if (count > 2) return count; // Short-circuit early to optimize performance
+        }
+        return count;
+    }
+    ///----------------------------------------------------------------------------------------
+
+    private Iterable<?> arrayToIterable(Object array) {
+        int length = java.lang.reflect.Array.getLength(array);
+        List<Object> list = new ArrayList<>(length);
+        for (int i = 0; i < length; i++) {
+            list.add(java.lang.reflect.Array.get(array, i));
+        }
+        return list;
+    }
+    ///----------------------------------------------------------------------------------------
 
     private void appendElementToBlock(
             int nestedIdx,
@@ -236,7 +293,7 @@ public class DaxFactoryObjectService {
             objectToMsgBlock(nestedIdx, tag, element, body, reqTagSet, ownerTag);
         }
     }
-
+    ///----------------------------------------------------------------------------------------
     private ClassMetadata getClassMetadata(Class<?> clazz) {
         return metadataCache.computeIfAbsent(clazz, clz -> {
             List<AnnotatedField> fields = new ArrayList<>();
@@ -265,5 +322,150 @@ public class DaxFactoryObjectService {
             return new ClassMetadata(fields, methods);
         });
     }
+    ///----------------------------------------------------------------------------------------
+    ///----------------------------------------------------------------------------------------
+    private String collectionToBulk(Iterable<?> collection) {
+        Iterator<?> iterator = collection.iterator();
+        if (!iterator.hasNext()) {
+            return "";
+        }
 
+        Object first = iterator.next();
+        StringBuilder sb = new StringBuilder();
+        sb.append(DaxCoreConstants.SEPARATOR_START_OF_TEXT);
+
+        if (dataTypeCodec.isPrimitiveType(first)) {
+            // Primitive Collection Mode: Single column without header
+            appendPrimitiveRecord(sb, first);
+            while (iterator.hasNext()) {
+                sb.append(DaxCoreConstants.SEPARATOR_RECORD);
+                appendPrimitiveRecord(sb, iterator.next());
+            }
+        } else {
+            // Complex Entity Mode: Header row + Object values
+            Class<?> clazz = first.getClass();
+            ClassMetadata metadata = getClassMetadata(clazz);
+
+            // 1. Write Header (Tag IDs)
+            writeHeader(sb, metadata);
+
+            // 2. Write Records
+            writeEntityRecord(sb, first, metadata);
+            while (iterator.hasNext()) {
+                sb.append(DaxCoreConstants.SEPARATOR_RECORD);
+                writeEntityRecord(sb, iterator.next(), metadata);
+            }
+        }
+
+        sb.append(DaxCoreConstants.SEPARATOR_END_OF_TEXT);
+        return sb.toString();
+    }
+
+    ///----------------------------------------------------------------------------------------
+    ///----------------------------------------------------------------------------------------
+    private String mapToBulk(Map<?, ?> map) {
+        if (map.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(DaxCoreConstants.SEPARATOR_START_OF_TEXT);
+
+        // Pobieramy pierwszy element, aby zbadać typ wartości w mapie
+        Map.Entry<?, ?> firstEntry = map.entrySet().iterator().next();
+        Object sampleValue = firstEntry.getValue();
+
+        boolean isValueEntity = sampleValue != null &&
+                sampleValue.getClass().isAnnotationPresent(DaxpEntity.class);
+
+        // 1. Budowanie Nagłówka
+        sb.append(tagCodec.encode(COLLECTION_KEY)).append(DaxCoreConstants.SEPARATOR_UNIT);
+
+        if (isValueEntity) {
+            ClassMetadata metadata = getClassMetadata(sampleValue.getClass());
+            writeHeaderFields(sb, metadata);
+        } else {
+            sb.append(tagCodec.encode(COLLECTION_VALUE));
+        }
+
+        // 2. Budowanie Rekordów Data
+        map.forEach((key, val) -> {
+            sb.append(DaxCoreConstants.SEPARATOR_RECORD);
+            sb.append(key != null ? key.toString() : "")
+                    .append(DaxCoreConstants.SEPARATOR_UNIT);
+
+            if (isValueEntity && val != null) {
+                ClassMetadata metadata = getClassMetadata(val.getClass());
+                writeEntityRecordValues(sb, val, metadata);
+            } else {
+                sb.append(val != null ? val.toString() : "");
+            }
+        });
+
+        sb.append(DaxCoreConstants.SEPARATOR_END_OF_TEXT);
+        return sb.toString();
+    }
+
+    ///----------------------------------------------------------------------------------------
+    private void writeHeader(StringBuilder sb, ClassMetadata metadata) {
+        writeHeaderFields(sb, metadata);
+        sb.append(DaxCoreConstants.SEPARATOR_RECORD);
+    }
+
+    private void writeHeaderFields(StringBuilder sb, ClassMetadata metadata) {
+        boolean firstEntry = true;
+
+        for (AnnotatedField f : metadata.fields()) {
+            if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
+            sb.append(f.tag().getTagId());
+            firstEntry = false;
+        }
+
+        for (AnnotatedMethod m : metadata.methods()) {
+            if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
+            sb.append(m.tag().getTagId());
+            firstEntry = false;
+        }
+    }
+
+    ///----------------------------------------------------------------------------------------
+    private void writeEntityRecord(StringBuilder sb, Object entity, ClassMetadata metadata) {
+        if (entity == null) return;
+        writeEntityRecordValues(sb, entity, metadata);
+    }
+
+    private void writeEntityRecordValues(StringBuilder sb, Object entity, ClassMetadata metadata) {
+        boolean firstEntry = true;
+
+        for (AnnotatedField annotatedField : metadata.fields()) {
+            if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
+            try {
+                Object val = annotatedField.field().get(entity);
+                sb.append(val != null ? val.toString() : "");
+            } catch (IllegalAccessException e) {
+                logger.error("Bulk access error on field {}", annotatedField.field().getName(), e);
+                sb.append("");
+            }
+            firstEntry = false;
+        }
+
+        for (AnnotatedMethod annotatedMethod : metadata.methods()) {
+            if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
+            try {
+                Object val = annotatedMethod.method().invoke(entity);
+                sb.append(val != null ? val.toString() : "");
+            } catch (Exception e) {
+                logger.error("Bulk invocation error on method {}", annotatedMethod.method().getName(), e);
+                sb.append("");
+            }
+            firstEntry = false;
+        }
+    }
+    ///----------------------------------------------------------------------------------------
+
+
+    private void appendPrimitiveRecord(StringBuilder sb, Object item) {
+        sb.append(item != null ? item.toString() : "");
+    }
+    ///----------------------------------------------------------------------------------------
 }

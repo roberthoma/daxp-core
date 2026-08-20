@@ -7,7 +7,7 @@ public class DaxBulkCollectionBuilder {
     public String build(){
         StringBuffer sb = new StringBuffer();
 
-        //HEAD
+        //TMP SOLUTION
         sb.append(DaxCoreConstants.SEPARATOR_START_OF_TEXT)
                 .append("tag1").append(DaxCoreConstants.SEPARATOR_UNIT)
                 .append("tag2").append(DaxCoreConstants.SEPARATOR_UNIT)
