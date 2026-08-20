@@ -98,10 +98,8 @@ public class DaxFactoryObjectService {
     private void valueToBlock(int blockIdx,DaxBody body, DaxTag tag,Object value, Set<DaxTag> reqTagSet, DaxTag ownerTag){
 
         if (value == null) {
-//                    //TODO create action MAP. Map should be extendable by USER.
-//                    // Default maps values : N null, R- reset (or set default), increment, decrement
-
-            body.putPair(blockIdx, new DaxPairString(tag, "N", DaxCoreConstants.OPERATOR_ACTION));
+            body.putPair(blockIdx, new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,
+                                                          DaxCoreConstants.OPERATOR_ACTION));
         } else {
             putValueToBlock(blockIdx, tag, body, value, reqTagSet, ownerTag);
         }
@@ -176,6 +174,22 @@ public class DaxFactoryObjectService {
         }
     }
 
+    ///----------------------------------------------------------------------------------------
+    public void collectionElementToBlock( int blockIdx, DaxTag tag,DaxBody body,Object key,Object value,
+            Set<DaxTag> reqTagSet,
+            DaxTag ownerTag
+            ){
+
+        body.nextBlock(DaxBlockType.BLOCK_VALUE);
+        int nestedIdx = body.getCurrentIdx();
+        body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
+
+        if(key != null){
+            appendElementToBlock(nestedIdx, tag, body, key,   COLLECTION_KEY,   reqTagSet, ownerTag);
+        }
+        appendElementToBlock(nestedIdx, tag, body, value, COLLECTION_VALUE, reqTagSet, ownerTag);
+    }
+    ///----------------------------------------------------------------------------------------
     private void processCollection(
             int blockIdx,
             DaxTag tag,
@@ -189,26 +203,14 @@ public class DaxFactoryObjectService {
         if (dataTypeCodec.isMap(object)) {
             logger.trace("processCollection IS MAP block {}, tag {}",blockIdx, tag.getTagId());
             Map<?, ?> map = (Map<?, ?>) object;
-            map.forEach((key, value) -> {
-
-                body.nextBlock(DaxBlockType.BLOCK_VALUE);
-                int nestedIdx = body.getCurrentIdx();
-                body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
-
-                appendElementToBlock(nestedIdx, tag, body, key,   COLLECTION_KEY,   reqTagSet, ownerTag);
-                appendElementToBlock(nestedIdx, tag, body, value, COLLECTION_VALUE, reqTagSet, ownerTag);
-            });
+            map.forEach((key, value) ->
+                collectionElementToBlock( blockIdx, tag,body,key,value,reqTagSet,ownerTag)
+            );
         } else if (object instanceof Iterable<?>) {
             logger.trace("processCollection IS Iterable block {}, tag {}",blockIdx, tag.getTagId());
             Iterable<?> collection = (Iterable<?>) object;
-            for (Object objVal : collection) {
-
-                body.nextBlock(DaxBlockType.BLOCK_VALUE);
-                int nestedIdx = body.getCurrentIdx();
-                body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
-
-                appendElementToBlock(nestedIdx, tag, body, objVal, COLLECTION_VALUE, reqTagSet, ownerTag);
-            }
+            collection.forEach(objVal ->
+                    collectionElementToBlock( blockIdx, tag,body,null,objVal,reqTagSet,ownerTag));
         }
         else {
             logger.error ("processCollection something  WRONG");

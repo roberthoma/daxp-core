@@ -59,4 +59,11 @@ public class DaxCoreConstants {
     public static final int  START_IDX_CTX_MAPPER    = 101;
     public static final int  START_IDX_SCHEMA_MAPPER = 101;
 
+
+    /******************************************************
+     *  Operations
+     */
+
+    public static final String  OPERATION_NULL = "N";
+
 }

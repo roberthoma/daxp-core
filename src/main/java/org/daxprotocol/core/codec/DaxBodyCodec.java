@@ -31,7 +31,7 @@ import java.util.Set;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
-//public class DaxBodyCodec implements DaxCodec<DaxBody> {
+
 public class DaxBodyCodec {
 
     DaxPairCodec pairCodec;
