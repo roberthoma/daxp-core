@@ -50,6 +50,7 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxFactoryObjectService {
 
     private static final Logger logger = LoggerFactory.getLogger(DaxFactoryObjectService.class);
+    private static final  int BULK_SIZE = 233; //tmp
 
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
@@ -87,8 +88,8 @@ public class DaxFactoryObjectService {
         DaxTrailer trailer = new DaxTrailer();
 
         for (Object entry : normalizeToList(daxDataEntries)) {
-            if (entry != null && entry.getClass().isAnnotationPresent(org.daxprotocol.core.annotation.DaxpEntity.class)) {
-                var entityAnn = entry.getClass().getAnnotation(org.daxprotocol.core.annotation.DaxpEntity.class);
+            if (entry != null && entry.getClass().isAnnotationPresent(DaxpEntity.class)) {
+                var entityAnn = entry.getClass().getAnnotation(DaxpEntity.class);
                 DaxTag tag = tagCodec.decode(entityAnn);
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                 objectToMsgBlock(body.getCurrentIdx(), tag, entry, body, reqTagSet, tag);
@@ -226,7 +227,7 @@ public class DaxFactoryObjectService {
     private void processMapBlock(int blockIdx, DaxTag tag, DaxBody body, Map<?, ?> map,
                                 Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
-        if (map.size() > 1) {
+        if (map.size() > BULK_SIZE) {
             bulkCollectionToBlock(blockIdx, tag, body, mapToBulk(map), ownerTag);
         } else {
             map.forEach((key, value) ->
@@ -240,7 +241,7 @@ public class DaxFactoryObjectService {
     {
         int size = getIterableSize(collection);
 
-        if (size > 1) {
+        if (size > BULK_SIZE) {
             bulkCollectionToBlock(blockIdx, tag, body, collectionToBulk(collection), ownerTag);
         } else {
             collection.forEach(objVal ->
@@ -260,7 +261,7 @@ public class DaxFactoryObjectService {
         int count = 0;
         for (Object ignored : iterable) {
             count++;
-            if (count > 2) return count; // Short-circuit early to optimize performance
+            if (count > BULK_SIZE) return count; // Short-circuit early to optimize performance
         }
         return count;
     }

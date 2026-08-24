@@ -96,6 +96,9 @@ public class DaxAnyTestEntity {
     @DaxpField("5116")
     Map<Integer,DaxSubEntity> subEntityMap_5116;
 
+    @DaxpField("5117")
+    Map<DaxSubEntity,DaxSubEntity> subEntityMap_5117;
+
     public int getAnyInt_5001() {
         return anyInt_5001;
     }
@@ -157,6 +160,7 @@ public class DaxAnyTestEntity {
         this.linkedListStr_5092.add("strLinkedVal2");
         this.linkedListStr_5092.add("strLinkedVal3");
         this.linkedListStr_5092.add("strLinkedVal4");
+        this.linkedListStr_5092.add("strLinkedVal2");
 
         strMap_5115 = new HashMap<>();
         strMap_5115.put(1,"mapTestString1");
@@ -167,6 +171,20 @@ public class DaxAnyTestEntity {
         subEntityMap_5116.put(11,new DaxSubEntity(237,"set_subEntity11",72.56));
         subEntityMap_5116.put(12, new DaxSubEntity(849,"set_subEntity12",55.54));
         subEntityMap_5116.put(14, new DaxSubEntity(69,"set_subEntity14",234.47));
+
+
+        subEntityMap_5117 = new HashMap<>();
+        subEntityMap_5117.put(new DaxSubEntity(123,"key_subEntity11",72.56),
+                              new DaxSubEntity(237,"set_subEntity11",72.56));
+
+        subEntityMap_5117.put(new DaxSubEntity(949,"key_subEntity12",45.54)
+                , new DaxSubEntity(849,"set_subEntity12",55.54));
+
+        subEntityMap_5117.put(new DaxSubEntity(456,"key_subEntity14",54.47)
+                , new DaxSubEntity(69,"set_subEntity14",234.47));
+
+
+
 
     }
 }
