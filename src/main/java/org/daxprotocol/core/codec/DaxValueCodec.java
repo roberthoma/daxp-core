@@ -56,26 +56,30 @@ public class DaxValueCodec {
         CONVERTERS.put(char.class, c->c.charAt(0));
     }
 
-    //--------------------------------------------------------------------------------------
+    ///--------------------------------------------------------------------------------------
 //TODO refactor
     public Set<DaxPair<?>> encodeToPairs(DaxTag tag,  Object obj) {
         if(obj == null){
-            return Set.of(new DaxPairString(tag, "N",DaxCoreConstants.OPERATOR_ACTION));
+            return Set.of(new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,
+                                                  DaxCoreConstants.OPERATOR_ACTION));
         }
 
         DaxDataType dataType = dataTypeCodec.decodeBaseDataType(obj);
 
         if (dataType.equals(DaxDataType.STRING) &&  obj.toString().trim().isBlank()){
-            return Set.of(new DaxPairString(tag, "N",DaxCoreConstants.OPERATOR_ACTION));
+            return Set.of(new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,
+                                                  DaxCoreConstants.OPERATOR_ACTION));
         }
 
         if (dataType.equals(DaxDataType.CHARACTER) && ((Character) obj)==0){
-            return Set.of(new DaxPairString(tag, "N",DaxCoreConstants.OPERATOR_ACTION));
+            return Set.of(new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,
+                    DaxCoreConstants.OPERATOR_ACTION));
         }
 
 
+
         return switch (dataType){
-            case COLLECTION ->  dataTypeCodec.encode(obj.getClass());   //TODO to change ?????
+       //     case COLLECTION ->  dataTypeCodec.encode(obj.getClass());   //TODO to change ?????
             case STRING ->  Set.of( new DaxPairString(tag, obj.toString()));
             case INTEGER -> Set.of(new DaxPairInteger(tag,(Integer) obj));
             case CHARACTER -> Set.of(new DaxPairCharacter(tag,(Character) obj));
@@ -88,6 +92,7 @@ public class DaxValueCodec {
         };
 
     }
+    ///--------------------------------------------------------------------------------------
 
     public  Object decode(String value, Class<?> type) {
         if (value == null){
@@ -108,6 +113,7 @@ public class DaxValueCodec {
         throw new IllegalArgumentException("No converter for type: " + type.getName());
     }
 
+    ///--------------------------------------------------------------------------------------
 
     public String toBlockRefString(Set<Integer> blockSet) {
         if (blockSet == null || blockSet.isEmpty()) {
@@ -119,6 +125,7 @@ public class DaxValueCodec {
                 .collect(Collectors.joining(DaxCoreConstants.TAG_LIST_SEPARATOR));
     }
 
+    ///--------------------------------------------------------------------------------------
 
     //TODO REFACTOR TO ONE METHOD    toBlockSet   OR  toBlockSetByteByByte
     public Set<Integer> toBlockSet(String blockRefString) {
@@ -133,6 +140,7 @@ public class DaxValueCodec {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
     }
+    ///--------------------------------------------------------------------------------------
 
 
     public Set<Integer> toBlockSetByteByByte(String blockRefString) {
@@ -170,6 +178,7 @@ public class DaxValueCodec {
 
         return result;
     }
+    ///--------------------------------------------------------------------------------------
 
     public <T> void setNull(T instance, Field field) throws IllegalAccessException {
         if (field.getType().isPrimitive()) {
@@ -188,4 +197,6 @@ public class DaxValueCodec {
         }
 
     }
+    ///--------------------------------------------------------------------------------------
+
 }

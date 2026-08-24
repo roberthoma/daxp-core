@@ -46,8 +46,8 @@ import java.util.Map;
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE;
 
 
-public class DaxDictionaryRegister {
-    private static final Logger logger = LoggerFactory.getLogger(DaxDictionaryRegister.class);
+public class DaxClassRegister {
+    private static final Logger logger = LoggerFactory.getLogger(DaxClassRegister.class);
     DaxJakartaValidationRegister jakartaRegister;
     DaxTagParser tagParser;
     DaxConfig config;
@@ -55,9 +55,9 @@ public class DaxDictionaryRegister {
     DaxHandlerRegistry handlerRegistry;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
-    DaxDictionaryRegisterService service;
+    DaxClassRegisterService service;
 
-    public DaxDictionaryRegister(
+    public DaxClassRegister(
             DaxTagParser tagParser ,
             DaxConfig config,
             DaxDictionary dictionary,
@@ -73,7 +73,7 @@ public class DaxDictionaryRegister {
         this.handlerRegistry = handlerRegistry;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
-        service = new DaxDictionaryRegisterService(dictionary, tagCodec, dataTypeCodec);
+        service = new DaxClassRegisterService(dictionary, tagCodec, dataTypeCodec);
     }
 
 

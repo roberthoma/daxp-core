@@ -29,7 +29,8 @@ public enum DaxBlockType {//extends DaxValue<String> {
     BLOCK_ENTITY('E', "Entity block"),
     BLOCK_TAG('T',"Tag definition block"), /// Only in dictionary type message
     BLOCK_FIELD('F',"Field definition block"),
-    BLOCK_VALUE('V',"Value definition block"),   // for example Collection value
+    BLOCK_VALUE('V',"Value  block"),   // for example Collection value
+    BLOCK_KEY('K',"Key block"),   // for example Collection value
     BLOCK_COLLECTION('C',"Definition block of collection : Name , Allow duplication , has key ...."),
     BLOCK_INSTANCE('I',"Instance of entity block")
    ;

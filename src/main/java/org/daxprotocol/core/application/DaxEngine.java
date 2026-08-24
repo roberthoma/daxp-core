@@ -24,8 +24,6 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.exceptions.DaxException;
-import org.daxprotocol.core.factory.DaxDictionaryMessageFactory;
-import org.daxprotocol.core.factory.DaxFactoryObjectService;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.namespace.DaxNamespaceFactory;
 import org.daxprotocol.core.datatype.DaxDataType;
@@ -36,7 +34,7 @@ import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.dictionary.DaxDictionaryRegister;
+import org.daxprotocol.core.dictionary.DaxClassRegister;
 import org.daxprotocol.core.dictionary.DaxMessagePopulator;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
@@ -90,7 +88,7 @@ public class DaxEngine {
 
     private DaxMessagePopulator messagePopulator;
 
-    private DaxDictionaryRegister annotationRegister;
+    private DaxClassRegister annotationRegister;
 
     private DaxDispatcher dispatcher;
 
@@ -153,7 +151,7 @@ public class DaxEngine {
 
 
         messagePopulator    = new DaxMessagePopulator( tagParser, dictionary);
-        annotationRegister = new DaxDictionaryRegister(tagParser ,
+        annotationRegister = new DaxClassRegister(tagParser ,
                                                         config,
 //                                                        namespaceMapper,
                 dictionary,

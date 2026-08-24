@@ -50,7 +50,7 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxFactoryObjectService {
 
     private static final Logger logger = LoggerFactory.getLogger(DaxFactoryObjectService.class);
-    private static final  int BULK_SIZE = 233; //tmp
+    private static final  int BULK_SIZE = 233; //tmp   <<<<<<<<<<<<<<<<<<<<
 
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
@@ -94,6 +94,9 @@ public class DaxFactoryObjectService {
                 body.nextBlock(DaxBlockType.BLOCK_INSTANCE);
                 objectToMsgBlock(body.getCurrentIdx(), tag, entry, body, reqTagSet, tag);
             }
+            else {
+                logger.warn("TEST NO DAXP_ENTITY .........");
+            }
         }
 
         return new DaxMessage(head, body, trailer);
@@ -105,7 +108,18 @@ public class DaxFactoryObjectService {
             body.putPair(blockIdx, new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,
                                                           DaxCoreConstants.OPERATOR_ACTION));
         } else {
-            putValueToBlock(blockIdx, tag, body, value, reqTagSet, ownerTag);
+            if (value.getClass().isAnnotationPresent(DaxpEntity.class)) {
+                body.nextBlock(DaxBlockType.BLOCK_VALUE);
+                int nestedIdx = body.getCurrentIdx();
+                body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
+                body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID, ownerTag));
+                objectToMsgBlock(nestedIdx, tag, value, body, reqTagSet, ownerTag);
+            } else if (dataTypeCodec.isCollection(value)) {
+                processCollection(blockIdx, tag, body, value, reqTagSet, ownerTag);
+            } else {
+                body.putPair(blockIdx, valueCodec.encodeToPairs(tag, value));
+            }
+
         }
     }
 
@@ -118,9 +132,12 @@ public class DaxFactoryObjectService {
             Set<DaxTag> reqTagSet,
             DaxTag ownerTag
     ) {
-        if (entry == null) return;
+        if (entry == null) {
+             throw new DaxException("DAXP-SSSS1 Field access security exception", "ENTRY is null !!!");
+        };  // NOT GOOD IDEA
 
         body.putPair(blockIdx, ENTRY_TAG, blockTag);
+
         ClassMetadata metadata = getClassMetadata(entry.getClass());
 
         // Process fields
@@ -135,7 +152,8 @@ public class DaxFactoryObjectService {
                 valueToBlock(blockIdx,body, tag,fieldValue, reqTagSet, ownerTag);
 
             } catch (IllegalAccessException e) {
-                logger.error("Failed to access field {} on {}", annotatedField.field().getName(), entry.getClass().getName(), e);
+                logger.error("Failed to access field {} on {}", annotatedField.field().getName(),
+                                                                entry.getClass().getName(), e);
                 throw new DaxException("DAXP-SSSS2 Field access security exception", e);
             }
         }
@@ -157,28 +175,6 @@ public class DaxFactoryObjectService {
         }
     }
     ///----------------------------------------------------------------------------------------
-    private void putValueToBlock(
-            int blockIdx,
-            DaxTag tag,
-            DaxBody body,
-            Object object,
-            Set<DaxTag> reqTagSet,
-            DaxTag ownerTag
-    ) {
-        if (object.getClass().isAnnotationPresent(DaxpEntity.class)) {
-            body.nextBlock(DaxBlockType.BLOCK_VALUE);
-            int nestedIdx = body.getCurrentIdx();
-            body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
-            body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID, ownerTag));
-            objectToMsgBlock(nestedIdx, tag, object, body, reqTagSet, ownerTag);
-        } else if (dataTypeCodec.isCollection(object)) {
-            processCollection(blockIdx, tag, body, object, reqTagSet, ownerTag);
-        } else {
-            body.putPair(blockIdx, valueCodec.encodeToPairs(tag, object));
-        }
-    }
-
-    ///----------------------------------------------------------------------------------------
     private void collectionElementToBlock( int blockIdx, DaxTag tag,DaxBody body,Object key,Object value,
                                           Set<DaxTag> reqTagSet,DaxTag ownerTag)
     {
@@ -187,10 +183,13 @@ public class DaxFactoryObjectService {
         int nestedIdx = body.getCurrentIdx();
         body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
 
+        logger.trace("append value tag={}",tag.getTagId());
+        appendCollectionItemToBlock(nestedIdx, tag, body, value, COLLECTION_VALUE, reqTagSet, ownerTag);
         if(key != null){
-            appendElementToBlock(nestedIdx, tag, body, key,   COLLECTION_KEY,   reqTagSet, ownerTag);
+            logger.trace("append key tag={}",tag.getTagId());
+
+            appendCollectionItemToBlock(nestedIdx, tag, body, key,   COLLECTION_KEY,   reqTagSet, ownerTag);
         }
-        appendElementToBlock(nestedIdx, tag, body, value, COLLECTION_VALUE, reqTagSet, ownerTag);
     }
     ///----------------------------------------------------------------------------------------
 
@@ -202,7 +201,7 @@ public class DaxFactoryObjectService {
         int nestedIdx = body.getCurrentIdx();
         body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
 
-        appendElementToBlock(nestedIdx, tag, body, value, COLLECTION_BULK_VALUE, null, ownerTag);
+        appendCollectionItemToBlock(nestedIdx, tag, body, value, COLLECTION_BULK_VALUE, null, ownerTag);
     }
 
     ///----------------------------------------------------------------------------------------
@@ -277,7 +276,7 @@ public class DaxFactoryObjectService {
     }
     ///----------------------------------------------------------------------------------------
 
-    private void appendElementToBlock(
+    private void appendCollectionItemToBlock(
             int nestedIdx,
             DaxTag tag,
             DaxBody body,
@@ -324,7 +323,6 @@ public class DaxFactoryObjectService {
         });
     }
     ///----------------------------------------------------------------------------------------
-    ///----------------------------------------------------------------------------------------
     private String collectionToBulk(Iterable<?> collection) {
         Iterator<?> iterator = collection.iterator();
         if (!iterator.hasNext()) {
@@ -361,8 +359,6 @@ public class DaxFactoryObjectService {
         sb.append(DaxCoreConstants.SEPARATOR_END_OF_TEXT);
         return sb.toString();
     }
-
-    ///----------------------------------------------------------------------------------------
     ///----------------------------------------------------------------------------------------
     private String mapToBulk(Map<?, ?> map) {
         if (map.isEmpty()) {
@@ -412,7 +408,7 @@ public class DaxFactoryObjectService {
         writeHeaderFields(sb, metadata);
         sb.append(DaxCoreConstants.SEPARATOR_RECORD);
     }
-
+    ///----------------------------------------------------------------------------------------
     private void writeHeaderFields(StringBuilder sb, ClassMetadata metadata) {
         boolean firstEntry = true;
 
@@ -434,6 +430,7 @@ public class DaxFactoryObjectService {
         if (entity == null) return;
         writeEntityRecordValues(sb, entity, metadata);
     }
+    ///----------------------------------------------------------------------------------------
 
     private void writeEntityRecordValues(StringBuilder sb, Object entity, ClassMetadata metadata) {
         boolean firstEntry = true;

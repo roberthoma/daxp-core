@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
-public class DaxDictionaryRegisterService {
-    private static final Logger logger = LoggerFactory.getLogger(DaxDictionaryRegisterService.class);
+public class DaxClassRegisterService {
+    private static final Logger logger = LoggerFactory.getLogger(DaxClassRegisterService.class);
 
     DaxDictionary dictionary;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
 
-    public DaxDictionaryRegisterService(DaxDictionary dictionary,
+    public DaxClassRegisterService(DaxDictionary dictionary,
         DaxTagCodec tagCodec,
         DaxDataTypeCodec dataTypeCodec
 
@@ -110,30 +110,5 @@ public class DaxDictionaryRegisterService {
 
     }
 }
-
-
-
-//------------------
-
-//    private void  putAtrDeprecated(DaxTag tag, DaxpDeprecated daxpDeprecated){
-//        dictionary.putAtrDeprecated(tag);
-//    }
-//
-//    private void  putAtrDeprecated(DaxTag tag, Deprecated deprecated){
-//        dictionary.putAtrDeprecated(tag);
-//    }
-
-/*
-        if (field.isAnnotationPresent(Deprecated.class)) {
-        //putAtrDeprecated(tag, field.getAnnotation(DaxpDeprecated.class));
-        dictionary.putEntityEntryAtrDeprecated(entityTag,tag);
-        }
-
-                if (field.isAnnotationPresent(DaxpDeprecated .class)) {
-        //putAtrDeprecated(tag, field.getAnnotation(DaxpDeprecated.class));
-        dictionary.putEntityEntryAtrDeprecated(entityTag,tag);
-        }
-//--------
-*/
 
 
