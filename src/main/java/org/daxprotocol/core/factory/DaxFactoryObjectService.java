@@ -63,7 +63,6 @@ public class DaxFactoryObjectService {
     // Cache reflected fields and methods per class to prevent expensive introspection overhead
     private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
 
-    private DaxBulkCollectionBuilder bulkCollectionBuilder = new DaxBulkCollectionBuilder(); //tmp
     ///----------------------------------------------------------------------------------------
     public DaxFactoryObjectService(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec) {
         this.tagCodec = tagCodec;
@@ -107,20 +106,33 @@ public class DaxFactoryObjectService {
         if (value == null) {
             body.putPair(blockIdx, new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,
                                                           DaxCoreConstants.OPERATOR_ACTION));
-        } else {
-            if (value.getClass().isAnnotationPresent(DaxpEntity.class)) {
-                body.nextBlock(DaxBlockType.BLOCK_VALUE);
-                int nestedIdx = body.getCurrentIdx();
-                body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
-                body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID, ownerTag));
-                objectToMsgBlock(nestedIdx, tag, value, body, reqTagSet, ownerTag);
-            } else if (dataTypeCodec.isCollection(value)) {
-                processCollection(blockIdx, tag, body, value, reqTagSet, ownerTag);
-            } else {
-                body.putPair(blockIdx, valueCodec.encodeToPairs(tag, value));
-            }
-
+            return;
         }
+
+        //>>> check metadata by tag !!!!!!!!!!!
+
+        if (dataTypeCodec.isPrimitiveType(value)){
+            body.putPair(blockIdx, valueCodec.encodeToPairs(tag, value));
+            return;
+        }
+
+        if (dataTypeCodec.isCollection(value)) {
+            processCollection(blockIdx, tag, body, value, reqTagSet, ownerTag);
+            return;
+        }
+
+        if (value.getClass().isAnnotationPresent(DaxpEntity.class)) {
+            body.nextBlock(DaxBlockType.BLOCK_VALUE);
+            int nestedIdx = body.getCurrentIdx();
+            body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
+            body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID, ownerTag));
+            objectToMsgBlock(nestedIdx, tag, value, body, reqTagSet, ownerTag);
+            return;
+        }
+
+
+        throw new DaxException("DAXP-SSS12 No Determinate data type", "valueToBlock");
+
     }
 
     ///----------------------------------------------------------------------------------------

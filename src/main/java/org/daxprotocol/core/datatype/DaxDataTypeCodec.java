@@ -174,7 +174,8 @@ public class DaxDataTypeCodec {
                 if(valueDataType.equals(DaxDataType.COLLECTION))
                 {
                     if (dataTypeService.castReflectTypeToClass(args[1]).isAnnotationPresent(DaxpCollection.class)){
-                        DaxpCollection colAnn =  dataTypeService.castReflectTypeToClass(args[1]).getAnnotation(DaxpCollection.class);
+                        DaxpCollection colAnn =  dataTypeService.castReflectTypeToClass(args[1])
+                                                                .getAnnotation(DaxpCollection.class);
                         map.add(new DaxPairTag(COLLECTION_VALUE_TYPE_ID,tagCodec.decode(colAnn)));
                     }
                 }

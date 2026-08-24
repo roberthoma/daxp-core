@@ -1,5 +1,26 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2026 DAXPARC Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
+
 package org.daxprotocol.core.datatype;
 
+import org.daxprotocol.core.annotation.DaxpCollection;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +48,9 @@ public class DaxDataTypeService {
         if (clazz.equals(Set.class)) return true;
         if (clazz.equals(Queue.class)) return true;
         if (clazz.equals(Collection.class)) return true;
-        if (clazz.equals(Enum.class)) return true;    //TODO CHECK again
-        if (clazz.isEnum()) return true;
+
+        if (clazz.equals(Enum.class)) return true;    //TODO CHECK again  this is dictionary
+        if (clazz.isEnum()) return true;              //TODO CHECK again  this is dictionary
 
         if (Collection.class.isAssignableFrom(clazz)) {
             return true;
@@ -50,7 +72,7 @@ public class DaxDataTypeService {
         if (obj instanceof Map<?,?>) return true;
         if (obj instanceof Set<?>) return true;
         if (obj instanceof Collection<?>) return true;
-  //      if (obj instanceof Enum<?>) return true;
+
         return false;
     }
     //--------------------------------------------------------------------------------------
