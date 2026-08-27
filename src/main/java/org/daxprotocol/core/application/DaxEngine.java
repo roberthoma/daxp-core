@@ -34,12 +34,12 @@ import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.dictionary.DaxClassRegister;
-import org.daxprotocol.core.dictionary.DaxMessagePopulator;
+import org.daxprotocol.core.data.DaxClassScanner;
+import org.daxprotocol.core.data.DaxMessagePopulator;
 import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
-import org.daxprotocol.core.dictionary.DaxMessageConverter;
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.data.DaxMessageConverter;
+import org.daxprotocol.core.data.DaxDataModel;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.namespace.DaxNamespace;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -64,7 +64,7 @@ public class DaxEngine {
 
     private final DaxMessageConverter messageConverter;
 
-    private final DaxDictionary dictionary;
+    private final DaxDataModel dictionary;
 
     private final DaxPreambleFactory preambleFactory;
 
@@ -88,7 +88,7 @@ public class DaxEngine {
 
     private DaxMessagePopulator messagePopulator;
 
-    private DaxClassRegister annotationRegister;
+    private DaxClassScanner annotationRegister;
 
     private DaxDispatcher dispatcher;
 
@@ -127,7 +127,7 @@ public class DaxEngine {
 
         valueCodec = new DaxValueCodec(dataTypeCodec);
 
-        dictionary = new DaxDictionary(config, namespaceMapper, messageMapper,schemaMapper);
+        dictionary = new DaxDataModel(config, namespaceMapper, messageMapper,schemaMapper);
         dictionary.putNamespace(sysNamespace);
         dictionary.putNamespace(appNamespace);
         DaxCoreTags.init(dictionary);
@@ -151,7 +151,7 @@ public class DaxEngine {
 
 
         messagePopulator    = new DaxMessagePopulator( tagParser, dictionary);
-        annotationRegister = new DaxClassRegister(tagParser ,
+        annotationRegister = new DaxClassScanner(tagParser ,
                                                         config,
 //                                                        namespaceMapper,
                 dictionary,
@@ -181,13 +181,9 @@ public class DaxEngine {
 
 
 
-        frameParser =  new DaxFrameParser( config,
-                                             //    namespaceMapper,
-                                                 tagParser,
-             //   dictionary,
-                                                 messageFactory,
-                                                 preambleCodec,
-                pairCodec) ;
+        frameParser =  new DaxFrameParser( config,tagParser,
+                                          messageFactory,preambleCodec,
+                                          pairCodec) ;
 
         //-----------------
         //Registration
@@ -221,7 +217,7 @@ public class DaxEngine {
         return messageConverter;
     }
 
-    public DaxDictionary getDictionary() {
+    public DaxDataModel getDictionary() {
         if(dictionary == null){
             throw new RuntimeException("Dictionary is NOT READY !!!!");
         }

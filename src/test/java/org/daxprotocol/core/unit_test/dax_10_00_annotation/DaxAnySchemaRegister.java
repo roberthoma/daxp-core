@@ -52,8 +52,6 @@ public class DaxAnySchemaRegister {
 
 
     @DaxpTag(description = "Test enum", daxDataType = DaxDataType.COLLECTION, clazz = DaxAnyTestEnum.class)
-//    @DaxpTag(description = "Test enum")
-//    @DaxpTag
     public static final  int TEST_COLLECTION_ENUM_6001 = 6001;
 
     @DaxpTag(description = "Test dic enum", daxDataType = DaxDataType.COLLECTION)

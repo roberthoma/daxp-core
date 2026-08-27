@@ -18,8 +18,9 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.data;
 
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.namespace.*;
 import org.daxprotocol.core.datatype.DaxDataType;
@@ -53,8 +54,8 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
  * 4) All fields annotated with the same tag must be of the same data type.
  **********************************************************************************************/
 
-public class DaxDictionary {
-    private static final Logger logger = LoggerFactory.getLogger(DaxDictionary.class);
+public class DaxDataModel {
+    private static final Logger logger = LoggerFactory.getLogger(DaxDataModel.class);
 
     DaxConfig        config;
     DaxNamespaceMapper namespaceMapper;
@@ -69,7 +70,7 @@ public class DaxDictionary {
 
     Map<DaxTag,DaxRegisterSource> tagMap         = new ConcurrentHashMap<>();
 
-    DaxBaseDictionary<DaxTag>     tagAttributes = new DaxBaseDictionary<>();
+    DaxBaseDataModel<DaxTag> tagAttributes = new DaxBaseDataModel<>();
 
 
 
@@ -83,7 +84,7 @@ public class DaxDictionary {
     /*****************************************************
      *  Map of schema referenced by integer
      */
-    DaxBaseDictionary<Integer> schemaDic = new DaxBaseDictionary<>();
+    DaxBaseDataModel<Integer> schemaDic = new DaxBaseDataModel<>();
 
 
 
@@ -108,16 +109,16 @@ public class DaxDictionary {
      * Key : tagId
      * Value : map of attributes
      * */
-    Map<DaxTag,DaxBaseDictionary<DaxTag>> entityEntryAttributes = new HashMap<>();
+    Map<DaxTag, DaxBaseDataModel<DaxTag>> entityEntryAttributes = new HashMap<>();
 
 
     /******************************************************/
 
 
-    DaxBaseDictionary<DaxTag> collectionAttributes         = new DaxBaseDictionary<>();
+    DaxBaseDataModel<DaxTag> collectionAttributes         = new DaxBaseDataModel<>();
 
 
-    Map<DaxTag,DaxBaseDictionary<String>> collectionValues = new ConcurrentHashMap<>();
+    Map<DaxTag, DaxBaseDataModel<String>> collectionValues = new ConcurrentHashMap<>();
 
 
 
@@ -125,7 +126,7 @@ public class DaxDictionary {
 
     /******************************************************/
 
-    public DaxDictionary(DaxConfig config,
+    public DaxDataModel(DaxConfig config,
             DaxNamespaceMapper namespaceMapper ,
             DaxMessageMapper messageMapper ,
             DaxSchemaMapper schemaMapper
@@ -167,7 +168,6 @@ public class DaxDictionary {
     public Map<String, DaxMessageItem> getMsgMap() {
         return msgMap.getMsgMap();
     }
-
 
 
     /*******************************************************************************
@@ -223,9 +223,9 @@ public class DaxDictionary {
     private void putEntityEntryAttribute(DaxTag entityTag, DaxTag tag, DaxPair<?> atrPair){
 
         if(!entityEntryAttributes.containsKey(entityTag)){
-            entityEntryAttributes.put(entityTag, new DaxBaseDictionary<>());
+            entityEntryAttributes.put(entityTag, new DaxBaseDataModel<>());
         }
-        DaxBaseDictionary<DaxTag> dic = entityEntryAttributes.get(entityTag);
+        DaxBaseDataModel<DaxTag> dic = entityEntryAttributes.get(entityTag);
 
         dic.putAttribute(tag, atrPair);
 
@@ -245,11 +245,11 @@ public class DaxDictionary {
 
 
 
-    public Map<DaxTag,DaxBaseDictionary<DaxTag>> getEntityEntryAttributes(){
+    public Map<DaxTag, DaxBaseDataModel<DaxTag>> getEntityEntryAttributes(){
         return entityEntryAttributes;
     }
 
-    public DaxBaseDictionary<DaxTag> getEntityBaseDic(DaxTag entityTag){
+    public DaxBaseDataModel<DaxTag> getEntityBaseDic(DaxTag entityTag){
         return entityEntryAttributes.get(entityTag);
     }
 
@@ -287,7 +287,7 @@ public class DaxDictionary {
     public void putCollectionAtrDeprecated(DaxTag colTag)                      { putCollectionAttributes(colTag,  new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
 
 
-    public DaxBaseDictionary<DaxTag> getCollectionAttributes() {
+    public DaxBaseDataModel<DaxTag> getCollectionAttributes() {
         return collectionAttributes;
     }
 
@@ -297,7 +297,7 @@ public class DaxDictionary {
 
         collectionValues.merge(colTag,
                 DaxCollectionTool.putAndReturnMap(
-                new DaxBaseDictionary<>(),key,atrPair),
+                new DaxBaseDataModel<>(),key,atrPair),
                         (eM, nM) ->
                                 DaxCollectionTool.putAndReturnMap(eM, key,atrPair));
 
@@ -305,7 +305,7 @@ public class DaxDictionary {
     }
 
 
-    public DaxBaseDictionary<String> getCollectionValues(DaxTag colTag) {
+    public DaxBaseDataModel<String> getCollectionValues(DaxTag colTag) {
         return collectionValues.get(colTag);
     }
 
@@ -352,8 +352,43 @@ public class DaxDictionary {
         schemaDic.putAttribute(refId,new DaxPairString(ENTRY_DESCRIPTION,description));
     }
 
-    public DaxBaseDictionary<Integer> getSchemaDictionary (){
+    public DaxBaseDataModel<Integer> getSchemaDictionary (){
         return schemaDic;
+    }
+    ///--------------------------------------
+    /// TMP. move to service
+    public boolean isPrimitiveType(DaxTag tag){
+        boolean isPrimitiveType = false;
+        try {
+
+        System.out.println("DATA MODEL:"+tag.getTagId());
+        var atrMap = tagAttributes.getAttributMap()
+                 .get(tag);
+        if (atrMap.containsKey(ATR_DATA_TYPE))
+        {
+            isPrimitiveType = atrMap.get(ATR_DATA_TYPE).getDataTypeValue().isPrimitiveType();
+            return isPrimitiveType;
+        }
+
+        if (atrMap.containsKey(ATR_REF_DATA_TYPE))
+        {
+            var refTag= atrMap.get(ATR_REF_DATA_TYPE).getValue();
+
+            var atrRefMap = tagAttributes.getAttributMap()
+                    .get(refTag);
+
+
+
+            return isPrimitiveType;
+        }
+
+
+             System.out.println("DATA MODEL  is primitive="+ isPrimitiveType);
+            return isPrimitiveType;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 

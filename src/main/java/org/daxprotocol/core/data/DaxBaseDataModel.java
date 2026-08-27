@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.data;
 
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 //TODO extend for : TAGS, FIELDS  , ENTITY, MESSAGE, SCHEMA,
 //add universal Attribute like  : name, description, deprecated ...
 
-public class DaxBaseDictionary<T> {
+public class DaxBaseDataModel<T> {
 
     Map<T, Map<DaxTag, DaxPair<?>>> attributMap = new ConcurrentHashMap<>();
 

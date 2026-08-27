@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.data;
 
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.application.DaxCoreTags;
@@ -43,14 +43,14 @@ public class DaxMessageConverter {
     private static final Logger logger = LoggerFactory.getLogger(DaxMessageConverter.class);
 
     private final DaxConfig config;
-    private final DaxDictionary dictionary;
+    private final DaxDataModel dictionary;
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
     private final DaxDataTypeService daxDataTypeService;
 
     public DaxMessageConverter(DaxConfig config,
-            DaxDictionary dictionary,
+            DaxDataModel dictionary,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec,
             DaxValueCodec valueCodec,
@@ -160,7 +160,9 @@ public class DaxMessageConverter {
         field.set(instance, collection);
     }
 
-    private void populateMapField(DaxMessage message, Object instance, Field field, Set<Integer> refBlocksIdx, DaxTag tag) throws IllegalAccessException {
+    private void populateMapField(DaxMessage message, Object instance, Field field,
+                Set<Integer> refBlocksIdx, DaxTag tag) throws IllegalAccessException
+    {
         logger.trace("Tag: {} refBlocksIdx = {}", tagCodec.encode(tag), refBlocksIdx);
         if (refBlocksIdx.isEmpty()) return;
 

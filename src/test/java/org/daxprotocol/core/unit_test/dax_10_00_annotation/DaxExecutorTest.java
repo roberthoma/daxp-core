@@ -12,7 +12,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
 
     @Test
     void executorTestDictionaryReq(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxCoreMessages.DIC_REQ +"|$:9=211|";
+        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxCoreMessages.DATA_MODEL_REQ +"|$:9=148|";
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
 
@@ -22,7 +22,7 @@ public class DaxExecutorTest extends DaxConfigBaseTest {
 
         DaxMessage respMsg = frameResp.getFirstMessage();
         String respDataType = respMsg.getMsgType();
-        Assertions.assertEquals(DaxCoreMessages.DATA_DIC, respDataType);
+        Assertions.assertEquals(DaxCoreMessages.DATA_MODEL_INST, respDataType);
 
         System.out.println("-------------------\n");
         System.out.println("REQ > " + reqMsg);

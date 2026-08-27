@@ -25,7 +25,7 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
-import org.daxprotocol.core.collection.DaxBulkCollectionBuilder;
+import org.daxprotocol.core.data.DaxDataModel;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.exceptions.DaxException;
@@ -47,14 +47,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
-public class DaxFactoryObjectService {
+public class DaxObjectMessageFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(DaxFactoryObjectService.class);
+    private static final Logger logger = LoggerFactory.getLogger(DaxObjectMessageFactory.class);
     private static final  int BULK_SIZE = 233; //tmp   <<<<<<<<<<<<<<<<<<<<
 
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
+    private final DaxDataModel dataModel;
 
     private record AnnotatedField(Field field, DaxTag tag) {}
     private record AnnotatedMethod(Method method, DaxTag tag) {}
@@ -64,10 +65,12 @@ public class DaxFactoryObjectService {
     private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
 
     ///----------------------------------------------------------------------------------------
-    public DaxFactoryObjectService(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec) {
+    public DaxObjectMessageFactory(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
+    ,  DaxDataModel dataModel) {
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
+        this.dataModel = dataModel;
     }
     ///----------------------------------------------------------------------------------------
     @SuppressWarnings("unchecked")
@@ -102,16 +105,19 @@ public class DaxFactoryObjectService {
     }
     ///----------------------------------------------------------------------------------------
     private void valueToBlock(int blockIdx,DaxBody body, DaxTag tag,Object value, Set<DaxTag> reqTagSet, DaxTag ownerTag){
-
+         logger.trace("valueToBlock > tag {} ", tagCodec.encode(tag));
         if (value == null) {
             body.putPair(blockIdx, new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,
                                                           DaxCoreConstants.OPERATOR_ACTION));
             return;
         }
 
-        //>>> check metadata by tag !!!!!!!!!!!
+        /// check metadata by tag !!!!!!!!!!!
+         if (dataModel.isPrimitiveType(tag)){
+             System.out.println("PRIMITIVE ");
+         }
 
-        if (dataTypeCodec.isPrimitiveType(value)){
+        if (dataTypeCodec.isPrimitiveType(value)) {
             body.putPair(blockIdx, valueCodec.encodeToPairs(tag, value));
             return;
         }

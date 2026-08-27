@@ -1,4 +1,4 @@
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.data;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class DaxJakartaValidationRegister {
 
-    public void register(DaxDictionary daxDic, Field field , DaxTag tag){
+    public void register(DaxDataModel daxDic, Field field , DaxTag tag){
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName()
                         .startsWith("jakarta.validation"));

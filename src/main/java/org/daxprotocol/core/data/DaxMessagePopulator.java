@@ -1,4 +1,4 @@
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.data;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
@@ -18,8 +18,8 @@ import java.util.Map;
 //TODO DaxMessagePopulator joint  with message codec
 public class DaxMessagePopulator {
     DaxTagParser tagParser;
-    DaxDictionary daxDic;
-    public DaxMessagePopulator(DaxTagParser tagParser, DaxDictionary daxDic){
+    DaxDataModel daxDic;
+    public DaxMessagePopulator(DaxTagParser tagParser, DaxDataModel daxDic){
         this.tagParser = tagParser;
         this.daxDic =  daxDic;
     }

@@ -24,9 +24,8 @@ import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.data.DaxDataModel;
 import org.daxprotocol.core.exceptions.DaxException;
-import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.head.DaxHead;
@@ -51,13 +50,13 @@ public class DaxMessageFactory {
     private final DaxHeadCodec headCodec;
     private final DaxBodyCodec bodyCodec;
     private final DaxTrailerCodec trailerCodec;
-    private final DaxDictionaryMessageFactory dicMessageFactory;
-    private final DaxFactoryObjectService objectService;
+    private final DaxDataModelMessageFactory dicMessageFactory;
+    private final DaxObjectMessageFactory objectService;
 
 
 
     public DaxMessageFactory(
-            DaxDictionary dictionary,
+            DaxDataModel dataModel,
             DaxTagCodec tagCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
@@ -69,15 +68,15 @@ public class DaxMessageFactory {
         this.headCodec = headCodec;
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
-        this.dicMessageFactory =  new DaxDictionaryMessageFactory(tagCodec, dictionary);
-        this.objectService = new DaxFactoryObjectService(tagCodec, dataTypeCodec, valueCodec);
+        this.dicMessageFactory =  new DaxDataModelMessageFactory(tagCodec, dataModel);
+        this.objectService     =  new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
     }
 
     public DaxMessage createDictionaryReq() {
-        return new DaxMessage(DaxCoreMessages.DIC_REQ);
+        return new DaxMessage(DaxCoreMessages.DATA_MODEL_REQ);
     }
 
-    public DaxMessage dictionaryToMsg() {
+    public DaxMessage dataModelToMsg() {
         return dicMessageFactory.dictionaryToMsg();
     }
 

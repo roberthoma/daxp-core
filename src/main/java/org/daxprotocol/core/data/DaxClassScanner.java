@@ -17,7 +17,7 @@
  * limitations under the License.
  * ***********************************************************************
  */
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.data;
 
 import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreTags;
@@ -46,21 +46,21 @@ import java.util.Map;
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE;
 
 
-public class DaxClassRegister {
-    private static final Logger logger = LoggerFactory.getLogger(DaxClassRegister.class);
+public class DaxClassScanner {
+    private static final Logger logger = LoggerFactory.getLogger(DaxClassScanner.class);
     DaxJakartaValidationRegister jakartaRegister;
     DaxTagParser tagParser;
     DaxConfig config;
-    DaxDictionary dictionary;
+    DaxDataModel dictionary;
     DaxHandlerRegistry handlerRegistry;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
     DaxClassRegisterService service;
 
-    public DaxClassRegister(
+    public DaxClassScanner(
             DaxTagParser tagParser ,
             DaxConfig config,
-            DaxDictionary dictionary,
+            DaxDataModel dictionary,
             DaxHandlerRegistry handlerRegistry,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec
@@ -89,7 +89,7 @@ public class DaxClassRegister {
             String annName,
             String annDescription
     ){
-        logger.trace("RegisterDaxEntry > field name:{}", field.getName());
+        logger.trace("RegisterDaxEntry > tag:{} field name:{}", tagCodec.encode(tag), field.getName());
 
         DaxAnnotationNote annNote = new DaxAnnotationNote();
 

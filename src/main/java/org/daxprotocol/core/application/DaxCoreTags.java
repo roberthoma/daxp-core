@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.application;
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.dictionary.DaxDictionary;
+import org.daxprotocol.core.data.DaxDataModel;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
@@ -91,7 +91,7 @@ public class DaxCoreTags {
     public static final DaxTag ENTRY_DESCRIPTION       = daxpSysTag(12);
     public static final DaxTag ENTRY_SYMBOL            = daxpSysTag(15);
 
-    public static final DaxTag ENTRY_SCHEMA            = daxpSysTag(21);
+//    public static final DaxTag ENTRY_SCHEMA            = daxpSysTag(???);
 
     public static final DaxTag TAG_OWNER_ID          = daxpSysTag(111);
 
@@ -135,7 +135,7 @@ public class DaxCoreTags {
      * Attributes
      */
     public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(20);
-    public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(77);  // Reference to collection
+    public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(21);  // Reference to collection
 
     public static final DaxTag ATR_RANGE_MIN_VALUE = daxpSysTag(161);
     public static final DaxTag ATR_RANGE_MAX_VALUE = daxpSysTag(162);
@@ -183,10 +183,10 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
 
     public static final DaxTag COLLECTION_KEY_DATA_TYPE = daxpSysTag(215);
-    public static final DaxTag COLLECTION_KEY_TYPE_ID = daxpSysTag(216);
+    public static final DaxTag COLLECTION_KEY_TYPE_REF_ID = daxpSysTag(216);
 
     public static final DaxTag COLLECTION_VALUE_DATA_TYPE = daxpSysTag(217);
-    public static final DaxTag COLLECTION_VALUE_TYPE_ID = daxpSysTag(218);
+    public static final DaxTag COLLECTION_VALUE_TYPE_REF_ID = daxpSysTag(218);
 
     public static final DaxTag COLLECTION_BULK_VALUE = daxpSysTag(230);
 
@@ -218,7 +218,7 @@ public class DaxCoreTags {
 
 
 
-    public static void init(DaxDictionary dic){
+    public static void init(DaxDataModel dic){
 //        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
 //        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
     }

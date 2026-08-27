@@ -1,4 +1,4 @@
-package org.daxprotocol.core.dictionary;
+package org.daxprotocol.core.data;
 
 import org.daxprotocol.core.annotation.DaxAnnotationNote;
 import org.daxprotocol.core.annotation.DaxpCollection;
@@ -17,16 +17,16 @@ import java.util.Set;
 public class DaxClassRegisterService {
     private static final Logger logger = LoggerFactory.getLogger(DaxClassRegisterService.class);
 
-    DaxDictionary dictionary;
+    DaxDataModel dataModel;
     DaxTagCodec tagCodec;
     DaxDataTypeCodec dataTypeCodec;
 
-    public DaxClassRegisterService(DaxDictionary dictionary,
+    public DaxClassRegisterService(DaxDataModel dataModel,
         DaxTagCodec tagCodec,
         DaxDataTypeCodec dataTypeCodec
 
     ){
-        this.dictionary = dictionary;
+        this.dataModel = dataModel;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
 
@@ -37,11 +37,11 @@ public class DaxClassRegisterService {
                           DaxTagDestiny destiny
 
     ){
-        logger.info("Tag {}, name:{} description : {}", tagCodec.encode(annNote.getTag())
+        logger.info("registerByNote > Tag {}, name:{} description : {}", tagCodec.encode(annNote.getTag())
                                                       , annNote.getName()
                                                       , annNote.getDescription());
 
-        dictionary.putTag(annNote.getTag(), source, destiny);
+        dataModel.putTag(annNote.getTag(), source, destiny);
 
 
         if (annNote.getDaxDataType() != DaxDataType.UNKNOWN
@@ -50,7 +50,7 @@ public class DaxClassRegisterService {
         )
 
         {
-            dictionary.putTagAtrDataType(annNote.getTag(),annNote.getDaxDataType());
+            dataModel.putTagAtrDataType(annNote.getTag(),annNote.getDaxDataType());
         }
 
         //TODO develop uniformity checking of class tags with fields
@@ -63,13 +63,13 @@ public class DaxClassRegisterService {
 
                 DaxpCollection dicAnn = annNote.getClazz().getAnnotation(DaxpCollection.class);
                 DaxTag tagTT =  tagCodec.decode(dicAnn);
-                dictionary.putTagAttributes(annNote.getTag()
+                dataModel.putTagAttributes(annNote.getTag()
                         , Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_DATA_TYPE, tagTT)));
 
             }
             else {
 
-               dictionary.putTagAttributes(annNote.getTag()
+               dataModel.putTagAttributes(annNote.getTag()
                                       , dataTypeCodec.encode(annNote.getClazz(), annNote.getGenericType()));
             }
         }
@@ -77,33 +77,33 @@ public class DaxClassRegisterService {
 
         if (destiny.equals(DaxTagDestiny.ENTITY_FIELD) ||
             destiny.equals(DaxTagDestiny.ENTITY_VALUE)  ){
-            dictionary.putEntityField( annNote.getEntityTag(),annNote.getTag());
-            dictionary.putEntityEntryAtrName(annNote.getEntityTag(), annNote.getTag(), annNote.getName());
-            dictionary.putEntityEntryAtrDescription(annNote.getEntityTag(),annNote.getTag(), annNote.getDescription());
+            dataModel.putEntityField( annNote.getEntityTag(),annNote.getTag());
+            dataModel.putEntityEntryAtrName(annNote.getEntityTag(), annNote.getTag(), annNote.getName());
+            dataModel.putEntityEntryAtrDescription(annNote.getEntityTag(),annNote.getTag(), annNote.getDescription());
 
             if(annNote.isReadOnly()){
-                dictionary.putEntityEntryAtrReadOnly(annNote.getEntityTag(),annNote.getTag(), true);
+                dataModel.putEntityEntryAtrReadOnly(annNote.getEntityTag(),annNote.getTag(), true);
             }
 
             if (annNote.isDeprecated()){
-               dictionary.putEntityEntryAtrDeprecated(annNote.getEntityTag(),annNote.getTag());
+               dataModel.putEntityEntryAtrDeprecated(annNote.getEntityTag(),annNote.getTag());
             }
 
         }
 
         if (destiny.equals(DaxTagDestiny.TAG) ){
             if(annNote.isReadOnly()){
-                dictionary.putTagAtrReadOnly(annNote.getTag(), true);
+                dataModel.putTagAtrReadOnly(annNote.getTag(), true);
             }
 
 
-            dictionary.putTagAtrDescription(annNote.getTag(), annNote.getDescription() );
+            dataModel.putTagAtrDescription(annNote.getTag(), annNote.getDescription() );
 
         }
 
         if (destiny.equals(DaxTagDestiny.TAG) || destiny.equals(DaxTagDestiny.ENTITY)){
             if (annNote.isDeprecated()){
-                dictionary.putTagAtrDeprecated(annNote.getTag());
+                dataModel.putTagAtrDeprecated(annNote.getTag());
             }
         }
 

@@ -16,10 +16,10 @@ public class DaxCoreController {
     }
 
 
-    @DaxpHandler(DaxCoreMessages.DIC_REQ)
-    public void getDictionaryData(DaxMessage incomeMsg, DaxFrame outcomeFrame){
+    @DaxpHandler(DaxCoreMessages.DATA_MODEL_REQ)
+    public void getDataModel(DaxMessage incomeMsg, DaxFrame outcomeFrame){
 
-        DaxMessage message = messageFactory.dictionaryToMsg();
+        DaxMessage message = messageFactory.dataModelToMsg();
         outcomeFrame.addMessage(message);
         DaxMessage messageLog = messageFactory.logMessage(1,"Test dictionary log");
         outcomeFrame.addMessage(messageLog);

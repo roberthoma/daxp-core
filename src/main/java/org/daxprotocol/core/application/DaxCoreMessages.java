@@ -10,9 +10,9 @@ public class DaxCoreMessages {
     private static final String daxPrefix = DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX +DaxCoreConstants.NAMESPACE_TAG_SEPARATOR;
 
 
-    public static final String  DIC_REQ     =  daxPrefix+"DIC.REQ"; // 	REQ 	Request for a dictionary
-    public static final String  DATA_DIC    =  daxPrefix+"DIC.DATA";  // 	RES 	Dictionary of data types and their attributes
-    public static final String  OK_RES      =  daxPrefix+"OK";  // 	RES 	Error request
+    public static final String  DATA_MODEL_REQ  =  daxPrefix+"DM.REQ"; // 	REQ 	Request for a dictionary
+    public static final String DATA_MODEL_INST  =  daxPrefix+"DM.INST";  // 	RES 	Dictionary of data types and their attributes
+    public static final String  OK_RES          =  daxPrefix+"OK";  // 	RES 	Error request
     public static final String  ERR_RES     =  daxPrefix+"ERR";  // 	RES 	Error respond
     public static final String  LOG         =  daxPrefix+"LOG";   //	EVN 	Log
 

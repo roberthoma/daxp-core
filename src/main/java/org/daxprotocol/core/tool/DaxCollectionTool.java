@@ -20,7 +20,7 @@
 
 package org.daxprotocol.core.tool;
 
-import org.daxprotocol.core.dictionary.DaxBaseDictionary;
+import org.daxprotocol.core.data.DaxBaseDataModel;
 import org.daxprotocol.core.model.pair.DaxPair;
 
 import java.util.Map;
@@ -40,7 +40,7 @@ public class DaxCollectionTool {
         return  set;
     }
 
-    public static DaxBaseDictionary<String> putAndReturnMap(DaxBaseDictionary<String> map , String k, DaxPair<?> pair){
+    public static DaxBaseDataModel<String> putAndReturnMap(DaxBaseDataModel<String> map , String k, DaxPair<?> pair){
         map.putAttribute(k,pair);
         return map;
     }
