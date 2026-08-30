@@ -18,9 +18,8 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.data;
+package org.daxprotocol.core.registries;
 
-import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.namespace.*;
 import org.daxprotocol.core.datatype.DaxDataType;
@@ -54,8 +53,8 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
  * 4) All fields annotated with the same tag must be of the same data type.
  **********************************************************************************************/
 
-public class DaxDataModel {
-    private static final Logger logger = LoggerFactory.getLogger(DaxDataModel.class);
+public class DaxSemanticRegistry {
+    private static final Logger logger = LoggerFactory.getLogger(DaxSemanticRegistry.class);
 
     DaxConfig        config;
     DaxNamespaceMapper namespaceMapper;
@@ -70,7 +69,7 @@ public class DaxDataModel {
 
     Map<DaxTag,DaxRegisterSource> tagMap         = new ConcurrentHashMap<>();
 
-    DaxBaseDataModel<DaxTag> tagAttributes = new DaxBaseDataModel<>();
+    DaxBaseRegistry<DaxTag> tagAttributes = new DaxBaseRegistry<>();
 
 
 
@@ -84,7 +83,7 @@ public class DaxDataModel {
     /*****************************************************
      *  Map of schema referenced by integer
      */
-    DaxBaseDataModel<Integer> schemaDic = new DaxBaseDataModel<>();
+    DaxBaseRegistry<Integer> schemaDic = new DaxBaseRegistry<>();
 
 
 
@@ -109,16 +108,16 @@ public class DaxDataModel {
      * Key : tagId
      * Value : map of attributes
      * */
-    Map<DaxTag, DaxBaseDataModel<DaxTag>> entityEntryAttributes = new HashMap<>();
+    Map<DaxTag, DaxBaseRegistry<DaxTag>> entityEntryAttributes = new HashMap<>();
 
 
     /******************************************************/
 
 
-    DaxBaseDataModel<DaxTag> collectionAttributes         = new DaxBaseDataModel<>();
+    DaxBaseRegistry<DaxTag> collectionAttributes         = new DaxBaseRegistry<>();
 
 
-    Map<DaxTag, DaxBaseDataModel<String>> collectionValues = new ConcurrentHashMap<>();
+    Map<DaxTag, DaxBaseRegistry<String>> collectionValues = new ConcurrentHashMap<>();
 
 
 
@@ -126,7 +125,7 @@ public class DaxDataModel {
 
     /******************************************************/
 
-    public DaxDataModel(DaxConfig config,
+    public DaxSemanticRegistry(DaxConfig config,
             DaxNamespaceMapper namespaceMapper ,
             DaxMessageMapper messageMapper ,
             DaxSchemaMapper schemaMapper
@@ -223,9 +222,9 @@ public class DaxDataModel {
     private void putEntityEntryAttribute(DaxTag entityTag, DaxTag tag, DaxPair<?> atrPair){
 
         if(!entityEntryAttributes.containsKey(entityTag)){
-            entityEntryAttributes.put(entityTag, new DaxBaseDataModel<>());
+            entityEntryAttributes.put(entityTag, new DaxBaseRegistry<>());
         }
-        DaxBaseDataModel<DaxTag> dic = entityEntryAttributes.get(entityTag);
+        DaxBaseRegistry<DaxTag> dic = entityEntryAttributes.get(entityTag);
 
         dic.putAttribute(tag, atrPair);
 
@@ -245,11 +244,11 @@ public class DaxDataModel {
 
 
 
-    public Map<DaxTag, DaxBaseDataModel<DaxTag>> getEntityEntryAttributes(){
+    public Map<DaxTag, DaxBaseRegistry<DaxTag>> getEntityEntryAttributes(){
         return entityEntryAttributes;
     }
 
-    public DaxBaseDataModel<DaxTag> getEntityBaseDic(DaxTag entityTag){
+    public DaxBaseRegistry<DaxTag> getEntityBaseDic(DaxTag entityTag){
         return entityEntryAttributes.get(entityTag);
     }
 
@@ -287,7 +286,7 @@ public class DaxDataModel {
     public void putCollectionAtrDeprecated(DaxTag colTag)                      { putCollectionAttributes(colTag,  new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
 
 
-    public DaxBaseDataModel<DaxTag> getCollectionAttributes() {
+    public DaxBaseRegistry<DaxTag> getCollectionAttributes() {
         return collectionAttributes;
     }
 
@@ -297,7 +296,7 @@ public class DaxDataModel {
 
         collectionValues.merge(colTag,
                 DaxCollectionTool.putAndReturnMap(
-                new DaxBaseDataModel<>(),key,atrPair),
+                new DaxBaseRegistry<>(),key,atrPair),
                         (eM, nM) ->
                                 DaxCollectionTool.putAndReturnMap(eM, key,atrPair));
 
@@ -305,7 +304,7 @@ public class DaxDataModel {
     }
 
 
-    public DaxBaseDataModel<String> getCollectionValues(DaxTag colTag) {
+    public DaxBaseRegistry<String> getCollectionValues(DaxTag colTag) {
         return collectionValues.get(colTag);
     }
 
@@ -352,7 +351,7 @@ public class DaxDataModel {
         schemaDic.putAttribute(refId,new DaxPairString(ENTRY_DESCRIPTION,description));
     }
 
-    public DaxBaseDataModel<Integer> getSchemaDictionary (){
+    public DaxBaseRegistry<Integer> getSchemaDictionary (){
         return schemaDic;
     }
     ///--------------------------------------

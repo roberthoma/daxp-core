@@ -8,10 +8,10 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
-import org.daxprotocol.core.data.DaxMessageConverter;
-import org.daxprotocol.core.data.DaxDataModel;
+import org.daxprotocol.core.registries.DaxMessageConverter;
+import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
-import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
+import org.daxprotocol.core.registries.DaxHandlerRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.*;
 public class DaxConfigBaseTest {
     protected static DaxEngine daxEngine;
     protected static int appNamespaceId;
-    protected static DaxDataModel dictionary;
+    protected static DaxSemanticRegistry dictionary;
     protected static DaxNamespaceMapper namespaceMapper;
     protected static DaxMessageCodec messageCodec;
     protected static DaxPreambleCodec preambleCodec;
@@ -67,7 +67,7 @@ public class DaxConfigBaseTest {
             preambleFactory = daxEngine.getPreambleFactory();
             dispatcher      = daxEngine.getDispatcher();
             dataTypeCodec   = daxEngine.getDataTypeCodec();
-            dataTypeService = daxEngine.getDaxDataTypeService();
+            dataTypeService = daxEngine.getDataTypeService();
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");

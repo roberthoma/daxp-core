@@ -30,6 +30,6 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ TYPE })
 @Documented
-public @interface DaxpRegister {
+public @interface DaxpRegistry {
     String value() ;      // Schema symbol from
 }

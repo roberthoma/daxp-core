@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.data;
+package org.daxprotocol.core.registries;
 
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.application.DaxCoreTags;
@@ -43,14 +43,14 @@ public class DaxMessageConverter {
     private static final Logger logger = LoggerFactory.getLogger(DaxMessageConverter.class);
 
     private final DaxConfig config;
-    private final DaxDataModel dictionary;
+    private final DaxSemanticRegistry dictionary;
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
     private final DaxDataTypeService daxDataTypeService;
 
     public DaxMessageConverter(DaxConfig config,
-            DaxDataModel dictionary,
+            DaxSemanticRegistry dictionary,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec,
             DaxValueCodec valueCodec,

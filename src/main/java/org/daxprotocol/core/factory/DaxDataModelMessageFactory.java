@@ -5,9 +5,9 @@ import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.namespace.DaxNamespace;
 import org.daxprotocol.core.datatype.DaxBlockType;
-import org.daxprotocol.core.data.DaxBaseDataModel;
-import org.daxprotocol.core.data.DaxDataModel;
-import org.daxprotocol.core.data.DaxMessageItem;
+import org.daxprotocol.core.registries.DaxBaseRegistry;
+import org.daxprotocol.core.registries.DaxSemanticRegistry;
+import org.daxprotocol.core.registries.DaxMessageItem;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
@@ -24,8 +24,8 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxDataModelMessageFactory {
 
     DaxTagCodec tagCodec;
-    DaxDataModel dictionary;
-    public DaxDataModelMessageFactory(DaxTagCodec tagCodec, DaxDataModel dictionary){
+    DaxSemanticRegistry dictionary;
+    public DaxDataModelMessageFactory(DaxTagCodec tagCodec, DaxSemanticRegistry dictionary){
 
         this.tagCodec = tagCodec;
         this.dictionary = dictionary;
@@ -75,7 +75,7 @@ public class DaxDataModelMessageFactory {
                 body.putPair(pair));
 
     }
-    private void putCollectionValuesToBody(DaxBody body, DaxTag colTag, DaxBaseDataModel<String> values){
+    private void putCollectionValuesToBody(DaxBody body, DaxTag colTag, DaxBaseRegistry<String> values){
 
         values.getAttributMap().forEach((s, tagDaxPairMap) ->
                 {
@@ -92,7 +92,7 @@ public class DaxDataModelMessageFactory {
 
     }
 
-    private void collectionDictionaryToMsg(DaxBody body, DaxBaseDataModel<DaxTag> collectionDic ){
+    private void collectionDictionaryToMsg(DaxBody body, DaxBaseRegistry<DaxTag> collectionDic ){
 
         collectionDic.getAttributMap().forEach((daxTag, tagDaxPairMap) ->
                 { putCollectionToBlock(body,daxTag,tagDaxPairMap);
@@ -128,7 +128,7 @@ public class DaxDataModelMessageFactory {
     }
 
 
-    private void entityEntryToBlock(DaxBody body,DaxTag entityTag, DaxBaseDataModel<DaxTag> baseDic){
+    private void entityEntryToBlock(DaxBody body,DaxTag entityTag, DaxBaseRegistry<DaxTag> baseDic){
         baseDic.getAttributMap().forEach((tag, atrMap) ->
                 putAttributesToFieldBlock(body, entityTag,tag, atrMap)
         );
@@ -140,7 +140,7 @@ public class DaxDataModelMessageFactory {
         body.nextBlock(DaxBlockType.BLOCK_ENTITY);
         body.putPair(ENTRY_TAG, tagCodec.encode(entityTag) );
 
-        DaxBaseDataModel<DaxTag> baseDic = dictionary.getEntityBaseDic(entityTag);
+        DaxBaseRegistry<DaxTag> baseDic = dictionary.getEntityBaseDic(entityTag);
 
 //        baseDic.getAttributMap().forEach((daxTag, tagDaxPairMap) ->
 //                body.putPair(

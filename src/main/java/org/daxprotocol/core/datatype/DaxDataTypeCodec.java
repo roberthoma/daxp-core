@@ -142,7 +142,7 @@ public class DaxDataTypeCodec {
         if(colInfo.isColAllowDuplicates)  map.add(new DaxPairBoolean(COLLECTION_ALLOW_DUPLICATES,true));
         if(colInfo.isColHasKey)           map.add(new DaxPairBoolean(COLLECTION_HAS_KEY,true));
         if(colInfo.isColDictionary)       map.add(new DaxPairBoolean(COLLECTION_IS_DICTIONARY,true));
-        if(colInfo.isColNavigable)        map.add(new DaxPairBoolean(COLLECTION_NAVIGABLE,true));
+        if(colInfo.isColNavigable)        map.add(new DaxPairBoolean(COLLECTION_IS_NAVIGABLE,true));
 
 
         //**************************************

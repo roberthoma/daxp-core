@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.application;
 import org.daxprotocol.core.datatype.DaxDataType;
-import org.daxprotocol.core.data.DaxDataModel;
+import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.HashMap;
@@ -178,17 +178,20 @@ public class DaxCoreTags {
 
     public static final DaxTag COLLECTION_ALLOW_DUPLICATES = daxpSysTag(210);
     public static final DaxTag COLLECTION_HAS_KEY = daxpSysTag(211);
-    public static final DaxTag COLLECTION_ORDERED = daxpSysTag(212);
-    public static final DaxTag COLLECTION_NAVIGABLE = daxpSysTag(213);
+
+    public static final DaxTag COLLECTION_IS_ORDERED = daxpSysTag(212);
+    public static final DaxTag COLLECTION_IS_NAVIGABLE = daxpSysTag(213);
     public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
+    public static final DaxTag COLLECTION_IS_EXTENSIBLE = daxpSysTag(215);
 
-    public static final DaxTag COLLECTION_KEY_DATA_TYPE = daxpSysTag(215);
-    public static final DaxTag COLLECTION_KEY_TYPE_REF_ID = daxpSysTag(216);
+    public static final DaxTag COLLECTION_KEY_DATA_TYPE = daxpSysTag(225);
+    public static final DaxTag COLLECTION_KEY_TYPE_REF_ID = daxpSysTag(226);
 
-    public static final DaxTag COLLECTION_VALUE_DATA_TYPE = daxpSysTag(217);
-    public static final DaxTag COLLECTION_VALUE_TYPE_REF_ID = daxpSysTag(218);
+    public static final DaxTag COLLECTION_VALUE_DATA_TYPE = daxpSysTag(227);
+    public static final DaxTag COLLECTION_VALUE_TYPE_REF_ID = daxpSysTag(228);
 
     public static final DaxTag COLLECTION_BULK_VALUE = daxpSysTag(230);
+
 
 
     // COLLECTION_PK,  ATTR_UNIQUE
@@ -218,7 +221,7 @@ public class DaxCoreTags {
 
 
 
-    public static void init(DaxDataModel dic){
+    public static void init(DaxSemanticRegistry dic){
 //        dic.putAtrDataType(ATR_NULLABLE,Boolean.class);
 //        dic.putAtrDataType(BLOCK_INDEX,Integer.class);
     }

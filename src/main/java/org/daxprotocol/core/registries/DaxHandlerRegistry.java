@@ -1,7 +1,6 @@
-package org.daxprotocol.core.dispatcher;
+package org.daxprotocol.core.registries;
 
 import org.daxprotocol.core.exceptions.DaxExecutorException;
-import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
 import org.slf4j.Logger;

@@ -25,7 +25,7 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
-import org.daxprotocol.core.data.DaxDataModel;
+import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.exceptions.DaxException;
@@ -55,7 +55,7 @@ public class DaxObjectMessageFactory {
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
-    private final DaxDataModel dataModel;
+    private final DaxSemanticRegistry dataModel;
 
     private record AnnotatedField(Field field, DaxTag tag) {}
     private record AnnotatedMethod(Method method, DaxTag tag) {}
@@ -66,7 +66,7 @@ public class DaxObjectMessageFactory {
 
     ///----------------------------------------------------------------------------------------
     public DaxObjectMessageFactory(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
-    ,  DaxDataModel dataModel) {
+    ,  DaxSemanticRegistry dataModel) {
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
@@ -137,7 +137,10 @@ public class DaxObjectMessageFactory {
         }
 
 
-        throw new DaxException("DAXP-SSS12 No Determinate data type", "valueToBlock");
+
+        ///
+        // In future throw should work
+        //TMP  throw new DaxException("DAXP-SSS12 No Determinate data type", "valueToBlock");
 
     }
 

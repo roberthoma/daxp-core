@@ -2,13 +2,13 @@ package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.daxprotocol.core.annotation.DaxpMsg;
-import org.daxprotocol.core.annotation.DaxpRegister;
+import org.daxprotocol.core.annotation.DaxpMessage;
+import org.daxprotocol.core.annotation.DaxpRegistry;
 import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 
-@DaxpRegister(DaxAnyManifest.MODEL_BASE_UT)
+@DaxpRegistry(DaxAnyManifest.MODEL_BASE_UT)
 public class DaxAnySchemaRegister {
 
     @DaxpTag( description = "Base Entity ")
@@ -70,11 +70,11 @@ public class DaxAnySchemaRegister {
     public static final int TEST_NOT_USE_TAG_987654321 =  999999999;
 
 
-    @DaxpMsg(description = "Base Entity DATA")
+    @DaxpMessage(description = "Base Entity DATA")
     public static final String MSG_BASE_ENTITY_DATA =   "BD.DATA"; // 	REs 	Customer Data
 
     //Messages
-    @DaxpMsg(description = "Base ENTITY Request", respMsg = {MSG_BASE_ENTITY_DATA})
+    @DaxpMessage(description = "Base ENTITY Request", respMsg = {MSG_BASE_ENTITY_DATA})
     public static final String MSG_BASE_ENTITY_Req =  "BD.REQ"; // 	REs 	Customer Data
 
 

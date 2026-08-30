@@ -24,7 +24,7 @@ import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
-import org.daxprotocol.core.data.DaxDataModel;
+import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.exceptions.DaxException;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
@@ -46,7 +46,6 @@ public class DaxMessageFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(DaxMessageFactory.class);
 
-    private final DaxTagCodec tagCodec;
     private final DaxHeadCodec headCodec;
     private final DaxBodyCodec bodyCodec;
     private final DaxTrailerCodec trailerCodec;
@@ -56,7 +55,7 @@ public class DaxMessageFactory {
 
 
     public DaxMessageFactory(
-            DaxDataModel dataModel,
+            DaxSemanticRegistry dataModel,
             DaxTagCodec tagCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,
@@ -64,7 +63,6 @@ public class DaxMessageFactory {
             DaxValueCodec valueCodec,
             DaxDataTypeCodec dataTypeCodec
     ) {
-        this.tagCodec = tagCodec;
         this.headCodec = headCodec;
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;

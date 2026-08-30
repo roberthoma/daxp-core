@@ -3,6 +3,7 @@ package org.daxprotocol.core.dispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.parsers.DaxFrameParser;
+import org.daxprotocol.core.registries.DaxHandlerRegistry;
 
 import java.util.Map;
 

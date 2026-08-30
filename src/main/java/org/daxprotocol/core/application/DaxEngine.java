@@ -34,12 +34,12 @@ import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.data.DaxClassScanner;
-import org.daxprotocol.core.data.DaxMessagePopulator;
-import org.daxprotocol.core.dispatcher.DaxHandlerRegistry;
+import org.daxprotocol.core.registries.DaxMetadataRegistrar;
+import org.daxprotocol.core.registries.DaxMessagePopulator;
+import org.daxprotocol.core.registries.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
-import org.daxprotocol.core.data.DaxMessageConverter;
-import org.daxprotocol.core.data.DaxDataModel;
+import org.daxprotocol.core.registries.DaxMessageConverter;
+import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.namespace.DaxNamespace;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -64,7 +64,7 @@ public class DaxEngine {
 
     private final DaxMessageConverter messageConverter;
 
-    private final DaxDataModel dictionary;
+    private final DaxSemanticRegistry dictionary;
 
     private final DaxPreambleFactory preambleFactory;
 
@@ -84,19 +84,19 @@ public class DaxEngine {
 
     private final  DaxFrameParser frameParser ;
 
-    private DaxHandlerRegistry handlerRegistry;
+    private final DaxHandlerRegistry handlerRegistry;
 
-    private DaxMessagePopulator messagePopulator;
+    private final DaxMessagePopulator messagePopulator;
 
-    private DaxClassScanner annotationRegister;
+    private final DaxMetadataRegistrar annotationRegister;
 
-    private DaxDispatcher dispatcher;
+    private final DaxDispatcher dispatcher;
 
 
-    private DaxDataTypeService daxDataTypeService;
-    private DaxDataTypeCodec dataTypeCodec;
+    private final DaxDataTypeService dataTypeService;
+    private final DaxDataTypeCodec dataTypeCodec;
 
-    private  DaxValueCodec valueCodec;
+    private  final DaxValueCodec valueCodec;
 
     //TODO move tagParser to tagCodec
 
@@ -122,12 +122,12 @@ public class DaxEngine {
         tagParser  = new DaxTagParser(namespaceMapper);
         tagCodec   = new DaxTagCodec(config, namespaceMapper, tagParser );
 
-        daxDataTypeService = new DaxDataTypeService();
-        dataTypeCodec = new DaxDataTypeCodec(daxDataTypeService, tagCodec);
+        dataTypeService = new DaxDataTypeService();
+        dataTypeCodec = new DaxDataTypeCodec(dataTypeService, tagCodec);
 
         valueCodec = new DaxValueCodec(dataTypeCodec);
 
-        dictionary = new DaxDataModel(config, namespaceMapper, messageMapper,schemaMapper);
+        dictionary = new DaxSemanticRegistry(config, namespaceMapper, messageMapper,schemaMapper);
         dictionary.putNamespace(sysNamespace);
         dictionary.putNamespace(appNamespace);
         DaxCoreTags.init(dictionary);
@@ -151,16 +151,17 @@ public class DaxEngine {
 
 
         messagePopulator    = new DaxMessagePopulator( tagParser, dictionary);
-        annotationRegister = new DaxClassScanner(tagParser ,
+        annotationRegister = new DaxMetadataRegistrar(tagParser ,
                                                         config,
 //                                                        namespaceMapper,
                 dictionary,
                                                         handlerRegistry,
-                tagCodec, dataTypeCodec
+                tagCodec, dataTypeCodec,
+                dataTypeService
         );
 
         messageConverter     = new DaxMessageConverter(config,//namespaceMapper ,
-                dictionary, tagCodec, dataTypeCodec, valueCodec, daxDataTypeService);
+                dictionary, tagCodec, dataTypeCodec, valueCodec, dataTypeService);
 
 
 
@@ -217,7 +218,7 @@ public class DaxEngine {
         return messageConverter;
     }
 
-    public DaxDataModel getDictionary() {
+    public DaxSemanticRegistry getDictionary() {
         if(dictionary == null){
             throw new RuntimeException("Dictionary is NOT READY !!!!");
         }
@@ -273,8 +274,8 @@ public class DaxEngine {
         return dataTypeCodec;
     }
 
-    public DaxDataTypeService getDaxDataTypeService() {
-        return daxDataTypeService;
+    public DaxDataTypeService getDataTypeService() {
+        return dataTypeService;
     }
 
     public int getAppNamespaceId(){
