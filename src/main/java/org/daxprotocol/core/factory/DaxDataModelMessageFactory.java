@@ -199,7 +199,7 @@ public class DaxDataModelMessageFactory {
 
 
 
-        collectionDictionaryToMsg(message.getBody(),dictionary.getCollectionAttributes());
+//        collectionDictionaryToMsg(message.getBody(),dictionary.getCollectionAttributes());
 
 
         dictionary.getEntityEntryAttributes()

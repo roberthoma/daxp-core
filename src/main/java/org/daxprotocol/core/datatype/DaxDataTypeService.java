@@ -156,9 +156,9 @@ public class DaxDataTypeService {
      public DaxCollectionInfo getCollectionInfo(Class<?> clazz){
          DaxCollectionInfo info = new DaxCollectionInfo();
 
-//         if (clazz == Set.class){  // is collection
-//             info.isCollection = true;
-//         }
+         if (clazz == Set.class){  // is collection
+             info.isCollection = true;
+         }
 
          if (clazz == List.class){
              info.isColAllowDuplicates = true;
@@ -171,6 +171,7 @@ public class DaxDataTypeService {
              info.isColHasKey = true;
              info.isColDictionary = true;
              info.isJavaEnum = true;
+             info.isClosed = true;
          }
 
          if (clazz == Map.class

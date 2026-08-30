@@ -132,7 +132,7 @@ public class DaxDataTypeCodec {
 
         return info.isColHasKey && !info.isJavaEnum;
     }
-    //--------------------------------------------------------------------------------------
+    ///--------------------------------------------------------------------------------------
     public Set<DaxPair<?>> collectionEncode(Class<?> clazz, Type generitType){
         Set< DaxPair<?>> map = new HashSet<>();
         DaxCollectionInfo colInfo = dataTypeService.getCollectionInfo(clazz);
@@ -143,6 +143,7 @@ public class DaxDataTypeCodec {
         if(colInfo.isColHasKey)           map.add(new DaxPairBoolean(COLLECTION_HAS_KEY,true));
         if(colInfo.isColDictionary)       map.add(new DaxPairBoolean(COLLECTION_IS_DICTIONARY,true));
         if(colInfo.isColNavigable)        map.add(new DaxPairBoolean(COLLECTION_IS_NAVIGABLE,true));
+        if(colInfo.isClosed)              map.add(new DaxPairBoolean(COLLECTION_IS_CLOSED,true));
 
 
         //**************************************
@@ -156,7 +157,7 @@ public class DaxDataTypeCodec {
 
             Type rawType = pt.getRawType();
             Type[] args = pt.getActualTypeArguments();
-//            Annotation ann;
+
             if (colInfo.isColHasKey){
                 keyDataType   = dataTypeService.decodeClass( args[0]);
                 valueDataType = dataTypeService.decodeClass( args[1]);

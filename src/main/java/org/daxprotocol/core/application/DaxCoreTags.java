@@ -182,7 +182,7 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_IS_ORDERED = daxpSysTag(212);
     public static final DaxTag COLLECTION_IS_NAVIGABLE = daxpSysTag(213);
     public static final DaxTag COLLECTION_IS_DICTIONARY = daxpSysTag(214);
-    public static final DaxTag COLLECTION_IS_EXTENSIBLE = daxpSysTag(215);
+    public static final DaxTag COLLECTION_IS_CLOSED = daxpSysTag(215);
 
     public static final DaxTag COLLECTION_KEY_DATA_TYPE = daxpSysTag(225);
     public static final DaxTag COLLECTION_KEY_TYPE_REF_ID = daxpSysTag(226);

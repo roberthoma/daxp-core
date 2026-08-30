@@ -9,7 +9,9 @@ import java.util.Arrays;
 
 public class DaxJakartaValidationRegistrar {
 
-    public void register(DaxSemanticRegistry daxDic, Field field , DaxTag tag){
+    public void register(DaxSemanticRegistry semanticRegistry, Field field , DaxTag tag){
+
+
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName()
                         .startsWith("jakarta.validation"));
@@ -19,16 +21,16 @@ public class DaxJakartaValidationRegistrar {
         }
 
         if (field.isAnnotationPresent(NotNull.class)) {
-            daxDic.putTagAtrNullable(tag, false);
+            semanticRegistry.putTagAtrNullable(tag, false);
         }
 
         if (field.isAnnotationPresent(Size.class)) {
             Size size = field.getAnnotation(Size.class);
             if (size.min() > 0){
-                daxDic.putTagAtrSizeMin(tag, size.min());
+                semanticRegistry.putTagAtrSizeMin(tag, size.min());
             }
             if (size.max() < Integer.MAX_VALUE){
-                daxDic.putTagAtrSizeMax(tag, size.max());
+                semanticRegistry.putTagAtrSizeMax(tag, size.max());
             }
         }
 

@@ -217,7 +217,7 @@ public class DaxMetadataRegistrar {
         semanticRegistry.putSchema(symbol , ann.name(), ann.description());
     }
 
-    private void registerDaxpManifest(Class<?> clazz){
+    private void registerDaxpRegistry(Class<?> clazz){
         for (Field field : DaxLangTool.allFields(clazz)) {
 
             if (field.isAnnotationPresent(DaxpField.class)){
@@ -229,15 +229,15 @@ public class DaxMetadataRegistrar {
             }
 
             if (field.isAnnotationPresent(DaxpTag.class)) {
-                registerDaxpTag(field, DaxRegisterSource.SCHEMA);
+                registerDaxpTag(field, DaxRegisterSource.REGISTRY);
 
             }
             if (field.isAnnotationPresent(DaxpMessage.class)){
-                registerDaxpMsg(field,DaxRegisterSource.SCHEMA);
+                registerDaxpMsg(field,DaxRegisterSource.REGISTRY);
             }
 
             if (field.isAnnotationPresent(DaxpModel.class)){
-                registerDaxpSchema(field,DaxRegisterSource.SCHEMA);
+                registerDaxpSchema(field,DaxRegisterSource.REGISTRY);
             }
 
         }
@@ -366,13 +366,18 @@ public class DaxMetadataRegistrar {
         DaxTag colTag =  tagCodec.decode(colAtn.value(),colAtn.namespace(),colAtn.tagId());
 
 
-        semanticRegistry.putCollectionAtrName(colTag, name);
-        semanticRegistry.putCollectionAtrDescription(colTag, colAtn.description());
+      //  semanticRegistry.putCollectionAtrName(colTag, name);
+     //   semanticRegistry.putCollectionAtrDescription(colTag, colAtn.description());
+     //   semanticRegistry.putCollectionAttributes(colTag, dataTypeCodec.encode(clazz));
 
 
-        semanticRegistry.putCollectionAttributes(colTag, dataTypeCodec.encode(clazz));
+        semanticRegistry.putTagAtrName(colTag, name);
+        semanticRegistry.putTagAtrDescription(colTag, colAtn.description());
+        semanticRegistry.putTagAttributes(colTag, dataTypeCodec.encode(clazz));
 
-        Map<DaxTag, DaxPair<?>> atrMap = semanticRegistry.getCollectionAttributes().getAttributMap().get(colTag);
+//        Map<DaxTag, DaxPair<?>> atrMap = semanticRegistry.getCollectionAttributes().getAttributMap().get(colTag);
+        Map<DaxTag, DaxPair<?>> atrMap = semanticRegistry.getTagAttributeMap().get(colTag);
+
         if(atrMap.containsKey(DaxCoreTags.COLLECTION_IS_DICTIONARY)){
             if(atrMap.get(DaxCoreTags.COLLECTION_IS_DICTIONARY).getBooleanValue()){
 
@@ -421,7 +426,7 @@ public class DaxMetadataRegistrar {
             if (clazz.isAnnotationPresent(DaxpRegistry.class)) {
                 DaxpRegistry ann = clazz.getAnnotation(DaxpRegistry.class);
 
-                registerDaxpManifest( clazz);
+                registerDaxpRegistry( clazz);
             }
 
             if (clazz.isAnnotationPresent(DaxpEntity.class)) {

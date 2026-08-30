@@ -1,7 +1,7 @@
 package org.daxprotocol.core.registries;
 
 public enum DaxRegisterSource {
-    SCHEMA,
+    REGISTRY,
     ENTITY,
     COLLECTION,
     MESSAGE,

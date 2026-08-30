@@ -102,6 +102,7 @@ public class DaxClassRegisterService {
 
                 DaxpCollection dicAnn = annNote.getClazz().getAnnotation(DaxpCollection.class);
                 DaxTag tagTT =  tagCodec.decode(dicAnn);
+
                 semanticRegistry.putTagAttributes(annNote.getTag()
                         , Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_DATA_TYPE, tagTT)));
 

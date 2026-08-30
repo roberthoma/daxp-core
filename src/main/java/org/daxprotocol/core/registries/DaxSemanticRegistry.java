@@ -266,7 +266,7 @@ public class DaxSemanticRegistry {
 
     //TODO getters and setter for other namespace enumDic;
 
-    public void putCollectionAttributes(DaxTag colTag, DaxPair<?> atrPair ){
+    private void putCollectionAttributes(DaxTag colTag, DaxPair<?> atrPair ){
         collectionAttributes.putAttribute(colTag, atrPair);
     }
 
