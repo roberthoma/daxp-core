@@ -114,13 +114,11 @@ public class DaxSemanticRegistry {
     /******************************************************/
 
 
-    DaxBaseRegistry<DaxTag> collectionAttributes         = new DaxBaseRegistry<>();
-
-
     Map<DaxTag, DaxBaseRegistry<String>> collectionValues = new ConcurrentHashMap<>();
 
 
 
+    Map<Class<?>,DaxTag> classDaxTagMap = new HashMap<>();
 
 
     /******************************************************/
@@ -266,30 +264,6 @@ public class DaxSemanticRegistry {
 
     //TODO getters and setter for other namespace enumDic;
 
-    private void putCollectionAttributes(DaxTag colTag, DaxPair<?> atrPair ){
-        collectionAttributes.putAttribute(colTag, atrPair);
-    }
-
-    public void putCollectionAttributes(DaxTag tag, Set< DaxPair<?>> pairMap) {
-        pairMap.forEach(( atrPair) -> putCollectionAttributes(tag,atrPair));
-    };
-
-
-    public void putCollectionAtrValueDataType(DaxTag colTag,  DaxDataType dataType) { putCollectionAttributes(colTag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-    public void putCollectionAtrKeyDataType  (DaxTag colTag,  DaxDataType dataType) { putCollectionAttributes(colTag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-    //    public void putCollectionAtrSizeMax(DaxTag colTag,   Integer max )         { putCollectionAttributes(colTag, new DaxPairInteger(ATR_SIZE_MAX,max));}
-//    public void putCollectionAtrSizeMin(DaxTag colTag,   Integer min )         { putCollectionAttributes(colTag,  new DaxPairInteger(ATR_SIZE_MIN,min));}
-//    public void putCollectionAtrNullable(DaxTag colTag,   Boolean able)        { putCollectionAttributes(colTag,  new DaxPairBoolean(ATR_NULLABLE ,able));}
-    public void putCollectionAtrName(DaxTag colTag,   String name)             { if(name!= null && !name.isBlank()){ putCollectionAttributes(colTag,  new DaxPairString(ENTRY_NAME,name));}}
-    public void putCollectionAtrDescription(DaxTag colTag,  String desc)       { if(desc!= null && !desc.isBlank()){ putCollectionAttributes(colTag,  new DaxPairString(ENTRY_DESCRIPTION,desc));}}
-    //    public void putCollectionAtrReadOnly  (DaxTag colTag,  Boolean able)       { putCollectionAttributes(colTag, tag, new DaxPairBoolean(ATR_READONLY ,able));}
-    public void putCollectionAtrDeprecated(DaxTag colTag)                      { putCollectionAttributes(colTag,  new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
-
-
-    public DaxBaseRegistry<DaxTag> getCollectionAttributes() {
-        return collectionAttributes;
-    }
-
 
     public void putCollectionValue(DaxTag colTag, String key ,DaxPair<?> atrPair){
 
@@ -354,6 +328,23 @@ public class DaxSemanticRegistry {
     public DaxBaseRegistry<Integer> getSchemaDictionary (){
         return schemaDic;
     }
+    ///------------------------------------
+    public void registerClass(Class<?> clazz, DaxTag tag){
+
+        classDaxTagMap.put(clazz, tag);
+
+    }
+    public boolean isClassRegistered(Class<?> clazz){
+
+        return  classDaxTagMap.containsKey(clazz);
+
+    }
+    public DaxTag getClassTag(Class<?> clazz){
+
+        return  classDaxTagMap.get(clazz);
+
+    }
+
     ///--------------------------------------
     /// TMP. move to service
     public boolean isPrimitiveType(DaxTag tag){
@@ -361,8 +352,8 @@ public class DaxSemanticRegistry {
         try {
 
         System.out.println("DATA MODEL:"+tag.getTagId());
-        var atrMap = tagAttributes.getAttributMap()
-                 .get(tag);
+        var atrMap = tagAttributes.getAttributMap().get(tag);
+
         if (atrMap.containsKey(ATR_DATA_TYPE))
         {
             isPrimitiveType = atrMap.get(ATR_DATA_TYPE).getDataTypeValue().isPrimitiveType();

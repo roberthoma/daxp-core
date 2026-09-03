@@ -10,6 +10,7 @@ public class DaxAnnotationNote {
 
     DaxTag entityTag;
     DaxTag tag;
+    DaxTag referenceTypeTag;
     DaxDataType daxDataType;
     String name = "";
     String description = "";
@@ -18,6 +19,8 @@ public class DaxAnnotationNote {
     DaxDataType keyDataType;
     DaxDataType valueDataType;
     boolean readOnly = false;
+
+
 
 
     String schemaOwner = "";
@@ -168,6 +171,14 @@ public class DaxAnnotationNote {
 
     public void setSchemaOwner(String schemaOwner) {
         this.schemaOwner = schemaOwner;
+    }
+
+    public DaxTag getReferenceTypeTag() {
+        return referenceTypeTag;
+    }
+
+    public void setReferenceTypeTag(DaxTag referenceTypeTag) {
+        this.referenceTypeTag = referenceTypeTag;
     }
 
 }

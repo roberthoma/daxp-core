@@ -60,25 +60,25 @@ public class DaxMessagePopulator {
             return;
         }
 
-        if(blockType.equals(DaxBlockType.BLOCK_COLLECTION.getCode())){
-
-            DaxTag enumTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgnamespaceId
-            ) ;
-
-            daxDic.putTag( enumTag, DaxRegisterSource.MESSAGE, DaxTagDestiny.COLLECTION);
-
-
-            String name = blockPairMap.get(DaxCoreTags.ENTRY_NAME).getStrValue();
-            String desc = "";
-            if (blockPairMap.containsKey(DaxCoreTags.ENTRY_DESCRIPTION)){
-                desc = blockPairMap.get(DaxCoreTags.ENTRY_DESCRIPTION).getStrValue();
-            }
-      //????      daxDic.putEnum(enumTag, new DaxCollection_TMP(name , desc ));
-
-
-            return;
-        }
+//        if(blockType.equals(DaxBlockType.BLOCK_COLLECTION.getCode())){
+//
+//            DaxTag enumTag = tagParser.parseDaxTag(
+//                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgnamespaceId
+//            ) ;
+//
+//            daxDic.putTag( enumTag, DaxRegisterSource.MESSAGE, DaxTagDestiny.COLLECTION);
+//
+//
+//            String name = blockPairMap.get(DaxCoreTags.ENTRY_NAME).getStrValue();
+//            String desc = "";
+//            if (blockPairMap.containsKey(DaxCoreTags.ENTRY_DESCRIPTION)){
+//                desc = blockPairMap.get(DaxCoreTags.ENTRY_DESCRIPTION).getStrValue();
+//            }
+//      //????      daxDic.putEnum(enumTag, new DaxCollection_TMP(name , desc ));
+//
+//
+//            return;
+//        }
 
         if(blockType.equals(DaxBlockType.BLOCK_VALUE)){
             DaxTag enumTag = tagParser.parseDaxTag(

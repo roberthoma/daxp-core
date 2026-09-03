@@ -1,13 +1,13 @@
 package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
+import org.daxprotocol.core.annotation.DaxpManifest;
 import org.daxprotocol.core.annotation.DaxpNamespace;
-import org.daxprotocol.core.annotation.DaxpModel;
 
-@DaxpNamespace
+@DaxpManifest
 public class DaxAnyManifest {
 
 
-    @DaxpModel(name = "utModel" ,description = "Model Ut")
-    public static final String MODEL_BASE_UT =   "Model_UT";
+    @DaxpNamespace(name = "utNamespace" ,description = "Namespace Ut")
+    public static final String NAMESPACE_TEST =   "NS_UT";
 
 }

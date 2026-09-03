@@ -52,7 +52,7 @@ public class DaxConfigBaseTest {
                     .createProperties("application_BASE.properties"));
 
             appNamespaceId = daxEngine.getConfig().getAppNamespaceId();
-            dictionary      = daxEngine.getDictionary();
+            dictionary      = daxEngine.getSemanticRegistry();
             namespaceMapper   = daxEngine.getnamespaceMapper();
             messageCodec    = daxEngine.getMessageCodec();
             preambleCodec   = daxEngine.getPreambleCodec();
@@ -78,12 +78,13 @@ public class DaxConfigBaseTest {
             System.out.println("*******************************************");
 
             //------------
-            daxEngine.register(DaxpControllerTest.class);
-            daxEngine.register(DaxAnyTestEnum.class);
-            daxEngine.register(DaxSubEntity.class);
             daxEngine.register(DaxAnyTestDicEnum.class);
+            daxEngine.register(DaxAnyTestEnum.class);
+
+            daxEngine.register(DaxpControllerTest.class);
+//            daxEngine.register(DaxSubEntity.class);
             daxEngine.register(DaxAnySchemaRegister.class);
-            daxEngine.register(DaxAnyTestEntity.class);
+//            daxEngine.register(DaxAnyTestEntity.class);
             handlerRegistry.registerCtrl(new DaxpControllerTest());  //Autowire in spring
 
             daxEngine.checkRegister();

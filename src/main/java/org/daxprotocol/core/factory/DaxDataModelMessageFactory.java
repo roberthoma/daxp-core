@@ -65,16 +65,17 @@ public class DaxDataModelMessageFactory {
 
 
 
-    private void putCollectionToBlock(DaxBody body,
-            DaxTag tag,
-            Map<DaxTag,DaxPair<?>> atrMap){
-        body.nextBlock(DaxBlockType.BLOCK_COLLECTION);
-//        body.nextBlock(DaxBlockType.BLOCK_TAG);
-        body.putPair(ENTRY_TAG, tagCodec.encode(tag));
-        atrMap.forEach((daxTag, pair) ->
-                body.putPair(pair));
+//    private void putCollectionToBlock(DaxBody body,
+//            DaxTag tag,
+//            Map<DaxTag,DaxPair<?>> atrMap){
+//        body.nextBlock(DaxBlockType.BLOCK_COLLECTION);
+////        body.nextBlock(DaxBlockType.BLOCK_TAG);
+//        body.putPair(ENTRY_TAG, tagCodec.encode(tag));
+//        atrMap.forEach((daxTag, pair) ->
+//                body.putPair(pair));
+//
+//    }
 
-    }
     private void putCollectionValuesToBody(DaxBody body, DaxTag colTag, DaxBaseRegistry<String> values){
 
         values.getAttributMap().forEach((s, tagDaxPairMap) ->
@@ -92,14 +93,14 @@ public class DaxDataModelMessageFactory {
 
     }
 
-    private void collectionDictionaryToMsg(DaxBody body, DaxBaseRegistry<DaxTag> collectionDic ){
-
-        collectionDic.getAttributMap().forEach((daxTag, tagDaxPairMap) ->
-                { putCollectionToBlock(body,daxTag,tagDaxPairMap);
-                    putCollectionValuesToBody(body,daxTag,  dictionary.getCollectionValues(daxTag));
-                }
-        );
-    }
+//    private void collectionDictionaryToMsg(DaxBody body, DaxBaseRegistry<DaxTag> collectionDic ){
+//
+//        collectionDic.getAttributMap().forEach((daxTag, tagDaxPairMap) ->
+//                { putCollectionToBlock(body,daxTag,tagDaxPairMap);
+//                    putCollectionValuesToBody(body,daxTag,  dictionary.getCollectionValues(daxTag));
+//                }
+//        );
+//    }
 
 
 

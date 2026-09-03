@@ -31,7 +31,7 @@ public enum DaxBlockType {//extends DaxValue<String> {
     BLOCK_FIELD('F',"Field definition block"),
     BLOCK_VALUE('V',"Value  block"),   // for example Collection value
     BLOCK_KEY('K',"Key block"),   // for example Collection value
-    BLOCK_COLLECTION('C',"Definition block of collection : Name , Allow duplication , has key ...."),
+//    BLOCK_COLLECTION('C',"Definition block of collection : Name , Allow duplication , has key ...."),
     BLOCK_INSTANCE('I',"Instance of entity block")
    ;
     private final Character code;
@@ -70,7 +70,7 @@ public enum DaxBlockType {//extends DaxValue<String> {
             case 'I' -> BLOCK_INSTANCE;
             case 'T' -> BLOCK_TAG;
             case 'F' -> BLOCK_FIELD;
-            case 'C' -> BLOCK_COLLECTION;
+//            case 'C' -> BLOCK_COLLECTION;
             case 'V' -> BLOCK_VALUE;
             default ->  throw new IllegalArgumentException("Unknown DAXP data type code: " + code);
 

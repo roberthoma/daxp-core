@@ -95,18 +95,24 @@ public class DaxClassRegisterService {
 //---------------
         if (! annNote.getClazz().equals(Void.class)) {
 
-            //---------
-            //TODO check is reference datatype
-
-            if( annNote.getClazz().isAnnotationPresent(DaxpCollection.class)){
-
-                DaxpCollection dicAnn = annNote.getClazz().getAnnotation(DaxpCollection.class);
-                DaxTag tagTT =  tagCodec.decode(dicAnn);
-
+            if (annNote.getReferenceTypeTag() != null){
                 semanticRegistry.putTagAttributes(annNote.getTag()
-                        , Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_DATA_TYPE, tagTT)));
+                        , Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_DATA_TYPE, annNote.getReferenceTypeTag())));
 
             }
+
+//            //---------
+//            //TODO check is reference datatype
+//
+//            if( annNote.getClazz().isAnnotationPresent(DaxpCollection.class)){
+//
+//                DaxpCollection dicAnn = annNote.getClazz().getAnnotation(DaxpCollection.class);
+//                DaxTag tagTT =  tagCodec.decode(dicAnn);
+//
+//                semanticRegistry.putTagAttributes(annNote.getTag()
+//                        , Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_DATA_TYPE, tagTT)));
+//
+//            }
             else {
 
                semanticRegistry.putTagAttributes(annNote.getTag()

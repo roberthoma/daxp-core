@@ -25,8 +25,8 @@ public class DaxNamespaceMapperTest extends DaxConfigBaseTest {
 
 
     @Test
-    void checkAppnamespaceId(){
-        System.out.println("CheckAppnamespaceId app Id = "+daxEngine.getConfig().getAppNamespaceId());
+    void checkAppNamespaceId(){
+        System.out.println("CheckAppNamespaceId app Id = "+daxEngine.getConfig().getAppNamespaceId());
         Assertions.assertEquals(1, daxEngine.getConfig().getAppNamespaceId());
     }
 

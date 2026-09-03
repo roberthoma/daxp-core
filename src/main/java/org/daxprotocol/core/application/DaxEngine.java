@@ -34,7 +34,7 @@ import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.registries.DaxMetadataRegistrar;
+import org.daxprotocol.core.registries.DaxAnnotationScanner;
 import org.daxprotocol.core.registries.DaxMessagePopulator;
 import org.daxprotocol.core.registries.DaxHandlerRegistry;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
@@ -64,7 +64,7 @@ public class DaxEngine {
 
     private final DaxMessageConverter messageConverter;
 
-    private final DaxSemanticRegistry dictionary;
+    private final DaxSemanticRegistry semanticRegistry;
 
     private final DaxPreambleFactory preambleFactory;
 
@@ -88,7 +88,7 @@ public class DaxEngine {
 
     private final DaxMessagePopulator messagePopulator;
 
-    private final DaxMetadataRegistrar annotationRegister;
+    private final DaxAnnotationScanner annotationRegister;
 
     private final DaxDispatcher dispatcher;
 
@@ -127,10 +127,10 @@ public class DaxEngine {
 
         valueCodec = new DaxValueCodec(dataTypeCodec);
 
-        dictionary = new DaxSemanticRegistry(config, namespaceMapper, messageMapper,schemaMapper);
-        dictionary.putNamespace(sysNamespace);
-        dictionary.putNamespace(appNamespace);
-        DaxCoreTags.init(dictionary);
+        semanticRegistry = new DaxSemanticRegistry(config, namespaceMapper, messageMapper,schemaMapper);
+        semanticRegistry.putNamespace(sysNamespace);
+        semanticRegistry.putNamespace(appNamespace);
+        DaxCoreTags.init(semanticRegistry);
 
 
         handlerRegistry = new DaxHandlerRegistry();
@@ -150,18 +150,18 @@ public class DaxEngine {
         frameCodec = new DaxFrameCodec(config, preambleCodec, messageCodec);
 
 
-        messagePopulator    = new DaxMessagePopulator( tagParser, dictionary);
-        annotationRegister = new DaxMetadataRegistrar(tagParser ,
+        messagePopulator    = new DaxMessagePopulator( tagParser, semanticRegistry);
+        annotationRegister = new DaxAnnotationScanner(tagParser ,
                                                         config,
 //                                                        namespaceMapper,
-                dictionary,
+                semanticRegistry,
                                                         handlerRegistry,
                 tagCodec, dataTypeCodec,
                 dataTypeService
         );
 
         messageConverter     = new DaxMessageConverter(config,//namespaceMapper ,
-                dictionary, tagCodec, dataTypeCodec, valueCodec, dataTypeService);
+                semanticRegistry, tagCodec, dataTypeCodec, valueCodec, dataTypeService);
 
 
 
@@ -170,7 +170,7 @@ public class DaxEngine {
 
 
         messageFactory       = new  DaxMessageFactory(
-                                            dictionary,
+                semanticRegistry,
                                             tagCodec,
                                             headCodec,
                                             bodyCodec,
@@ -218,11 +218,11 @@ public class DaxEngine {
         return messageConverter;
     }
 
-    public DaxSemanticRegistry getDictionary() {
-        if(dictionary == null){
+    public DaxSemanticRegistry getSemanticRegistry() {
+        if(semanticRegistry == null){
             throw new RuntimeException("Dictionary is NOT READY !!!!");
         }
-        return dictionary;
+        return semanticRegistry;
     }
 
     public DaxMessageFactory getMessageFactory() {
@@ -322,7 +322,7 @@ public class DaxEngine {
     public void checkRegister() {
 
         //TODO Develop all references checking
-        dictionary.getTagAttributeMap() .forEach((daxTag, tagDaxPairMap) ->{
+        semanticRegistry.getTagAttributeMap() .forEach((daxTag, tagDaxPairMap) ->{
                 if (tagDaxPairMap.containsKey(ATR_DATA_TYPE)){
                     if (tagDaxPairMap.get(ATR_DATA_TYPE)
                             .getDataTypeValue().equals(DaxDataType.UNKNOWN))
