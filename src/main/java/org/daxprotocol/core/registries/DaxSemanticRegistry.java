@@ -83,7 +83,7 @@ public class DaxSemanticRegistry {
     /*****************************************************
      *  Map of schema referenced by integer
      */
-    DaxBaseRegistry<Integer> schemaDic = new DaxBaseRegistry<>();
+    DaxBaseRegistry<Integer> namespaceRegistry = new DaxBaseRegistry<>();
 
 
 
@@ -205,14 +205,29 @@ public class DaxSemanticRegistry {
     };
 
 
-    public void putTagAtrDataType(DaxTag tag, DaxDataType dataType) { putTagAttribute(tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-    public void putTagAtrSizeMax(DaxTag tag,  Integer max )         { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
-    public void putTagAtrSizeMin(DaxTag tag,  Integer min )         { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
-    public void putTagAtrNullable(DaxTag tag,  Boolean able)        { putTagAttribute(tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
-    public void putTagAtrName(DaxTag tag,  String name)             { if(name!= null && !name.isBlank()){ putTagAttribute(tag, new DaxPairString(ENTRY_NAME,name));}}
-    public void putTagAtrDescription(DaxTag tag, String desc)       { if(desc!= null && !desc.isBlank()){ putTagAttribute(tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
-    public void putTagAtrReadOnly(DaxTag tag, Boolean able)         { putTagAttribute(tag, new DaxPairBoolean(ATR_READONLY ,able));}
-    public void putTagAtrDeprecated(DaxTag tag)                     { putTagAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
+    public void putTagAtrDataType(DaxTag tag, DaxDataType dataType)
+    { putTagAttribute(tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
+
+    public void putTagAtrSizeMax(DaxTag tag,  Integer max )
+    { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
+
+    public void putTagAtrSizeMin(DaxTag tag,  Integer min )
+    { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
+
+    public void putTagAtrNullable(DaxTag tag,  Boolean able)
+    { putTagAttribute(tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
+
+    public void putTagAtrName(DaxTag tag,  String name)
+    { if(name!= null && !name.isBlank()){ putTagAttribute(tag, new DaxPairString(ENTRY_NAME,name));}}
+
+    public void putTagAtrDescription(DaxTag tag, String desc)
+    { if(desc!= null && !desc.isBlank()){ putTagAttribute(tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
+
+    public void putTagAtrReadOnly(DaxTag tag, Boolean able)
+    { putTagAttribute(tag, new DaxPairBoolean(ATR_READONLY ,able));}
+
+    public void putTagAtrDeprecated(DaxTag tag)
+    { putTagAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
 
 
     //*********************
@@ -318,15 +333,15 @@ public class DaxSemanticRegistry {
     }
 
     //------------------------
-    public void putSchema(String symbol,String name, String description){
+    public void putNamespace(String symbol,String name, String description){
         int refId = schemaMapper.getReferenceId(name);
-        schemaDic.putAttribute(refId,new DaxPairString(ENTRY_SYMBOL,symbol));
-        schemaDic.putAttribute(refId,new DaxPairString(ENTRY_NAME,name));
-        schemaDic.putAttribute(refId,new DaxPairString(ENTRY_DESCRIPTION,description));
+        namespaceRegistry.putAttribute(refId,new DaxPairString(ENTRY_SYMBOL,symbol));
+        namespaceRegistry.putAttribute(refId,new DaxPairString(ENTRY_NAME,name));
+        namespaceRegistry.putAttribute(refId,new DaxPairString(ENTRY_DESCRIPTION,description));
     }
 
     public DaxBaseRegistry<Integer> getSchemaDictionary (){
-        return schemaDic;
+        return namespaceRegistry;
     }
     ///------------------------------------
     public void registerClass(Class<?> clazz, DaxTag tag){

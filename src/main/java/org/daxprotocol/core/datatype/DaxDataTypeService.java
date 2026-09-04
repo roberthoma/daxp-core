@@ -40,6 +40,12 @@ public class DaxDataTypeService {
     public DaxDataTypeService() {
     }
     //--------------------------------------------------------------------------------------
+
+    public boolean isCollection(Object object){
+        return decodeFromObject(object).equals(DaxDataType.COLLECTION) ;
+    }
+    //--------------------------------------------------------------------------------------
+
     public boolean isCollection(Class<?> clazz) {
 
 
@@ -204,6 +210,10 @@ public class DaxDataTypeService {
      }
 
        //--------------------------------------------------------------------------------------
+       public boolean isMap(Object object) {
+           DaxCollectionInfo info = getCollectionInfo(object.getClass());
 
+           return info.isColHasKey && !info.isJavaEnum;
+       }
 
 }

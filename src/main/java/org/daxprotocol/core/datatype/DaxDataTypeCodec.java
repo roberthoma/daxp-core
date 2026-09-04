@@ -88,7 +88,6 @@ public class DaxDataTypeCodec {
         return encode(clazz, null);
     }
     //--------------------------------------------------------------------------------------
-
     public Set<DaxPair<?>> encode(Class<?> clazz, Type generitType){
 
         if (dataTypeService.isCollection(clazz)){
@@ -107,32 +106,10 @@ public class DaxDataTypeCodec {
         return dataTypeService.decodeClass(obj.getClass());
     }
     //--------------------------------------------------------------------------------------
-    public boolean isCollection(Object object){
-        return dataTypeService.decodeFromObject(object).equals(DaxDataType.COLLECTION) ;
-    }
-    //--------------------------------------------------------------------------------------
-    public boolean isCollection(Class<?> clazz){
-        return dataTypeService.decodeClass(clazz).equals(DaxDataType.COLLECTION) ;
-    }
-
-    //--------------------------------------------------------------------------------------
-    public boolean isPrimitiveType(Object obj){
-        return  dataTypeService.isPrimitiveType(obj.getClass());
-    }
-
-    //--------------------------------------------------------------------------------------
-
-
     public Map<DaxTag, DaxPair<?>> encode(DaxDataType daxDataType) {
         throw new RuntimeException("Map<DaxTag, DaxPair<?>> encode  NOT IMPLEMENTED JED");
     }
-
-    public boolean isMap(Object object) {
-        DaxCollectionInfo info = dataTypeService.getCollectionInfo(object.getClass());
-
-        return info.isColHasKey && !info.isJavaEnum;
-    }
-    ///--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
     public Set<DaxPair<?>> collectionEncode(Class<?> clazz, Type generitType){
         Set< DaxPair<?>> map = new HashSet<>();
         DaxCollectionInfo colInfo = dataTypeService.getCollectionInfo(clazz);

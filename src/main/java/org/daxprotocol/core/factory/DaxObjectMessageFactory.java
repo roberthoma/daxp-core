@@ -25,6 +25,7 @@ import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
+import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
@@ -56,6 +57,7 @@ public class DaxObjectMessageFactory {
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
     private final DaxSemanticRegistry semanticRegistry;
+    private final DaxDataTypeService dataTypeService;
 
     private record AnnotatedField(Field field, DaxTag tag) {}
     private record AnnotatedMethod(Method method, DaxTag tag) {}
@@ -66,11 +68,12 @@ public class DaxObjectMessageFactory {
 
     ///----------------------------------------------------------------------------------------
     public DaxObjectMessageFactory(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
-    ,  DaxSemanticRegistry semanticRegistry) {
+    ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService) {
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
         this.semanticRegistry = semanticRegistry;
+        this.dataTypeService  = dataTypeService;
     }
     ///----------------------------------------------------------------------------------------
     @SuppressWarnings("unchecked")
@@ -117,12 +120,12 @@ public class DaxObjectMessageFactory {
              System.out.println("PRIMITIVE ");
          }
 
-        if (dataTypeCodec.isPrimitiveType(value)) {
+        if (dataTypeService.isPrimitiveType(value.getClass())) {
             body.putPair(blockIdx, valueCodec.encodeToPairs(tag, value));
             return;
         }
 
-        if (dataTypeCodec.isCollection(value)) {
+        if (dataTypeService.isCollection(value)) {
             processCollection(blockIdx, tag, body, value, reqTagSet, ownerTag);
             return;
         }
@@ -231,7 +234,7 @@ public class DaxObjectMessageFactory {
     {
         logger.trace("begin processCollection block {}, tag {}", blockIdx, tag.getTagId());
 
-        if (dataTypeCodec.isMap(object)) {
+        if (dataTypeService.isMap(object)) {
             processMapBlock(blockIdx, tag, body, (Map<?, ?>) object, reqTagSet, ownerTag);
         } else if (object instanceof Iterable<?> iterable) {
             processIterableBlock(blockIdx, tag, body, iterable, reqTagSet, ownerTag);
@@ -306,7 +309,7 @@ public class DaxObjectMessageFactory {
             Set<DaxTag> reqTagSet,
             DaxTag ownerTag
     ) {
-        if (dataTypeCodec.isPrimitiveType(element)) {
+        if (dataTypeService.isPrimitiveType(element.getClass())) {
             body.putPair(nestedIdx, valueCodec.encodeToPairs(collectionTag, element));
             body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID, ownerTag));
             body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG, tag));
@@ -354,7 +357,7 @@ public class DaxObjectMessageFactory {
         StringBuilder sb = new StringBuilder();
         sb.append(DaxCoreConstants.SEPARATOR_START_OF_TEXT);
 
-        if (dataTypeCodec.isPrimitiveType(first)) {
+        if (dataTypeService.isPrimitiveType(first.getClass())) {
             // Primitive Collection Mode: Single column without header
             appendPrimitiveRecord(sb, first);
             while (iterator.hasNext()) {

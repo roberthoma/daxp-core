@@ -24,6 +24,7 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.exceptions.DaxException;
+import org.daxprotocol.core.factory.DaxObjectMessageFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.namespace.DaxNamespaceFactory;
 import org.daxprotocol.core.datatype.DaxDataType;
@@ -97,6 +98,7 @@ public class DaxEngine {
     private final DaxDataTypeCodec dataTypeCodec;
 
     private  final DaxValueCodec valueCodec;
+    private  final DaxObjectMessageFactory objectMessageFactory; // new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
 
     //TODO move tagParser to tagCodec
 
@@ -135,6 +137,7 @@ public class DaxEngine {
 
         handlerRegistry = new DaxHandlerRegistry();
 
+        objectMessageFactory =  new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, semanticRegistry, dataTypeService);
 
         pairCodec     = new DaxPairCodec    (tagCodec);
         preambleCodec = new DaxPreambleCodec( namespaceMapper);
@@ -176,7 +179,8 @@ public class DaxEngine {
                                             bodyCodec,
                                             trailerCodec,
                                             valueCodec,
-                                            dataTypeCodec
+                                            dataTypeCodec,
+                objectMessageFactory
                                     );
 
 

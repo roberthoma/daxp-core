@@ -61,13 +61,14 @@ public class DaxMessageFactory {
             DaxBodyCodec bodyCodec,
             DaxTrailerCodec trailerCodec,
             DaxValueCodec valueCodec,
-            DaxDataTypeCodec dataTypeCodec
+            DaxDataTypeCodec dataTypeCodec,
+            DaxObjectMessageFactory objectService
     ) {
         this.headCodec = headCodec;
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
         this.dicMessageFactory =  new DaxDataModelMessageFactory(tagCodec, dataModel);
-        this.objectService     =  new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
+        this.objectService     =  objectService ;// new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
     }
 
     public DaxMessage createDictionaryReq() {
