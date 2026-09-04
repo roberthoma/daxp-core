@@ -98,7 +98,7 @@ public class DaxMessagePopulator {
 
 
 
-        if(blockType.equals(DaxBlockType.BLOCK_TAG)){
+        if(blockType.equals(DaxBlockType.BLOCK_TYPE)){
 
             DaxTag tag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgnamespaceId

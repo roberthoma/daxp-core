@@ -10,7 +10,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ FIELD, TYPE })
+@Target({  TYPE })
 @Documented
 public @interface DaxpManifest {
 //    String value() default "";      // Schema symbol

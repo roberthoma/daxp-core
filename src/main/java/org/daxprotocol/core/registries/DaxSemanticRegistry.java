@@ -361,7 +361,7 @@ public class DaxSemanticRegistry {
     }
 
     ///--------------------------------------
-    /// TMP. move to service
+    /// TMP. move to DaxDataTypeService
     public boolean isPrimitiveType(DaxTag tag){
         boolean isPrimitiveType = false;
         try {

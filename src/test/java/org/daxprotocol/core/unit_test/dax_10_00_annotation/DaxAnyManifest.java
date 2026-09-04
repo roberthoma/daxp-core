@@ -6,8 +6,10 @@ import org.daxprotocol.core.annotation.DaxpNamespace;
 @DaxpManifest
 public class DaxAnyManifest {
 
+//todo powiązać z przykładowym application_BASE.properties
+
 
     @DaxpNamespace(name = "utNamespace" ,description = "Namespace Ut")
-    public static final String NAMESPACE_TEST =   "NS_UT";
+    public static final String NAMESPACE_TEST =   "NS_UT";    // ALIAS
 
 }

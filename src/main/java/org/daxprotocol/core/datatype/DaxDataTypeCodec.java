@@ -107,10 +107,10 @@ public class DaxDataTypeCodec {
     }
     //--------------------------------------------------------------------------------------
     public Map<DaxTag, DaxPair<?>> encode(DaxDataType daxDataType) {
-        throw new RuntimeException("Map<DaxTag, DaxPair<?>> encode  NOT IMPLEMENTED JED");
+        throw new RuntimeException("Map<DaxTag, DaxPair<?>> encode  NOT IMPLEMENTED JET");
     }
     //--------------------------------------------------------------------------------------
-    public Set<DaxPair<?>> collectionEncode(Class<?> clazz, Type generitType){
+    private Set<DaxPair<?>> collectionEncode(Class<?> clazz, Type generitType){
         Set< DaxPair<?>> map = new HashSet<>();
         DaxCollectionInfo colInfo = dataTypeService.getCollectionInfo(clazz);
 
@@ -125,8 +125,8 @@ public class DaxDataTypeCodec {
 
         //**************************************
 
-        DaxDataType valueDataType = DaxDataType.NONE;
-        DaxDataType keyDataType = DaxDataType.NONE;
+        DaxDataType valueDataType ; //= DaxDataType.NONE;
+        DaxDataType keyDataType ; //= DaxDataType.NONE;
 
         if (generitType instanceof ParameterizedType pt) {
 

@@ -49,11 +49,11 @@ public enum DaxDataType {
     DURATION("DUR", "Time interval/duration", Duration.class,true),
 
     // 3. Specialized Strings
-    JSON("JSON", "JavaScript Object Notation structured string", String.class, true),
-    XML("XML", "eXtensible Markup Language structured string", String.class, true),
-    CSV("CSV", "Comma Separated Values stream", String.class, true),
-    REGEXP("REGX", "Regular expression pattern", String.class, true),
-    EMAIL("EML", "Email address validation format", String.class, true),
+    JSON("JSON", "JavaScript Object Notation structured string", String.class, false),
+    XML("XML", "eXtensible Markup Language structured string", String.class, false),
+    CSV("CSV", "Comma Separated Values stream", String.class, false),
+    REGEXP("REGX", "Regular expression pattern", String.class, false),
+    EMAIL("EML", "Email address validation format", String.class, false),
 
     // 4. International Standards
 //    COUNTRY("CNR", "ISO 3166 Country code (2 or 3 chars)"), //, String.class),

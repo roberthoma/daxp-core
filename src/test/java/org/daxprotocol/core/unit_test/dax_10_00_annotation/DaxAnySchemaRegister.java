@@ -8,7 +8,7 @@ import org.daxprotocol.core.annotation.DaxpTag;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 
-@DaxpRegistry(DaxAnyManifest.NAMESPACE_TEST)
+@DaxpRegistry(DaxAnyManifest.NAMESPACE_TEST)  //Default namespaces alias
 public class DaxAnySchemaRegister {
 
     @DaxpTag( description = "Base Entity ")
@@ -49,14 +49,15 @@ public class DaxAnySchemaRegister {
     public static final int TEST_ENUM_VALUE_5032 = 5032;
 
 
-    @DaxpTag(description = "Test enum", daxDataType = DaxDataType.COLLECTION, clazz = DaxAnyTestEnum.class)
+    @DaxpTag(description = "Test enum", daxDataType = DaxDataType.COLLECTION) //, clazz = DaxAnyTestEnum.class)
     public static final  int TEST_COLLECTION_ENUM_6001 = 6001;
 
     @DaxpTag(description = "Test dic enum", daxDataType = DaxDataType.COLLECTION)
     public static final  int TEST_COLLECTION_DIC_ENUM_6002 = 6002;
 
 
-    @DaxpTag( description = "SUB  ENTITY 8000 ", daxDataType = DaxDataType.ENTITY)
+//    @DaxpTag( description = "SUB  ENTITY 8000 ", daxDataType = DaxDataType.ENTITY)
+    @DaxpTag( description = "SUB  ENTITY 8000 ")
     public static final int TEST_TAG_SUB_ENTITY_8000 = 8000;
 
 
