@@ -35,12 +35,8 @@ import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.registries.DaxAnnotationScanner;
-import org.daxprotocol.core.registries.DaxMessagePopulator;
-import org.daxprotocol.core.registries.DaxHandlerRegistry;
+import org.daxprotocol.core.registries.*;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
-import org.daxprotocol.core.registries.DaxMessageConverter;
-import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.namespace.DaxNamespace;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
@@ -56,49 +52,29 @@ import static org.daxprotocol.core.application.DaxCoreTags.ATR_DATA_TYPE;
 public class DaxEngine {
     private static final Logger logger = LoggerFactory.getLogger(DaxEngine.class);
     private final DaxConfig config;
-
     private final DaxPreambleCodec preambleCodec;
-
     private final DaxMessageCodec messageCodec;
-
     private final DaxFrameCodec frameCodec;
-
     private final DaxMessageConverter messageConverter;
-
     private final DaxSemanticRegistry semanticRegistry;
-
     private final DaxPreambleFactory preambleFactory;
-
     private final DaxMessageFactory messageFactory;
-
     private final DaxNamespaceMapper namespaceMapper;
-
     private final DaxMessageMapper messageMapper;
-
     private final DaxSchemaMapper schemaMapper;
-
     private final DaxTagCodec tagCodec;
-
     private final DaxPairCodec pairCodec;
-
-    private final  DaxTagParser tagParser ;
-
-    private final  DaxFrameParser frameParser ;
-
+    private final DaxTagParser tagParser ;
+    private final DaxFrameParser frameParser ;
     private final DaxHandlerRegistry handlerRegistry;
-
     private final DaxMessagePopulator messagePopulator;
-
-    private final DaxAnnotationScanner annotationRegister;
-
+    private final DaxAnnotationScanner annotationScanner;
     private final DaxDispatcher dispatcher;
-
-
+    private final DaxSemanticCollector semanticCollector;
     private final DaxDataTypeService dataTypeService;
     private final DaxDataTypeCodec dataTypeCodec;
-
-    private  final DaxValueCodec valueCodec;
-    private  final DaxObjectMessageFactory objectMessageFactory; // new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
+    private final DaxValueCodec valueCodec;
+    private final DaxObjectMessageFactory objectMessageFactory; // new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
 
     //TODO move tagParser to tagCodec
 
@@ -135,6 +111,9 @@ public class DaxEngine {
         DaxCoreTags.init(semanticRegistry);
 
 
+        semanticCollector = new DaxSemanticCollector(semanticRegistry, dataTypeService);
+
+
         handlerRegistry = new DaxHandlerRegistry();
 
         objectMessageFactory =  new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, semanticRegistry, dataTypeService);
@@ -154,13 +133,14 @@ public class DaxEngine {
 
 
         messagePopulator    = new DaxMessagePopulator( tagParser, semanticRegistry);
-        annotationRegister = new DaxAnnotationScanner(tagParser ,
+        annotationScanner = new DaxAnnotationScanner(tagParser ,
                                                         config,
 //                                                        namespaceMapper,
                 semanticRegistry,
                                                         handlerRegistry,
                 tagCodec, dataTypeCodec,
-                dataTypeService
+                dataTypeService,
+                semanticCollector
         );
 
         messageConverter     = new DaxMessageConverter(config,//namespaceMapper ,
@@ -192,7 +172,7 @@ public class DaxEngine {
 
         //-----------------
         //Registration
-        annotationRegister.scanAndRegister(DaxCoreController.class);
+        annotationScanner.scanAndRegister(DaxCoreController.class);
         handlerRegistry.registerCtrl(new DaxCoreController(messageFactory));
         dispatcher = new DaxDispatcher(preambleFactory);
 
@@ -250,7 +230,7 @@ public class DaxEngine {
     }
 
     public void register(Class<?> clazz) {
-        annotationRegister.scanAndRegister(clazz);
+        annotationScanner.scanAndRegister(clazz);
     }
 
     public DaxHandlerRegistry getHandlerRegistry() {

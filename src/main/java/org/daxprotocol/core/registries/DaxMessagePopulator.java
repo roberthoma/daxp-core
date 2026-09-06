@@ -18,10 +18,10 @@ import java.util.Map;
 //TODO DaxMessagePopulator joint  with message codec
 public class DaxMessagePopulator {
     DaxTagParser tagParser;
-    DaxSemanticRegistry daxDic;
-    public DaxMessagePopulator(DaxTagParser tagParser, DaxSemanticRegistry daxDic){
+    DaxSemanticRegistry semanticRegistry;
+    public DaxMessagePopulator(DaxTagParser tagParser, DaxSemanticRegistry semanticRegistry){
         this.tagParser = tagParser;
-        this.daxDic =  daxDic;
+        this.semanticRegistry = semanticRegistry;
     }
 
     private void populateFromMsgBlock(int msgNamespaceId , Map<DaxTag, DaxPair<?>> blockPairMap) {
@@ -55,7 +55,7 @@ public class DaxMessagePopulator {
 
             }
 
-            daxDic.putMsgItem(msgItem);
+            semanticRegistry.putMsgItem(msgItem);
 
             return;
         }
@@ -104,8 +104,8 @@ public class DaxMessagePopulator {
                     blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgNamespaceId
             ) ;
 
-            daxDic.putTag( tag,  DaxTagDestiny.TAG);
-            daxDic.putTag( tag,  DaxTagDestiny.TAG);
+            semanticRegistry.putTag( tag,  DaxTagDestiny.TAG);
+            semanticRegistry.putTag( tag,  DaxTagDestiny.TAG);
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 
@@ -131,31 +131,31 @@ public class DaxMessagePopulator {
 */
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_NULLABLE)) {
-                daxDic.putTagAtrNullable(tag,
+                semanticRegistry.putTagAtrNullable(tag,
                         blockPairMap.get(DaxCoreTags.ATR_NULLABLE).getCharValue()=='Y'
                 );
             }
 
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_SIZE_MAX)) {
-                daxDic.putTagAtrSizeMax(tag,
+                semanticRegistry.putTagAtrSizeMax(tag,
                         blockPairMap.get(DaxCoreTags.ATR_SIZE_MAX).getIntegerValue()
                 );
             }
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_SIZE_MIN)) {
-                daxDic.putTagAtrSizeMin(tag,
+                semanticRegistry.putTagAtrSizeMin(tag,
                         blockPairMap.get(DaxCoreTags.ATR_SIZE_MIN).getIntegerValue()
                 );
             }
             if(blockPairMap.containsKey(DaxCoreTags.ATR_READONLY)) {
-                daxDic.putTagAtrReadOnly(tag,
+                semanticRegistry.putTagAtrReadOnly(tag,
                         blockPairMap.get(DaxCoreTags.ATR_READONLY).getBooleanValue()
                 );
             }
 
             if(blockPairMap.containsKey(DaxCoreTags.COLLECTION_ID)) {
-                daxDic.putCollectionType(tag,
+                semanticRegistry.putCollectionType(tag,
                         tagParser.parseDaxTag(blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue(), msgNamespaceId)
                 );
             }
@@ -176,10 +176,11 @@ public class DaxMessagePopulator {
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
 
-            daxDic.putTag(groupTag, DaxTagDestiny.ENTITY);
+            semanticRegistry.putTag(groupTag, DaxTagDestiny.ENTITY);
+
             String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
             List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgNamespaceId);
-            tagList.forEach(tag -> daxDic.putEntityField(groupTag, tag));
+            tagList.forEach(tag -> semanticRegistry.putEntityField(groupTag, tag));
             return;
         }
 

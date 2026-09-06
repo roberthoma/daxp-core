@@ -25,7 +25,7 @@ import org.junit.jupiter.api.*;
 public class DaxConfigBaseTest {
     protected static DaxEngine daxEngine;
     protected static int appNamespaceId;
-    protected static DaxSemanticRegistry dictionary;
+    protected static DaxSemanticRegistry semanticRegistry;
     protected static DaxNamespaceMapper namespaceMapper;
     protected static DaxMessageCodec messageCodec;
     protected static DaxPreambleCodec preambleCodec;
@@ -52,7 +52,7 @@ public class DaxConfigBaseTest {
                     .createProperties("application_BASE.properties"));
 
             appNamespaceId = daxEngine.getConfig().getAppNamespaceId();
-            dictionary      = daxEngine.getSemanticRegistry();
+            semanticRegistry = daxEngine.getSemanticRegistry();
             namespaceMapper   = daxEngine.getnamespaceMapper();
             messageCodec    = daxEngine.getMessageCodec();
             preambleCodec   = daxEngine.getPreambleCodec();
@@ -82,8 +82,9 @@ public class DaxConfigBaseTest {
             daxEngine.register(DaxAnyTestEnum.class);
 
             daxEngine.register(DaxpControllerTest.class);
-            daxEngine.register(DaxSubEntity.class);
             daxEngine.register(DaxAnySchemaRegister.class);
+            daxEngine.register(DaxSubEntity.class);
+
             daxEngine.register(DaxAnyTestEntity.class);
             handlerRegistry.registerCtrl(new DaxpControllerTest());  //Autowire in spring
 

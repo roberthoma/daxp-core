@@ -63,6 +63,7 @@ public class DaxAnnotationScanner {
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxDataTypeService dataTypeService;
+    private final DaxSemanticCollector semanticCollector;
 
     /**
      * Constructs a new scanner with necessary protocol services and registries.
@@ -74,7 +75,8 @@ public class DaxAnnotationScanner {
             DaxHandlerRegistry handlerRegistry,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec,
-            DaxDataTypeService dataTypeService
+            DaxDataTypeService dataTypeService,
+            DaxSemanticCollector semanticCollector
     ) {
         this.tagParser = tagParser;
         this.config = config;
@@ -83,6 +85,7 @@ public class DaxAnnotationScanner {
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.dataTypeService = dataTypeService;
+        this.semanticCollector = semanticCollector;
     }
 
     // =========================================================================
@@ -96,7 +99,7 @@ public class DaxAnnotationScanner {
      * @param clazz Target class to scan.
      */
     public void scanAndRegister(Class<?> clazz) {
-        try {
+     //   try {
 
             if (semanticRegistry.isClassRegistered(clazz)) {
               return;
@@ -121,9 +124,9 @@ public class DaxAnnotationScanner {
             if (clazz.isAnnotationPresent(DaxpController.class)) {
                 registerController(clazz);
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to scan and register class: " + clazz.getName(), e);
-        }
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to scan and register class: " + clazz.getName(), e);
+//        }
     }
 
     /**
@@ -134,6 +137,7 @@ public class DaxAnnotationScanner {
      * @param field            Class field being inspected.
      * @param tag              DAXP Tag mapped to the field.
      */
+    //todo add Entity information to validation
     private void validationRegister(DaxSemanticRegistry semanticRegistry, Field field, DaxTag tag) {
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName().startsWith("jakarta.validation"));
@@ -201,9 +205,9 @@ public class DaxAnnotationScanner {
                 }
 
             }
-          //  else {
+            else {
                 semanticRegistry.putTagAtrDataType(tag, dataTypeService.decodeClass(field.getType()));
-          //  }
+           }
 
         }
 
@@ -225,7 +229,7 @@ public class DaxAnnotationScanner {
     /**
      * Registers methods annotated with {@link DaxpValue}.
      */
-    private void registerMethodDaxpValue(DaxTag entityTag, Method method) {
+    private void registerDaxpValue(DaxTag entityTag, Method method) {
         DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
         if (methodAnn == null) {
             return;
@@ -334,6 +338,9 @@ public class DaxAnnotationScanner {
 
      */
 
+
+
+
     private void registerDaxpTag(Field field) {
         DaxpTag tagAnn = field.getAnnotation(DaxpTag.class);
         field.setAccessible(true);
@@ -343,13 +350,21 @@ public class DaxAnnotationScanner {
         // użycie taga w encji jest na jakiś typ wówczas zapisz typ danych przy tagu (jeżeli był NONE)
         // jęzeli w innym miejscu użycie taga o innym type to wyjątek
 
-        semanticRegistry.putTag(tag, DaxTagDestiny.TAG);
-        semanticRegistry.putTagAtrDescription(tag, tagAnn.description());
+        //sprawdzić typ danych w semanticRegistry jeżeli nie istanie to wrowadzić uncnow
+
+
+
+
+
+//        semanticRegistry.putTag(tag, DaxTagDestiny.TAG);
+//        semanticRegistry.putTagAtrDescription(tag, tagAnn.description());
 
         if (tagAnn.readOnly()) {
             semanticRegistry.putTagAtrReadOnly(tag, true);
         }
 
+
+/*
         semanticRegistry.putTagAtrDataType(tag, tagAnn.daxDataType());
 
         if (!dataTypeService.isPrimitiveType(tagAnn.clazz())) {
@@ -364,8 +379,25 @@ public class DaxAnnotationScanner {
                 )));
             }
         }
+*/
+
+        if ( !tagAnn.daxDataType().equals(DaxDataType.UNKNOWN)
+           &&!tagAnn.clazz().equals(Void.class)){
+            throw new RuntimeException("MISHMASH  tag registration " + tag.getTagId());
+        }
+
+//        if (!tagAnn.daxDataType().equals(DaxDataType.UNKNOWN)){
+//
+//        }
+        if (!tagAnn.clazz().equals(Void.class)){
+            semanticCollector.registerTag(tag, tagAnn.clazz() ,tagAnn.description());
+        }
+        else {
+            semanticCollector.registerTag(tag, tagAnn.daxDataType() ,tagAnn.description());
+        }
 
         validationRegister(semanticRegistry, field, tag);
+
     }
 
     /**
@@ -457,7 +489,7 @@ public class DaxAnnotationScanner {
         }
 
         for (Method method : clazz.getDeclaredMethods()) {
-            registerMethodDaxpValue(entityTag, method);
+            registerDaxpValue(entityTag, method);
         }
 
         semanticRegistry.registerClass(clazz, entityTag);

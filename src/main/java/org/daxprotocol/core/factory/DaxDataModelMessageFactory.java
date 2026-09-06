@@ -3,6 +3,7 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.codec.DaxTagCodec;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.namespace.DaxNamespace;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.registries.DaxBaseRegistry;
@@ -204,17 +205,30 @@ public class DaxDataModelMessageFactory {
 
 
         dictionary.getEntityEntryAttributes()
-                .forEach((entityTag, baseDic) ->
-                        entityEntryToBlock(message.getBody(),entityTag, baseDic ));
+                .forEach((entityTag, baseDic) ->{
+                        entityEntryToBlock(message.getBody(),entityTag, baseDic );});
 
 
 
-        dictionary.getTagDestinyMap().forEach((tag, destiny) -> {
+        dictionary.getTagsByDataType(DaxDataType.ENTITY).forEach(tag ->
+                System.out.println("A > EEEEEEEEEENTIYi " + tag.getTagId())
+
+//                putEntityToBody(message.getBody(), tag)
+        );
+
+
+
+dictionary.getTagDestinyMap().forEach((tag, destiny) -> {
             if (DaxTagDestiny.ENTITY.equals(destiny)) {
+                System.out.println("B > EEEEEEEEEENTIYi " + tag.getTagId());
                 // This is safe even if destiny is null
                 putEntityToBody(message.getBody(), tag);
             }
         });
+
+
+
+
 
 //        dictionary.getEntityMap().forEach((tag, entity) ->
 //                putEntityToBody(message.getBody(), entity, dictionary.getEntityFieldsMap().get(entity.getTag())));

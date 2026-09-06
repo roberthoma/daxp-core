@@ -20,10 +20,13 @@
 
 package org.daxprotocol.core.registries;
 
+import org.daxprotocol.core.application.DaxCoreTags;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.tool.DaxCollectionTool;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,4 +50,31 @@ public class DaxBaseRegistry<T> {
     }
 
 
+
+    public List<T> getKeysByDataType(DaxDataType targetType) {
+        return attributMap.entrySet().stream()
+                .filter(entry -> {
+                    DaxPair<?> typePair = entry.getValue().get(DaxCoreTags.ATR_DATA_TYPE);
+                    return typePair != null && typePair.getDataTypeValue() == targetType;
+                })
+                .map(Map.Entry::getKey)
+                .toList();
+    }
+    public boolean containsKey(T key){
+        return attributMap.containsKey(key);
+    }
+
 }
+
+
+/*
+* 10:54:44.425 [Test worker] ERROR DaxEngine -  TAG : 5100  UNKNOWN Type
+10:54:44.426 [Test worker] ERROR DaxEngine -  TAG : 8000  UNKNOWN Type
+10:54:44.426 [Test worker] ERROR DaxEngine -  TAG : FIX:5050  UNKNOWN Type
+5055
+5000
+5077
+5078
+
+* */
+

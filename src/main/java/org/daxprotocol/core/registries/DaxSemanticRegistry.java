@@ -33,10 +33,7 @@ import org.daxprotocol.core.tool.DaxCollectionTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
@@ -56,10 +53,10 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxSemanticRegistry {
     private static final Logger logger = LoggerFactory.getLogger(DaxSemanticRegistry.class);
 
-    DaxConfig        config;
-    DaxNamespaceMapper namespaceMapper;
-    DaxMessageMapper messageMapper;
-    DaxSchemaMapper  schemaMapper;
+    DaxConfig           config;
+    DaxNamespaceMapper  namespaceMapper;
+    DaxMessageMapper    messageMapper;
+    DaxSchemaMapper     schemaMapper;
 
     /*****************************************************
      * Main SET of tags
@@ -360,7 +357,7 @@ public class DaxSemanticRegistry {
 
     }
 
-    ///--------------------------------------
+    ///---------------------------------------------------------------------------------------
     /// TMP. move to DaxDataTypeService
     public boolean isPrimitiveType(DaxTag tag){
         boolean isPrimitiveType = false;
@@ -396,5 +393,28 @@ public class DaxSemanticRegistry {
         return false;
     }
 
+    public List<DaxTag> getTagsByDataType(DaxDataType targetType) {
+        return tagAttributes.getKeysByDataType(targetType);
+    }
 
+
+    public boolean isTagRegistered(DaxTag tag) {
+        return tagAttributes.containsKey(tag);
+    }
+
+    public DaxDataType getTagDataType(DaxTag tag) {
+        var attributes = tagAttributes.getAttributMap().get(tag);
+
+        if (attributes == null) {
+            return DaxDataType.UNKNOWN;
+        }
+
+        var attribute = attributes.get(ATR_DATA_TYPE);
+
+        if (attribute == null || attribute.getDataTypeValue() == null) {
+            return DaxDataType.UNKNOWN;
+        }
+
+        return attribute.getDataTypeValue();
+    }
 }

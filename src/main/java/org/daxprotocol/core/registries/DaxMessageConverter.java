@@ -43,20 +43,20 @@ public class DaxMessageConverter {
     private static final Logger logger = LoggerFactory.getLogger(DaxMessageConverter.class);
 
     private final DaxConfig config;
-    private final DaxSemanticRegistry dictionary;
+    private final DaxSemanticRegistry semanticRegistry;
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
     private final DaxDataTypeService daxDataTypeService;
 
     public DaxMessageConverter(DaxConfig config,
-            DaxSemanticRegistry dictionary,
+            DaxSemanticRegistry semanticRegistry,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec,
             DaxValueCodec valueCodec,
             DaxDataTypeService daxDataTypeService) {
         this.config = config;
-        this.dictionary = dictionary;
+        this.semanticRegistry = semanticRegistry;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;

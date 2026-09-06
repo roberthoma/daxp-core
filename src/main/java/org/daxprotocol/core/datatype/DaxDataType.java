@@ -69,7 +69,7 @@ public enum DaxDataType {
 //
     QUANTITY("QNT", "Quantity",Integer.class,true),
 //    BINARY("RAW", "Quantity",byte[].class), // ?????????
-    NONE("NONE","None, not try detected",void.class, false),
+//    NONE("NONE","None, not try detected",void.class, false),
 //    BASE64("B64", "Base 64"),  ///maybe byte[]
     UNKNOWN("UNKNOWN", "Unknown", void.class, false);  ///maybe byte[]
 

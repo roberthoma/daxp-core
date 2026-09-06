@@ -1,4 +1,4 @@
-package org.daxprotocol.core.unit_test.dax_00_02_dictionary;
+package org.daxprotocol.core.unit_test.dax_00_02_SemanticRegistry;
 
 import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
