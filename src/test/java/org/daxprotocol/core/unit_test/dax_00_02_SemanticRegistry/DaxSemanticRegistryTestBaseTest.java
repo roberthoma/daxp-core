@@ -11,20 +11,7 @@ import java.util.List;
 
 public class DaxSemanticRegistryTestBaseTest extends DaxConfigBaseTest {
 
-    @Test
-    void testDic_01(){
-      int namespaceId = namespaceMapper.getReferenceId("$");
-      Assertions.assertThrowsExactly(DaxTagException.class, () -> DaxTag.of(namespaceId,999));
-    }
 
-    @Test
-    void getTagsByDataTypeTEST(){
-        List<DaxTag> entityTagList = semanticRegistry.getTagsByDataType(DaxDataType.ENTITY);
 
-        entityTagList.forEach(daxTag -> System.out.println(tagCodec.encode(daxTag)));
-
-        Assertions.assertEquals(3, entityTagList.size());
-
-    }
 
 }

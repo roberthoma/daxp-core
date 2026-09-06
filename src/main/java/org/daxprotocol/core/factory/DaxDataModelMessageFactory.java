@@ -35,7 +35,7 @@ public class DaxDataModelMessageFactory {
 
 
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
-        body.nextBlock(DaxBlockType.BLOCK_DEFINE);
+        body.nextBlock(DaxBlockType.BLOCK_TYPES);
         body.putPair(new DaxPairTag(ENTRY_TAG,tag));
 
         map.forEach((atrTag, pair) -> body.putPair(pair));

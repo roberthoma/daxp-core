@@ -205,6 +205,9 @@ public class DaxSemanticRegistry {
     public void putTagAtrDataType(DaxTag tag, DaxDataType dataType)
     { putTagAttribute(tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
 
+    public void putRefTagAtrDataType(DaxTag tag, DaxDataType dataType)
+    { putTagAttribute(tag, new DaxPairDataType(ATR_REF_TAG_ID,dataType));}
+
     public void putTagAtrSizeMax(DaxTag tag,  Integer max )
     { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
 
@@ -372,9 +375,9 @@ public class DaxSemanticRegistry {
             return isPrimitiveType;
         }
 
-        if (atrMap.containsKey(ATR_REF_DATA_TYPE))
+        if (atrMap.containsKey(ATR_REF_TAG_ID))
         {
-            var refTag= atrMap.get(ATR_REF_DATA_TYPE).getValue();
+            var refTag= atrMap.get(ATR_REF_TAG_ID).getValue();
 
             var atrRefMap = tagAttributes.getAttributMap()
                     .get(refTag);

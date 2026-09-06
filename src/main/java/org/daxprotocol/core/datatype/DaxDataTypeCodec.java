@@ -139,11 +139,14 @@ public class DaxDataTypeCodec {
                 keyDataType   = dataTypeService.decodeClass( args[0]);
                 valueDataType = dataTypeService.decodeClass( args[1]);
 
-                map.add(new DaxPairDataType(COLLECTION_KEY_DATA_TYPE,keyDataType));
+
                 if(keyDataType.equals(DaxDataType.ENTITY))
                 {
                     DaxpEntity entAnn =  dataTypeService.castReflectTypeToClass(args[0]).getAnnotation(DaxpEntity.class);
                     map.add(new DaxPairTag(COLLECTION_KEY_TYPE_REF_ID,tagCodec.decode(entAnn)));
+                }
+                else {
+                    map.add(new DaxPairDataType(COLLECTION_KEY_DATA_TYPE,keyDataType));
                 }
 
 
@@ -166,8 +169,8 @@ public class DaxDataTypeCodec {
                     }
                 }
 
-
-            }else {
+            }
+            else {
                 valueDataType = dataTypeService.decodeClass( args[0]);
 
                 if(valueDataType.equals(DaxDataType.ENTITY))

@@ -39,7 +39,7 @@ public class DaxAnySchemaRegister {
     public static final String CTX_FIX= "FIX";
 
     @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class, namespace = CTX_FIX)
-    public static final int TEST_CTX_TAG_String            = 5050;
+    public static final int TEST_CTX_TAG_String = 5050;
 
 
     @DaxpTag( description = "Other CTX Test TAG String", clazz = String.class)
@@ -61,7 +61,7 @@ public class DaxAnySchemaRegister {
     public static final int TEST_TAG_SUB_ENTITY_8000 = 8000;
 
 
-    @DaxpTag( description = "VALUE type SUB ENTITY 8000", daxDataType = DaxDataType.ENTITY)
+    @DaxpTag( description = "VALUE type SUB ENTITY 8000") //, daxDataType = DaxDataType.ENTITY)
     public static final int TEST_VALUE_SUB_ENTITY_5077 =  5077;
 
 

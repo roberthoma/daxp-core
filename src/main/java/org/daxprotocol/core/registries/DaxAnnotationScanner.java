@@ -30,6 +30,7 @@ import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.pair.DaxPairDataType;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -133,12 +134,11 @@ public class DaxAnnotationScanner {
      * Inspects standard Jakarta Bean Validation annotations on a field and reflects
      * constraints (such as nullability and sizes) into the DAXP semantic registry.
      *
-     * @param semanticRegistry Target semantic registry to store validation rules.
      * @param field            Class field being inspected.
      * @param tag              DAXP Tag mapped to the field.
      */
     //todo add Entity information to validation
-    private void validationRegister(DaxSemanticRegistry semanticRegistry, Field field, DaxTag tag) {
+    private void validationRegister( Field field, DaxTag tag, DaxTag entityTag) {
         boolean isJakartaValidation = Arrays.stream(field.getAnnotations())
                 .anyMatch(a -> a.annotationType().getPackageName().startsWith("jakarta.validation"));
 
@@ -147,16 +147,16 @@ public class DaxAnnotationScanner {
         }
 
         if (field.isAnnotationPresent(NotNull.class)) {
-            semanticRegistry.putTagAtrNullable(tag, false);
+            semanticCollector.putTagAtrNullable(entityTag,tag, false);
         }
 
         if (field.isAnnotationPresent(Size.class)) {
             Size size = field.getAnnotation(Size.class);
             if (size.min() > 0) {
-                semanticRegistry.putTagAtrSizeMin(tag, size.min());
+                semanticCollector.putTagAtrSizeMin(entityTag,tag, size.min());
             }
             if (size.max() < Integer.MAX_VALUE) {
-                semanticRegistry.putTagAtrSizeMax(tag, size.max());
+                semanticCollector.putTagAtrSizeMax(entityTag,tag, size.max());
             }
         }
     }
@@ -179,7 +179,7 @@ public class DaxAnnotationScanner {
     {
         logger.trace("RegisterDaxEntry > tag:{} field name:{}", tagCodec.encode(tag), field.getName());
 
-        semanticRegistry.putTag(tag,  destiny);
+   //     semanticRegistry.putTag(tag,  destiny);
         field.setAccessible(true);
 
         String name = annName.isBlank() ? field.getName() : annName;
@@ -198,11 +198,16 @@ public class DaxAnnotationScanner {
 //                    throw new RuntimeException("i co  ? ");
 
                     semanticRegistry.putTagAttributes(tag,
-                            Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_DATA_TYPE, refTag)));
-                } else {
-                    semanticRegistry.putTagAttributes(tag,
-                            dataTypeCodec.encode(field.getType(), field.getGenericType()));
+                            Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_TAG_ID, refTag),
+                                   new DaxPairDataType(DaxCoreTags.ATR_REF_DATA_TYPE, DaxDataType.ENTITY))
+
+                    );
                 }
+
+//                else {
+//                    semanticRegistry.putTagAttributes(tag,
+//                            dataTypeCodec.encode(field.getType(), field.getGenericType()));
+//                }
 
             }
             else {
@@ -223,7 +228,7 @@ public class DaxAnnotationScanner {
         }
 
         // Check for Jakarta constraints
-        validationRegister(semanticRegistry, field, tag);
+        validationRegister( field, tag, entityTag);
     }
 
     /**
@@ -349,54 +354,26 @@ public class DaxAnnotationScanner {
         //DAXPTypeMismatchException rejestracja tagu , jeżeli bez typu . to zapisz NONE , jeże
         // użycie taga w encji jest na jakiś typ wówczas zapisz typ danych przy tagu (jeżeli był NONE)
         // jęzeli w innym miejscu użycie taga o innym type to wyjątek
-
         //sprawdzić typ danych w semanticRegistry jeżeli nie istanie to wrowadzić uncnow
 
 
-
-
-
-//        semanticRegistry.putTag(tag, DaxTagDestiny.TAG);
-//        semanticRegistry.putTagAtrDescription(tag, tagAnn.description());
-
-        if (tagAnn.readOnly()) {
-            semanticRegistry.putTagAtrReadOnly(tag, true);
-        }
-
-
-/*
-        semanticRegistry.putTagAtrDataType(tag, tagAnn.daxDataType());
-
-        if (!dataTypeService.isPrimitiveType(tagAnn.clazz())) {
-
-
-            if (semanticRegistry.isClassRegistered(tagAnn.clazz())) {
-
-
-                semanticRegistry.putTagAttributes(tag, Set.of(new DaxPairTag(
-                        DaxCoreTags.ATR_REF_DATA_TYPE,
-                        semanticRegistry.getClassTag(tagAnn.clazz())
-                )));
-            }
-        }
-*/
-
         if ( !tagAnn.daxDataType().equals(DaxDataType.UNKNOWN)
            &&!tagAnn.clazz().equals(Void.class)){
-            throw new RuntimeException("MISHMASH  tag registration " + tag.getTagId());
+            throw new RuntimeException("DAXPTypeMismatchException  tag registration " + tag.getTagId());
         }
 
-//        if (!tagAnn.daxDataType().equals(DaxDataType.UNKNOWN)){
-//
-//        }
         if (!tagAnn.clazz().equals(Void.class)){
-            semanticCollector.registerTag(tag, tagAnn.clazz() ,tagAnn.description());
+            semanticCollector.registerDataType(tag, tagAnn.clazz() );
         }
         else {
-            semanticCollector.registerTag(tag, tagAnn.daxDataType() ,tagAnn.description());
+            semanticCollector.registerDataType(tag, tagAnn.daxDataType());
         }
 
-        validationRegister(semanticRegistry, field, tag);
+        semanticCollector.registerDescription(tag, tagAnn.description());
+        semanticCollector.registerReadOnly(tag, true);
+
+
+        validationRegister( field, tag , null);
 
     }
 

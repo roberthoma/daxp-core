@@ -137,7 +137,8 @@ public class DaxCoreTags {
     public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(20);
 
     /// Reference to collection or entity definition
-    public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(21);
+    public static final DaxTag ATR_REF_TAG_ID = daxpSysTag(21);
+    public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(22);
 
     public static final DaxTag ATR_RANGE_MIN_VALUE = daxpSysTag(161);
     public static final DaxTag ATR_RANGE_MAX_VALUE = daxpSysTag(162);

@@ -1,6 +1,8 @@
 package org.daxprotocol.core.unit_test.dax_10_00_annotation;
 
 import org.daxprotocol.core.application.DaxCoreMessages;
+import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.unit_test.dax_00_00_service.DaxMessageDecorator;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
@@ -8,7 +10,19 @@ import org.daxprotocol.core.unit_test.dax_00_01_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class DaxExecutorTest extends DaxConfigBaseTest {
+
+    @Test
+    void getTagsByDataTypeTEST(){
+        List<DaxTag> entityTagList = semanticRegistry.getTagsByDataType(DaxDataType.ENTITY);
+
+        entityTagList.forEach(daxTag -> System.out.println(tagCodec.encode(daxTag)));
+
+        Assertions.assertEquals(2, entityTagList.size());
+
+    }
 
     @Test
     void executorTestDictionaryReq(){

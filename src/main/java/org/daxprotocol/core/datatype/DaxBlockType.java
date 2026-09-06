@@ -27,7 +27,7 @@ public enum DaxBlockType {//extends DaxValue<String> {
     BLOCK_MESSAGE('M',"Message block"), /// Only in dictionary type message
     BLOCK_NAMESPACE('S',"Namespace block"), /// Only in dictionary type message
     BLOCK_ENTITY('E', "Entity block"),
-    BLOCK_DEFINE('D',"Data Type definition block"), /// Only in dictionary type message
+    BLOCK_TYPES('T',"Type definition block"), /// Only in dictionary type message
     BLOCK_FIELD('F',"Field definition block"),
     BLOCK_VALUE('V',"Value  block"),   // for example Collection value
     BLOCK_INSTANCE('I',"Instance of entity block")
@@ -66,7 +66,7 @@ public enum DaxBlockType {//extends DaxValue<String> {
             case 'M' -> BLOCK_MESSAGE;
             case 'S' -> BLOCK_NAMESPACE;
             case 'I' -> BLOCK_INSTANCE;
-            case 'D' -> BLOCK_DEFINE;
+            case 'D' -> BLOCK_TYPES;
             case 'F' -> BLOCK_FIELD;
 //            case 'C' -> BLOCK_COLLECTION;
             case 'V' -> BLOCK_VALUE;

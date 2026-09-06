@@ -1,0 +1,48 @@
+W Javie najbardziej naturalnym słowem będzie Validator. Dla DAXP unikałbym Checker, bo brzmi mniej precyzyjnie i mniej domenowo.
+
+Jeżeli rozdzielasz odpowiedzialności, proponowałbym:
+
+DaxDataModelValidator — waliduje przesłany model danych.
+DaxFrameValidator — waliduje ramkę DAXP.
+DaxMessageValidator — jeśli osobno walidujesz pojedynczy message wewnątrz frame.
+DaxEntityValidator — jeśli walidacja dotyczy konkretnej encji/instancji względem modelu.
+
+Dla Twojej architektury szczególnie sensowny wydaje mi się podział:
+
+DaxFrameValidator
+DaxDataModelValidator
+
+a nad nimi ewentualnie wspólny interfejs:
+
+public interface DaxValidator<T> {
+    ValidationResult validate(T value);
+}
+
+i implementacje:
+
+public class DaxFrameValidator
+        implements DaxValidator<DaxFrame> {
+}
+
+public class DaxDataModelValidator
+        implements DaxValidator<DaxDataModel> {
+}
+
+Jeżeli natomiast chodzi Ci o klasę, która sprawdza przesłane dane względem aktualnie zarejestrowanego Data Model, wtedy jeszcze lepsza nazwa może być:
+
+DaxDataModelValidator — gdy walidujesz sam model.
+
+DaxDataValidator — gdy walidujesz dane na podstawie modelu.
+
+Na przykład:
+
+ValidationResult result =
+        daxDataValidator.validate(frame, dataModel);
+
+W DAXP rozróżniłbym więc trzy pojęcia:
+
+DaxFrameValidator      -> poprawność struktury/protokołu ramki
+DaxDataModelValidator  -> poprawność definicji modelu danych
+DaxDataValidator       -> zgodność danych z modelem danych
+
+To jest moim zdaniem najczystszy podział odpowiedzialności, szczególnie że w DAXP rozdzielasz już Data Model od Transport Model.
