@@ -67,7 +67,7 @@ public class DaxSemanticRegistry {
 //    Set<DaxTag> tagSet = new HashSet<>();
     Map<DaxTag,DaxTagDestiny>     tagDestinyMap  = new ConcurrentHashMap<>();
 
-    Map<DaxTag,DaxRegisterSource> tagMap         = new ConcurrentHashMap<>();
+//    Map<DaxTag,DaxRegisterSource> tagMap         = new ConcurrentHashMap<>();
 
     DaxBaseRegistry<DaxTag> tagAttributes = new DaxBaseRegistry<>();
 
@@ -301,7 +301,7 @@ public class DaxSemanticRegistry {
      * Tag registration
     */
 
-    public void putTag(DaxTag tag, DaxRegisterSource source, DaxTagDestiny destiny){
+    public void putTag(DaxTag tag,  DaxTagDestiny destiny){
 
         if (tagDestinyMap.containsKey(tag))
         {
@@ -321,13 +321,13 @@ public class DaxSemanticRegistry {
         }
 
 
-        if (tagMap.containsKey(tag)){
-            logger.warn("TAG {} EXIST in dictionary , source {}  ", tag.getTagId(), tagMap.get(tag));
-            //throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
-            return;
-        }
-
-        tagMap.put(tag,source);
+//        if (tagMap.containsKey(tag)){
+//            logger.warn("TAG {} EXIST in dictionary , source {}  ", tag.getTagId(), tagMap.get(tag));
+//            //throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
+//            return;
+//        }
+//
+//        tagMap.put(tag,source);
 
 
     }

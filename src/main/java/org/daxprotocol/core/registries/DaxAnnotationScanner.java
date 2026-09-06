@@ -97,6 +97,11 @@ public class DaxAnnotationScanner {
      */
     public void scanAndRegister(Class<?> clazz) {
         try {
+
+            if (semanticRegistry.isClassRegistered(clazz)) {
+              return;
+            }
+
             if (clazz.isAnnotationPresent(DaxpManifest.class)) {
                 registerManifest(clazz);
             }
@@ -163,7 +168,6 @@ public class DaxAnnotationScanner {
             Field field,
             DaxTag tag,
             DaxTag entityTag,
-            DaxRegisterSource source,
             DaxTagDestiny destiny,
             String annName,
             String annDescription,
@@ -171,7 +175,7 @@ public class DaxAnnotationScanner {
     {
         logger.trace("RegisterDaxEntry > tag:{} field name:{}", tagCodec.encode(tag), field.getName());
 
-        semanticRegistry.putTag(tag, source, destiny);
+        semanticRegistry.putTag(tag,  destiny);
         field.setAccessible(true);
 
         String name = annName.isBlank() ? field.getName() : annName;
@@ -197,9 +201,9 @@ public class DaxAnnotationScanner {
                 }
 
             }
-            else {
+          //  else {
                 semanticRegistry.putTagAtrDataType(tag, dataTypeService.decodeClass(field.getType()));
-            }
+          //  }
 
         }
 
@@ -221,14 +225,14 @@ public class DaxAnnotationScanner {
     /**
      * Registers methods annotated with {@link DaxpValue}.
      */
-    private void registerMethodDaxpValue(DaxTag entityTag, Method method, DaxRegisterSource source) {
+    private void registerMethodDaxpValue(DaxTag entityTag, Method method) {
         DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
         if (methodAnn == null) {
             return;
         }
 
         DaxTag tag = tagCodec.decode(methodAnn);
-        semanticRegistry.putTag(tag, source, DaxTagDestiny.ENTITY_FIELD);
+        semanticRegistry.putTag(tag, DaxTagDestiny.ENTITY_FIELD);
 
         Class<?> returnClass = method.getReturnType();
         semanticRegistry.putTagAttributes(tag, dataTypeCodec.encode(returnClass));
@@ -240,7 +244,7 @@ public class DaxAnnotationScanner {
     /**
      * Registers protocol static message items defined on fields.
      */
-    private void registerDaxpMsg(Field field, DaxRegisterSource source) {
+    private void registerDaxpMsg(Field field) {
         try {
             DaxpMessage msgAnn = field.getAnnotation(DaxpMessage.class);
             String msgValue = (String) field.get(null);
@@ -262,7 +266,7 @@ public class DaxAnnotationScanner {
     /**
      * Registers protocol namespaces.
      */
-    private void registerDaxpNamespace(Field field, DaxRegisterSource source) {
+    private void registerDaxpNamespace(Field field) {
         String symbol = "";
         try {
             symbol = (String) field.get(null);
@@ -291,15 +295,15 @@ public class DaxAnnotationScanner {
             }
 
             if (field.isAnnotationPresent(DaxpTag.class)) {
-                registerDaxpTag(field, DaxRegisterSource.REGISTRY);  //todo przekazanć namespace
+                registerDaxpTag(field);  //todo przekazanć namespace
             }
 
             if (field.isAnnotationPresent(DaxpMessage.class)) {
-                registerDaxpMsg(field, DaxRegisterSource.REGISTRY);
+                registerDaxpMsg(field);
             }
 
             if (field.isAnnotationPresent(DaxpNamespace.class)) {
-                registerDaxpNamespace(field, DaxRegisterSource.REGISTRY);
+                registerDaxpNamespace(field);
             }
         }
     }
@@ -310,7 +314,7 @@ public class DaxAnnotationScanner {
     private void registerManifest(Class<?> clazz) {
         for (Field field : DaxLangTool.allFields(clazz)) {
             if (field.isAnnotationPresent(DaxpNamespace.class)) {
-                registerDaxpNamespace(field, DaxRegisterSource.REGISTRY);
+                registerDaxpNamespace(field);
             }
         }
     }
@@ -330,7 +334,7 @@ public class DaxAnnotationScanner {
 
      */
 
-    private void registerDaxpTag(Field field, DaxRegisterSource source) {
+    private void registerDaxpTag(Field field) {
         DaxpTag tagAnn = field.getAnnotation(DaxpTag.class);
         field.setAccessible(true);
         DaxTag tag = tagCodec.decode(tagAnn, field);
@@ -339,7 +343,7 @@ public class DaxAnnotationScanner {
         // użycie taga w encji jest na jakiś typ wówczas zapisz typ danych przy tagu (jeżeli był NONE)
         // jęzeli w innym miejscu użycie taga o innym type to wyjątek
 
-        semanticRegistry.putTag(tag, source, DaxTagDestiny.TAG);
+        semanticRegistry.putTag(tag, DaxTagDestiny.TAG);
         semanticRegistry.putTagAtrDescription(tag, tagAnn.description());
 
         if (tagAnn.readOnly()) {
@@ -350,7 +354,9 @@ public class DaxAnnotationScanner {
 
         if (!dataTypeService.isPrimitiveType(tagAnn.clazz())) {
 
+
             if (semanticRegistry.isClassRegistered(tagAnn.clazz())) {
+
 
                 semanticRegistry.putTagAttributes(tag, Set.of(new DaxPairTag(
                         DaxCoreTags.ATR_REF_DATA_TYPE,
@@ -373,7 +379,7 @@ public class DaxAnnotationScanner {
 
         String entityName = !entityAnn.name().isBlank() ? entityAnn.name() : clazz.getSimpleName();
 
-        semanticRegistry.putTag(entityTag, DaxRegisterSource.ENTITY, DaxTagDestiny.ENTITY);
+        semanticRegistry.putTag(entityTag, DaxTagDestiny.ENTITY);
         semanticRegistry.putTagAtrName(entityTag, entityName);
         semanticRegistry.putTagAtrDataType(entityTag, DaxDataType.ENTITY);
 
@@ -411,7 +417,6 @@ public class DaxAnnotationScanner {
                         field,
                         tag,
                         entityTag,
-                        DaxRegisterSource.ENTITY,
                         DaxTagDestiny.ENTITY_FIELD,
                         fieldAnn.name(),
                         fieldAnn.description(),
@@ -435,7 +440,6 @@ public class DaxAnnotationScanner {
                         field,
                         tag,
                         entityTag,
-                        DaxRegisterSource.ENTITY,
                         DaxTagDestiny.ENTITY_VALUE,
                         fieldAnn.name(),
                         fieldAnn.description(),
@@ -444,16 +448,16 @@ public class DaxAnnotationScanner {
             }
 
             if (field.isAnnotationPresent(DaxpTag.class)) {
-                registerDaxpTag(field, DaxRegisterSource.ENTITY);
+                registerDaxpTag(field);
             }
 
             if (field.isAnnotationPresent(DaxpMessage.class)) {
-                registerDaxpMsg(field, DaxRegisterSource.ENTITY);
+                registerDaxpMsg(field);
             }
         }
 
         for (Method method : clazz.getDeclaredMethods()) {
-            registerMethodDaxpValue(entityTag, method, DaxRegisterSource.ENTITY);
+            registerMethodDaxpValue(entityTag, method);
         }
 
         semanticRegistry.registerClass(clazz, entityTag);

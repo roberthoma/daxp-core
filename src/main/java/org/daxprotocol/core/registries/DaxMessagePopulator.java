@@ -24,7 +24,7 @@ public class DaxMessagePopulator {
         this.daxDic =  daxDic;
     }
 
-    private void populateFromMsgBlock(int msgnamespaceId , Map<DaxTag, DaxPair<?>> blockPairMap) {
+    private void populateFromMsgBlock(int msgNamespaceId , Map<DaxTag, DaxPair<?>> blockPairMap) {
 
         Character blockType =   blockPairMap.get(DaxCoreTags.BLOCK_TYPE).getCharValue();
 
@@ -41,7 +41,7 @@ public class DaxMessagePopulator {
 
                 tagParser.parseDaxTagList(
                         blockPairMap.get(DaxCoreTags.MESSAGE_TAGS)
-                                .getStrValue(), msgnamespaceId)
+                                .getStrValue(), msgNamespaceId)
                         .forEach(msgItem::addReqTag);
 
             }
@@ -82,7 +82,7 @@ public class DaxMessagePopulator {
 
         if(blockType.equals(DaxBlockType.BLOCK_VALUE)){
             DaxTag enumTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgnamespaceId
+                    blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue() , msgNamespaceId
             ) ;
 
             String valueDesc = "";
@@ -98,14 +98,14 @@ public class DaxMessagePopulator {
 
 
 
-        if(blockType.equals(DaxBlockType.BLOCK_TYPE)){
+        if(blockType.equals(DaxBlockType.BLOCK_DEFINE)){
 
             DaxTag tag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgnamespaceId
+                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgNamespaceId
             ) ;
 
-            daxDic.putTag( tag, DaxRegisterSource.MESSAGE, DaxTagDestiny.TAG);
-            daxDic.putTag( tag, DaxRegisterSource.MESSAGE, DaxTagDestiny.TAG);
+            daxDic.putTag( tag,  DaxTagDestiny.TAG);
+            daxDic.putTag( tag,  DaxTagDestiny.TAG);
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 
@@ -156,7 +156,7 @@ public class DaxMessagePopulator {
 
             if(blockPairMap.containsKey(DaxCoreTags.COLLECTION_ID)) {
                 daxDic.putCollectionType(tag,
-                        tagParser.parseDaxTag(blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue(), msgnamespaceId)
+                        tagParser.parseDaxTag(blockPairMap.get(DaxCoreTags.COLLECTION_ID).getStrValue(), msgNamespaceId)
                 );
             }
 
@@ -171,14 +171,14 @@ public class DaxMessagePopulator {
 
             //int groupId = groupMapper.getReferenceId(groupName);
             DaxTag groupTag = tagParser.parseDaxTag(
-                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue(), msgnamespaceId
+                    blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue(), msgNamespaceId
             ) ;
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
 
-            daxDic.putTag(groupTag, DaxRegisterSource.MESSAGE, DaxTagDestiny.ENTITY);
+            daxDic.putTag(groupTag, DaxTagDestiny.ENTITY);
             String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
-            List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgnamespaceId);
+            List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgNamespaceId);
             tagList.forEach(tag -> daxDic.putEntityField(groupTag, tag));
             return;
         }

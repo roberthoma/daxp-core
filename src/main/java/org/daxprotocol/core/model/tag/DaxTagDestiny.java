@@ -4,12 +4,12 @@ public enum DaxTagDestiny {
     ENTITY,
     ENTITY_FIELD,   //Use for VALUE register, value has readOnly Attribute
     ENTITY_VALUE,
-    ENTITY_METHOD,
-    COLLECTION,
-    COLLECTION_VALUE,
+//    ENTITY_METHOD,
+//    COLLECTION,
+//    COLLECTION_VALUE,
     TAG,
-    MSG,
-    NAMESPACE,
-    SCHEMA,
-    UNKNOW;
+//    MSG,
+//    NAMESPACE,
+//    SCHEMA,
+//    UNKNOW;
 }
