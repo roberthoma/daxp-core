@@ -1,5 +1,4 @@
 package org.daxprotocol.core.datatype;
-import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.math.BigDecimal;
@@ -7,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +30,8 @@ UINT32	4 bajty	0 do 4 mld	Offsety w dużych plikach, ID obiektów.
 FLOAT64	0x03	double	8
 STRING_UTF8	0x04	String	Zmienny (L+V)
 */
+
+    /// Not primitive need define by multi tags like entity or collection
 public enum DaxDataType {
     // 1. Core Types
     STRING("STR", "Standard text ",  String.class, true),
@@ -49,9 +49,9 @@ public enum DaxDataType {
     DURATION("DUR", "Time interval/duration", Duration.class,true),
 
     // 3. Specialized Strings
-    JSON("JSON", "JavaScript Object Notation structured string", String.class, false),
-    XML("XML", "eXtensible Markup Language structured string", String.class, false),
-    CSV("CSV", "Comma Separated Values stream", String.class, false),
+    JSON("JSON", "JavaScript Object Notation structured string", String.class, true),
+    XML("XML", "eXtensible Markup Language structured string", String.class, true),
+    CSV("CSV", "Comma Separated Values stream", String.class, true),
     REGEXP("REGX", "Regular expression pattern", String.class, false),
     EMAIL("EML", "Email address validation format", String.class, false),
 
@@ -62,7 +62,7 @@ public enum DaxDataType {
 //    // 5. Structural Types
     ENTITY("ENT", "DAXP Entity / Object structure", Object.class,false), //, null),
     COLLECTION("COL", "Universal DAXP Collection (C) with attributes", Collection.class , false), //, null),
-    TAG("TAG", "Reference to another tag/field within the frame",DaxTag.class, false), //, DaxTag.class),
+    TAG("TAG", "Reference to another tag/field within the frame",DaxTag.class, true), //, DaxTag.class),
     FIELD("FIELD", "Reference to field within the frame",DaxTag.class, false), //, DaxTag.class),   ??????????????????
 //
     MESSAGE_TYPE("MSG","Message type",String.class,true),
@@ -71,7 +71,8 @@ public enum DaxDataType {
 //    BINARY("RAW", "Quantity",byte[].class), // ?????????
 //    NONE("NONE","None, not try detected",void.class, false),
 //    BASE64("B64", "Base 64"),  ///maybe byte[]
-    UNKNOWN("UNKNOWN", "Unknown", void.class, false);  ///maybe byte[]
+     NONE("NONE","None, not try detected",void.class, false),
+     UNKNOWN("UNKNOWN", "Unknown", void.class, false);  ///maybe byte[]
 
     //BASE64
 

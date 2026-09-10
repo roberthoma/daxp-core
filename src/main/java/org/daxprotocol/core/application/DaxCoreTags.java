@@ -39,7 +39,7 @@ public class DaxCoreTags {
     private static final Map<Integer, DaxDataType> SYS_TAG_DATATYPE = new HashMap<>();
 
     private static DaxTag daxpSysTag(int tagId) {
-       return daxpSysTag(tagId, DaxDataType.UNKNOWN) ;
+       return daxpSysTag(tagId, DaxDataType.NONE) ;
     }
 
     private static DaxDataType getDataType(DaxTag tag){
@@ -135,11 +135,15 @@ public class DaxCoreTags {
      * Attributes
      */
     public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(20);
-
     /// Reference to collection or entity definition
     public static final DaxTag ATR_REF_TAG_ID = daxpSysTag(21);
+
     public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(22);
 
+
+    public static final DaxTag ATR_REF_COL_VAL       = daxpSysTag(23); // one of value from collection
+
+    ///-------------------------------
     public static final DaxTag ATR_RANGE_MIN_VALUE = daxpSysTag(161);
     public static final DaxTag ATR_RANGE_MAX_VALUE = daxpSysTag(162);
     public static final DaxTag ATR_PRECISION       = daxpSysTag(163);

@@ -105,7 +105,6 @@ public class DaxMessagePopulator {
             ) ;
 
             semanticRegistry.putTag( tag,  DaxTagDestiny.TAG);
-            semanticRegistry.putTag( tag,  DaxTagDestiny.TAG);
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 
@@ -180,7 +179,7 @@ public class DaxMessagePopulator {
 
             String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
             List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgNamespaceId);
-            tagList.forEach(tag -> semanticRegistry.putEntityField(groupTag, tag));
+            tagList.forEach(tag -> semanticRegistry.putEntityEntry(groupTag, tag));
             return;
         }
 

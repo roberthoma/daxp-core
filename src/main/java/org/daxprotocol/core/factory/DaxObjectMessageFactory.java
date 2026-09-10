@@ -116,9 +116,9 @@ public class DaxObjectMessageFactory {
         }
 
         /// check metadata by tag !!!!!!!!!!!
-         if (semanticRegistry.isPrimitiveType(tag)){
-             System.out.println("PRIMITIVE ");
-         }
+//         if (semanticRegistry.isPrimitiveType(tag)){
+//             System.out.println("PRIMITIVE ");
+//         }
 
         if (dataTypeService.isPrimitiveType(value.getClass())) {
             body.putPair(blockIdx, valueCodec.encodeToPairs(tag, value));

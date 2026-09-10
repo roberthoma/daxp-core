@@ -180,7 +180,7 @@ public class DaxSemanticRegistry {
 
     //TODO chek exist of fields in group,
     //TODO check recursions
-    public void putEntityField(DaxTag entityTag, DaxTag tag) {
+    public void putEntityEntry(DaxTag entityTag, DaxTag tag) {
         entityFieldsMap.merge(entityTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
                 DaxCollectionTool.addAndReturnSet(daxTags, tag) );
     }
@@ -343,7 +343,7 @@ public class DaxSemanticRegistry {
     public DaxBaseRegistry<Integer> getSchemaDictionary (){
         return namespaceRegistry;
     }
-    ///------------------------------------
+    ///---------------------------------------------------------------------------------------
     public void registerClass(Class<?> clazz, DaxTag tag){
 
         classDaxTagMap.put(clazz, tag);
@@ -366,13 +366,11 @@ public class DaxSemanticRegistry {
         boolean isPrimitiveType = false;
         try {
 
-        System.out.println("DATA MODEL:"+tag.getTagId());
         var atrMap = tagAttributes.getAttributMap().get(tag);
 
         if (atrMap.containsKey(ATR_DATA_TYPE))
         {
-            isPrimitiveType = atrMap.get(ATR_DATA_TYPE).getDataTypeValue().isPrimitiveType();
-            return isPrimitiveType;
+            return atrMap.get(ATR_DATA_TYPE).getDataTypeValue().isPrimitiveType();
         }
 
         if (atrMap.containsKey(ATR_REF_TAG_ID))
@@ -387,14 +385,13 @@ public class DaxSemanticRegistry {
             return isPrimitiveType;
         }
 
-
-             System.out.println("DATA MODEL  is primitive="+ isPrimitiveType);
             return isPrimitiveType;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("ROHO>"+e.getMessage());
         }
         return false;
     }
+    ///---------------------------------------------------------------------------------------
 
     public List<DaxTag> getTagsByDataType(DaxDataType targetType) {
         return tagAttributes.getKeysByDataType(targetType);
@@ -409,13 +406,13 @@ public class DaxSemanticRegistry {
         var attributes = tagAttributes.getAttributMap().get(tag);
 
         if (attributes == null) {
-            return DaxDataType.UNKNOWN;
+            return DaxDataType.NONE;
         }
 
         var attribute = attributes.get(ATR_DATA_TYPE);
 
         if (attribute == null || attribute.getDataTypeValue() == null) {
-            return DaxDataType.UNKNOWN;
+            return DaxDataType.NONE;
         }
 
         return attribute.getDataTypeValue();

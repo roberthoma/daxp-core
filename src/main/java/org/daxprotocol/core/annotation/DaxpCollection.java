@@ -18,8 +18,8 @@ public @interface DaxpCollection {
     String namespace()     default "";
     String name()        default "";
     String description() default "";
-    DaxDataType keyDataType()  default DaxDataType.UNKNOWN;
-    DaxDataType valueDataType()  default DaxDataType.UNKNOWN;
+    DaxDataType keyDataType()  default DaxDataType.NONE;
+    DaxDataType valueDataType()  default DaxDataType.NONE;
 }
 
 

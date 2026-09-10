@@ -19,33 +19,43 @@
  */
 package org.daxprotocol.core.registries;
 
+import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+//Wżne: klasa używana do rejestracji modelów: danych , komunikacji i implikacji także
+//na poziomie parsowanych i przyjmowanych modeli z innych serviów .
+// Nie używać metod rzutujących clasy czy typów JAVY
 
 public class DaxSemanticCollector {
+    private static final Logger logger = LoggerFactory.getLogger(DaxSemanticCollector.class);
 
     DaxSemanticRegistry semanticRegistry;
     DaxDataTypeService dataTypeService;
+    DaxTagCodec tagCodec;
+    ///----------------------------------------------------------------------------------------------
     public DaxSemanticCollector(DaxSemanticRegistry semanticRegistry,
-                                DaxDataTypeService dataTypeService ){
+                                DaxDataTypeService dataTypeService,
+                                DaxTagCodec tagCodec
+    ){
         this.semanticRegistry = semanticRegistry;
         this.dataTypeService = dataTypeService;
+        this.tagCodec = tagCodec;
     }
 
 
 // Critical exception (type mismatch) during semantic registration at application startup stops the application
 // During registration via message: log with a warning or an error
 
+    ///----------------------------------------------------------------------------------------------
 
-    private void registerTagDataType( DaxTag tag, DaxDataType daxDataType ){
+    public void registerDataType( DaxTag tag, DaxDataType daxDataType ){
         DaxDataType existDataType = semanticRegistry.getTagDataType(tag);
 
-
-        //todo if DaxTag daxType = Entity do not register
-
-
-        if (existDataType == DaxDataType.UNKNOWN){
+        if (!daxDataType.equals(DaxDataType.NONE)){
             semanticRegistry.putTagAtrDataType(tag,daxDataType);
         }
         else {
@@ -56,55 +66,55 @@ public class DaxSemanticCollector {
 
         }
     }
-
-    public void registerDataType(DaxTag tag, Class<?> tagClass
-    ){
-        if (!dataTypeService.isPrimitiveType(tagClass)) {
-          registerDataType(tag,dataTypeService.decodeClass(tagClass));
-        }
-
-    }
+    ///----------------------------------------------------------------------------------------------
 
 
-    public void registerDataType(DaxTag tag,
-                            DaxDataType daxDataType
-    )
-    {
-        registerTagDataType(tag, daxDataType);
-
-    }
-
-    public void registerDataType(DaxTag tag,
+    public void registerDataType(
+            DaxTag tag,
             DaxTag entityTag,
-            DaxDataType daxDataType,
-            String description
+            DaxDataType daxDataType
     )
 
     {
-
-        if (semanticRegistry.isTagRegistered(tag)){
-            DaxDataType existDataType = semanticRegistry.getTagDataType(tag);
-            if (existDataType == DaxDataType.UNKNOWN){ // || existDataType == DaxDataType.NONE){
-                semanticRegistry.putTagAtrDataType(tag,daxDataType);
-            }
+        DaxDataType existDataType = semanticRegistry.getTagDataType(tag);
+        if(existDataType.equals(daxDataType)){
+            return;
         }
-        else {
+
+        if(daxDataType.equals(DaxDataType.UNKNOWN)){
+            logger.warn("DaxDataType.UNKNOWN tag={}",tagCodec.encode(tag));
+            return;
+        }
+
+
+        if (existDataType == DaxDataType.NONE){
+
+
             semanticRegistry.putTagAtrDataType(tag,daxDataType);
+            return;
         }
-
-
 
     }
+    ///---------------------------------------------------------------------
     public void registerDescription(DaxTag tag, String description){
 
         semanticRegistry.putTagAtrDescription(tag, description);
 
     }
+    ///---------------------------------------------------------------------
+
+    public void registerDescription(DaxTag tag, DaxTag entityTag, String description){
+
+        semanticRegistry.putEntityEntryAtrDescription(entityTag,tag, description);
+
+    }
+    ///---------------------------------------------------------------------
 
 
     public void registerReadOnly(DaxTag tag, boolean b) {
         semanticRegistry.putTagAtrReadOnly(tag, true);
     }
+    ///---------------------------------------------------------------------
 
 
     public void putTagAtrNullable(DaxTag entityTag, DaxTag tag, boolean nullAble) {
@@ -117,6 +127,7 @@ public class DaxSemanticCollector {
         }
 
     }
+    ///---------------------------------------------------------------------
 
     public void putTagAtrSizeMin(DaxTag entityTag, DaxTag tag, int min) {
         if (entityTag == null){
@@ -127,6 +138,7 @@ public class DaxSemanticCollector {
         }
 
     }
+    ///---------------------------------------------------------------------
 
     public void putTagAtrSizeMax(DaxTag entityTag, DaxTag tag, int max) {
         if (entityTag == null){
@@ -136,4 +148,6 @@ public class DaxSemanticCollector {
             semanticRegistry.putEntityEntryAtrSizeMax(entityTag,tag,max);
         }
     }
+    ///---------------------------------------------------------------------
+
 }

@@ -111,7 +111,7 @@ public class DaxEngine {
         DaxCoreTags.init(semanticRegistry);
 
 
-        semanticCollector = new DaxSemanticCollector(semanticRegistry, dataTypeService);
+        semanticCollector = new DaxSemanticCollector(semanticRegistry, dataTypeService, tagCodec);
 
 
         handlerRegistry = new DaxHandlerRegistry();
@@ -309,7 +309,7 @@ public class DaxEngine {
         semanticRegistry.getTagAttributeMap() .forEach((daxTag, tagDaxPairMap) ->{
                 if (tagDaxPairMap.containsKey(ATR_DATA_TYPE)){
                     if (tagDaxPairMap.get(ATR_DATA_TYPE)
-                            .getDataTypeValue().equals(DaxDataType.UNKNOWN))
+                            .getDataTypeValue().equals(DaxDataType.NONE))
                           {logger.error(" TAG : {}  UNKNOWN Type", tagCodec.encode( daxTag));
                     }
                 }

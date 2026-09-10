@@ -27,10 +27,9 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Documented
 public @interface DaxpEntity {
-    String value() default "";
+    String value() default "";        //tag by String , FIX:51
     int    tagId() default -1;
     String namespace() default "";
     String name() default "";
     String description() default "";
-    String schema() default "";
 }

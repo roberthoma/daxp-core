@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface DaxpField {
-    DaxDataType daxDataType()  default DaxDataType.UNKNOWN;
+    DaxDataType daxDataType()  default DaxDataType.NONE;
     String value() default "";      //namespace plus tagId "FIX:53"
     int tagId() default -1;                   // It can be define by @DaxpTag
     String namespace() default "";   // Empty mean  DaxpConfig.APP_namespace_SYMBOL;

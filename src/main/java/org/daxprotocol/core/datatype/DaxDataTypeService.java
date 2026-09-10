@@ -20,7 +20,6 @@
 
 package org.daxprotocol.core.datatype;
 
-import org.daxprotocol.core.annotation.DaxpCollection;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +82,7 @@ public class DaxDataTypeService {
     }
     //--------------------------------------------------------------------------------------
     public DaxDataType decodeFromObject(Object obj) {
-//        return dataTypeCollectionService.decodeClass(obj.getClass());
+
         if (obj == null) return DaxDataType.STRING; // Default
         if (obj instanceof Integer) return DaxDataType.INTEGER;
         if (obj instanceof Long) return DaxDataType.LONG;
@@ -94,11 +93,15 @@ public class DaxDataTypeService {
         if (obj instanceof LocalDateTime) return DaxDataType.LOCAL_DATE_TIME;
         if (obj instanceof String) return DaxDataType.STRING;
         if (obj instanceof Character) return DaxDataType.CHARACTER;
-      //  if (obj instanceof Enum<?>) return DaxDataType.STRING;   //?????????
 
-        if (isObjInstanceOfCollection( obj )) return DaxDataType.COLLECTION;
+        if (isObjInstanceOfCollection( obj )) return DaxDataType.COLLECTION; //????
 
-        //Add entity ???
+        if (obj.getClass().isAnnotationPresent(DaxpEntity.class)) {
+            return DaxDataType.ENTITY;
+        }
+
+        if (obj instanceof Enum<?>) return DaxDataType.STRING;   //?????????
+
 
         return DaxDataType.UNKNOWN;
 
@@ -109,7 +112,7 @@ public class DaxDataTypeService {
     }
     //--------------------------------------------------------------------------------------
     public    DaxDataType decodeClass(Class<?> clazz) {
-        if (clazz == null) { return DaxDataType.UNKNOWN;}
+        if (clazz == null) { return DaxDataType.NONE;}
 
         if (clazz == String.class) return DaxDataType.STRING;
         if (clazz.equals(Integer.class)) return DaxDataType.INTEGER;
@@ -122,7 +125,7 @@ public class DaxDataTypeService {
         if (clazz.equals(LocalDate.class)) return DaxDataType.LOCAL_DATE;
         if (clazz.equals(LocalDateTime.class)) return DaxDataType.LOCAL_DATE_TIME;
         if (clazz.equals(Character.class)) return DaxDataType.CHARACTER;
-        if (clazz.isEnum()) return DaxDataType.STRING;
+     //   if (clazz.isEnum()) return DaxDataType.STRING;
 
         if(isCollection(clazz)) return DaxDataType.COLLECTION;
 
