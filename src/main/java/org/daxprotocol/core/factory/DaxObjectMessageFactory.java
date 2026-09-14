@@ -125,7 +125,7 @@ public class DaxObjectMessageFactory {
             return;
         }
 
-        if (dataTypeService.isCollection(value)) {
+        if (dataTypeService.isDaxpCollection(value)) {
             processCollection(blockIdx, tag, body, value, reqTagSet, ownerTag);
             return;
         }

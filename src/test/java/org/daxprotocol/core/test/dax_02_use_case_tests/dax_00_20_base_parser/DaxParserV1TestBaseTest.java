@@ -1,0 +1,66 @@
+package org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_20_base_parser;
+
+import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
+import org.junit.jupiter.api.Test;
+
+public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
+
+
+
+    @Test
+    void Parser2BaseTest() {
+        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM" +
+                "|$:1=CDD|2=4" +
+                "|$:5=1|$:6=INST|$:8=2000|2080=Big bike|2001=123|\n2002=Robert|2101=2|FIX:2085=345|2102=3|2075=INDIVIDUAL" +
+                "|$:5=2|$:6=INST|$:8=2101|  2114 =Polna 7|\n ADR:2115=Warszawa|2111=345" +
+                "|$:5=3|$:6=INST|$:8=2102|2114=Lipińskiego 1000|2115=Sanok|2120=4|2111=3346" +
+                "|$:5=4|$:6=INST|$:8=2120|2121=43-444|2122=Zakopane|99=177|"+
+                "|9=CDD|6=4" +
+                "|7=1|5=INST|$:8=2000|2080=Small boll|2001=123|FIX:2002=Kasia|2101=2|FIX:2085=23|2102=3|2075=INDIVIDUAL" +
+                "|7=2|5=INST|$:8=2101|2114=Polna 8|ADR:2115=Kraków|2111=333" +
+                "|7=3|5=INST|$:8=2102|2114=Sowia 1000|2115=Lesko\n testline|2120=4|2111=3346" +
+                "|7=4|5=INST|$:8=2120|2121=44-444|2122=Rzeszów|9=177|";
+        ;
+
+//        DaxParser parserService = daxEngine.getParser();
+//
+//        List<DaxPair<?>>  pairList = parserService. parsePairs(msgStr,  4 );
+//
+//        pairList.forEach((pair) -> System.out.println(pair.getTag().getnamespaceId()+":"+
+//                pair.getTag().getTagId()+"="+pair.getStrValue()));
+//
+//        Assertions.assertEquals(10,pairList.size());
+    }
+
+//    @Test
+//    void parseAndDecodeNumberPairsToString_TEST(){
+//        DaxpConfig config = crmProvider.getConfig();
+//        Map<String,String> preamblePairs = crmProvider.getPreambleCodec().parsePreamble(msg);
+//
+//        DaxPairCodec pairCodec = crmProvider.getPairCodec();
+//
+//        DaxParserService parserService = crmProvider.getParserService();
+//
+//        List<DaxPair<?>> pairsList = parserService
+//                .parsePairs(msgPairs, config.getAppnamespaceId());//(DaxPatternFactory.compileMessagePairPattern('|') ,
+//
+//        long equalChar = msgPairs.chars()
+//                .filter(c -> c == '|')
+//                .count();
+//        Assertions.assertEquals(equalChar,pairsList.size());
+//    }
+
+
+    //    @Test
+//    void ParserBaseTest() {
+//
+//    DaxParserService parserService = crmProvider.getParserService();
+//
+//    Map<DaxTag, String> pairStrMap = parserService.parseBlock("|7=1|5=INST|100=2000|2080=Small boll|2001=123|2002=Kasia|2101=2|2085=23|2102=3|2075=INDIVIDUAL");
+//        pairStrMap.forEach((daxTag, s) -> System.out.println(daxTag+"  = "+s));
+//
+//    }
+
+
+
+}

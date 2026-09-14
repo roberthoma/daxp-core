@@ -69,7 +69,7 @@ public class DaxPairCodec {
 
 
     public  DaxPair<?>  decode(DaxTag tag, String valueStr, char operator, int namespaceId){
-//TODO    check mode list, check operator
+
         DaxPair<?> pair;
         if(tag.equals(DaxCoreTags.REQ_FIELD_LIST)){
             Set<DaxTag> daxTagSet =

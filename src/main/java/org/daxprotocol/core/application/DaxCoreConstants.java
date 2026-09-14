@@ -4,10 +4,10 @@ public class DaxCoreConstants {
     /*****************************************************
      *  DAXP namespace
      */
-    public static final int DAXP_NAMESPACE_ID = 0;
-    public static final String DAXP_NAMESPACE_SYMBOL = "DAXP";
-    public static final String DAXP_NAMESPACE_TAG_PREFIX = "$" ;
-    public static final String DAXP_SYMBOL              = "DAXP";
+    public static final int    DAXP_NAMESPACE_ID          = 0;
+    public static final String DAXP_NAMESPACE_SYMBOL      = "DAXP";
+    public static final String DAXP_NAMESPACE_TAG_PREFIX  = "$" ;
+    public static final String DAXP_SYMBOL                = "DAXP";
     public static final String DAXP_NAMESPACE_DESCRIPTION = "Data & Attribute eXchange Protocol";
     /*****************************************************
     *  Operators
@@ -22,7 +22,7 @@ public class DaxCoreConstants {
      *                Separators
      */
     /**  Pair separator on the WIRE (binary, non-printable). */
-    public static char DEFAULT_PAIR_SEPARATOR = 0x0001;
+    public static char   DEFAULT_PAIR_SEPARATOR = 0x0001;
     public static char[] ALLOWED_PAIR_SEPARATORS = { DEFAULT_PAIR_SEPARATOR,'|','#'};
 
     public static final char NAMESPACE_TAG_SEPARATOR = ':';
@@ -44,10 +44,10 @@ public class DaxCoreConstants {
     *      HEX value
     */
     public static char SEPARATOR_START_OF_TEXT = 0x0002; //Start of Text
-    public static char SEPARATOR_END_OF_TEXT =  0x0003;	//End of Text
-    public static char SEPARATOR_GROUP =  0x001D;//Group Separator
-    public static char SEPARATOR_RECORD = 0x001E; //Record Separator
-    public static char SEPARATOR_UNIT = 0x001F; //	Unit Separator
+    public static char SEPARATOR_END_OF_TEXT   = 0x0003;	//End of Text
+    public static char SEPARATOR_GROUP         = 0x001D;//Group Separator
+    public static char SEPARATOR_RECORD        = 0x001E; //Record Separator
+    public static char SEPARATOR_UNIT          = 0x001F; //	Unit Separator
 
 
 

@@ -90,7 +90,7 @@ public class DaxDataTypeCodec {
     //--------------------------------------------------------------------------------------
     public Set<DaxPair<?>> encode(Class<?> clazz, Type generitType){
 
-        if (dataTypeService.isCollection(clazz)){
+        if (dataTypeService.isDaxpCollection(clazz)){
             return collectionEncode(clazz,generitType);
         }
 
