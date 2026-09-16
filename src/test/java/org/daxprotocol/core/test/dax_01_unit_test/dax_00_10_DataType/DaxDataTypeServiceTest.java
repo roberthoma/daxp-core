@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.daxprotocol.core.test.dax_00_service.DaxTestLogger.printLog; // Adjust package path if needed
+import static org.daxprotocol.core.test.dax_00_service.DaxTestLogger.printLog;
 
 public class DaxDataTypeServiceTest {
 
@@ -44,7 +44,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("isDaxpCollection(Object) powino zwrócić true dla kolekcji i false dla pozostałych")
+    @DisplayName("isDaxpCollection(Object) should return true for collections and false for other types")
     void isDaxpCollectionObject() {
         printLog("Executing isDaxpCollectionObject test");
 
@@ -63,7 +63,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("isObjInstanceOfCollection powino prawidłowo rozpoznać obiekty")
+    @DisplayName("isObjInstanceOfCollection should correctly identify collection instances")
     void isObjInstanceOfCollection() {
         printLog("Executing isObjInstanceOfCollection test");
 
@@ -78,7 +78,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("isDaxpCollection(Class) powino poprawnie sprawdzić klasy kolekcji, map i enumów")
+    @DisplayName("isDaxpCollection(Class) should correctly verify collection, map, and enum classes")
     void isDaxpCollectionClass() {
         printLog("Executing isDaxpCollectionClass test");
 
@@ -97,7 +97,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("decodeFromObject powino poprawnie rozpoznawać typy danych na podstawie obiektów")
+    @DisplayName("decodeFromObject should correctly recognize data types based on instances")
     void decodeFromObject() {
         printLog("Executing decodeFromObject test");
 
@@ -113,7 +113,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("decodeClass powino zwrócić odpowiedni DaxDataType dla znanych klas")
+    @DisplayName("decodeClass should return the correct DaxDataType for known classes")
     void decodeClass() {
         printLog("Executing decodeClass test");
 
@@ -140,7 +140,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("isPrimitiveType powino powrócić true dla typów prymitywnych/opakowujących i podstawowych")
+    @DisplayName("isPrimitiveType should return true for primitives, wrappers, and core value types")
     void isPrimitiveType() {
         printLog("Executing isPrimitiveType test");
 
@@ -163,7 +163,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("castReflectTypeToClass powino poprawnie rzutować obiekty Type na Class")
+    @DisplayName("castReflectTypeToClass should correctly cast Type objects to Class")
     void castReflectTypeToClass() {
         printLog("Executing castReflectTypeToClass test");
 
@@ -196,7 +196,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("getCollectionInfo powino wypełnić pola flaga dla odpowiednich struktur")
+    @DisplayName("getCollectionInfo should populate metadata flags for supported collection structures")
     void getCollectionInfo() {
         printLog("Executing getCollectionInfo test");
 
@@ -231,7 +231,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("getCollectionInfo powino rzucić wyjątek dla klas niebędących kolekcjami")
+    @DisplayName("getCollectionInfo should throw an exception for non-collection classes")
     void getCollectionInfoThrowsExceptionForNonCollection() {
         printLog("Executing getCollectionInfoThrowsExceptionForNonCollection test");
 
@@ -243,7 +243,7 @@ public class DaxDataTypeServiceTest {
     }
 
     @Test
-    @DisplayName("isMap powino powrócić true tylko dla obiektów typu Map i false dla reszty")
+    @DisplayName("isMap should return true only for Map instances and false otherwise")
     void isMap() {
         printLog("Executing isMap test");
 

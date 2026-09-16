@@ -20,6 +20,7 @@
 
 package org.daxprotocol.core.registries;
 
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.namespace.*;
 import org.daxprotocol.core.datatype.DaxDataType;
@@ -29,7 +30,7 @@ import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.tag.DaxTagDestiny;
-import org.daxprotocol.core.tool.DaxCollectionTool;
+import org.daxprotocol.core.tool.DaxLangTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -182,7 +183,7 @@ public class DaxSemanticRegistry {
     //TODO check recursions
     public void putEntityEntry(DaxTag entityTag, DaxTag tag) {
         entityFieldsMap.merge(entityTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
-                DaxCollectionTool.addAndReturnSet(daxTags, tag) );
+                DaxLangTool.addAndReturnSet(daxTags, tag) );
     }
 
     //**********************************************************************
@@ -217,11 +218,18 @@ public class DaxSemanticRegistry {
     public void putTagAtrNullable(DaxTag tag,  Boolean able)
     { putTagAttribute(tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
 
-    public void putTagAtrName(DaxTag tag,  String name)
-    { if(name!= null && !name.isBlank()){ putTagAttribute(tag, new DaxPairString(ENTRY_NAME,name));}}
+    public void putTagAtrName(DaxTag tag,  String name){
+        if(name!= null && !name.isBlank())
+        {
+            putTagAttribute(tag, new DaxPairString(ENTRY_NAME,name));
+        }
+    }
 
-    public void putTagAtrDescription(DaxTag tag, String desc)
-    { if(desc!= null && !desc.isBlank()){ putTagAttribute(tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
+    public void putTagAtrDescription(DaxTag tag, String desc) {
+        if(desc!= null && !desc.isBlank()){
+            putTagAttribute(tag, new DaxPairString(ENTRY_DESCRIPTION,desc));
+        }
+    }
 
     public void putTagAtrReadOnly(DaxTag tag, Boolean able)
     { putTagAttribute(tag, new DaxPairBoolean(ATR_READONLY ,able));}
@@ -246,14 +254,29 @@ public class DaxSemanticRegistry {
         pairMap.forEach(( atrPair) -> putEntityEntryAttribute(entityTag,tag,atrPair));
     };
 
-    public void putEntityEntryAtrDataType(DaxTag entityTag, DaxTag tag, DaxDataType dataType) { putEntityEntryAttribute(entityTag, tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-    public void putEntityEntryAtrSizeMax(DaxTag entityTag, DaxTag tag,  Integer max )         { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
-    public void putEntityEntryAtrSizeMin(DaxTag entityTag, DaxTag tag,  Integer min )         { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
-    public void putEntityEntryAtrNullable(DaxTag entityTag, DaxTag tag,  Boolean able)        { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
-    public void putEntityEntryAtrName(DaxTag entityTag, DaxTag tag,  String name)             { if(name!= null && !name.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_NAME,name));}}
-    public void putEntityEntryAtrDescription(DaxTag entityTag, DaxTag tag, String desc)       { if(desc!= null && !desc.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
-    public void putEntityEntryAtrReadOnly(DaxTag entityTag, DaxTag tag, Boolean able)         { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_READONLY ,able));}
-    public void putEntityEntryAtrDeprecated(DaxTag entityTag, DaxTag tag)                     { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
+    public void putEntityEntryAtrDataType(DaxTag entityTag, DaxTag tag, DaxDataType dataType)
+    { putEntityEntryAttribute(entityTag, tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
+
+    public void putEntityEntryAtrSizeMax(DaxTag entityTag, DaxTag tag,  Integer max )
+    { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
+
+    public void putEntityEntryAtrSizeMin(DaxTag entityTag, DaxTag tag,  Integer min )
+    { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
+
+    public void putEntityEntryAtrNullable(DaxTag entityTag, DaxTag tag,  Boolean able)
+    { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
+
+    public void putEntityEntryAtrName(DaxTag entityTag, DaxTag tag,  String name)
+    { if(name!= null && !name.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_NAME,name));}}
+
+    public void putEntityEntryAtrDescription(DaxTag entityTag, DaxTag tag, String desc)
+    { if(desc!= null && !desc.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
+
+    public void putEntityEntryAtrReadOnly(DaxTag entityTag, DaxTag tag, Boolean able)
+    { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_READONLY ,able));}
+
+    public void putEntityEntryAtrDeprecated(DaxTag entityTag, DaxTag tag)
+    { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
 
 
 
@@ -284,10 +307,10 @@ public class DaxSemanticRegistry {
 
 
         collectionValues.merge(colTag,
-                DaxCollectionTool.putAndReturnMap(
+                DaxLangTool.putAndReturnMap(
                 new DaxBaseRegistry<>(),key,atrPair),
                         (eM, nM) ->
-                                DaxCollectionTool.putAndReturnMap(eM, key,atrPair));
+                                DaxLangTool.putAndReturnMap(eM, key,atrPair));
 
 
     }
@@ -416,5 +439,10 @@ public class DaxSemanticRegistry {
         }
 
         return attribute.getDataTypeValue();
+    }
+
+    public DaxDataType getDataType(DaxTag tag) {
+        return tagAttributes.getAttributMap().get(tag)
+                .get(DaxCoreTags.ATR_DATA_TYPE).getDataTypeValue();
     }
 }

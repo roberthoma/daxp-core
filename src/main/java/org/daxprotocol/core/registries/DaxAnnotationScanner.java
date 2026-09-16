@@ -192,8 +192,8 @@ public class DaxAnnotationScanner {
 
         semanticRegistry.putEntityEntry(entityTag, tag);
 
-        semanticRegistry.putEntityEntryAtrName( tag, entityTag,name);
-        semanticCollector.registerDescription( tag, entityTag, annDescription);
+        semanticCollector.registerName( entityTag,tag ,name);
+        semanticCollector.registerDescription( entityTag,tag,  annDescription);
         //------------------------------------
 /*
         if(daxDataType!= DaxDataType.NONE){
@@ -479,6 +479,7 @@ if(tag.getTagId()==5032){
 
         semanticRegistry.putTag(entityTag, DaxTagDestiny.ENTITY);
         semanticRegistry.putTagAtrName(entityTag, entityName);
+        semanticRegistry.putTagAtrDescription(entityTag, entityAnn.description());
         semanticRegistry.putTagAtrDataType(entityTag, DaxDataType.ENTITY);
 
         if (clazz.isAnnotationPresent(Deprecated.class) || clazz.isAnnotationPresent(DaxpDeprecated.class)) {
@@ -612,8 +613,7 @@ if(tag.getTagId()==5032){
     private void registerCollection(Class<?> clazz) {
         DaxpCollection colAtn = clazz.getAnnotation(DaxpCollection.class);
         String name = !colAtn.name().isBlank() ? colAtn.name() : clazz.getSimpleName();
-
-        DaxTag tag = tagCodec.decode(colAtn.value(), colAtn.namespace(), colAtn.tagId());
+        DaxTag tag = tagCodec.decode(colAtn);
 
         semanticRegistry.putTagAtrName(tag, name);
         semanticRegistry.putTagAtrDescription(tag, colAtn.description());

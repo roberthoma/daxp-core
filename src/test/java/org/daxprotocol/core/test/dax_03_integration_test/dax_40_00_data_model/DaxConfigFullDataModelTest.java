@@ -1,5 +1,7 @@
-package org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config;
+package org.daxprotocol.core.test.dax_03_integration_test.dax_40_00_data_model;
 
+import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.codec.DaxFrameCodec;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
@@ -8,21 +10,19 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
-import org.daxprotocol.core.registries.DaxMessageConverter;
-import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
-import org.daxprotocol.core.registries.DaxHandlerRegistry;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
-import org.daxprotocol.core.application.DaxEngine;
-
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
-import org.daxprotocol.core.test.dax_03_integration_test.dax_40_00_data_model.*;
-import org.junit.jupiter.api.*;
+import org.daxprotocol.core.registries.DaxHandlerRegistry;
+import org.daxprotocol.core.registries.DaxMessageConverter;
+import org.daxprotocol.core.registries.DaxSemanticRegistry;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-public class DaxConfigBaseTest {
+public class DaxConfigFullDataModelTest {
     protected static DaxEngine daxEngine;
     protected static int appNamespaceId;
     protected static DaxSemanticRegistry semanticRegistry;
@@ -78,7 +78,7 @@ public class DaxConfigBaseTest {
             System.out.println("*******************************************");
 
             //------------
-/*
+
             daxEngine.register(DaxAnyTestDicEnum.class);
             daxEngine.register(DaxAnyTestEnum.class);
 
@@ -90,21 +90,25 @@ public class DaxConfigBaseTest {
             handlerRegistry.registerCtrl(new DaxpControllerTest());  //Autowire in spring
 
             daxEngine.checkRegister();
-*/
+
 
 
         }
     }
 
+    private class TestClass01{
+
+        @DaxpField(tagId = 1001)
+        public String testString1;
+
+    }
+
+    @Test
+    void checkAnnDaxpField(){
+        daxEngine.register(TestClass01.class);
+
+    }
 
 
-//    @Test
-//    void checknamespaceList(){
-//        System.out.println("*************************************************");
-//        System.out.println("               namespace list");
-//        System.out.println();
-//        daxEngine.getnamespaceMapper().getAllMappings().forEach((s, id) -> System.out.println(s +" id="+id));
-//        System.out.println("*************************************************");
-//    }
 
 }

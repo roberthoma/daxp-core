@@ -24,7 +24,7 @@ import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.tool.DaxCollectionTool;
+import org.daxprotocol.core.tool.DaxLangTool;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class DaxBaseRegistry<T> {
     public void putAttribute(T key, DaxPair<?> atrPair){
         attributMap.merge(key, new ConcurrentHashMap<>(Map.of(atrPair.getTag(), atrPair)),
                 (eM, nM) ->
-                        DaxCollectionTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
+                        DaxLangTool.putAndReturnMap(eM, atrPair.getTag(), atrPair));
 
     }
 

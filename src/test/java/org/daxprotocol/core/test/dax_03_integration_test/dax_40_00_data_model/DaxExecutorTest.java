@@ -6,7 +6,7 @@ import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 @DisplayName("Testy Skanera I EKSEKUCJI :) Refleksji DAXP")
-public class DaxExecutorTest extends DaxConfigBaseTest {
+public class DaxExecutorTest extends DaxConfigFullDataModelTest {
 
     @Test
     void getTagsByDataTypeTEST(){

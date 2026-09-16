@@ -103,7 +103,14 @@ public class DaxSemanticCollector {
     }
     ///---------------------------------------------------------------------
 
-    public void registerDescription(DaxTag tag, DaxTag entityTag, String description){
+    public void registerName(DaxTag entityTag, DaxTag tag,  String name){
+
+        semanticRegistry.putEntityEntryAtrName(entityTag,tag, name);
+
+    }
+    ///---------------------------------------------------------------------
+
+    public void registerDescription(DaxTag entityTag, DaxTag tag,  String description){
 
         semanticRegistry.putEntityEntryAtrDescription(entityTag,tag, description);
 

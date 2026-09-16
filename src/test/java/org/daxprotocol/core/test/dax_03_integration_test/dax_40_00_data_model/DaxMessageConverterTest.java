@@ -7,7 +7,7 @@ import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.Dax
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxMessageConverterTest extends DaxConfigBaseTest {
+public class DaxMessageConverterTest extends DaxConfigFullDataModelTest {
     @Test
     void msgConverterTest(){
         String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +

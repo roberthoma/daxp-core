@@ -31,7 +31,7 @@ public class DaxAnySchemaRegister {
     @DaxpTag( description = "Test TAG char", clazz = Character.class)
     public static final int TEST_TAG_char_5003 = 5003;
 
-    @DaxpTag( description = "Test TAG Boolean", clazz = Boolean.class)
+    @DaxpTag( description = "Test TAG Boolean")//, clazz = Boolean.class)
     public static final int TEST_TAG_Boolean_5004 = 5004;
 
     @DaxpTag( description = "Test TAG String", clazz = String.class)

@@ -19,10 +19,11 @@
  */
 package org.daxprotocol.core.tool;
 
+import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.registries.DaxBaseRegistry;
+
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DaxLangTool {
     public static List<Field> allFields(Class<?> clazz) {
@@ -43,7 +44,24 @@ public class DaxLangTool {
         return enumClass;
     }
 
-    //TODO All fields to MAP
+    public static  <K,V> Map<K,V> putAndReturnMap(Map<K,V> map , K k,V v){
+        map.put(k,v);
+        return map;
+    }
+
+
+    public static <V> Set<V> addAndReturnSet(Set<V> set, V v){
+        if (!set.contains(v)){
+            set.add(v);
+        };
+        return  set;
+    }
+
+    public static DaxBaseRegistry<String> putAndReturnMap(DaxBaseRegistry<String> map , String k, DaxPair<?> pair){
+        map.putAttribute(k,pair);
+        return map;
+    }
+
 
 }
 
