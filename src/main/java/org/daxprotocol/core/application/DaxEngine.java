@@ -132,7 +132,7 @@ public class DaxEngine {
         frameCodec = new DaxFrameCodec(config, preambleCodec, messageCodec);
 
 
-        messagePopulator    = new DaxMessagePopulator( tagParser, semanticRegistry);
+        messagePopulator    = new DaxMessagePopulator( tagParser, semanticRegistry, semanticCollector);
         annotationScanner = new DaxAnnotationScanner(tagParser ,
                                                         config,
 //                                                        namespaceMapper,
@@ -302,7 +302,7 @@ public class DaxEngine {
     }
 
 
-
+/*(
     public void checkRegister() {
 
         //TODO Develop all references checking
@@ -316,6 +316,6 @@ public class DaxEngine {
             });
 
         }
-
+*/
 
 }

@@ -60,21 +60,9 @@ public class DaxBaseRegistry<T> {
                 .map(Map.Entry::getKey)
                 .toList();
     }
+
     public boolean containsKey(T key){
         return attributMap.containsKey(key);
     }
 
 }
-
-
-/*
-* 10:54:44.425 [Test worker] ERROR DaxEngine -  TAG : 5100  UNKNOWN Type
-10:54:44.426 [Test worker] ERROR DaxEngine -  TAG : 8000  UNKNOWN Type
-10:54:44.426 [Test worker] ERROR DaxEngine -  TAG : FIX:5050  UNKNOWN Type
-5055
-5000
-5077
-5078
-
-* */
-

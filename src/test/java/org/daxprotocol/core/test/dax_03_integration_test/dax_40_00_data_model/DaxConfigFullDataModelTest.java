@@ -89,7 +89,7 @@ public class DaxConfigFullDataModelTest {
             daxEngine.register(DaxAnyTestEntity.class);
             handlerRegistry.registerCtrl(new DaxpControllerTest());  //Autowire in spring
 
-            daxEngine.checkRegister();
+          //  daxEngine.checkRegister();
 
 
 

@@ -1,3 +1,23 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2026 DAXPARC Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
+
 package org.daxprotocol.core.registries;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
@@ -7,7 +27,6 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.parsers.DaxTagParser;
 
 import java.util.Arrays;
@@ -19,9 +38,13 @@ import java.util.Map;
 public class DaxMessagePopulator {
     DaxTagParser tagParser;
     DaxSemanticRegistry semanticRegistry;
-    public DaxMessagePopulator(DaxTagParser tagParser, DaxSemanticRegistry semanticRegistry){
+    DaxSemanticCollector semanticCollector;
+    public DaxMessagePopulator(DaxTagParser tagParser, DaxSemanticRegistry semanticRegistry
+,DaxSemanticCollector semanticCollector
+    ){
         this.tagParser = tagParser;
         this.semanticRegistry = semanticRegistry;
+        this.semanticCollector = semanticCollector;
     }
 
     private void populateFromMsgBlock(int msgNamespaceId , Map<DaxTag, DaxPair<?>> blockPairMap) {
@@ -98,13 +121,13 @@ public class DaxMessagePopulator {
 
 
 
-        if(blockType.equals(DaxBlockType.BLOCK_TYPES)){
+        if(blockType.equals(DaxBlockType.BLOCK_TYPE)){
 
             DaxTag tag = tagParser.parseDaxTag(
                     blockPairMap.get(DaxCoreTags.ENTRY_TAG).getStrValue() , msgNamespaceId
             ) ;
 
-            semanticRegistry.putTag( tag,  DaxTagDestiny.TAG);
+//            semanticRegistry.putTag( tag,  DaxTagDestiny.TAG);
 
             //TODO check if not exist FIELD_DATA_TYPE keep as String with warring
 
@@ -130,25 +153,25 @@ public class DaxMessagePopulator {
 */
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_NULLABLE)) {
-                semanticRegistry.putTagAtrNullable(tag,
+                semanticCollector.putTagAtrNullable(tag,
                         blockPairMap.get(DaxCoreTags.ATR_NULLABLE).getCharValue()=='Y'
                 );
             }
 
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_SIZE_MAX)) {
-                semanticRegistry.putTagAtrSizeMax(tag,
+                semanticCollector.putTagAtrSizeMax(tag,
                         blockPairMap.get(DaxCoreTags.ATR_SIZE_MAX).getIntegerValue()
                 );
             }
 
             if(blockPairMap.containsKey(DaxCoreTags.ATR_SIZE_MIN)) {
-                semanticRegistry.putTagAtrSizeMin(tag,
+                semanticCollector.putTagAtrSizeMin(tag,
                         blockPairMap.get(DaxCoreTags.ATR_SIZE_MIN).getIntegerValue()
                 );
             }
             if(blockPairMap.containsKey(DaxCoreTags.ATR_READONLY)) {
-                semanticRegistry.putTagAtrReadOnly(tag,
+                semanticCollector.putTagAtrReadOnly(tag,
                         blockPairMap.get(DaxCoreTags.ATR_READONLY).getBooleanValue()
                 );
             }
@@ -175,7 +198,7 @@ public class DaxMessagePopulator {
 
             //blockPairMap.get(DaxTagConst.FIELD).getStrValue();
 
-            semanticRegistry.putTag(groupTag, DaxTagDestiny.ENTITY);
+//            semanticRegistry.putTag(groupTag, DaxTagDestiny.ENTITY);
 
             String fieldIdStrList = blockPairMap.get(DaxCoreTags.TAG_LIST).getStrValue();
             List<DaxTag> tagList = tagParser.parseDaxTagList(fieldIdStrList, msgNamespaceId);

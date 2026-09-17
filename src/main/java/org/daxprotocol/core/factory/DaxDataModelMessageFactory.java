@@ -1,3 +1,23 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2026 DAXPARC Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
+
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
@@ -14,7 +34,6 @@ import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.tag.DaxTagDestiny;
 
 import java.util.Map;
 import java.util.Set;
@@ -25,17 +44,17 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxDataModelMessageFactory {
 
     DaxTagCodec tagCodec;
-    DaxSemanticRegistry dictionary;
-    public DaxDataModelMessageFactory(DaxTagCodec tagCodec, DaxSemanticRegistry dictionary){
+    DaxSemanticRegistry semanticRegistry;
+    public DaxDataModelMessageFactory(DaxTagCodec tagCodec, DaxSemanticRegistry semanticRegistry){
 
         this.tagCodec = tagCodec;
-        this.dictionary = dictionary;
+        this.semanticRegistry = semanticRegistry;
 
     }
 
 
     private void putAttributesToTagBlock(DaxBody body, DaxTag tag, Map<DaxTag, DaxPair<?>> map){
-        body.nextBlock(DaxBlockType.BLOCK_TYPES);
+        body.nextBlock(DaxBlockType.BLOCK_TYPE);
         body.putPair(new DaxPairTag(ENTRY_TAG,tag));
 
         map.forEach((atrTag, pair) -> body.putPair(pair));
@@ -137,12 +156,13 @@ public class DaxDataModelMessageFactory {
     }
 
     private void putEntityToBody(DaxBody body, DaxTag entityTag){
-        Set<DaxTag> entityTagSet = dictionary.getEntityFieldsMap().get(entityTag);
+//        Set<DaxTag> entityTagSet = semanticRegistry.getEntityFieldsMap().get(entityTag);
+        Set<DaxTag> entityTagSet = semanticRegistry.getEntityFields(entityTag);
 
         body.nextBlock(DaxBlockType.BLOCK_ENTITY);
         body.putPair(ENTRY_TAG, tagCodec.encode(entityTag) );
 
-        DaxBaseRegistry<DaxTag> baseDic = dictionary.getEntityBaseDic(entityTag);
+        DaxBaseRegistry<DaxTag> baseDic = semanticRegistry.getEntityBaseDic(entityTag);
 
 //        baseDic.getAttributMap().forEach((daxTag, tagDaxPairMap) ->
 //                body.putPair(
@@ -160,11 +180,11 @@ public class DaxDataModelMessageFactory {
     }
 
 
-    private void putTagBlockByDestiny(DaxTag tag, DaxTagDestiny destiny){
-
-
-
-    }
+//    private void putTagBlockByDestiny(DaxTag tag, DaxTagDestiny destiny){
+//
+//
+//
+//    }
 //    private void  putSchemaToBlock(DaxBody body,  Map<DaxTag, DaxPair<?>> tagDaxPairMap){
 //        body.nextBlock(DaxBlockType.BLOCK_SCHEMA);
 //
@@ -176,11 +196,11 @@ public class DaxDataModelMessageFactory {
     public DaxMessage dictionaryToMsg() {
         DaxMessage message = new DaxMessage(DaxCoreMessages.DATA_MODEL_INST);
 
-        dictionary.getNamespaceMap().forEach((nsId, namespace) ->
+        semanticRegistry.getNamespaceMap().forEach((nsId, namespace) ->
                 putNamespaceToBody(message.getBody(), namespace)
         );
 
-        dictionary.getMsgMap().forEach((s, messageDicItem) ->
+        semanticRegistry.getMsgMap().forEach((s, messageDicItem) ->
                 putMsgItem(message.getBody(),messageDicItem)
         );
 
@@ -191,40 +211,40 @@ public class DaxDataModelMessageFactory {
 //                );
 
 
-        dictionary.getTagAttributeMap().forEach((tag, atrMap) ->
+        semanticRegistry.getTagAttributeMap().forEach((tag, atrMap) ->
                 putAttributesToTagBlock(message.getBody(),tag,  atrMap)
         );
 
 
 
-        dictionary.getTagDestinyMap().forEach(this::putTagBlockByDestiny);
+      //  semanticRegistry.getTagDestinyMap().forEach(this::putTagBlockByDestiny);
 
 
 
 //        collectionDictionaryToMsg(message.getBody(),dictionary.getCollectionAttributes());
 
 
-        dictionary.getEntityEntryAttributes()
+        semanticRegistry.getEntityEntryAttributes()
                 .forEach((entityTag, baseDic) ->{
                         entityEntryToBlock(message.getBody(),entityTag, baseDic );});
 
 
 
-        dictionary.getTagsByDataType(DaxDataType.ENTITY).forEach(tag ->
-                System.out.println("A > EEEEEEEEEENTIYi " + tag.getTagId())
+        semanticRegistry.getTagsByDataType(DaxDataType.ENTITY).forEach(tag ->
+                //System.out.println("A > EEEEEEEEEENTIYi " + tag.getTagId())
 
-//                putEntityToBody(message.getBody(), tag)
+                putEntityToBody(message.getBody(), tag)
         );
 
 
 
-dictionary.getTagDestinyMap().forEach((tag, destiny) -> {
-            if (DaxTagDestiny.ENTITY.equals(destiny)) {
-                System.out.println("B > EEEEEEEEEENTIYi " + tag.getTagId());
-                // This is safe even if destiny is null
-                putEntityToBody(message.getBody(), tag);
-            }
-        });
+//       semanticRegistry.getTagDestinyMap().forEach((tag, destiny) -> {
+//            if (DaxTagDestiny.ENTITY.equals(destiny)) {
+//                System.out.println("B > EEEEEEEEEENTIYi " + tag.getTagId());
+//                // This is safe even if destiny is null
+//                putEntityToBody(message.getBody(), tag);
+//            }
+//        });
 
 
 

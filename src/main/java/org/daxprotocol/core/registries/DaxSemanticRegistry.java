@@ -59,13 +59,13 @@ public class DaxSemanticRegistry {
     DaxMessageMapper    messageMapper;
     DaxSchemaMapper     schemaMapper;
 
+    public DaxBaseRegistry<DaxTag> getTagAttributes() {
+        return tagAttributes;
+    }
+
     /*****************************************************
      * Main SET of tags
      */
-//    Set<DaxTag> tagSet = new HashSet<>();
-    Map<DaxTag,DaxTagDestiny>     tagDestinyMap  = new ConcurrentHashMap<>();
-
-//    Map<DaxTag,DaxRegisterSource> tagMap         = new ConcurrentHashMap<>();
 
     DaxBaseRegistry<DaxTag> tagAttributes = new DaxBaseRegistry<>();
 
@@ -113,10 +113,6 @@ public class DaxSemanticRegistry {
 
 
     Map<DaxTag, DaxBaseRegistry<String>> collectionValues = new ConcurrentHashMap<>();
-
-
-
-    Map<Class<?>,DaxTag> classDaxTagMap = new HashMap<>();
 
 
     /******************************************************/
@@ -170,14 +166,11 @@ public class DaxSemanticRegistry {
      */
 
 
-    public Map<DaxTag, Set<DaxTag>> getEntityFieldsMap(){
-        return entityFieldsMap;
+    public Set<DaxTag> getEntityFields(DaxTag tag) {
+        return entityFieldsMap.getOrDefault(tag, Collections.emptySet());
     }
 
 
-    public Map<DaxTag,DaxTagDestiny> getTagDestinyMap(){
-        return tagDestinyMap;
-    }
 
     //TODO chek exist of fields in group,
     //TODO check recursions
@@ -190,58 +183,9 @@ public class DaxSemanticRegistry {
     // Attributes
 
     //*********************
-    // Attributes of tags
-
-
-
-    private void putTagAttribute(DaxTag tag, DaxPair<?> atrPair){
-        tagAttributes.putAttribute(tag, atrPair);
-    }
-
-    public void putTagAttributes(DaxTag tag, Set< DaxPair<?>> pairMap) {
-        pairMap.forEach(( atrPair) -> putTagAttribute(tag,atrPair));
-    };
-
-
-    public void putTagAtrDataType(DaxTag tag, DaxDataType dataType)
-    { putTagAttribute(tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-
-    public void putRefTagAtrDataType(DaxTag tag, DaxDataType dataType)
-    { putTagAttribute(tag, new DaxPairDataType(ATR_REF_TAG_ID,dataType));}
-
-    public void putTagAtrSizeMax(DaxTag tag,  Integer max )
-    { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
-
-    public void putTagAtrSizeMin(DaxTag tag,  Integer min )
-    { putTagAttribute(tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
-
-    public void putTagAtrNullable(DaxTag tag,  Boolean able)
-    { putTagAttribute(tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
-
-    public void putTagAtrName(DaxTag tag,  String name){
-        if(name!= null && !name.isBlank())
-        {
-            putTagAttribute(tag, new DaxPairString(ENTRY_NAME,name));
-        }
-    }
-
-    public void putTagAtrDescription(DaxTag tag, String desc) {
-        if(desc!= null && !desc.isBlank()){
-            putTagAttribute(tag, new DaxPairString(ENTRY_DESCRIPTION,desc));
-        }
-    }
-
-    public void putTagAtrReadOnly(DaxTag tag, Boolean able)
-    { putTagAttribute(tag, new DaxPairBoolean(ATR_READONLY ,able));}
-
-    public void putTagAtrDeprecated(DaxTag tag)
-    { putTagAttribute(tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
-
-
-    //*********************
     // Attributes of fields and values derived from the entity.
     private void putEntityEntryAttribute(DaxTag entityTag, DaxTag tag, DaxPair<?> atrPair){
-
+         //TODO refactor nullPointerException can be occure
         if(!entityEntryAttributes.containsKey(entityTag)){
             entityEntryAttributes.put(entityTag, new DaxBaseRegistry<>());
         }
@@ -323,7 +267,7 @@ public class DaxSemanticRegistry {
     /*********************
      * Tag registration
     */
-
+/*
     public void putTag(DaxTag tag,  DaxTagDestiny destiny){
 
         if (tagDestinyMap.containsKey(tag))
@@ -354,7 +298,7 @@ public class DaxSemanticRegistry {
 
 
     }
-
+*/
     //------------------------
     public void putNamespace(String symbol,String name, String description){
         int refId = schemaMapper.getReferenceId(name);
@@ -362,25 +306,10 @@ public class DaxSemanticRegistry {
         namespaceRegistry.putAttribute(refId,new DaxPairString(ENTRY_NAME,name));
         namespaceRegistry.putAttribute(refId,new DaxPairString(ENTRY_DESCRIPTION,description));
     }
+    ///---------------------------------------------------------------------------------------
 
     public DaxBaseRegistry<Integer> getSchemaDictionary (){
         return namespaceRegistry;
-    }
-    ///---------------------------------------------------------------------------------------
-    public void registerClass(Class<?> clazz, DaxTag tag){
-
-        classDaxTagMap.put(clazz, tag);
-
-    }
-    public boolean isClassRegistered(Class<?> clazz){
-
-        return  classDaxTagMap.containsKey(clazz);
-
-    }
-    public DaxTag getClassTag(Class<?> clazz){
-
-        return  classDaxTagMap.get(clazz);
-
     }
 
     ///---------------------------------------------------------------------------------------
@@ -419,11 +348,13 @@ public class DaxSemanticRegistry {
     public List<DaxTag> getTagsByDataType(DaxDataType targetType) {
         return tagAttributes.getKeysByDataType(targetType);
     }
+    ///---------------------------------------------------------------------------------------
 
 
     public boolean isTagRegistered(DaxTag tag) {
         return tagAttributes.containsKey(tag);
     }
+    ///---------------------------------------------------------------------------------------
 
     public DaxDataType getTagDataType(DaxTag tag) {
         var attributes = tagAttributes.getAttributMap().get(tag);
@@ -440,9 +371,24 @@ public class DaxSemanticRegistry {
 
         return attribute.getDataTypeValue();
     }
+    ///---------------------------------------------------------------------------------------
 
     public DaxDataType getDataType(DaxTag tag) {
         return tagAttributes.getAttributMap().get(tag)
                 .get(DaxCoreTags.ATR_DATA_TYPE).getDataTypeValue();
     }
+    ///---------------------------------------------------------------------------------------
+    public boolean isCollectionDictionary(DaxTag tag){
+        if(tagAttributes.containsKey(tag)){
+            if(tagAttributes.getAttributMap().get(tag).containsKey(DaxCoreTags.COLLECTION_IS_DICTIONARY)){
+                return tagAttributes.getAttributMap()
+                                     .get(tag)
+                                      .get(DaxCoreTags.COLLECTION_IS_DICTIONARY).getBooleanValue();
+            }
+        }
+
+      return false;
+    }
+    ///---------------------
+
 }

@@ -42,10 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE;
 
@@ -65,6 +62,9 @@ public class DaxAnnotationScanner {
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxDataTypeService dataTypeService;
     private final DaxSemanticCollector semanticCollector;
+    // TODO move to Annotation scanner
+    private Map<Class<?>,DaxTag> classDaxTagMap = new HashMap<>();
+
 
     /**
      * Constructs a new scanner with necessary protocol services and registries.
@@ -102,7 +102,7 @@ public class DaxAnnotationScanner {
     public void scanAndRegister(Class<?> clazz) {
      //   try {
 
-            if (semanticRegistry.isClassRegistered(clazz)) {
+            if (classDaxTagMap.containsKey(clazz)) {
               return;
             }
 
@@ -233,12 +233,12 @@ if(tag.getTagId()==5032){
                 semanticCollector.registerDataType(tag, dataTypeService.decodeClass(field.getType()));
             }
             else {
-                if (semanticRegistry.isClassRegistered(field.getType())) {
-                    DaxTag refTag = semanticRegistry.getClassTag(field.getType());
+                if (classDaxTagMap.containsKey(field.getType())) {
+                    DaxTag refTag = classDaxTagMap.get(field.getType());
 
                     System.out.println("JEST JEST 11111");
 
-                    semanticRegistry.putTagAttributes(tag,
+                    semanticCollector.putTagAttributes(tag,
                             Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_TAG_ID, refTag),
                                    new DaxPairDataType(DaxCoreTags.ATR_REF_DATA_TYPE, DaxDataType.ENTITY))
 
@@ -248,12 +248,12 @@ if(tag.getTagId()==5032){
                 else {
                     scanAndRegister(field.getType());  //stackoverflow
 
-                    if (semanticRegistry.isClassRegistered(field.getType())) {
-                        DaxTag refTag = semanticRegistry.getClassTag(field.getType());
+                    if (classDaxTagMap.containsKey(field.getType())) {
+                        DaxTag refTag =  classDaxTagMap.get(field.getType());
 
                         System.out.println("JEST JEST 22222");
 
-                        semanticRegistry.putTagAttributes(tag,
+                        semanticCollector.putTagAttributes(tag,
                                 Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_TAG_ID, refTag),
                                         new DaxPairDataType(DaxCoreTags.ATR_REF_DATA_TYPE, DaxDataType.ENTITY))
 
@@ -329,7 +329,7 @@ if(tag.getTagId()==5032){
 //        semanticRegistry.putTag(tag, DaxTagDestiny.ENTITY_FIELD);
 
         Class<?> returnClass = method.getReturnType();
-        semanticRegistry.putTagAttributes(tag, dataTypeCodec.encode(returnClass));
+        semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(returnClass));
         semanticRegistry.putEntityEntryAtrReadOnly(entityTag, tag, true);
         semanticRegistry.putEntityEntryAtrDescription(entityTag, tag, methodAnn.description());
         semanticRegistry.putEntityEntry(entityTag, tag);
@@ -474,16 +474,15 @@ if(tag.getTagId()==5032){
         DaxTag entityTag = tagCodec.decode(entityAnn);
 
         String entityName = !entityAnn.name().isBlank() ? entityAnn.name() : clazz.getSimpleName();
+        classDaxTagMap.put(clazz, entityTag);
 
-        semanticRegistry.registerClass(clazz, entityTag);
-
-        semanticRegistry.putTag(entityTag, DaxTagDestiny.ENTITY);
-        semanticRegistry.putTagAtrName(entityTag, entityName);
-        semanticRegistry.putTagAtrDescription(entityTag, entityAnn.description());
-        semanticRegistry.putTagAtrDataType(entityTag, DaxDataType.ENTITY);
+//        semanticRegistry.putTag(entityTag, DaxTagDestiny.ENTITY);
+        semanticCollector.putTagAtrName(entityTag, entityName);
+        semanticCollector.putTagAtrDescription(entityTag, entityAnn.description());
+        semanticCollector.putTagAtrDataType(entityTag, DaxDataType.ENTITY);
 
         if (clazz.isAnnotationPresent(Deprecated.class) || clazz.isAnnotationPresent(DaxpDeprecated.class)) {
-            semanticRegistry.putTagAtrDeprecated(entityTag);
+            semanticCollector.putTagAtrDeprecated(entityTag);
         }
 
         List<Field> allFields = DaxLangTool.allFields(clazz);
@@ -615,15 +614,11 @@ if(tag.getTagId()==5032){
         String name = !colAtn.name().isBlank() ? colAtn.name() : clazz.getSimpleName();
         DaxTag tag = tagCodec.decode(colAtn);
 
-        semanticRegistry.putTagAtrName(tag, name);
-        semanticRegistry.putTagAtrDescription(tag, colAtn.description());
-        semanticRegistry.putTagAttributes(tag, dataTypeCodec.encode(clazz));
+        semanticCollector.putTagAtrName(tag, name);
+        semanticCollector.putTagAtrDescription(tag, colAtn.description());
+        semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz));
 
-        Map<DaxTag, DaxPair<?>> atrMap = semanticRegistry.getTagAttributeMap().get(tag);
-
-        if (atrMap != null && atrMap.containsKey(DaxCoreTags.COLLECTION_IS_DICTIONARY)) {
-            if (atrMap.get(DaxCoreTags.COLLECTION_IS_DICTIONARY).getBooleanValue()) {
-
+        if (semanticRegistry.isCollectionDictionary(tag)){
                 Object[] constants = clazz.getEnumConstants();
                 if (constants != null) {
                     for (Object c : constants) {
@@ -632,8 +627,7 @@ if(tag.getTagId()==5032){
                     }
                 }
             }
-        }
-
-        semanticRegistry.registerClass(clazz, tag);
+        //}
+        classDaxTagMap.put(clazz, tag);
     }
 }
