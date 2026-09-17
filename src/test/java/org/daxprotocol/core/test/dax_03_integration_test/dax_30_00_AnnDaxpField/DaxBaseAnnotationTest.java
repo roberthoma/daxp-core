@@ -37,7 +37,6 @@ public class DaxBaseAnnotationTest extends DaxConfigBaseInit{
         DaxTag tag1000 =  DaxTag.of(config.getAppNamespaceId() , 1000);
         DaxTag tag1001 =  DaxTag.of(config.getAppNamespaceId() , 1001);
 
-
         Assertions.assertEquals(3,semanticRegistry.getTagAttributeMap().get(tag1000).size());
         Assertions.assertEquals(1,semanticRegistry.getTagAttributeMap().get(tag1001).size());
         Assertions.assertEquals(DaxDataType.ENTITY, semanticRegistry.getDataType(tag1000));

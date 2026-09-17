@@ -29,12 +29,10 @@ import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
-import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairDataType;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.tool.DaxLangTool;
 import org.slf4j.Logger;
@@ -309,7 +307,7 @@ if(tag.getTagId()==5032){
 
         // Handle deprecation annotations
         if (field.isAnnotationPresent(Deprecated.class) || field.isAnnotationPresent(DaxpDeprecated.class)) {
-            semanticRegistry.putEntityEntryAtrDeprecated(entityTag, tag);
+            semanticCollector.putEntityEntryAtrDeprecated(entityTag, tag);
         }
 
         // Check for Jakarta constraints
@@ -330,8 +328,8 @@ if(tag.getTagId()==5032){
 
         Class<?> returnClass = method.getReturnType();
         semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(returnClass));
-        semanticRegistry.putEntityEntryAtrReadOnly(entityTag, tag, true);
-        semanticRegistry.putEntityEntryAtrDescription(entityTag, tag, methodAnn.description());
+        semanticCollector.putEntityEntryAtrReadOnly(entityTag, tag, true);
+        semanticCollector.putEntityEntryAtrDescription(entityTag, tag, methodAnn.description());
         semanticRegistry.putEntityEntry(entityTag, tag);
     }
 

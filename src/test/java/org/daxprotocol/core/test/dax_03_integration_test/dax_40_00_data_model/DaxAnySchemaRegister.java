@@ -13,7 +13,7 @@ import org.daxprotocol.core.test.dax_02_use_case_tests.dax_010_00_annotation.Dax
 public class DaxAnySchemaRegister {
 
 
-    @DaxpTag( description = "Base Entity ")
+    @DaxpTag( description = "Base Entity from DaxpRegistry")
     public static final int TEST_TAG_ENTITY_5000 = 5000;
 
     @DaxpTag( description = "Recursive Entity ")

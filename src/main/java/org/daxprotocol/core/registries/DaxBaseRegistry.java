@@ -51,15 +51,15 @@ public class DaxBaseRegistry<T> {
 
 
 
-    public List<T> getKeysByDataType(DaxDataType targetType) {
-        return attributMap.entrySet().stream()
-                .filter(entry -> {
-                    DaxPair<?> typePair = entry.getValue().get(DaxCoreTags.ATR_DATA_TYPE);
-                    return typePair != null && typePair.getDataTypeValue() == targetType;
-                })
-                .map(Map.Entry::getKey)
-                .toList();
-    }
+//    public List<T> getKeysByDataType(DaxDataType targetType) {
+//        return attributMap.entrySet().stream()
+//                .filter(entry -> {
+//                    DaxPair<?> typePair = entry.getValue().get(DaxCoreTags.ATR_DATA_TYPE);
+//                    return typePair != null && typePair.getDataTypeValue() == targetType;
+//                })
+//                .map(Map.Entry::getKey)
+//                .toList();
+//    }
 
     public boolean containsKey(T key){
         return attributMap.containsKey(key);

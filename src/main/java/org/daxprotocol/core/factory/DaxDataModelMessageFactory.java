@@ -231,20 +231,13 @@ public class DaxDataModelMessageFactory {
 
 
         semanticRegistry.getTagsByDataType(DaxDataType.ENTITY).forEach(tag ->
-                //System.out.println("A > EEEEEEEEEENTIYi " + tag.getTagId())
+
 
                 putEntityToBody(message.getBody(), tag)
         );
 
 
 
-//       semanticRegistry.getTagDestinyMap().forEach((tag, destiny) -> {
-//            if (DaxTagDestiny.ENTITY.equals(destiny)) {
-//                System.out.println("B > EEEEEEEEEENTIYi " + tag.getTagId());
-//                // This is safe even if destiny is null
-//                putEntityToBody(message.getBody(), tag);
-//            }
-//        });
 
 
 

@@ -29,7 +29,6 @@ import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.tag.DaxTagDestiny;
 import org.daxprotocol.core.tool.DaxLangTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,6 +108,7 @@ public class DaxSemanticRegistry {
     Map<DaxTag, DaxBaseRegistry<DaxTag>> entityEntryAttributes = new HashMap<>();
 
 
+
     /******************************************************/
 
 
@@ -180,47 +180,6 @@ public class DaxSemanticRegistry {
     }
 
     //**********************************************************************
-    // Attributes
-
-    //*********************
-    // Attributes of fields and values derived from the entity.
-    private void putEntityEntryAttribute(DaxTag entityTag, DaxTag tag, DaxPair<?> atrPair){
-         //TODO refactor nullPointerException can be occure
-        if(!entityEntryAttributes.containsKey(entityTag)){
-            entityEntryAttributes.put(entityTag, new DaxBaseRegistry<>());
-        }
-        DaxBaseRegistry<DaxTag> dic = entityEntryAttributes.get(entityTag);
-
-        dic.putAttribute(tag, atrPair);
-
-    }
-    public void putEntityTagAttributes(DaxTag entityTag, DaxTag tag, Set< DaxPair<?>> pairMap) {
-        pairMap.forEach(( atrPair) -> putEntityEntryAttribute(entityTag,tag,atrPair));
-    };
-
-    public void putEntityEntryAtrDataType(DaxTag entityTag, DaxTag tag, DaxDataType dataType)
-    { putEntityEntryAttribute(entityTag, tag, new DaxPairDataType(ATR_DATA_TYPE,dataType));}
-
-    public void putEntityEntryAtrSizeMax(DaxTag entityTag, DaxTag tag,  Integer max )
-    { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MAX,max));}
-
-    public void putEntityEntryAtrSizeMin(DaxTag entityTag, DaxTag tag,  Integer min )
-    { putEntityEntryAttribute(entityTag, tag, new DaxPairInteger(ATR_SIZE_MIN,min));}
-
-    public void putEntityEntryAtrNullable(DaxTag entityTag, DaxTag tag,  Boolean able)
-    { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_NULLABLE ,able));}
-
-    public void putEntityEntryAtrName(DaxTag entityTag, DaxTag tag,  String name)
-    { if(name!= null && !name.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_NAME,name));}}
-
-    public void putEntityEntryAtrDescription(DaxTag entityTag, DaxTag tag, String desc)
-    { if(desc!= null && !desc.isBlank()){ putEntityEntryAttribute(entityTag, tag, new DaxPairString(ENTRY_DESCRIPTION,desc));}}
-
-    public void putEntityEntryAtrReadOnly(DaxTag entityTag, DaxTag tag, Boolean able)
-    { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_READONLY ,able));}
-
-    public void putEntityEntryAtrDeprecated(DaxTag entityTag, DaxTag tag)
-    { putEntityEntryAttribute(entityTag, tag, new DaxPairBoolean(ATR_IS_DEPRECATED,true));}
 
 
 
@@ -264,41 +223,7 @@ public class DaxSemanticRegistry {
         return collectionValues.get(colTag);
     }
 
-    /*********************
-     * Tag registration
-    */
-/*
-    public void putTag(DaxTag tag,  DaxTagDestiny destiny){
 
-        if (tagDestinyMap.containsKey(tag))
-        {
-            if( tagDestinyMap.get(tag) == DaxTagDestiny.TAG){
-               tagDestinyMap.put(tag,destiny);
-            }
-
-            //TODO Refactor controling
-//            if(tagDestinyMap.get(tag) != destiny )
-//            {
-//                throw new DaxTagParserException("Bad tag destination, tag is use as : " + tagDestinyMap.get(tag).toString()
-//                        );
-//            }
-        }
-        else {
-           tagDestinyMap.put(tag,destiny);
-        }
-
-
-//        if (tagMap.containsKey(tag)){
-//            logger.warn("TAG {} EXIST in dictionary , source {}  ", tag.getTagId(), tagMap.get(tag));
-//            //throw new RuntimeException("Tag "+tag.getTagId()+" exist !!!");
-//            return;
-//        }
-//
-//        tagMap.put(tag,source);
-
-
-    }
-*/
     //------------------------
     public void putNamespace(String symbol,String name, String description){
         int refId = schemaMapper.getReferenceId(name);
@@ -346,8 +271,18 @@ public class DaxSemanticRegistry {
     ///---------------------------------------------------------------------------------------
 
     public List<DaxTag> getTagsByDataType(DaxDataType targetType) {
-        return tagAttributes.getKeysByDataType(targetType);
+        return tagAttributes.getAttributMap().entrySet().stream()
+                .filter(entry -> {
+                    DaxPair<?> typePair = entry.getValue().get(DaxCoreTags.ATR_DATA_TYPE);
+                    return typePair != null && typePair.getDataTypeValue() == targetType;
+                })
+                .map(Map.Entry::getKey)
+                .toList();
     }
+
+//    public List<DaxTag> getTagsByDataType(DaxDataType targetType) {
+//        return tagAttributes.getKeysByDataType(targetType);
+//    }
     ///---------------------------------------------------------------------------------------
 
 
