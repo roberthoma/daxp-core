@@ -71,6 +71,9 @@ public class DaxEngine {
     private final DaxAnnotationScanner annotationScanner;
     private final DaxDispatcher dispatcher;
     private final DaxSemanticCollector semanticCollector;
+
+
+    private final DaxSemanticInspector semanticInspector;
     private final DaxDataTypeService dataTypeService;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
@@ -108,11 +111,12 @@ public class DaxEngine {
         semanticRegistry = new DaxSemanticRegistry(config, namespaceMapper, messageMapper,schemaMapper);
         semanticRegistry.putNamespace(sysNamespace);
         semanticRegistry.putNamespace(appNamespace);
+
         DaxCoreTags.init(semanticRegistry);
 
+        semanticInspector = new DaxSemanticInspector(semanticRegistry);
 
-        semanticCollector = new DaxSemanticCollector(semanticRegistry, dataTypeService, tagCodec);
-
+        semanticCollector = new DaxSemanticCollector(semanticRegistry, dataTypeService, tagCodec, semanticInspector);
 
         handlerRegistry = new DaxHandlerRegistry();
 
@@ -265,6 +269,11 @@ public class DaxEngine {
     public int getAppNamespaceId(){
       return config.getAppNamespaceId();
     }
+
+    public DaxSemanticInspector getSemanticInspector() {
+        return semanticInspector;
+    }
+
 
 
 

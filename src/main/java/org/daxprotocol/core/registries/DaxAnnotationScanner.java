@@ -257,36 +257,9 @@ if(tag.getTagId()==5032){
 
                         );
                     }else {
+                        semanticCollector.putTagAttributes(tag,dataTypeCodec
+                                                               .encode(field.getType(),field.getGenericType() ));
 
-/*
- all collection
-
-                        Not registered class= java.util.List
-                        DO OPROGRAMOWANI >>java.util.Map tag=5083 entity=5000
-                        Not registered class= java.util.Map
-                        DO OPROGRAMOWANI >>java.util.Set tag=5089 entity=5000
-                        Not registered class= java.util.Set
-                        DO OPROGRAMOWANI >>java.util.Set tag=5090 entity=5000
-                        Not registered class= java.util.Set
-                        DO OPROGRAMOWANI >>java.util.Queue tag=5091 entity=5000
-                        Not registered class= java.util.Queue
-                        DO OPROGRAMOWANI >>java.util.LinkedList tag=5092 entity=5000
-                        Not registered class= java.util.LinkedList
-                        DO OPROGRAMOWANI >>org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxTestEnumNoAnnotation tag=5099 entity=5000
-                        Not registered class= org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxTestEnumNoAnnotation
-                        DO OPROGRAMOWANI >>org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxSubNoTagEntity tag=5100 entity=5000
-                        Not registered class= org.daxprotocol.core.unit_test.dax_10_00_annotation.DaxSubNoTagEntity
-                        DO OPROGRAMOWANI >>java.util.Map tag=5115 entity=5000
-                        Not registered class= java.util.Map
-                        DO OPROGRAMOWANI >>java.util.Map tag=5116 entity=5000
-                        Not registered class= java.util.Map
-                        DO OPROGRAMOWANI >>java.util.Map tag=5117 entity=5000
-                        Not registered class= java.util.Map
-                        Nazwa: org.daxprotocol.core.unit_test.dax
-*/
-                    System.out.println("Not registered class= "+field.getType().getName());
-//                    semanticRegistry.putTagAttributes(tag,
-//                            dataTypeCodec.encode(field.getType(), field.getGenericType()));
                     }
                 }
 

@@ -50,14 +50,17 @@ public class DaxSemanticCollector {
     DaxTagCodec tagCodec;
     DaxBaseRegistry<DaxTag> tagAttributes;
     Map<DaxTag, DaxBaseRegistry<DaxTag>> entityEntryAttributes;
+    DaxSemanticInspector inspector;
     ///----------------------------------------------------------------------------------------------
     public DaxSemanticCollector(DaxSemanticRegistry semanticRegistry,
                                 DaxDataTypeService dataTypeService,
-                                DaxTagCodec tagCodec
+                                DaxTagCodec tagCodec,
+            DaxSemanticInspector inspector
     ){
         this.semanticRegistry = semanticRegistry;
         this.dataTypeService = dataTypeService;
         this.tagCodec = tagCodec;
+        this.inspector = inspector;
         tagAttributes = semanticRegistry.getTagAttributes();
         entityEntryAttributes = semanticRegistry.getEntityEntryAttributes();
     }
@@ -68,7 +71,7 @@ public class DaxSemanticCollector {
     // During registration via message: log with a warning or an error
 
     public void registerDataType( DaxTag tag, DaxDataType daxDataType ){
-        DaxDataType existDataType = semanticRegistry.getDataType(tag);
+        DaxDataType existDataType = inspector.getDataType(tag);
 
         if (!daxDataType.equals(DaxDataType.NONE)){
             putTagAtrDataType(tag,daxDataType);
@@ -180,7 +183,7 @@ public class DaxSemanticCollector {
     )
 
     {
-        DaxDataType existDataType = semanticRegistry.getDataType(tag);
+        DaxDataType existDataType = inspector.getDataType(tag);
         if(existDataType.equals(daxDataType)){
             return;
         }

@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class DaxCoreDataTypesTest extends DaxConfigBaseInit{
 
@@ -20,8 +23,11 @@ public class DaxCoreDataTypesTest extends DaxConfigBaseInit{
         daxEngine.register(TestClass01 .class);
         printSemanticRegister();
         DaxTag tag1000 =  DaxTag.of(config.getAppNamespaceId() , 1000);
+
+        //
         Assertions.assertEquals(2,semanticRegistry.getTagAttributeMap().get(tag1000).size());
-        Assertions.assertEquals(DaxDataType.ENTITY, semanticRegistry.getDataType(tag1000));
+
+        Assertions.assertEquals(DaxDataType.ENTITY, semanticInspector.getDataType(tag1000));
 
     }
 
@@ -82,22 +88,80 @@ public class DaxCoreDataTypesTest extends DaxConfigBaseInit{
         DaxTag tag1070 =  DaxTag.of(config.getAppNamespaceId() , 1070);
         DaxTag tag1071 =  DaxTag.of(config.getAppNamespaceId() , 1071);
 
-        Assertions.assertEquals(DaxDataType.STRING,  semanticRegistry.getDataType(tag1010));
-        Assertions.assertEquals(DaxDataType.INTEGER, semanticRegistry.getDataType(tag1020));
-        Assertions.assertEquals(DaxDataType.INTEGER, semanticRegistry.getDataType(tag1021));
-        Assertions.assertEquals(DaxDataType.LONG,    semanticRegistry.getDataType(tag1030));
-        Assertions.assertEquals(DaxDataType.LONG,    semanticRegistry.getDataType(tag1031));
-        Assertions.assertEquals(DaxDataType.DECIMAL, semanticRegistry.getDataType(tag1040));
-        Assertions.assertEquals(DaxDataType.CHARACTER, semanticRegistry.getDataType(tag1050));
-        Assertions.assertEquals(DaxDataType.CHARACTER, semanticRegistry.getDataType(tag1051));
-        Assertions.assertEquals(DaxDataType.DOUBLE, semanticRegistry.getDataType(tag1060));
-        Assertions.assertEquals(DaxDataType.DOUBLE, semanticRegistry.getDataType(tag1061));
-        Assertions.assertEquals(DaxDataType.BOOLEAN, semanticRegistry.getDataType(tag1070));
-        Assertions.assertEquals(DaxDataType.BOOLEAN, semanticRegistry.getDataType(tag1071));
+        Assertions.assertEquals(DaxDataType.STRING,  semanticInspector.getDataType(tag1010));
+        Assertions.assertEquals(DaxDataType.INTEGER, semanticInspector.getDataType(tag1020));
+        Assertions.assertEquals(DaxDataType.INTEGER, semanticInspector.getDataType(tag1021));
+        Assertions.assertEquals(DaxDataType.LONG,    semanticInspector.getDataType(tag1030));
+        Assertions.assertEquals(DaxDataType.LONG,    semanticInspector.getDataType(tag1031));
+        Assertions.assertEquals(DaxDataType.DECIMAL, semanticInspector.getDataType(tag1040));
+        Assertions.assertEquals(DaxDataType.CHARACTER, semanticInspector.getDataType(tag1050));
+        Assertions.assertEquals(DaxDataType.CHARACTER, semanticInspector.getDataType(tag1051));
+        Assertions.assertEquals(DaxDataType.DOUBLE, semanticInspector.getDataType(tag1060));
+        Assertions.assertEquals(DaxDataType.DOUBLE, semanticInspector.getDataType(tag1061));
+        Assertions.assertEquals(DaxDataType.BOOLEAN, semanticInspector.getDataType(tag1070));
+        Assertions.assertEquals(DaxDataType.BOOLEAN, semanticInspector.getDataType(tag1071));
 
         printSemanticRegister();
 
     }
+    @Test
+    void checkSetCollection(){
+        @DaxpEntity(tagId = 1000)
+        class TestClass01{
+            @DaxpField(tagId=1001)
+            Set<String> strList;
+        }
+        daxEngine.register(TestClass01 .class);
+        printSemanticRegister();
+        DaxTag tag1001 =  DaxTag.of(config.getAppNamespaceId() , 1001);
+        Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
+        Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getValueDataType(tag1001));
+        Assertions.assertFalse( semanticInspector.hasKey(tag1001));
+    }
 
+    @Test
+    void checkListCollection(){
+        @DaxpEntity(tagId = 1000)
+        class TestClass01{
+            @DaxpField(tagId=1001)
+            List<String> strList;
+        }
+        daxEngine.register(TestClass01 .class);
+        printSemanticRegister();
+        DaxTag tag1001 =  DaxTag.of(config.getAppNamespaceId() , 1001);
+        Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
+        Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getValueDataType(tag1001));
+        Assertions.assertFalse( semanticInspector.hasKey(tag1001));
+        Assertions.assertTrue( semanticInspector.isAllowDuplicates(tag1001));
+    }
+
+    @Test
+    void checkMapCollection(){
+        @DaxpEntity(tagId = 1000)
+        class TestClass01{
+            @DaxpField(tagId=1001)
+            Map<Integer,String> strMap;
+        }
+        daxEngine.register(TestClass01 .class);
+        printSemanticRegister();
+
+        DaxTag tag1001 =  DaxTag.of(config.getAppNamespaceId() , 1001);
+        Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
+        Assertions.assertEquals(DaxDataType.INTEGER, semanticInspector.getKeyDataType(tag1001));
+        Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getValueDataType(tag1001));
+        Assertions.assertTrue(semanticInspector.hasKey(tag1001));
+
+    }
 
 }
+
+
+
+/*
+
+TODO
+ ENUMS,
+ DaxpCollection
+ java.util.Queue
+ java.util.LinkedList
+*/

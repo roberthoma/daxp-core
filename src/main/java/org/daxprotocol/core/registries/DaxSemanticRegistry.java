@@ -291,21 +291,21 @@ public class DaxSemanticRegistry {
     }
     ///---------------------------------------------------------------------------------------
 
-    public DaxDataType getDataType(DaxTag tag) {
-        var attributes = tagAttributes.getAttributMap().get(tag);
-
-        if (attributes == null) {
-            return DaxDataType.NONE;
-        }
-
-        var attribute = attributes.get(ATR_DATA_TYPE);
-
-        if (attribute == null || attribute.getDataTypeValue() == null) {
-            return DaxDataType.NONE;
-        }
-
-        return attribute.getDataTypeValue();
-    }
+//    public DaxDataType getDataType(DaxTag tag) {
+//        var attributes = tagAttributes.getAttributMap().get(tag);
+//
+//        if (attributes == null) {
+//            return DaxDataType.NONE;
+//        }
+//
+//        var attribute = attributes.get(ATR_DATA_TYPE);
+//
+//        if (attribute == null || attribute.getDataTypeValue() == null) {
+//            return DaxDataType.NONE;
+//        }
+//
+//        return attribute.getDataTypeValue();
+//    }
 
     ///---------------------------------------------------------------------------------------
     public boolean isCollectionDictionary(DaxTag tag){

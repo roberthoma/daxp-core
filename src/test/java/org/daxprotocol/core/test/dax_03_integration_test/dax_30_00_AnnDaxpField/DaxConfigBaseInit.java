@@ -26,6 +26,7 @@ import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.registries.DaxHandlerRegistry;
 import org.daxprotocol.core.registries.DaxMessageConverter;
+import org.daxprotocol.core.registries.DaxSemanticInspector;
 import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
 import org.junit.jupiter.api.Assertions;
@@ -53,6 +54,7 @@ public class DaxConfigBaseInit {
     protected  DaxDispatcher dispatcher;
     protected  DaxDataTypeCodec dataTypeCodec;
     protected  DaxDataTypeService dataTypeService;
+    protected  DaxSemanticInspector semanticInspector;
 
 
 
@@ -81,6 +83,7 @@ public class DaxConfigBaseInit {
             dispatcher      = daxEngine.getDispatcher();
             dataTypeCodec   = daxEngine.getDataTypeCodec();
             dataTypeService = daxEngine.getDataTypeService();
+            semanticInspector = daxEngine.getSemanticInspector();
 
             System.out.println("INIT ENGINE");
 
