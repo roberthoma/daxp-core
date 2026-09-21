@@ -230,7 +230,7 @@ public class DaxDataModelMessageFactory {
 
 
 
-        semanticRegistry.getTagsByDataType(DaxDataType.ENTITY).forEach(tag ->
+        semanticRegistry.getTagListByDataType(DaxDataType.ENTITY).forEach(tag ->
 
 
                 putEntityToBody(message.getBody(), tag)

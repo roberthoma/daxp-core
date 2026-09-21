@@ -18,7 +18,7 @@ public class DaxExecutorTest extends DaxConfigFullDataModelTest {
 
     @Test
     void getTagsByDataTypeTEST(){
-        List<DaxTag> entityTagList = semanticRegistry.getTagsByDataType(DaxDataType.ENTITY);
+        List<DaxTag> entityTagList = semanticRegistry.getTagListByDataType(DaxDataType.ENTITY);
 
         entityTagList.forEach(daxTag -> System.out.println(tagCodec.encode(daxTag)));
 

@@ -68,7 +68,7 @@ public class DaxSemanticCollector {
     // During registration via message: log with a warning or an error
 
     public void registerDataType( DaxTag tag, DaxDataType daxDataType ){
-        DaxDataType existDataType = semanticRegistry.getTagDataType(tag);
+        DaxDataType existDataType = semanticRegistry.getDataType(tag);
 
         if (!daxDataType.equals(DaxDataType.NONE)){
             putTagAtrDataType(tag,daxDataType);
@@ -180,7 +180,7 @@ public class DaxSemanticCollector {
     )
 
     {
-        DaxDataType existDataType = semanticRegistry.getTagDataType(tag);
+        DaxDataType existDataType = semanticRegistry.getDataType(tag);
         if(existDataType.equals(daxDataType)){
             return;
         }

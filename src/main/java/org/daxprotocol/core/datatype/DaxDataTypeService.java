@@ -109,16 +109,26 @@ public class DaxDataTypeService {
         if (clazz == null)  return DaxDataType.NONE;
 
         if (clazz == String.class) return DaxDataType.STRING;
+
         if (clazz.equals(Integer.class)) return DaxDataType.INTEGER;
         if (clazz.equals(int.class)) return DaxDataType.INTEGER;
-        if (clazz.equals(char.class)) return DaxDataType.CHARACTER;
+
         if (clazz.equals(Long.class)) return DaxDataType.LONG;
+        if (clazz.equals(long.class)) return DaxDataType.LONG;
+
         if (clazz.equals(BigDecimal.class)) return DaxDataType.DECIMAL;
+
         if (clazz.equals(Double.class)) return DaxDataType.DOUBLE;
+        if (clazz.equals(double.class)) return DaxDataType.DOUBLE;
+
         if (clazz.equals(Boolean.class)) return DaxDataType.BOOLEAN;
+        if (clazz.equals(boolean.class)) return DaxDataType.BOOLEAN;
+
+        if (clazz.equals(Character.class)) return DaxDataType.CHARACTER;
+        if (clazz.equals(char.class)) return DaxDataType.CHARACTER;
+
         if (clazz.equals(LocalDate.class)) return DaxDataType.LOCAL_DATE;
         if (clazz.equals(LocalDateTime.class)) return DaxDataType.LOCAL_DATE_TIME;
-        if (clazz.equals(Character.class)) return DaxDataType.CHARACTER;
 
         if(isDaxpCollection(clazz)) return DaxDataType.COLLECTION;
 

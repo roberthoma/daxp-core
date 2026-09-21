@@ -270,7 +270,7 @@ public class DaxSemanticRegistry {
     }
     ///---------------------------------------------------------------------------------------
 
-    public List<DaxTag> getTagsByDataType(DaxDataType targetType) {
+    public List<DaxTag> getTagListByDataType(DaxDataType targetType) {
         return tagAttributes.getAttributMap().entrySet().stream()
                 .filter(entry -> {
                     DaxPair<?> typePair = entry.getValue().get(DaxCoreTags.ATR_DATA_TYPE);
@@ -291,7 +291,7 @@ public class DaxSemanticRegistry {
     }
     ///---------------------------------------------------------------------------------------
 
-    public DaxDataType getTagDataType(DaxTag tag) {
+    public DaxDataType getDataType(DaxTag tag) {
         var attributes = tagAttributes.getAttributMap().get(tag);
 
         if (attributes == null) {
@@ -306,12 +306,7 @@ public class DaxSemanticRegistry {
 
         return attribute.getDataTypeValue();
     }
-    ///---------------------------------------------------------------------------------------
 
-    public DaxDataType getDataType(DaxTag tag) {
-        return tagAttributes.getAttributMap().get(tag)
-                .get(DaxCoreTags.ATR_DATA_TYPE).getDataTypeValue();
-    }
     ///---------------------------------------------------------------------------------------
     public boolean isCollectionDictionary(DaxTag tag){
         if(tagAttributes.containsKey(tag)){

@@ -30,8 +30,15 @@ public abstract class DaxPair<T>{
 
     public DaxPair(DaxTag tag, T value){
         this.tag = tag;
-        this.value = value;
-        this.operator = DaxCoreConstants.OPERATOR_EQUAL;
+        if(value != null){
+            this.value = value;
+            this.operator = DaxCoreConstants.OPERATOR_EQUAL;
+        }
+        else {
+         //   this.value = "N";  //todo resolve action
+            this.operator = DaxCoreConstants.OPERATOR_ACTION;
+
+        }
     }
 
     public DaxPair(DaxTag tag, T value, char operator){
@@ -40,9 +47,18 @@ public abstract class DaxPair<T>{
         this.operator = operator;
     }
 
-    public Class<?> getClazz(){
-        return value.getClass();
-    };
+//    public DaxPair<?> of(DaxTag tag, T value){
+//        if (value instanceof String){
+//            if (((String)value).isBlank()){
+//                return new DaxPairString(tag,"N", '^');
+//            }
+//        }
+//        return new DaxPair(tag,value);
+//    }
+
+//    public Class<?> getClazz(){
+//        return value.getClass();
+//    };
     public T getValue(){
         return value;
     }
@@ -50,7 +66,7 @@ public abstract class DaxPair<T>{
 //Move to data type decode
     public String getStrValue() {
         if (value instanceof Boolean){
-            return ((Boolean)value)? "Y" : "N";
+            return ((Boolean)value)? "Y" : "N";   //   TRUE / FALSE
         }
 
         if (value == null ) { return null;}

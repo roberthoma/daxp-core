@@ -23,12 +23,18 @@ import org.daxprotocol.core.model.tag.DaxTag;
 
 public class DaxPairString extends DaxPair<String> {
     public DaxPairString(DaxTag tag, String value){
-        super(tag, value);
+          super(tag, value);
     }
 
     public DaxPairString(DaxTag tag, String value,char operator){
         super(tag, value, operator);
     }
 
+    public DaxPair<?> of(DaxTag tag, String value){
+        if (value.isBlank()){
+            return new DaxPairString(tag,"N", '^');
+        }
+        return new DaxPairString(tag,value);
+    }
 
 }

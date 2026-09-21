@@ -87,4 +87,17 @@ public class DaxConfigBaseInit {
         }
     }
 
+    protected void printSemanticRegister(){
+        String reqMsg = "DAXP|$:1="+ DaxCoreMessages.DATA_MODEL_REQ +"|$:9=148|";
+        DaxFrame frameReq = frameParser.parseFrame(reqMsg);
+        DaxFrame frameResp = new DaxFrame();
+        frameResp.setPreamble(preambleFactory.createRespPreamble(frameReq));
+        handlerRegistry.executor(frameReq, frameResp);
+        DaxMessage respMsg = frameResp.getFirstMessage();
+        System.out.println("-------------------\n");
+        System.out.println("REQ > " + reqMsg);
+        System.out.println("RES > " + DaxMessageDecorator.decorate(frameCodec.encode(frameResp)));
+        System.out.println("AFTER DIC");
+    }
+
 }
