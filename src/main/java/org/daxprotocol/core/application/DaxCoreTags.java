@@ -167,6 +167,10 @@ public class DaxCoreTags {
 */
     //----------------------------------------------------------------------------------
 
+//    public static final DaxTag COL_VALUE_DESCRIPTION  = daxpSysTag(133);
+//    public static final DaxTag COL_VALUE_SYMBOL       = daxpSysTag(134);
+//    public static final DaxTag COL_VALUE_LIST         = daxpSysTag(135);
+//    public static final DaxTag COL_VALUE_TAG          = daxpSysTag(136);
 
 
     public static final DaxTag VALUE_IS_EDITABLE   = daxpSysTag(172);
@@ -175,11 +179,6 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_ID = daxpSysTag(129);
     public static final DaxTag COLLECTION_KEY = daxpSysTag(132);
     public static final DaxTag COLLECTION_VALUE = daxpSysTag(133);
-
-//    public static final DaxTag COL_VALUE_DESCRIPTION  = daxpSysTag(133);
-//    public static final DaxTag COL_VALUE_SYMBOL       = daxpSysTag(134);
-//    public static final DaxTag COL_VALUE_LIST         = daxpSysTag(135);
-//    public static final DaxTag COL_VALUE_TAG          = daxpSysTag(136);
 
     public static final DaxTag COLLECTION_ALLOW_DUPLICATES = daxpSysTag(210);
     public static final DaxTag COLLECTION_HAS_KEY = daxpSysTag(211);
@@ -199,9 +198,11 @@ public class DaxCoreTags {
 
     public static final DaxTag IS_COLLECTION_INSTANCE = daxpSysTag(240);
 
-
-
-
+/*
+    COLLECTION_SIZE_MIN – minimalna liczba elementów (np. lista musi mieć min. 1 element).
+    COLLECTION_SIZE_MAX – maksymalna dopuszczalna liczba elementów w ramce.
+    COLLECTION_ALLOW_NULL_ELEMENTS – czy wartość/element wewnątrz kolekcji może być
+*/
 
     // COLLECTION_PK,  ATTR_UNIQUE
     //Foreign Key	ATTR_REF_namespace	Points to a different namespace (e.g., CRM:ID) as a relational constraint.

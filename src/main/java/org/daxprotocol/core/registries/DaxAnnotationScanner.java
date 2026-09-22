@@ -201,10 +201,6 @@ public class DaxAnnotationScanner {
           semanticCollector.registerDataType(entityTag,tag,dataTypeService.decodeClass(field.getType()));
         }
 */
-if(tag.getTagId()==5032){
-    System.out.println("jeste");
-
-}
 
         if(daxDataType == DaxDataType.NONE){
             daxDataType = dataTypeService.decodeClass(field.getType());
@@ -267,12 +263,6 @@ if(tag.getTagId()==5032){
 
            }
 
-
-
-
-//        else {
-//            System.out.println("FIELD READ ONLY");
-//        }
         //------------------------------------
 
 

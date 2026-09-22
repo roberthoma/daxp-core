@@ -47,7 +47,7 @@ public class DaxCoreDataTypesTest extends DaxConfigBaseInit{
             @DaxpField(tagId = 1030,name = "LONG_NAME")
             public Long testLong;
 
-            @DaxpField(tagId = 1031,name = "prim_LONG_NAME")
+            @DaxpField(tagId = 1031,name = "Primitive_LONG_NAME")
             public long testPrimLong;
 
             @DaxpField(tagId = 1040,name = "DECIMAL_NAME")
@@ -62,13 +62,13 @@ public class DaxCoreDataTypesTest extends DaxConfigBaseInit{
             @DaxpField(tagId = 1060,name = "DOUBLE_NAME")
             public Double testDouble;
 
-            @DaxpField(tagId = 1061,name = "prim_DOUBLE_NAME")
+            @DaxpField(tagId = 1061,name = "Primitive_DOUBLE_NAME")
             public double testPrimDouble;
 
             @DaxpField(tagId = 1070,name = "BOOLEAN_NAME")
             public Boolean testBoolean;
 
-            @DaxpField(tagId = 1071,name = "prim_BOOLEAN_NAME")
+            @DaxpField(tagId = 1071,name = "Primitive_BOOLEAN_NAME")
             public boolean testPrimBoolean;
 
         }
@@ -153,6 +153,30 @@ public class DaxCoreDataTypesTest extends DaxConfigBaseInit{
 
     }
 
+
+    @Test
+    void checkEnumCollection(){
+        enum TestEnum{
+          ENUM_VAL1,
+          ENUM_VAL2
+        }
+        @DaxpEntity(tagId = 1000)
+        class TestClass01{
+            @DaxpField(tagId=1001)
+            TestEnum enumColl;
+        }
+        daxEngine.register(TestClass01 .class);
+        printSemanticRegister();
+
+        DaxTag tag1001 =  DaxTag.of(config.getAppNamespaceId() , 1001);
+        Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
+        Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getValueDataType(tag1001));
+        Assertions.assertTrue(semanticInspector.hasKey(tag1001));
+        Assertions.assertTrue(semanticInspector.isDictionary(tag1001));
+        Assertions.assertTrue(semanticInspector.isCollectionClosed(tag1001));
+
+
+    }
 }
 
 
@@ -164,4 +188,27 @@ TODO
  DaxpCollection
  java.util.Queue
  java.util.LinkedList
+
+ ========================
+
+    public static final DaxTag COLLECTION_ID = daxpSysTag(129);
+    public static final DaxTag COLLECTION_KEY = daxpSysTag(132);
+    public static final DaxTag COLLECTION_VALUE = daxpSysTag(133);
+
+
+    public static final DaxTag COLLECTION_IS_ORDERED = daxpSysTag(212);
+    public static final DaxTag COLLECTION_IS_NAVIGABLE = daxpSysTag(213);
+
+    public static final DaxTag COLLECTION_IS_CLOSED = daxpSysTag(215);
+
+    public static final DaxTag COLLECTION_KEY_DATA_TYPE = daxpSysTag(225);
+    public static final DaxTag COLLECTION_KEY_TYPE_REF_ID = daxpSysTag(226);
+
+    public static final DaxTag COLLECTION_VALUE_DATA_TYPE = daxpSysTag(227);
+    public static final DaxTag COLLECTION_VALUE_TYPE_REF_ID = daxpSysTag(228);
+
+    public static final DaxTag COLLECTION_BULK_VALUE = daxpSysTag(230);
+
+    public static final DaxTag IS_COLLECTION_INSTANCE = daxpSysTag(240);
+
 */

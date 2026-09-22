@@ -43,23 +43,30 @@ public class DaxSemanticInspector {
         return attributes.get(DaxCoreTags.COLLECTION_VALUE_DATA_TYPE).getDataTypeValue();
     }
 
-    public boolean hasKey(DaxTag tag) {
-        var attributes = semanticRegistry.getTagAttributes().getAttributMap().get(tag);
+    private boolean checkBooleanValue(DaxTag tag, DaxTag booleanValueTag){
+            var attributes = semanticRegistry.getTagAttributes().getAttributMap().get(tag);
 
-        if( attributes.containsKey(DaxCoreTags.COLLECTION_HAS_KEY)){
-            return attributes.get(DaxCoreTags.COLLECTION_HAS_KEY).getBooleanValue();
-        }
-        return false;
+            if( attributes.containsKey(booleanValueTag)){
+                return attributes.get(booleanValueTag).getBooleanValue();
+            }
+            return false;
+    }
+
+    public boolean hasKey(DaxTag tag) {
+        return checkBooleanValue(tag, DaxCoreTags.COLLECTION_HAS_KEY);
 
     }
 
     public boolean isAllowDuplicates(DaxTag tag) {
-        var attributes = semanticRegistry.getTagAttributes().getAttributMap().get(tag);
+        return checkBooleanValue(tag, DaxCoreTags.COLLECTION_ALLOW_DUPLICATES);
+    }
 
-        if( attributes.containsKey(DaxCoreTags.COLLECTION_ALLOW_DUPLICATES)){
-           return attributes.get(DaxCoreTags.COLLECTION_ALLOW_DUPLICATES).getBooleanValue();
-        }
-        return false;
 
+    public boolean isDictionary(DaxTag tag) {
+        return checkBooleanValue(tag, DaxCoreTags.COLLECTION_IS_DICTIONARY);
+    }
+
+    public boolean isCollectionClosed(DaxTag tag) {
+        return checkBooleanValue(tag, DaxCoreTags.COLLECTION_IS_CLOSED);
     }
 }
