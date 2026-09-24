@@ -28,8 +28,10 @@ import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
+import org.daxprotocol.core.datatype.DaxReferenceType;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
 import org.daxprotocol.core.model.pair.DaxPairDataType;
+import org.daxprotocol.core.model.pair.DaxPairReferenceType;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -40,6 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.*;
 
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE;
@@ -60,8 +63,10 @@ public class DaxAnnotationScanner {
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxDataTypeService dataTypeService;
     private final DaxSemanticCollector semanticCollector;
-    // TODO move to Annotation scanner
-    private Map<Class<?>,DaxTag> classDaxTagMap = new HashMap<>();
+
+    private final Map<Class<?>,DaxTag> classDaxTagMap = new HashMap<>();
+
+    private final Set<Class<?>> inProgressScans = new HashSet<>();
 
 
     /**
@@ -167,114 +172,102 @@ public class DaxAnnotationScanner {
     /**
      * Registers a single field entry associated with an entity.
      */
+
+
     private void registerEntityEntry(
             Field field,
             DaxTag tag,
             DaxTag entityTag,
-      //      DaxTagDestiny destiny,
             String annName,
             String annDescription,
-            DaxDataType daxDataType)
-    {
-        logger.trace("RegisterDaxEntry > tag:{} field name:{}", tagCodec.encode(tag), field.getName());
+            DaxDataType daxDataType) {
 
-        if (field.getType().equals(Void.class)) {
+        if (Void.class.equals(field.getType()) || void.class.equals(field.getType())) {
             logger.error("FIELD IS VOID tag={}", tagCodec.encode(tag));
             return;
         }
 
-   //     semanticRegistry.putTag(tag,  destiny);
         field.setAccessible(true);
 
         String name = annName.isBlank() ? field.getName() : annName;
 
+        // Link field tag to entity tag
         semanticRegistry.putEntityEntry(entityTag, tag);
+        semanticCollector.registerName(entityTag, tag, name);
 
-        semanticCollector.registerName( entityTag,tag ,name);
-        semanticCollector.registerDescription( entityTag,tag,  annDescription);
-        //------------------------------------
-/*
-        if(daxDataType!= DaxDataType.NONE){
-          semanticCollector.registerDataType(entityTag,tag,daxDataType);
-        }
-        else {
-          semanticCollector.registerDataType(entityTag,tag,dataTypeService.decodeClass(field.getType()));
-        }
-*/
-
-        if(daxDataType == DaxDataType.NONE){
-            daxDataType = dataTypeService.decodeClass(field.getType());
+        if (annDescription != null && !annDescription.isBlank()) {
+            semanticCollector.registerDescription(entityTag, tag, annDescription);
         }
 
-        if ( daxDataType.isPrimitiveType() ){
-           semanticCollector.registerDataType(tag,entityTag,daxDataType);
-        }else {
+        // Resolve data type
+        DaxDataType resolvedDataType = (daxDataType == DaxDataType.NONE)
+                ? dataTypeService.decodeClass(field.getType())
+                : daxDataType;
 
-            System.out.println("DO OPROGRAMOWANI >>"+field.getType().getName()+" tag="+tagCodec.encode(tag)
-            +" entity="+tagCodec.encode(  entityTag)
-            );
-
+        // Ensure unified parameter order: (tag, entityTag, dataType) or (tag, dataType)
+        if (resolvedDataType.isPrimitiveType() || dataTypeService.isPrimitiveType(field.getType())) {
+            semanticCollector.registerDataType(tag, entityTag, resolvedDataType);
+        } else {
+            handleComplexTypeRegistration(field, tag, entityTag);
         }
 
-
-        // Map reference or complex data types
-
-        //////////   poniżej do przebudowy
-
-
-
-            if (dataTypeService.isPrimitiveType(field.getType())) {
-                semanticCollector.registerDataType(tag, dataTypeService.decodeClass(field.getType()));
-            }
-            else {
-                if (classDaxTagMap.containsKey(field.getType())) {
-                    DaxTag refTag = classDaxTagMap.get(field.getType());
-
-                    System.out.println("JEST JEST 11111");
-
-                    semanticCollector.putTagAttributes(tag,
-                            Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_TAG_ID, refTag),
-                                   new DaxPairDataType(DaxCoreTags.ATR_REF_DATA_TYPE, DaxDataType.ENTITY))
-
-                    );
-                }
-
-                else {
-                    scanAndRegister(field.getType());  //stackoverflow
-
-                    if (classDaxTagMap.containsKey(field.getType())) {
-                        DaxTag refTag =  classDaxTagMap.get(field.getType());
-
-                        System.out.println("JEST JEST 22222");
-
-                        semanticCollector.putTagAttributes(tag,
-                                Set.of(new DaxPairTag(DaxCoreTags.ATR_REF_TAG_ID, refTag),
-                                        new DaxPairDataType(DaxCoreTags.ATR_REF_DATA_TYPE, DaxDataType.ENTITY))
-
-                        );
-                    }else {
-                        semanticCollector.putTagAttributes(tag,dataTypeCodec
-                                                               .encode(field.getType(),field.getGenericType() ));
-
-                    }
-                }
-
-
-
-           }
-
-        //------------------------------------
-
-
-//???            semanticRegistry.putTagAtrReadOnly(tag, true);
-
-        // Handle deprecation annotations
         if (field.isAnnotationPresent(Deprecated.class) || field.isAnnotationPresent(DaxpDeprecated.class)) {
             semanticCollector.putEntityEntryAtrDeprecated(entityTag, tag);
         }
 
-        // Check for Jakarta constraints
-        validationRegister( field, tag, entityTag);
+        validationRegister(field, tag, entityTag);
+    }
+
+
+
+    private void handleComplexTypeRegistration(Field field, DaxTag tag, DaxTag entityTag) {
+        Class<?> fieldType = field.getType();
+
+        logger.debug("Processing complex type: {} for tag: {} entity: {}",
+                fieldType.getName(), tagCodec.encode(tag), tagCodec.encode(entityTag));
+
+        // Check if the type is already registered
+        DaxTag refTag = classDaxTagMap.get(fieldType);
+
+        if (refTag == null) {
+            // Prevent StackOverflowError caused by circular dependencies
+            if (inProgressScans.contains(fieldType)) {
+                logger.warn("Circular reference detected for type {}. Skipping recursive scan.", fieldType.getName());
+
+                // Encode using generic type codec as a fallback during active resolution
+                semanticCollector.putTagAttributes(
+                        tag,
+                        dataTypeCodec.encode(fieldType, field.getGenericType())
+                );
+                return;
+            }
+
+            try {
+                // Track class currently being scanned
+                inProgressScans.add(fieldType);
+
+                scanAndRegister(fieldType);
+                refTag = classDaxTagMap.get(fieldType);
+
+            } finally {
+                // Always clean up the set when returning up the call stack
+                inProgressScans.remove(fieldType);
+            }
+        }
+
+        if (refTag != null) {
+            semanticCollector.putTagAttributes(tag, Set.of(
+                    //new DaxPairDataType(DaxCoreTags.ATR_DATA_TYPE, DaxDataType.ENTITY ),
+                    new DaxPairTag(DaxCoreTags.ATR_REF_TAG_ID, refTag),
+                    new DaxPairReferenceType(DaxCoreTags.ATR_REF_TYPE, DaxReferenceType.TYPE )
+            ));
+        } else {
+            // Fallback for generic or unmapped non-entity types
+            semanticCollector.putTagAttributes(
+                    tag,
+                    dataTypeCodec.encode(fieldType, field.getGenericType())
+            );
+        }
     }
 
     /**
@@ -577,7 +570,12 @@ public class DaxAnnotationScanner {
 
         semanticCollector.putTagAtrName(tag, name);
         semanticCollector.putTagAtrDescription(tag, colAtn.description());
+
+        //todo ...... for extetion  declaret entity . can implemente collection like list
         semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz));
+//        Type type =  clazz.getGenericInterfaces()[0];
+//        semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz, type));
+//        semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz, clazz.getGenericSuperclass()));
 
         if (semanticRegistry.isCollectionDictionary(tag)){
                 Object[] constants = clazz.getEnumConstants();

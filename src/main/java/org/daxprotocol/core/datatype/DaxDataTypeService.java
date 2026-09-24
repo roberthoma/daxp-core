@@ -172,6 +172,7 @@ public class DaxDataTypeService {
         return null;
     }
     //--------------------------------------------------------------------------------------
+    /*
      public DaxCollectionInfo getCollectionInfo(Class<?> clazz){
          DaxCollectionInfo info = new DaxCollectionInfo();
 
@@ -221,7 +222,59 @@ public class DaxDataTypeService {
 
          return info;
      }
+*/
+    public DaxCollectionInfo getCollectionInfo(Class<?> clazz) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class parameter cannot be null");
+        }
 
+        DaxCollectionInfo info = new DaxCollectionInfo();
+
+        // 1. Enums / Dictionaries
+        if (clazz.isEnum() || Enum.class.isAssignableFrom(clazz)) {
+            info.isCollection = true;
+            info.isColHasKey = true;
+            info.isColDictionary = true;
+            info.isJavaEnum = true;
+            info.isClosed = true;
+            return info;
+        }
+
+        // 2. Maps (Key-Value Collections)
+        if (Map.class.isAssignableFrom(clazz)) {
+            info.isCollection = true;
+            info.isColHasKey = true;
+
+            if (NavigableMap.class.isAssignableFrom(clazz) || SortedMap.class.isAssignableFrom(clazz)) {
+                info.isColNavigable = true;
+            }
+            return info;
+        }
+
+        // 3. Java Collections (Lists, Sets, Queues, Deques)
+        if (Collection.class.isAssignableFrom(clazz)) {
+            info.isCollection = true;
+
+            // Allows duplicates: List, Queue, Deque allow duplicate elements
+            if (List.class.isAssignableFrom(clazz) || Queue.class.isAssignableFrom(clazz)) {
+                info.isColAllowDuplicates = true;
+            }
+
+            // Navigable collections: Deque, LinkedList, NavigableSet, SortedSet
+            if (Deque.class.isAssignableFrom(clazz)
+                    || NavigableSet.class.isAssignableFrom(clazz)
+                    || SortedSet.class.isAssignableFrom(clazz)) {
+                info.isColNavigable = true;
+            }
+        }
+
+        // Guard Clause: Fail fast if class isn't a supported collection type
+        if (!info.isCollection) {
+            throw new IllegalArgumentException("Class [" + clazz.getName() + "] is NOT a supported collection or enum!");
+        }
+
+        return info;
+    }
        //--------------------------------------------------------------------------------------
        public boolean isMap(Object object) {
            DaxCollectionInfo info = getCollectionInfo(object.getClass());

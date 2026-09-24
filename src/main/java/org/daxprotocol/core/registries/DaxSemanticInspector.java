@@ -38,7 +38,7 @@ public class DaxSemanticInspector {
         return attributes.get(DaxCoreTags.COLLECTION_KEY_DATA_TYPE).getDataTypeValue();
     }
 
-    public DaxDataType getValueDataType(DaxTag tag) {
+    public DaxDataType getCollectionValueDataType(DaxTag tag) {
         var attributes = semanticRegistry.getTagAttributes().getAttributMap().get(tag);
         return attributes.get(DaxCoreTags.COLLECTION_VALUE_DATA_TYPE).getDataTypeValue();
     }

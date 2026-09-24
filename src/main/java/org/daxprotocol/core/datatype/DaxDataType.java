@@ -1,3 +1,23 @@
+/************************************************************************
+ * DAXP – Data & Attribute eXchange Protocol
+ * Copyright 2026 DAXPARC Robert Homa
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ***********************************************************************
+ */
+
 package org.daxprotocol.core.datatype;
 import org.daxprotocol.core.model.tag.DaxTag;
 
@@ -63,10 +83,10 @@ public enum DaxDataType {
     ENTITY("ENT", "DAXP Entity / Object structure", Object.class,false), //, null),
     COLLECTION("COL", "Universal DAXP Collection (C) with attributes", Collection.class , false), //, null),
     TAG("TAG", "Reference to another tag/field within the frame",DaxTag.class, true), //, DaxTag.class),
-    FIELD("FIELD", "Reference to field within the frame",DaxTag.class, false), //, DaxTag.class),   ??????????????????
-//
+
+    //   FIELD("FIELD", "Reference to field within the frame",DaxTag.class, false), //, DaxTag.class),   ??????????????????
     MESSAGE_TYPE("MSG","Message type",String.class,true),
-//
+
     QUANTITY("QNT", "Quantity",Integer.class,true),
 //    BINARY("RAW", "Quantity",byte[].class), // ?????????
 //    NONE("NONE","None, not try detected",void.class, false),

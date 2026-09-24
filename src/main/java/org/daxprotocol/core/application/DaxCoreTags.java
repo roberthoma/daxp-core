@@ -136,13 +136,10 @@ public class DaxCoreTags {
      */
     public static final DaxTag ATR_DATA_TYPE           = daxpSysTag(20);
     /// Reference to collection or entity definition
-    public static final DaxTag ATR_REF_TAG_ID = daxpSysTag(21);
-
-    public static final DaxTag ATR_REF_DATA_TYPE       = daxpSysTag(22);
-
-
-    public static final DaxTag ATR_REF_COL_VAL       = daxpSysTag(23); // one of value from collection
-
+    public static final DaxTag ATR_REF_TAG_ID       = daxpSysTag(21);
+    public static final DaxTag ATR_REF_TYPE = daxpSysTag(22);
+//    public static final DaxTag ATR_REF_COL_VAL      = daxpSysTag(23); // one of value from collection
+//
     ///-------------------------------
     public static final DaxTag ATR_RANGE_MIN_VALUE = daxpSysTag(161);
     public static final DaxTag ATR_RANGE_MAX_VALUE = daxpSysTag(162);
@@ -176,9 +173,9 @@ public class DaxCoreTags {
     public static final DaxTag VALUE_IS_EDITABLE   = daxpSysTag(172);
 
 
-    public static final DaxTag COLLECTION_ID = daxpSysTag(129);
-    public static final DaxTag COLLECTION_KEY = daxpSysTag(132);
-    public static final DaxTag COLLECTION_VALUE = daxpSysTag(133);
+    public static final DaxTag COLLECTION_ID = daxpSysTag(200);
+    public static final DaxTag COLLECTION_KEY = daxpSysTag(201);
+    public static final DaxTag COLLECTION_VALUE = daxpSysTag(203);
 
     public static final DaxTag COLLECTION_ALLOW_DUPLICATES = daxpSysTag(210);
     public static final DaxTag COLLECTION_HAS_KEY = daxpSysTag(211);
