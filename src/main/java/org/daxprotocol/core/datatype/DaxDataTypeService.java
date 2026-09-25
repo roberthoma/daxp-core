@@ -172,57 +172,6 @@ public class DaxDataTypeService {
         return null;
     }
     //--------------------------------------------------------------------------------------
-    /*
-     public DaxCollectionInfo getCollectionInfo(Class<?> clazz){
-         DaxCollectionInfo info = new DaxCollectionInfo();
-
-         if (clazz == Set.class){  // is collection
-             info.isCollection = true;
-         }
-
-         if (clazz == List.class){
-             info.isColAllowDuplicates = true;
-//             info.isCollection = true;
-         }
-
-         if (clazz.isEnum() || clazz.equals(Enum.class)
-         ){
-             info.isCollection = true;
-             info.isColHasKey = true;
-             info.isColDictionary = true;
-             info.isJavaEnum = true;
-             info.isClosed = true;
-         }
-
-         if (clazz == Map.class
-             || Map.class.isAssignableFrom(clazz)
-             || clazz == HashMap.class
-         ){
-             info.isCollection = true;
-             info.isColHasKey = true;
-         }
-
-         if (clazz == Queue.class){
-             info.isCollection = true;
-         }
-         if (clazz == LinkedList.class){
-             info.isCollection = true;
-             info.isColNavigable = true;
-         }
-
-
-         if (Collection.class.isAssignableFrom(clazz)) {
-             info.isCollection = true;  ///??? inmutable m
-         }
-
-
-         if (!info.isCollection){
-             throw new RuntimeException("It is NOT COLLECTION !!!");
-         }
-
-         return info;
-     }
-*/
     public DaxCollectionInfo getCollectionInfo(Class<?> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("Class parameter cannot be null");

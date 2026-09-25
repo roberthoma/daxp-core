@@ -136,7 +136,6 @@ public class DaxJavaCollectionsTest extends DaxConfigBaseInit {
 
          Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1010));
          Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getCollectionValueDataType(tag1010));
-      //  Assertions.assertFalse(semanticInspector.hasKey(tag1001));
     }
 
 

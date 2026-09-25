@@ -192,7 +192,7 @@ public class DaxAnnotationScanner {
         String name = annName.isBlank() ? field.getName() : annName;
 
         // Link field tag to entity tag
-        semanticRegistry.putEntityEntry(entityTag, tag);
+        semanticCollector.putEntityEntry(entityTag, tag);
         semanticCollector.registerName(entityTag, tag, name);
 
         if (annDescription != null && !annDescription.isBlank()) {
@@ -286,7 +286,7 @@ public class DaxAnnotationScanner {
         semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(returnClass));
         semanticCollector.putEntityEntryAtrReadOnly(entityTag, tag, true);
         semanticCollector.putEntityEntryAtrDescription(entityTag, tag, methodAnn.description());
-        semanticRegistry.putEntityEntry(entityTag, tag);
+        semanticCollector.putEntityEntry(entityTag, tag);
     }
 
     /**
@@ -430,7 +430,6 @@ public class DaxAnnotationScanner {
         String entityName = !entityAnn.name().isBlank() ? entityAnn.name() : clazz.getSimpleName();
         classDaxTagMap.put(clazz, entityTag);
 
-//        semanticRegistry.putTag(entityTag, DaxTagDestiny.ENTITY);
         semanticCollector.putTagAtrName(entityTag, entityName);
         semanticCollector.putTagAtrDescription(entityTag, entityAnn.description());
         semanticCollector.putTagAtrDataType(entityTag, DaxDataType.ENTITY);
@@ -571,7 +570,9 @@ public class DaxAnnotationScanner {
         semanticCollector.putTagAtrName(tag, name);
         semanticCollector.putTagAtrDescription(tag, colAtn.description());
 
-        //todo ...... for extetion  declaret entity . can implemente collection like list
+        // TODO: Allow an entity declaration to implement a collection interface, such as List or Set.
+        //  Example: class TestSet implements Set<String> { ... }
+
         semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz));
 //        Type type =  clazz.getGenericInterfaces()[0];
 //        semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz, type));

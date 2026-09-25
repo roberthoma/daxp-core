@@ -237,7 +237,8 @@ public class DaxDataTypeServiceTest {
 
         assertThatThrownBy(() -> service.getCollectionInfo(String.class))
                 .isInstanceOf(RuntimeException.class)
-                .hasMessage("It is NOT COLLECTION !!!");
+                .hasMessage("Class [java.lang.String] is NOT a supported collection or enum!");
+//                .hasMessage("It is NOT COLLECTION !!!");
 
         printLog("Finished getCollectionInfoThrowsExceptionForNonCollection test");
     }

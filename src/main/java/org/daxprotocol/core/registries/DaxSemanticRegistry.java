@@ -94,11 +94,14 @@ public class DaxSemanticRegistry {
 
 
 
-
     /*****************************************************
      *  Entity Map
      */
     Map<DaxTag, Set<DaxTag>> entityFieldsMap = new ConcurrentHashMap<>();
+
+    public Map<DaxTag, Set<DaxTag>> getEntityFieldsMap() {
+        return entityFieldsMap;
+    }
 
     /*****************************************************
      * Map of entity fields attributes

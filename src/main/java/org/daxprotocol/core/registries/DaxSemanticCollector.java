@@ -24,9 +24,11 @@ import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.model.pair.*;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.tool.DaxLangTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -261,6 +263,11 @@ public class DaxSemanticCollector {
         else {
             putEntityEntryAtrSizeMax(entityTag,tag,max);
         }
+    }
+
+    public void putEntityEntry(DaxTag entityTag, DaxTag tag) {
+        semanticRegistry.getEntityFieldsMap().merge(entityTag,  new HashSet<>(Set.of(tag)),(daxTags, daxTags2) ->
+                DaxLangTool.addAndReturnSet(daxTags, tag) );
     }
 
 }
