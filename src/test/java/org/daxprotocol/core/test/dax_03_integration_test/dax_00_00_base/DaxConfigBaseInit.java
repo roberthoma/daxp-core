@@ -1,9 +1,6 @@
-package org.daxprotocol.core.test.dax_03_integration_test.dax_30_00_AnnDaxpField;
+package org.daxprotocol.core.test.dax_03_integration_test.dax_00_00_base;
 
-import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.application.DaxCoreMessages;
-import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.codec.DaxFrameCodec;
 import org.daxprotocol.core.codec.DaxMessageCodec;
@@ -11,7 +8,6 @@ import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
-import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
@@ -20,8 +16,6 @@ import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.model.pair.DaxPair;
-import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.registries.DaxHandlerRegistry;
@@ -29,11 +23,7 @@ import org.daxprotocol.core.registries.DaxMessageConverter;
 import org.daxprotocol.core.registries.DaxSemanticInspector;
 import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 public class DaxConfigBaseInit {
     protected  DaxEngine daxEngine;

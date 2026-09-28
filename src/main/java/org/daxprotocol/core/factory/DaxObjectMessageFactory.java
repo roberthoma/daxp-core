@@ -51,7 +51,7 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxObjectMessageFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(DaxObjectMessageFactory.class);
-    private static final  int BULK_SIZE = 233; //tmp   <<<<<<<<<<<<<<<<<<<<
+    private static final  int BULK_SIZE = 3; //TODO create config param
 
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;

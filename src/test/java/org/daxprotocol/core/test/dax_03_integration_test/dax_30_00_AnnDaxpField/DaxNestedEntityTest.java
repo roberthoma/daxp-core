@@ -2,9 +2,8 @@ package org.daxprotocol.core.test.dax_03_integration_test.dax_30_00_AnnDaxpField
 
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.junit.jupiter.api.Assertions;
+import org.daxprotocol.core.test.dax_03_integration_test.dax_00_00_base.DaxConfigBaseInit;
 import org.junit.jupiter.api.Test;
 
 public class DaxNestedEntityTest extends DaxConfigBaseInit {

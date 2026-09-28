@@ -1,0 +1,144 @@
+package org.daxprotocol.core.test.dax_03_integration_test.dax_30_00_AnnDaxpField;
+
+import org.daxprotocol.core.annotation.DaxpEntity;
+import org.daxprotocol.core.annotation.DaxpField;
+import org.daxprotocol.core.collection.DaxBulkCollectionBuilder;
+import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
+import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
+import org.daxprotocol.core.test.dax_03_integration_test.dax_00_00_base.DaxConfigBaseInit;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
+public class DaxBulkCollectionTest extends DaxConfigBaseInit {
+
+    DaxBulkCollectionBuilder bulkCollectionBuilder = new DaxBulkCollectionBuilder();
+
+    @Test
+    void test1(){
+
+
+        System.out.println(bulkCollectionBuilder.build());
+        Assertions.assertEquals(1,1);
+    }
+
+
+
+
+    @Test
+    void checkSetCollection() {
+
+        @DaxpEntity(tagId = 1000)
+        class TestClass01 {
+            @DaxpField(tagId = 1001) final Set<String> strList;
+            @DaxpField(tagId = 1002)  String str1;
+
+
+        public TestClass01(){
+            this.strList = new HashSet<>();
+            this.strList.add("ABC");
+            this.strList.add("DEF");
+            this.strList.add("GHI");
+            this.strList.add("JKL");
+            this.str1 = "Test value";
+        }
+
+        }
+        daxEngine.register(TestClass01.class);
+        printSemanticRegister();
+        TestClass01 ttObj = new TestClass01();
+
+        DaxMessage msg = msgFactory.toDaxMessage("BULK.TTT",ttObj);
+
+        DaxPreamble preamble = new DaxPreamble();
+
+        System.out.println("----------------------------------------");
+        System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg, preamble)));
+//        System.out.println(messageCodec.encode(msg, preamble));
+        System.out.println("----------------------------------------");
+        DaxTag tag1001 = DaxTag.of(config.getAppNamespaceId(), 1001);
+        Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
+        Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getCollectionValueDataType(tag1001));
+        Assertions.assertFalse(semanticInspector.hasKey(tag1001));
+    }
+
+    @Test
+    void checkListCollection() {
+
+        @DaxpEntity(tagId = 1000)
+        class TestClass01 {
+            @DaxpField(tagId = 1001) final List<String> strList;
+            @DaxpField(tagId = 1002)  String str1;
+
+
+            public TestClass01(){
+                this.strList = new ArrayList<>();
+                this.strList.add("ABC");
+                this.strList.add("DEF");
+                this.strList.add("GHI");
+                this.strList.add("JKL");
+                this.str1 = "Test value";
+            }
+
+        }
+        daxEngine.register(TestClass01.class);
+        printSemanticRegister();
+        TestClass01 ttObj = new TestClass01();
+
+        DaxMessage msg = msgFactory.toDaxMessage("BULK.TTT",ttObj);
+
+        DaxPreamble preamble = new DaxPreamble();
+
+        System.out.println("----------------------------------------");
+        System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg, preamble)));
+//        System.out.println(messageCodec.encode(msg, preamble));
+        System.out.println("----------------------------------------");
+        DaxTag tag1001 = DaxTag.of(config.getAppNamespaceId(), 1001);
+        Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
+        Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getCollectionValueDataType(tag1001));
+        Assertions.assertFalse(semanticInspector.hasKey(tag1001));
+    }
+
+    @Test
+    void checkMapCollection() {
+
+        @DaxpEntity(tagId = 1000)
+        class TestClass01 {
+            @DaxpField(tagId = 1001) final Map<Integer,String> strMap;
+            @DaxpField(tagId = 1002)  String str1;
+
+
+            public TestClass01(){
+                this.strMap = new HashMap<>();
+                this.strMap.put(1,"ABC");
+                this.strMap.put(2,"DEF");
+                this.strMap.put(3,"GHI");
+                this.strMap.put(4,"JKL");
+                this.str1 = "Test value";
+            }
+
+        }
+        daxEngine.register(TestClass01.class);
+        printSemanticRegister();
+        TestClass01 ttObj = new TestClass01();
+
+        DaxMessage msg = msgFactory.toDaxMessage("BULK.TTT",ttObj);
+
+        DaxPreamble preamble = new DaxPreamble();
+
+        System.out.println("----------------------------------------");
+        System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg, preamble)));
+//        System.out.println(messageCodec.encode(msg, preamble));
+        System.out.println("----------------------------------------");
+        DaxTag tag1001 = DaxTag.of(config.getAppNamespaceId(), 1001);
+        Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
+        Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getCollectionValueDataType(tag1001));
+        Assertions.assertTrue(semanticInspector.hasKey(tag1001));
+    }
+
+
+}
