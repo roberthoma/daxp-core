@@ -221,11 +221,11 @@ public class DaxObjectMessageFactory {
                                        DaxTag ownerTag)
     {
 
-        body.nextBlock(DaxBlockType.BLOCK_VALUE);
+        body.nextBlock(DaxBlockType.BLOCK_BULK_COLLECTION);
         int nestedIdx = body.getCurrentIdx();
         body.putTagBlockReference(blockIdx, tag, nestedIdx + 1);
 
-        appendCollectionItemToBlock(nestedIdx, tag, body, value, COLLECTION_BULK_VALUE, null, ownerTag);
+        appendCollectionItemToBlock(nestedIdx, tag, body, value, COLLECTION_BULK_DATA, null, ownerTag);
     }
 
     ///----------------------------------------------------------------------------------------
@@ -355,7 +355,7 @@ public class DaxObjectMessageFactory {
 
         Object first = iterator.next();
         StringBuilder sb = new StringBuilder();
-        sb.append(DaxCoreConstants.SEPARATOR_START_OF_TEXT);
+        sb.append(DaxCoreConstants.SEPARATOR_FILE);
 
         if (dataTypeService.isPrimitiveType(first.getClass())) {
             // Primitive Collection Mode: Single column without header
@@ -379,8 +379,9 @@ public class DaxObjectMessageFactory {
                 writeEntityRecord(sb, iterator.next(), metadata);
             }
         }
+        sb.append(DaxCoreConstants.SEPARATOR_END_OF_MEDIUM);
+        sb.append(DaxCoreConstants.SEPARATOR_FILE);
 
-        sb.append(DaxCoreConstants.SEPARATOR_END_OF_TEXT);
         return sb.toString();
     }
     ///----------------------------------------------------------------------------------------
@@ -390,7 +391,7 @@ public class DaxObjectMessageFactory {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(DaxCoreConstants.SEPARATOR_START_OF_TEXT);
+        sb.append(DaxCoreConstants.SEPARATOR_FILE);
 
         // Pobieramy pierwszy element, aby zbadać typ wartości w mapie
         Map.Entry<?, ?> firstEntry = map.entrySet().iterator().next();
@@ -422,8 +423,8 @@ public class DaxObjectMessageFactory {
                 sb.append(val != null ? val.toString() : "");
             }
         });
-
-        sb.append(DaxCoreConstants.SEPARATOR_END_OF_TEXT);
+        sb.append(DaxCoreConstants.SEPARATOR_END_OF_MEDIUM);
+        sb.append(DaxCoreConstants.SEPARATOR_FILE);
         return sb.toString();
     }
 

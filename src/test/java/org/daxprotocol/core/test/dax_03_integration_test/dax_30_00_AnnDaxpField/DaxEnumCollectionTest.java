@@ -40,7 +40,9 @@ public class DaxEnumCollectionTest extends DaxConfigBaseInit {
         @DaxpCollection(tagId=1001)
         enum TestEnum{
           ENUM_VAL1,
-          ENUM_VAL2
+          ENUM_VAL2,
+            ENUM_VAL3,
+            ENUM_VAL4
         }
 
         @DaxpEntity(tagId = 1000)
@@ -60,7 +62,9 @@ public class DaxEnumCollectionTest extends DaxConfigBaseInit {
         // IT IS NOT GOOD
         enum TestEnum{
             ENUM_VAL1,
-            ENUM_VAL2
+            ENUM_VAL2,
+            ENUM_VAL3,
+            ENUM_VAL4
         }
         @DaxpEntity(tagId = 1000)
         class TestClass01{

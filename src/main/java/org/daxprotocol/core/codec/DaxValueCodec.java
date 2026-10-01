@@ -134,7 +134,7 @@ public class DaxValueCodec {
             return Collections.emptySet();
         }
 
-        return Arrays.stream(blockRefString.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))
+        return Arrays.stream(blockRefString.split(String.valueOf(DaxCoreConstants.TAG_LIST_SEPARATOR)))   //TODO Split do wymiany
                 .map(String::trim)          // Removes any accidental spaces
                 .map(Integer::parseInt)     // Converts String to Integer
                 .collect(Collectors.toCollection(LinkedHashSet::new));

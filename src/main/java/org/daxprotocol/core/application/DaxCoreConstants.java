@@ -43,13 +43,11 @@ public class DaxCoreConstants {
     *     BULK collection separators
     *      HEX value
     */
-    public static char SEPARATOR_START_OF_TEXT = 0x0002; //Start of Text
-    public static char SEPARATOR_END_OF_TEXT   = 0x0003;	//End of Text
-    public static char SEPARATOR_GROUP         = 0x001D;//Group Separator
-    public static char SEPARATOR_RECORD        = 0x001E; //Record Separator
-    public static char SEPARATOR_UNIT          = 0x001F; //	Unit Separator
-
-
+    public static char SEPARATOR_FILE          = 0x001C; //	<FS> File Separator
+    public static char SEPARATOR_GROUP         = 0x001D; // <GS> Group Separator
+    public static char SEPARATOR_RECORD        = 0x001E; // <RS> Record Separator
+    public static char SEPARATOR_UNIT          = 0x001F; //	<US> Unit Separator
+    public static char SEPARATOR_END_OF_MEDIUM = 0x0019; //	<EM> End of medium
 
 
     /*****************************************************

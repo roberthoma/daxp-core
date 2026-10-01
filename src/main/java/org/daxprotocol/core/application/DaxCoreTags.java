@@ -175,7 +175,7 @@ public class DaxCoreTags {
 
     public static final DaxTag COLLECTION_ID = daxpSysTag(200);
     public static final DaxTag COLLECTION_KEY = daxpSysTag(201);
-    public static final DaxTag COLLECTION_VALUE = daxpSysTag(203);
+    public static final DaxTag COLLECTION_VALUE = daxpSysTag(202);
 
     public static final DaxTag COLLECTION_ALLOW_DUPLICATES = daxpSysTag(210);
     public static final DaxTag COLLECTION_HAS_KEY = daxpSysTag(211);
@@ -191,7 +191,7 @@ public class DaxCoreTags {
     public static final DaxTag COLLECTION_VALUE_DATA_TYPE = daxpSysTag(227);
     public static final DaxTag COLLECTION_VALUE_TYPE_REF_ID = daxpSysTag(228);
 
-    public static final DaxTag COLLECTION_BULK_VALUE = daxpSysTag(230);
+    public static final DaxTag COLLECTION_BULK_DATA = daxpSysTag(230);
 
     public static final DaxTag IS_COLLECTION_INSTANCE = daxpSysTag(240);
 

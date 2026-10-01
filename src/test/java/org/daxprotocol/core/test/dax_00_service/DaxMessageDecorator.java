@@ -12,11 +12,11 @@ public class DaxMessageDecorator {
                      .replace("$:4=","\n$:4=")
                      .replace("$:9=","\n$:9=")
           //           .replace("$:11=","$:11[name]=")
-                .replace(""+DaxCoreConstants.SEPARATOR_START_OF_TEXT,"<STX>\n")
-                .replace(""+DaxCoreConstants.SEPARATOR_END_OF_TEXT,"<ETX>\n")
+                .replace(""+DaxCoreConstants.SEPARATOR_FILE,"<FS>\n")
                 .replace(""+DaxCoreConstants.SEPARATOR_GROUP,"<GS>")
                 .replace(""+DaxCoreConstants.SEPARATOR_RECORD,"<RS>\n")
                 .replace(""+DaxCoreConstants.SEPARATOR_UNIT,"<US>")
+                .replace(""+DaxCoreConstants.SEPARATOR_END_OF_MEDIUM,"<EM>")
                 .replace(DaxCoreConstants.DEFAULT_PAIR_SEPARATOR,'|')
 
                 ;

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-public class DaxBulkCollectionTest extends DaxConfigBaseInit {
+public class DaxPrimitiveBulkCollectionTest extends DaxConfigBaseInit {
 
     DaxBulkCollectionBuilder bulkCollectionBuilder = new DaxBulkCollectionBuilder();
 
@@ -22,7 +22,7 @@ public class DaxBulkCollectionTest extends DaxConfigBaseInit {
     void test1(){
 
 
-        System.out.println(bulkCollectionBuilder.build());
+        System.out.println(DaxMessageDecorator.decorate(bulkCollectionBuilder.build()));
         Assertions.assertEquals(1,1);
     }
 
@@ -56,14 +56,13 @@ public class DaxBulkCollectionTest extends DaxConfigBaseInit {
 
         DaxPreamble preamble = new DaxPreamble();
 
-        System.out.println("----------------------------------------");
         System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg, preamble)));
 //        System.out.println(messageCodec.encode(msg, preamble));
-        System.out.println("----------------------------------------");
         DaxTag tag1001 = DaxTag.of(config.getAppNamespaceId(), 1001);
         Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
         Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getCollectionValueDataType(tag1001));
         Assertions.assertFalse(semanticInspector.hasKey(tag1001));
+        System.out.println("----------------------------------------");
     }
 
     @Test
@@ -93,14 +92,13 @@ public class DaxBulkCollectionTest extends DaxConfigBaseInit {
 
         DaxPreamble preamble = new DaxPreamble();
 
-        System.out.println("----------------------------------------");
         System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg, preamble)));
 //        System.out.println(messageCodec.encode(msg, preamble));
-        System.out.println("----------------------------------------");
         DaxTag tag1001 = DaxTag.of(config.getAppNamespaceId(), 1001);
         Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
         Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getCollectionValueDataType(tag1001));
         Assertions.assertFalse(semanticInspector.hasKey(tag1001));
+        System.out.println("----------------------------------------");
     }
 
     @Test
@@ -130,15 +128,21 @@ public class DaxBulkCollectionTest extends DaxConfigBaseInit {
 
         DaxPreamble preamble = new DaxPreamble();
 
-        System.out.println("----------------------------------------");
         System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg, preamble)));
 //        System.out.println(messageCodec.encode(msg, preamble));
-        System.out.println("----------------------------------------");
         DaxTag tag1001 = DaxTag.of(config.getAppNamespaceId(), 1001);
         Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1001));
         Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getCollectionValueDataType(tag1001));
         Assertions.assertTrue(semanticInspector.hasKey(tag1001));
+        System.out.println("----------------------------------------");
     }
 
 
 }
+
+/////////////
+/*
+Map<Customer, Contract>
+Map<Customer, List<Contract>>
+Map<Customer, Map<Product, List<Price>>>
+*/
