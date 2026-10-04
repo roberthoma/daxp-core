@@ -65,7 +65,6 @@ public class DaxObjectMessageFactory {
 
     // Cache reflected fields and methods per class to prevent expensive introspection overhead
     private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
-
     ///----------------------------------------------------------------------------------------
     public DaxObjectMessageFactory(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
     ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService) {
