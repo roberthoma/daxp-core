@@ -47,7 +47,7 @@ public class DaxCoreConstants {
     public static char SEPARATOR_GROUP         = 0x001D; // <GS> Group Separator
     public static char SEPARATOR_RECORD        = 0x001E; // <RS> Record Separator
     public static char SEPARATOR_UNIT          = 0x001F; //	<US> Unit Separator
-    public static char SEPARATOR_END_OF_MEDIUM = 0x0019; //	<EM> End of medium
+    public static char END_OF_MEDIUM           = 0x0019; //	<EM> End of medium
 
 
     /*****************************************************

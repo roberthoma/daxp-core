@@ -148,6 +148,7 @@ public class DaxObjectMessageFactory {
     }
 
     ///----------------------------------------------------------------------------------------
+
     private void objectToMsgBlock(
             int blockIdx,
             DaxTag blockTag,
@@ -198,7 +199,9 @@ public class DaxObjectMessageFactory {
             }
         }
     }
+
     ///----------------------------------------------------------------------------------------
+
     private void collectionElementToBlock( int blockIdx, DaxTag tag,DaxBody body,Object key,Object value,
                                           Set<DaxTag> reqTagSet,DaxTag ownerTag)
     {
@@ -215,6 +218,8 @@ public class DaxObjectMessageFactory {
             appendCollectionItemToBlock(nestedIdx, tag, body, key,   COLLECTION_KEY,   reqTagSet, ownerTag);
         }
     }
+
+
     ///----------------------------------------------------------------------------------------
 
     private void bulkCollectionToBlock( int blockIdx, DaxTag tag,DaxBody body,Object value,
@@ -227,6 +232,8 @@ public class DaxObjectMessageFactory {
 
         appendCollectionItemToBlock(nestedIdx, tag, body, value, COLLECTION_BULK_DATA, null, ownerTag);
     }
+
+
 
     ///----------------------------------------------------------------------------------------
     private void processCollection( int blockIdx,DaxTag tag,DaxBody body,Object object,
@@ -247,10 +254,43 @@ public class DaxObjectMessageFactory {
         }
     }
     ///----------------------------------------------------------------------------------------
+    private boolean isBulkCompose(DaxTag tag, Iterable<?> iterable) {
+
+        if (iterable instanceof Collection<?> col) {
+            return   isBulkCompose( tag,col.size());
+        }
+
+        int count = 0;
+        for (Object ignored : iterable) {
+            count++;
+            return isBulkCompose( tag,count);
+        }
+        return false;
+    }
+
+    ///----------------------------------------------------------------------------------------
+    private boolean isBulkCompose(DaxTag tag,Map<?, ?> map){
+        return isBulkCompose( tag,map.size());
+    }
+
+    ///----------------------------------------------------------------------------------------
+    private boolean isBulkCompose(DaxTag tag,int size){
+    //todo for develop check by tag that any entity or collection is flat or not
+    // if on flat return false
+
+        if (size > BULK_SIZE) {
+            return true;
+        }
+        return false;
+    }
+
+
+    ///----------------------------------------------------------------------------------------
+
     private void processMapBlock(int blockIdx, DaxTag tag, DaxBody body, Map<?, ?> map,
                                 Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
-        if (map.size() > BULK_SIZE) {
+        if (isBulkCompose(tag,map)) {
             bulkCollectionToBlock(blockIdx, tag, body, mapToBulk(map), ownerTag);
         } else {
             map.forEach((key, value) ->
@@ -258,13 +298,14 @@ public class DaxObjectMessageFactory {
             );
         }
     }
+
+
     ///----------------------------------------------------------------------------------------
+
     private void processIterableBlock(int blockIdx, DaxTag tag, DaxBody body, Iterable<?> collection,
                                      Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
-        int size = getIterableSize(collection);
-
-        if (size > BULK_SIZE) {
+        if (isBulkCompose(tag,collection)) {
             bulkCollectionToBlock(blockIdx, tag, body, collectionToBulk(collection), ownerTag);
         } else {
             collection.forEach(objVal ->
@@ -272,22 +313,10 @@ public class DaxObjectMessageFactory {
             );
         }
     }
+
+
     ///----------------------------------------------------------------------------------------
 
-    /**
-     * Determines size without traversing the whole sequence if the instance implements Collection.
-     */
-    private int getIterableSize(Iterable<?> iterable) {
-        if (iterable instanceof Collection<?> col) {
-            return col.size();
-        }
-        int count = 0;
-        for (Object ignored : iterable) {
-            count++;
-            if (count > BULK_SIZE) return count; // Short-circuit early to optimize performance
-        }
-        return count;
-    }
     ///----------------------------------------------------------------------------------------
 
     private Iterable<?> arrayToIterable(Object array) {
@@ -317,7 +346,10 @@ public class DaxObjectMessageFactory {
             objectToMsgBlock(nestedIdx, tag, element, body, reqTagSet, ownerTag);
         }
     }
+
+
     ///----------------------------------------------------------------------------------------
+
     private ClassMetadata getClassMetadata(Class<?> clazz) {
         return metadataCache.computeIfAbsent(clazz, clz -> {
             List<AnnotatedField> fields = new ArrayList<>();
@@ -347,6 +379,7 @@ public class DaxObjectMessageFactory {
         });
     }
     ///----------------------------------------------------------------------------------------
+
     private String collectionToBulk(Iterable<?> collection) {
         Iterator<?> iterator = collection.iterator();
         if (!iterator.hasNext()) {
@@ -379,12 +412,14 @@ public class DaxObjectMessageFactory {
                 writeEntityRecord(sb, iterator.next(), metadata);
             }
         }
-        sb.append(DaxCoreConstants.SEPARATOR_END_OF_MEDIUM);
+        sb.append(DaxCoreConstants.END_OF_MEDIUM);
         sb.append(DaxCoreConstants.SEPARATOR_FILE);
 
         return sb.toString();
     }
+
     ///----------------------------------------------------------------------------------------
+
     private String mapToBulk(Map<?, ?> map) {
         if (map.isEmpty()) {
             return "";
@@ -423,11 +458,10 @@ public class DaxObjectMessageFactory {
                 sb.append(val != null ? val.toString() : "");
             }
         });
-        sb.append(DaxCoreConstants.SEPARATOR_END_OF_MEDIUM);
+        sb.append(DaxCoreConstants.END_OF_MEDIUM);
         sb.append(DaxCoreConstants.SEPARATOR_FILE);
         return sb.toString();
     }
-
     ///----------------------------------------------------------------------------------------
     private void writeHeader(StringBuilder sb, ClassMetadata metadata) {
         writeHeaderFields(sb, metadata);
@@ -449,14 +483,13 @@ public class DaxObjectMessageFactory {
             firstEntry = false;
         }
     }
-
     ///----------------------------------------------------------------------------------------
     private void writeEntityRecord(StringBuilder sb, Object entity, ClassMetadata metadata) {
         if (entity == null) return;
         writeEntityRecordValues(sb, entity, metadata);
     }
-    ///----------------------------------------------------------------------------------------
 
+    ///----------------------------------------------------------------------------------------
     private void writeEntityRecordValues(StringBuilder sb, Object entity, ClassMetadata metadata) {
         boolean firstEntry = true;
 
@@ -484,11 +517,14 @@ public class DaxObjectMessageFactory {
             firstEntry = false;
         }
     }
+
     ///----------------------------------------------------------------------------------------
 
 
     private void appendPrimitiveRecord(StringBuilder sb, Object item) {
         sb.append(item != null ? item.toString() : "");
     }
+
+
     ///----------------------------------------------------------------------------------------
 }
