@@ -58,6 +58,7 @@ public class DaxObjectMessageFactory {
     private final DaxValueCodec valueCodec;
     private final DaxSemanticRegistry semanticRegistry;
     private final DaxDataTypeService dataTypeService;
+    private final DaxBulkCollectionBuilder bulkCollectionBuilder;
 
     private record AnnotatedField(Field field, DaxTag tag) {}
     private record AnnotatedMethod(Method method, DaxTag tag) {}
@@ -67,12 +68,13 @@ public class DaxObjectMessageFactory {
     private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
     ///----------------------------------------------------------------------------------------
     public DaxObjectMessageFactory(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
-    ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService) {
+    ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService, DaxBulkCollectionBuilder bulkCollectionBuilder) {
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
         this.semanticRegistry = semanticRegistry;
         this.dataTypeService  = dataTypeService;
+        this.bulkCollectionBuilder = bulkCollectionBuilder;
     }
     ///----------------------------------------------------------------------------------------
     @SuppressWarnings("unchecked")
@@ -290,7 +292,7 @@ public class DaxObjectMessageFactory {
                                 Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
         if (isBulkCompose(tag,map)) {
-            bulkCollectionToBlock(blockIdx, tag, body, mapToBulk(map), ownerTag);
+            bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.mapToBulk(map), ownerTag);
         } else {
             map.forEach((key, value) ->
                     collectionElementToBlock(blockIdx, tag, body, key, value, reqTagSet, ownerTag)
@@ -305,17 +307,13 @@ public class DaxObjectMessageFactory {
                                      Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
         if (isBulkCompose(tag,collection)) {
-            bulkCollectionToBlock(blockIdx, tag, body, collectionToBulk(collection), ownerTag);
+            bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.collectionToBulk(collection), ownerTag);
         } else {
             collection.forEach(objVal ->
                     collectionElementToBlock(blockIdx, tag, body, null, objVal, reqTagSet, ownerTag)
             );
         }
     }
-
-
-    ///----------------------------------------------------------------------------------------
-
     ///----------------------------------------------------------------------------------------
 
     private Iterable<?> arrayToIterable(Object array) {
@@ -377,153 +375,5 @@ public class DaxObjectMessageFactory {
             return new ClassMetadata(fields, methods);
         });
     }
-    ///----------------------------------------------------------------------------------------
-
-    private String collectionToBulk(Iterable<?> collection) {
-        Iterator<?> iterator = collection.iterator();
-        if (!iterator.hasNext()) {
-            return "";
-        }
-
-        Object first = iterator.next();
-        StringBuilder sb = new StringBuilder();
-        sb.append(DaxCoreConstants.SEPARATOR_FILE);
-
-        if (dataTypeService.isPrimitiveType(first.getClass())) {
-            // Primitive Collection Mode: Single column without header
-            appendPrimitiveRecord(sb, first);
-            while (iterator.hasNext()) {
-                sb.append(DaxCoreConstants.SEPARATOR_RECORD);
-                appendPrimitiveRecord(sb, iterator.next());
-            }
-        } else {
-            // Complex Entity Mode: Header row + Object values
-            Class<?> clazz = first.getClass();
-            ClassMetadata metadata = getClassMetadata(clazz);
-
-            // 1. Write Header (Tag IDs)
-            writeHeader(sb, metadata);
-
-            // 2. Write Records
-            writeEntityRecord(sb, first, metadata);
-            while (iterator.hasNext()) {
-                sb.append(DaxCoreConstants.SEPARATOR_RECORD);
-                writeEntityRecord(sb, iterator.next(), metadata);
-            }
-        }
-        sb.append(DaxCoreConstants.END_OF_MEDIUM);
-        sb.append(DaxCoreConstants.SEPARATOR_FILE);
-
-        return sb.toString();
-    }
-
-    ///----------------------------------------------------------------------------------------
-
-    private String mapToBulk(Map<?, ?> map) {
-        if (map.isEmpty()) {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(DaxCoreConstants.SEPARATOR_FILE);
-
-        // Pobieramy pierwszy element, aby zbadać typ wartości w mapie
-        Map.Entry<?, ?> firstEntry = map.entrySet().iterator().next();
-        Object sampleValue = firstEntry.getValue();
-
-        boolean isValueEntity = sampleValue != null &&
-                sampleValue.getClass().isAnnotationPresent(DaxpEntity.class);
-
-        // 1. Budowanie Nagłówka
-        sb.append(tagCodec.encode(COLLECTION_KEY)).append(DaxCoreConstants.SEPARATOR_UNIT);
-
-        if (isValueEntity) {
-            ClassMetadata metadata = getClassMetadata(sampleValue.getClass());
-            writeHeaderFields(sb, metadata);
-        } else {
-            sb.append(tagCodec.encode(COLLECTION_VALUE));
-        }
-
-        // 2. Budowanie Rekordów Data
-        map.forEach((key, val) -> {
-            sb.append(DaxCoreConstants.SEPARATOR_RECORD);
-            sb.append(key != null ? key.toString() : "")
-                    .append(DaxCoreConstants.SEPARATOR_UNIT);
-
-            if (isValueEntity && val != null) {
-                ClassMetadata metadata = getClassMetadata(val.getClass());
-                writeEntityRecordValues(sb, val, metadata);
-            } else {
-                sb.append(val != null ? val.toString() : "");
-            }
-        });
-        sb.append(DaxCoreConstants.END_OF_MEDIUM);
-        sb.append(DaxCoreConstants.SEPARATOR_FILE);
-        return sb.toString();
-    }
-    ///----------------------------------------------------------------------------------------
-    private void writeHeader(StringBuilder sb, ClassMetadata metadata) {
-        writeHeaderFields(sb, metadata);
-        sb.append(DaxCoreConstants.SEPARATOR_RECORD);
-    }
-    ///----------------------------------------------------------------------------------------
-    private void writeHeaderFields(StringBuilder sb, ClassMetadata metadata) {
-        boolean firstEntry = true;
-
-        for (AnnotatedField f : metadata.fields()) {
-            if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
-            sb.append(f.tag().getTagId());
-            firstEntry = false;
-        }
-
-        for (AnnotatedMethod m : metadata.methods()) {
-            if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
-            sb.append(m.tag().getTagId());
-            firstEntry = false;
-        }
-    }
-    ///----------------------------------------------------------------------------------------
-    private void writeEntityRecord(StringBuilder sb, Object entity, ClassMetadata metadata) {
-        if (entity == null) return;
-        writeEntityRecordValues(sb, entity, metadata);
-    }
-
-    ///----------------------------------------------------------------------------------------
-    private void writeEntityRecordValues(StringBuilder sb, Object entity, ClassMetadata metadata) {
-        boolean firstEntry = true;
-
-        for (AnnotatedField annotatedField : metadata.fields()) {
-            if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
-            try {
-                Object val = annotatedField.field().get(entity);
-                sb.append(val != null ? val.toString() : "");
-            } catch (IllegalAccessException e) {
-                logger.error("Bulk access error on field {}", annotatedField.field().getName(), e);
-                sb.append("");
-            }
-            firstEntry = false;
-        }
-
-        for (AnnotatedMethod annotatedMethod : metadata.methods()) {
-            if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
-            try {
-                Object val = annotatedMethod.method().invoke(entity);
-                sb.append(val != null ? val.toString() : "");
-            } catch (Exception e) {
-                logger.error("Bulk invocation error on method {}", annotatedMethod.method().getName(), e);
-                sb.append("");
-            }
-            firstEntry = false;
-        }
-    }
-
-    ///----------------------------------------------------------------------------------------
-
-
-    private void appendPrimitiveRecord(StringBuilder sb, Object item) {
-        sb.append(item != null ? item.toString() : "");
-    }
-
-
     ///----------------------------------------------------------------------------------------
 }

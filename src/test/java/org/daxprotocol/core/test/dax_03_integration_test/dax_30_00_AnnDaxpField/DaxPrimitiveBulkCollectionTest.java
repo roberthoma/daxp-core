@@ -2,7 +2,6 @@ package org.daxprotocol.core.test.dax_03_integration_test.dax_30_00_AnnDaxpField
 
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.collection.DaxBulkCollectionBuilder;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
@@ -15,17 +14,39 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 public class DaxPrimitiveBulkCollectionTest extends DaxConfigBaseInit {
+    @DaxpEntity(tagId = 1000)
+    static class TestClass01 {
+        @DaxpField(tagId = 1001) final Set<String> strList;
+        @DaxpField(tagId = 1002)  String str1;
 
-    DaxBulkCollectionBuilder bulkCollectionBuilder = new DaxBulkCollectionBuilder();
+        public Set<String> getSetOfString(){
+            return strList;
+        }
 
-    @Test
-    void test1(){
+        public TestClass01(){
+            this.strList = new HashSet<>();
+            this.strList.add("ABC");
+            this.strList.add("DEF");
+            this.strList.add("GHI");
+            this.strList.add("JKL");
+            this.str1 = "Test value";
+        }
 
-
-        System.out.println(DaxMessageDecorator.decorate(bulkCollectionBuilder.build()));
-        Assertions.assertEquals(1,1);
     }
 
+    @Test
+    void baseListBulk(){
+
+        TestClass01 ttObj = new TestClass01();
+        daxEngine.register(TestClass01.class);
+
+
+        String setStrBulk =  bulkCollectionBuilder.collectionToBulk(ttObj.getSetOfString());
+
+
+        System.out.println(DaxMessageDecorator.decorate(setStrBulk));
+
+    }
 
 
 

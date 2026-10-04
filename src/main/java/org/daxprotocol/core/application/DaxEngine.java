@@ -24,6 +24,7 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.config.DaxConfig;
 import org.daxprotocol.core.config.DaxpConfigFactory;
 import org.daxprotocol.core.exceptions.DaxException;
+import org.daxprotocol.core.factory.DaxBulkCollectionBuilder;
 import org.daxprotocol.core.factory.DaxObjectMessageFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.namespace.DaxNamespaceFactory;
@@ -73,6 +74,10 @@ public class DaxEngine {
     private final DaxSemanticCollector semanticCollector;
 
 
+
+    private final DaxBulkCollectionBuilder bulkCollectionBuilder;
+
+
     private final DaxSemanticInspector semanticInspector;
     private final DaxDataTypeService dataTypeService;
     private final DaxDataTypeCodec dataTypeCodec;
@@ -119,8 +124,8 @@ public class DaxEngine {
         semanticCollector = new DaxSemanticCollector(semanticRegistry, dataTypeService, tagCodec, semanticInspector);
 
         handlerRegistry = new DaxHandlerRegistry();
-
-        objectMessageFactory =  new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, semanticRegistry, dataTypeService);
+        bulkCollectionBuilder = new DaxBulkCollectionBuilder(tagCodec, dataTypeService);
+        objectMessageFactory =  new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, semanticRegistry, dataTypeService, bulkCollectionBuilder);
 
         pairCodec     = new DaxPairCodec    (tagCodec);
         preambleCodec = new DaxPreambleCodec( namespaceMapper);
@@ -308,6 +313,10 @@ public class DaxEngine {
             respFrame.setPreamble(preambleFactory.createPreamble());
             respFrame.addMessage(messageFactory.logMessage(3,e.getMessage()));
         }
+    }
+
+    public DaxBulkCollectionBuilder getBulkCollectionBuilder() {
+        return bulkCollectionBuilder;
     }
 
 
