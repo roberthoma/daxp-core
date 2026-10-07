@@ -22,6 +22,7 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.annotation.DaxpValue;
+import org.daxprotocol.core.application.DaxCoreConfig;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
@@ -51,14 +52,13 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxObjectMessageFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(DaxObjectMessageFactory.class);
-    private static final  int BULK_SIZE = 3; //TODO create config param
-
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
     private final DaxSemanticRegistry semanticRegistry;
     private final DaxDataTypeService dataTypeService;
     private final DaxBulkCollectionBuilder bulkCollectionBuilder;
+    private final DaxCoreConfig coreConfig;
 
     private record AnnotatedField(Field field, DaxTag tag) {}
     private record AnnotatedMethod(Method method, DaxTag tag) {}
@@ -67,8 +67,11 @@ public class DaxObjectMessageFactory {
     // Cache reflected fields and methods per class to prevent expensive introspection overhead
     private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
     ///----------------------------------------------------------------------------------------
-    public DaxObjectMessageFactory(DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
-    ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService, DaxBulkCollectionBuilder bulkCollectionBuilder) {
+    public DaxObjectMessageFactory(DaxCoreConfig coreConfig,DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
+    ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService,
+       DaxBulkCollectionBuilder bulkCollectionBuilder)
+    {
+        this.coreConfig = coreConfig;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
@@ -279,7 +282,7 @@ public class DaxObjectMessageFactory {
     //todo for develop check by tag that any entity or collection is flat or not
     // if on flat return false
 
-        if (size > BULK_SIZE) {
+        if (size > coreConfig.getMinBulkSize()) {
             return true;
         }
         return false;

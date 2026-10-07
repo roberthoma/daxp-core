@@ -21,14 +21,13 @@
 package org.daxprotocol.core.application;
 
 import org.daxprotocol.core.codec.*;
-import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.config.DaxpConfigFactory;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
+import org.daxprotocol.core.namespace.DaxpNamespaceConfigFactory;
 import org.daxprotocol.core.exceptions.DaxException;
 import org.daxprotocol.core.factory.DaxBulkCollectionBuilder;
 import org.daxprotocol.core.factory.DaxObjectMessageFactory;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.namespace.DaxNamespaceFactory;
-import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
@@ -48,11 +47,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-import static org.daxprotocol.core.application.DaxCoreTags.ATR_DATA_TYPE;
-
 public class DaxEngine {
     private static final Logger logger = LoggerFactory.getLogger(DaxEngine.class);
-    private final DaxConfig config;
+    private final DaxNamespaceConfig namespaceConfig;
     private final DaxPreambleCodec preambleCodec;
     private final DaxMessageCodec messageCodec;
     private final DaxFrameCodec frameCodec;
@@ -72,6 +69,8 @@ public class DaxEngine {
     private final DaxAnnotationScanner annotationScanner;
     private final DaxDispatcher dispatcher;
     private final DaxSemanticCollector semanticCollector;
+    private final DaxCoreConfig coreConfig;
+
 
 
 
@@ -89,10 +88,11 @@ public class DaxEngine {
 
 //    public DaxEngine(DaxConfig config){
     public DaxEngine(Properties properties){
+         coreConfig = new DaxCoreConfig();
 
-        this.config = DaxpConfigFactory.createConfig(properties);
+        this.namespaceConfig = DaxpNamespaceConfigFactory.createConfig(properties);
 
-        DaxNamespace appNamespace = DaxNamespaceFactory.createAppNamespace(config);
+        DaxNamespace appNamespace = DaxNamespaceFactory.createAppNamespace(namespaceConfig);
         DaxNamespace sysNamespace = DaxNamespaceFactory.createSysNamespace();
 
         namespaceMapper = new DaxNamespaceMapper();
@@ -106,14 +106,14 @@ public class DaxEngine {
 //        appNamespace.setId(config.getAppnamespaceId());
 
         tagParser  = new DaxTagParser(namespaceMapper);
-        tagCodec   = new DaxTagCodec(config, namespaceMapper, tagParser );
+        tagCodec   = new DaxTagCodec(namespaceConfig, namespaceMapper, tagParser );
 
         dataTypeService = new DaxDataTypeService();
         dataTypeCodec = new DaxDataTypeCodec(dataTypeService, tagCodec);
 
         valueCodec = new DaxValueCodec(dataTypeCodec);
 
-        semanticRegistry = new DaxSemanticRegistry(config, namespaceMapper, messageMapper,schemaMapper);
+        semanticRegistry = new DaxSemanticRegistry(namespaceConfig, namespaceMapper, messageMapper,schemaMapper);
         semanticRegistry.putNamespace(sysNamespace);
         semanticRegistry.putNamespace(appNamespace);
 
@@ -125,7 +125,8 @@ public class DaxEngine {
 
         handlerRegistry = new DaxHandlerRegistry();
         bulkCollectionBuilder = new DaxBulkCollectionBuilder(tagCodec, dataTypeService);
-        objectMessageFactory =  new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, semanticRegistry, dataTypeService, bulkCollectionBuilder);
+        objectMessageFactory =  new DaxObjectMessageFactory(coreConfig, tagCodec, dataTypeCodec, valueCodec,
+                semanticRegistry, dataTypeService, bulkCollectionBuilder);
 
         pairCodec     = new DaxPairCodec    (tagCodec);
         preambleCodec = new DaxPreambleCodec( namespaceMapper);
@@ -134,16 +135,16 @@ public class DaxEngine {
         DaxBodyCodec    bodyCodec    = new DaxBodyCodec(pairCodec, tagCodec, valueCodec);
         DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
 
-        messageCodec = new DaxMessageCodec(config, pairCodec,
+        messageCodec = new DaxMessageCodec(namespaceConfig, pairCodec,
                                            headCodec, bodyCodec, trailerCodec
         );
 
-        frameCodec = new DaxFrameCodec(config, preambleCodec, messageCodec);
+        frameCodec = new DaxFrameCodec(namespaceConfig, preambleCodec, messageCodec);
 
 
         messagePopulator    = new DaxMessagePopulator( tagParser, semanticRegistry, semanticCollector);
         annotationScanner = new DaxAnnotationScanner(tagParser ,
-                                                        config,
+                namespaceConfig,
 //                                                        namespaceMapper,
                 semanticRegistry,
                                                         handlerRegistry,
@@ -152,13 +153,13 @@ public class DaxEngine {
                 semanticCollector
         );
 
-        messageConverter     = new DaxMessageConverter(config,//namespaceMapper ,
+        messageConverter     = new DaxMessageConverter(namespaceConfig,//namespaceMapper ,
                 semanticRegistry, tagCodec, dataTypeCodec, valueCodec, dataTypeService);
 
 
 
 
-        preambleFactory = new DaxPreambleFactory(config, preambleCodec);
+        preambleFactory = new DaxPreambleFactory(namespaceConfig, preambleCodec);
 
 
         messageFactory       = new  DaxMessageFactory(
@@ -175,7 +176,7 @@ public class DaxEngine {
 
 
 
-        frameParser =  new DaxFrameParser( config,tagParser,
+        frameParser =  new DaxFrameParser(namespaceConfig,tagParser,
                                           messageFactory,preambleCodec,
                                           pairCodec) ;
 
@@ -191,11 +192,11 @@ public class DaxEngine {
     }
 
 
-    public DaxConfig getConfig() {
-        if (config == null) {
+    public DaxNamespaceConfig getNamespaceConfig() {
+        if (namespaceConfig == null) {
             throw new RuntimeException("Config is NOT READY !!!!");
         }
-        return config;
+        return namespaceConfig;
     }
 
     public DaxPreambleCodec getPreambleCodec() {
@@ -272,7 +273,7 @@ public class DaxEngine {
     }
 
     public int getAppNamespaceId(){
-      return config.getAppNamespaceId();
+      return namespaceConfig.getAppNamespaceId();
     }
 
     public DaxSemanticInspector getSemanticInspector() {
@@ -317,6 +318,10 @@ public class DaxEngine {
 
     public DaxBulkCollectionBuilder getBulkCollectionBuilder() {
         return bulkCollectionBuilder;
+    }
+
+    public DaxCoreConfig getCoreConfig() {
+        return coreConfig;
     }
 
 

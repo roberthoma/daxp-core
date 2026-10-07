@@ -1,9 +1,9 @@
 package org.daxprotocol.core.factory;
 
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 
 public class DaxTagFactory {
-    DaxConfig config;
+    DaxNamespaceConfig config;
 
 
 

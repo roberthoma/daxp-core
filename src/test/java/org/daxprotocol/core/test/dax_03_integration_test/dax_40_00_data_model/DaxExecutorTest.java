@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 @DisplayName("Testy Skanera I EKSEKUCJI :) Refleksji DAXP")
-public class DaxExecutorTest extends DaxConfigFullDataModelTest {
+public class DaxExecutorTest extends DaxNamespaceConfigFullDataModelTest {
 
     @Test
     void getTagsByDataTypeTEST(){

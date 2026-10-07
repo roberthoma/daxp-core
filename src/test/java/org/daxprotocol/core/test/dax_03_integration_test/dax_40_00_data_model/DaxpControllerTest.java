@@ -4,12 +4,11 @@ import org.daxprotocol.core.annotation.DaxpController;
 import org.daxprotocol.core.annotation.DaxpHandler;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
 
 import java.util.List;
 
 @DaxpController
-public class DaxpControllerTest extends DaxConfigFullDataModelTest {
+public class DaxpControllerTest extends DaxNamespaceConfigFullDataModelTest {
 
 
     @DaxpHandler(DaxAnySchemaRegister.MSG_BASE_ENTITY_Req)

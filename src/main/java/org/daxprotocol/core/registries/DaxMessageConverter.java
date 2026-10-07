@@ -24,7 +24,7 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.exceptions.DaxException;
@@ -42,14 +42,14 @@ import java.util.*;
 public class DaxMessageConverter {
     private static final Logger logger = LoggerFactory.getLogger(DaxMessageConverter.class);
 
-    private final DaxConfig config;
+    private final DaxNamespaceConfig config;
     private final DaxSemanticRegistry semanticRegistry;
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
     private final DaxDataTypeService daxDataTypeService;
 
-    public DaxMessageConverter(DaxConfig config,
+    public DaxMessageConverter(DaxNamespaceConfig config,
             DaxSemanticRegistry semanticRegistry,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec,

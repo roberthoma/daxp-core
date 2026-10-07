@@ -24,13 +24,13 @@ import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.factory.DaxBulkCollectionBuilder;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.datatype.DaxReferenceType;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
-import org.daxprotocol.core.model.pair.DaxPairDataType;
 import org.daxprotocol.core.model.pair.DaxPairReferenceType;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
@@ -42,7 +42,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.*;
 
 import static org.daxprotocol.core.application.DaxCoreTags.COLLECTION_VALUE;
@@ -56,7 +55,7 @@ public class DaxAnnotationScanner {
     private static final Logger logger = LoggerFactory.getLogger(DaxAnnotationScanner.class);
 
     private final DaxTagParser tagParser;
-    private final DaxConfig config;
+    private final DaxNamespaceConfig config;
     private final DaxSemanticRegistry semanticRegistry;
     private final DaxHandlerRegistry handlerRegistry;
     private final DaxTagCodec tagCodec;
@@ -74,7 +73,7 @@ public class DaxAnnotationScanner {
      */
     public DaxAnnotationScanner(
             DaxTagParser tagParser,
-            DaxConfig config,
+            DaxNamespaceConfig config,
             DaxSemanticRegistry semanticRegistry,
             DaxHandlerRegistry handlerRegistry,
             DaxTagCodec tagCodec,
@@ -273,13 +272,13 @@ public class DaxAnnotationScanner {
     /**
      * Registers methods annotated with {@link DaxpValue}.
      */
-    private void registerDaxpValue(DaxTag entityTag, Method method) {
+    private void registerEntityMethod(DaxTag entityTag, Method method, DaxTag tag) {
         DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
         if (methodAnn == null) {
             return;
         }
 
-        DaxTag tag = tagCodec.decode(methodAnn);
+   //     DaxTag tag = tagCodec.decode(methodAnn);
 //        semanticRegistry.putTag(tag, DaxTagDestiny.ENTITY_FIELD);
 
         Class<?> returnClass = method.getReturnType();
@@ -423,6 +422,8 @@ public class DaxAnnotationScanner {
      */
     private void registerEntity(Class<?> clazz) {
         DaxpEntity entityAnn = clazz.getAnnotation(DaxpEntity.class);
+        List<AnnotatedField> fields = new ArrayList<>();
+        List<AnnotatedMethod> methods = new ArrayList<>();
 
         logger.info("Scanning ENTITY, name: {}, class: {}", entityAnn.name(), clazz.getName());
         DaxTag entityTag = tagCodec.decode(entityAnn);
@@ -439,8 +440,9 @@ public class DaxAnnotationScanner {
         }
 
         List<Field> allFields = DaxLangTool.allFields(clazz);
-
+        DaxTag tag = null;
         for (Field field : allFields) {
+
             // Validate conflicting annotations
             if (field.isAnnotationPresent(DaxpField.class) && field.isAnnotationPresent(DaxpValue.class)) {
                 throw new DaxAnnotationException("Cannot combine @DaxpField and @DaxpValue annotations on field: " + field.getName());
@@ -449,7 +451,10 @@ public class DaxAnnotationScanner {
             if (field.isAnnotationPresent(DaxpField.class) && field.isAnnotationPresent(DaxpTag.class)) {
                 throw new DaxAnnotationException("Cannot combine @DaxpField and @DaxpTag annotations on field: " + field.getName());
             }
-/*
+
+            tag = null;
+
+            /*
 *
 * public @interface DaxpField {
     DaxDataType daxDataType()  default DaxDataType.UNKNOWN;
@@ -463,7 +468,8 @@ public class DaxAnnotationScanner {
 * */
             if (field.isAnnotationPresent(DaxpField.class)) {
                 DaxpField fieldAnn = field.getAnnotation(DaxpField.class);
-                DaxTag tag = tagCodec.decode(fieldAnn);
+                tag = tagCodec.decode(fieldAnn);
+                fields.add(new AnnotatedField(field, tag));
                 registerEntityEntry(
                         field,
                         tag,
@@ -484,9 +490,10 @@ public class DaxAnnotationScanner {
     String description() default "";
 }
 * */
-            if (field.isAnnotationPresent(DaxpValue.class)) {
+            else if (field.isAnnotationPresent(DaxpValue.class)) {
                 DaxpValue fieldAnn = field.getAnnotation(DaxpValue.class);
-                DaxTag tag = tagCodec.decode(fieldAnn);
+                tag = tagCodec.decode(fieldAnn);
+                fields.add(new AnnotatedField(field, tag));
                 registerEntityEntry(
                         field,
                         tag,
@@ -507,10 +514,18 @@ public class DaxAnnotationScanner {
         }
 
         for (Method method : clazz.getDeclaredMethods()) {
-            registerDaxpValue(entityTag, method);
+
+            DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
+            if (methodAnn == null) {
+                return;
+            }
+
+             tag = tagCodec.decode(methodAnn);
+            methods.add(new AnnotatedMethod(method,tag));
+            registerEntityMethod(entityTag, method, tag);
         }
 
-
+        semanticCollector.registerClassMetadata(clazz,fields, methods ); // ??? >>> ClassMetadata
 
 
 

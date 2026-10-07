@@ -6,8 +6,8 @@ import org.daxprotocol.core.codec.DaxFrameCodec;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTagCodec;
-import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.config.DaxpConfigFactory;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
+import org.daxprotocol.core.namespace.DaxpNamespaceConfigFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
@@ -26,14 +26,14 @@ import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
 import org.junit.jupiter.api.BeforeEach;
 
-public class DaxConfigBaseInit {
+public class DaxNamespaceConfigBaseInit {
     protected  DaxEngine daxEngine;
     protected  int appNamespaceId;
     protected  DaxSemanticRegistry semanticRegistry;
     protected  DaxNamespaceMapper namespaceMapper;
     protected  DaxMessageCodec messageCodec;
     protected  DaxPreambleCodec preambleCodec;
-    protected  DaxConfig config;
+    protected DaxNamespaceConfig config;
     protected  DaxTagCodec tagCodec;
     protected  DaxMessageConverter msgConverter;
     protected  DaxMessageFactory msgFactory;
@@ -54,15 +54,15 @@ public class DaxConfigBaseInit {
     public  void initAll() {
         if (daxEngine == null) {
 
-            daxEngine = new DaxEngine(DaxpConfigFactory
+            daxEngine = new DaxEngine(DaxpNamespaceConfigFactory
                     .createProperties("application_BASE.properties"));
 
-            appNamespaceId = daxEngine.getConfig().getAppNamespaceId();
+            appNamespaceId = daxEngine.getNamespaceConfig().getAppNamespaceId();
             semanticRegistry = daxEngine.getSemanticRegistry();
             namespaceMapper   = daxEngine.getnamespaceMapper();
             messageCodec    = daxEngine.getMessageCodec();
             preambleCodec   = daxEngine.getPreambleCodec();
-            config          = daxEngine.getConfig();
+            config          = daxEngine.getNamespaceConfig();
             tagCodec        = daxEngine.getTagCodec();
             msgConverter    = daxEngine.getMessageConverter();
             msgFactory      = daxEngine.getMessageFactory();

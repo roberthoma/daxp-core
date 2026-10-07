@@ -1,9 +1,9 @@
 package org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_20_base_parser;
 
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
+import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxNamespaceConfigBaseTest;
 import org.junit.jupiter.api.Test;
 
-public class DaxParserV1TestBaseTest extends DaxConfigBaseTest {
+public class DaxParserV1TestBaseTest extends DaxNamespaceConfigBaseTest {
 
 
 

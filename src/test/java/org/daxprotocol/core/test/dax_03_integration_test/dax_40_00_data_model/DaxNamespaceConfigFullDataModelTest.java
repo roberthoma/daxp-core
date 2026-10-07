@@ -6,8 +6,8 @@ import org.daxprotocol.core.codec.DaxFrameCodec;
 import org.daxprotocol.core.codec.DaxMessageCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTagCodec;
-import org.daxprotocol.core.config.DaxConfig;
-import org.daxprotocol.core.config.DaxpConfigFactory;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
+import org.daxprotocol.core.namespace.DaxpNamespaceConfigFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
@@ -22,14 +22,14 @@ import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class DaxConfigFullDataModelTest {
+public class DaxNamespaceConfigFullDataModelTest {
     protected static DaxEngine daxEngine;
     protected static int appNamespaceId;
     protected static DaxSemanticRegistry semanticRegistry;
     protected static DaxNamespaceMapper namespaceMapper;
     protected static DaxMessageCodec messageCodec;
     protected static DaxPreambleCodec preambleCodec;
-    protected static DaxConfig config;
+    protected static DaxNamespaceConfig config;
     protected static DaxTagCodec tagCodec;
     protected static DaxMessageConverter msgConverter;
     protected static DaxMessageFactory msgFactory;
@@ -48,15 +48,15 @@ public class DaxConfigFullDataModelTest {
     public static void initAll() {
         if (daxEngine == null) {
 
-            daxEngine = new DaxEngine(DaxpConfigFactory
+            daxEngine = new DaxEngine(DaxpNamespaceConfigFactory
                     .createProperties("application_BASE.properties"));
 
-            appNamespaceId = daxEngine.getConfig().getAppNamespaceId();
+            appNamespaceId = daxEngine.getNamespaceConfig().getAppNamespaceId();
             semanticRegistry = daxEngine.getSemanticRegistry();
             namespaceMapper   = daxEngine.getnamespaceMapper();
             messageCodec    = daxEngine.getMessageCodec();
             preambleCodec   = daxEngine.getPreambleCodec();
-            config          = daxEngine.getConfig();
+            config          = daxEngine.getNamespaceConfig();
             tagCodec        = daxEngine.getTagCodec();
             msgConverter    = daxEngine.getMessageConverter();
             msgFactory      = daxEngine.getMessageFactory();
@@ -71,10 +71,10 @@ public class DaxConfigFullDataModelTest {
 
             System.out.println("*******************************************");
             System.out.println("      Base Application Configuration  << ");
-            System.out.println(" Description  = "+ daxEngine.getConfig().getAppNamespaceDescription());
-            System.out.println(" Symbol       = "+ daxEngine.getConfig().getAppNamespaceSymbol());
-            System.out.println(" Tag Prefix   = "+ daxEngine.getConfig().getAppNamespaceTagPrefix());
-            System.out.println(" namespace Id   = "+ daxEngine.getConfig().getAppNamespaceId());
+            System.out.println(" Description  = "+ daxEngine.getNamespaceConfig().getAppNamespaceDescription());
+            System.out.println(" Symbol       = "+ daxEngine.getNamespaceConfig().getAppNamespaceSymbol());
+            System.out.println(" Tag Prefix   = "+ daxEngine.getNamespaceConfig().getAppNamespaceTagPrefix());
+            System.out.println(" namespace Id   = "+ daxEngine.getNamespaceConfig().getAppNamespaceId());
             System.out.println("*******************************************");
 
             //------------

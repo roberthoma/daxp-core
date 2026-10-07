@@ -21,7 +21,8 @@
 package org.daxprotocol.core.registries;
 
 import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.factory.DaxBulkCollectionBuilder;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.namespace.*;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
@@ -53,7 +54,7 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxSemanticRegistry {
     private static final Logger logger = LoggerFactory.getLogger(DaxSemanticRegistry.class);
 
-    DaxConfig           config;
+    DaxNamespaceConfig config;
     DaxNamespaceMapper  namespaceMapper;
     DaxMessageMapper    messageMapper;
     DaxSchemaMapper     schemaMapper;
@@ -118,9 +119,15 @@ public class DaxSemanticRegistry {
     Map<DaxTag, DaxBaseRegistry<String>> collectionValues = new ConcurrentHashMap<>();
 
 
+    /******************************************************
+    * Cache reflected fields and methods per class to prevent expensive introspection overhead
+    */
+    private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
+
+
     /******************************************************/
 
-    public DaxSemanticRegistry(DaxConfig config,
+    public DaxSemanticRegistry(DaxNamespaceConfig config,
             DaxNamespaceMapper namespaceMapper ,
             DaxMessageMapper messageMapper ,
             DaxSchemaMapper schemaMapper

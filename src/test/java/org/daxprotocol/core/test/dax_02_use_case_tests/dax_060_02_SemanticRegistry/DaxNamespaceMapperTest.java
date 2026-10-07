@@ -2,11 +2,11 @@ package org.daxprotocol.core.test.dax_02_use_case_tests.dax_060_02_SemanticRegis
 
 import org.daxprotocol.core.exceptions.DaxTagException;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
+import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxNamespaceConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxNamespaceMapperTest extends DaxConfigBaseTest {
+public class DaxNamespaceMapperTest extends DaxNamespaceConfigBaseTest {
 
 
     @Test
@@ -28,8 +28,8 @@ public class DaxNamespaceMapperTest extends DaxConfigBaseTest {
 
     @Test
     void checkAppNamespaceId(){
-        System.out.println("CheckAppNamespaceId app Id = "+daxEngine.getConfig().getAppNamespaceId());
-        Assertions.assertEquals(1, daxEngine.getConfig().getAppNamespaceId());
+        System.out.println("CheckAppNamespaceId app Id = "+daxEngine.getNamespaceConfig().getAppNamespaceId());
+        Assertions.assertEquals(1, daxEngine.getNamespaceConfig().getAppNamespaceId());
     }
 
     @Test

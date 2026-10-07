@@ -19,7 +19,7 @@
  */
 package org.daxprotocol.core.codec;
 
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
@@ -29,14 +29,14 @@ import java.util.List;
 
 
 public class DaxMessageCodec {
-    DaxConfig        config;
+    DaxNamespaceConfig config;
     DaxPairCodec     pairCodec;
     DaxHeadCodec     headCodec;
     DaxBodyCodec     bodyCodec;
     DaxTrailerCodec  trailerCodec;
 
     public DaxMessageCodec(
-            DaxConfig config,
+            DaxNamespaceConfig config,
             DaxPairCodec pairCodec,
             DaxHeadCodec headCodec,
             DaxBodyCodec bodyCodec,

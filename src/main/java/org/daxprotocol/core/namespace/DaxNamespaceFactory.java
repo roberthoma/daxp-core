@@ -1,11 +1,10 @@
 package org.daxprotocol.core.namespace;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
-import org.daxprotocol.core.config.DaxConfig;
 
 public class DaxNamespaceFactory {
 
-    public static DaxNamespace createAppNamespace(DaxConfig config){
+    public static DaxNamespace createAppNamespace(DaxNamespaceConfig config){
         DaxNamespace namespace = new DaxNamespace();
         namespace.setId(config.getAppNamespaceId());
         namespace.setSymbol(config.getAppNamespaceSymbol());

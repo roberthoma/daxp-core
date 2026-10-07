@@ -7,11 +7,11 @@ import org.daxprotocol.core.exceptions.DaxFrameParserException;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
+import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxNamespaceConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxFrameParserTest extends DaxConfigBaseTest {
+public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
 
     @Test
     void parsePreambleTest01(){

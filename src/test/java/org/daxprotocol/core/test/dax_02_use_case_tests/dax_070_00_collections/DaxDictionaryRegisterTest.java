@@ -1,8 +1,8 @@
-package org.daxprotocol.core.test.dax_02_use_case_tests.dax_050_00_collections;
+package org.daxprotocol.core.test.dax_02_use_case_tests.dax_070_00_collections;
 
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
+import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxNamespaceConfigBaseTest;
 
-public class DaxDictionaryRegisterTest extends DaxConfigBaseTest {
+public class DaxDictionaryRegisterTest extends DaxNamespaceConfigBaseTest {
 
 
 //

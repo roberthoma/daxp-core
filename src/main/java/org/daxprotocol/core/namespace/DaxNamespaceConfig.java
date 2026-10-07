@@ -18,11 +18,11 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.config;
+package org.daxprotocol.core.namespace;
 
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 
-public final class DaxConfig {
+public final class DaxNamespaceConfig {
 
     /*****************************************************
      *   DAXP Version
@@ -84,7 +84,7 @@ public final class DaxConfig {
         this.defaultEncoding = defaultEncoding;
     }
 
-    public DaxConfig() {
+    public DaxNamespaceConfig() {
     }
 
 

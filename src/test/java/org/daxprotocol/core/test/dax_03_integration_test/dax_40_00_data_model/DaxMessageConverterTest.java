@@ -3,11 +3,10 @@ package org.daxprotocol.core.test.dax_03_integration_test.dax_40_00_data_model;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxMessageConverterTest extends DaxConfigFullDataModelTest {
+public class DaxMessageConverterTest extends DaxNamespaceConfigFullDataModelTest {
     @Test
     void msgConverterTest(){
         String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +

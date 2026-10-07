@@ -7,13 +7,13 @@ import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
-import org.daxprotocol.core.test.dax_03_integration_test.dax_00_00_base.DaxConfigBaseInit;
+import org.daxprotocol.core.test.dax_03_integration_test.dax_00_00_base.DaxNamespaceConfigBaseInit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-public class DaxFlatEntityBulkCollectionTest extends DaxConfigBaseInit {
+public class DaxFlatEntityBulkCollectionTest extends DaxNamespaceConfigBaseInit {
 
 
 

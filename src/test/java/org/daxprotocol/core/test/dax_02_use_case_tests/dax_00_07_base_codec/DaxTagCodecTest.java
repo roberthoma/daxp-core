@@ -2,11 +2,11 @@ package org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_07_base_codec;
 
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
+import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxNamespaceConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxTagCodecTest extends DaxConfigBaseTest {
+public class DaxTagCodecTest extends DaxNamespaceConfigBaseTest {
 
     @Test
     void tagCodec_1(){

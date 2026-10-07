@@ -21,7 +21,7 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreConstants;
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.exceptions.DaxAnnotationException;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
@@ -36,7 +36,7 @@ import java.lang.reflect.Field;
 public class DaxTagCodec {
 
     /** Core configuration settings for the DAX protocol. */
-    DaxConfig config;
+    DaxNamespaceConfig config;
 
     /** Mapper used to resolve namespace identifiers and references. */
     DaxNamespaceMapper namespaceMapper;
@@ -51,7 +51,7 @@ public class DaxTagCodec {
      * @param namespaceMapper the namespace reference mapper
      * @param tagParser       the parser for string-based DAX tags
      */
-    public DaxTagCodec(DaxConfig config,
+    public DaxTagCodec(DaxNamespaceConfig config,
             DaxNamespaceMapper namespaceMapper,
             DaxTagParser tagParser
     ){

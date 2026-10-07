@@ -1,15 +1,15 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.codec.DaxPreambleCodec;
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.preamble.DaxPreamble;
 
 public class DaxPreambleFactory {
 
-    DaxConfig config;
+    DaxNamespaceConfig config;
     DaxPreambleCodec preambleCodec;
-    public DaxPreambleFactory(DaxConfig config, DaxPreambleCodec preambleCodec){
+    public DaxPreambleFactory(DaxNamespaceConfig config, DaxPreambleCodec preambleCodec){
         this.config = config;
         this.preambleCodec = preambleCodec;
     }

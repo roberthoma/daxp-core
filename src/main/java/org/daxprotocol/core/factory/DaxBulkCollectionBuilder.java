@@ -65,6 +65,7 @@ public class DaxBulkCollectionBuilder {
     private ClassMetadata getClassMetadata(Class<?> clazz) {
         return metadataCache.computeIfAbsent(clazz, clz -> {
             List<AnnotatedField> fields = new ArrayList<>();
+
             for (Field field : DaxLangTool.allFields(clz)) {
                 DaxTag tag = null;
                 if (field.isAnnotationPresent(DaxpField.class)) {
@@ -96,13 +97,13 @@ public class DaxBulkCollectionBuilder {
 
         for (AnnotatedField f : metadata.fields()) {
             if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
-            sb.append(f.tag().getTagId());
+            sb.append(tagCodec.encode(f.tag()));
             firstEntry = false;
         }
 
         for (AnnotatedMethod m : metadata.methods()) {
             if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
-            sb.append(m.tag().getTagId());
+            sb.append(tagCodec.encode(m.tag()));
             firstEntry = false;
         }
     }
@@ -201,14 +202,15 @@ public class DaxBulkCollectionBuilder {
         StringBuilder sb = new StringBuilder();
         sb.append(DaxCoreConstants.SEPARATOR_FILE);
 
-        // Pobieramy pierwszy element, aby zbadać typ wartości w mapie
+        // Fetch the first element to inspect the value type in the map
         Map.Entry<?, ?> firstEntry = map.entrySet().iterator().next();
+        Object sampleKey = firstEntry.getKey();
         Object sampleValue = firstEntry.getValue();
 
         boolean isValueEntity = sampleValue != null &&
                 sampleValue.getClass().isAnnotationPresent(DaxpEntity.class);
 
-        // 1. Budowanie Nagłówka
+        // 1. Building the Header
         sb.append(tagCodec.encode(COLLECTION_KEY)).append(DaxCoreConstants.SEPARATOR_UNIT);
 
         if (isValueEntity) {
@@ -218,7 +220,7 @@ public class DaxBulkCollectionBuilder {
             sb.append(tagCodec.encode(COLLECTION_VALUE));
         }
 
-        // 2. Budowanie Rekordów Data
+        // 2. Building Data Records
         map.forEach((key, val) -> {
             sb.append(DaxCoreConstants.SEPARATOR_RECORD);
             sb.append(key != null ? key.toString() : "")

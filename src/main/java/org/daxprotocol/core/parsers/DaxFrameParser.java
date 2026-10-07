@@ -23,7 +23,7 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxPairCodec;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
-import org.daxprotocol.core.config.DaxConfig;
+import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.exceptions.DaxFrameParserException;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
 import org.daxprotocol.core.factory.DaxMessageFactory;
@@ -52,12 +52,12 @@ public class DaxFrameParser {
     }
 
     private final DaxTagParser tagParser;
-    private final DaxConfig config;
+    private final DaxNamespaceConfig config;
     private final DaxMessageFactory messageFactory;
     private final DaxPreambleCodec preambleCodec;
     private final DaxPairCodec pairCodec;
 
-    public DaxFrameParser(DaxConfig config,
+    public DaxFrameParser(DaxNamespaceConfig config,
             DaxTagParser tagParser,
             DaxMessageFactory messageFactory,
             DaxPreambleCodec preambleCodec,

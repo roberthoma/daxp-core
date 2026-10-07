@@ -4,11 +4,11 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxConfigBaseTest;
+import org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_01_base_config.DaxNamespaceConfigBaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
+public class DaxTagParserTestBaseTest extends DaxNamespaceConfigBaseTest {
 
     @Test
     void parseTag10(){
@@ -137,7 +137,7 @@ public class DaxTagParserTestBaseTest extends DaxConfigBaseTest {
     void parseTag110(){
         String tagStr = "ABC:1029";
         DaxTag tag = tagParser.parseDaxTag(tagStr, 4); //namespaceId = 4 is only for test lower 100
-        int expNamespaceId = daxEngine.getConfig().getAppNamespaceId();
+        int expNamespaceId = daxEngine.getNamespaceConfig().getAppNamespaceId();
         DaxTag expectedTag  = DaxTag.of(expNamespaceId,1029);
 
         Assertions.assertEquals(expectedTag ,tag);

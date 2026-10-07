@@ -18,7 +18,7 @@
  * ***********************************************************************
  */
 
-package org.daxprotocol.core.config;
+package org.daxprotocol.core.namespace;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -32,12 +32,12 @@ import java.util.Properties;
 
  */
 
-public class DaxpConfigFactory {
+public class DaxpNamespaceConfigFactory {
 
     private static ClassLoader getClassLoader() {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         if (cl == null) {
-            cl = DaxpConfigFactory.class.getClassLoader();
+            cl = DaxpNamespaceConfigFactory.class.getClassLoader();
         }
         return cl;
     }
@@ -58,8 +58,8 @@ public class DaxpConfigFactory {
 
 
 
-    public static DaxConfig createConfig(Properties props){
-        DaxConfig config = new DaxConfig();
+    public static DaxNamespaceConfig createConfig(Properties props){
+        DaxNamespaceConfig config = new DaxNamespaceConfig();
         String group;
         String parDomain = "org.daxprotocol.core.config.";
 
