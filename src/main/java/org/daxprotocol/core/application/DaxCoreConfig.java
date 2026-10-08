@@ -3,6 +3,7 @@ package org.daxprotocol.core.application;
 public class DaxCoreConfig {
 
     private int minBulkSize;
+    private int defaultMinBulkSize = 3;
 
     public DaxCoreConfig(){
         resetMinBulkSize();
@@ -19,7 +20,7 @@ public class DaxCoreConfig {
     }
 
     public void resetMinBulkSize(){
-        minBulkSize = 3;
+        minBulkSize = defaultMinBulkSize;
 
     }
 

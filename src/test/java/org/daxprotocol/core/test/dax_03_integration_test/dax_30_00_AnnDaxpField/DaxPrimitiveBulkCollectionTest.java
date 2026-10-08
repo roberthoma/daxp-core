@@ -17,7 +17,7 @@ import java.util.*;
 public class DaxPrimitiveBulkCollectionTest extends DaxNamespaceConfigBaseInit {
 
     @Test
-    void checkSetCollection() {
+    void checkPrimitiveSetCollection() {
 
         @DaxpEntity(tagId = 1000)
         class TestClass01 {
@@ -31,7 +31,7 @@ public class DaxPrimitiveBulkCollectionTest extends DaxNamespaceConfigBaseInit {
             this.strList.add("DEF");
             this.strList.add("GHI");
             this.strList.add("JKL");
-            this.str1 = "Test value";
+            this.str1 = "Test value :SET collection";
         }
 
         }
@@ -53,7 +53,7 @@ public class DaxPrimitiveBulkCollectionTest extends DaxNamespaceConfigBaseInit {
     }
 
     @Test
-    void checkListCollection() {
+    void checkPrimitiveListCollection() {
 
         @DaxpEntity(tagId = 1000)
         class TestClass01 {
@@ -67,7 +67,7 @@ public class DaxPrimitiveBulkCollectionTest extends DaxNamespaceConfigBaseInit {
                 this.strList.add("DEF");
                 this.strList.add("GHI");
                 this.strList.add("JKL");
-                this.str1 = "Test value";
+                this.str1 = "Test value: LIST collection";
             }
 
         }
@@ -89,7 +89,7 @@ public class DaxPrimitiveBulkCollectionTest extends DaxNamespaceConfigBaseInit {
     }
 
     @Test
-    void checkMapCollection() {
+    void checkPrimitiveMapCollection() {
 
         @DaxpEntity(tagId = 1000)
         class TestClass01 {
@@ -105,7 +105,7 @@ public class DaxPrimitiveBulkCollectionTest extends DaxNamespaceConfigBaseInit {
                 this.strMap.put(2,"DEF");
                 this.strMap.put(3,"GHI");
                 this.strMap.put(4,"JKL");
-                this.str1 = "Test value";
+                this.str1 = "Test value: MAP collection";
                 this.testInt = 24;
             }
 

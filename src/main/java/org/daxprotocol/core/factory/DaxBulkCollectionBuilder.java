@@ -22,75 +22,38 @@ package org.daxprotocol.core.factory;
 
 
 import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
-import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.tool.DaxLangTool;
+import org.daxprotocol.core.registries.AnnotatedField;
+import org.daxprotocol.core.registries.AnnotatedMethod;
+import org.daxprotocol.core.registries.ClassMetadata;
+import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 public class DaxBulkCollectionBuilder {
     private static final Logger logger = LoggerFactory.getLogger(DaxBulkCollectionBuilder.class);
 
-    private record AnnotatedField(Field field, DaxTag tag) {}
-    private record AnnotatedMethod(Method method, DaxTag tag) {}
-    private record ClassMetadata(List<AnnotatedField> fields, List<AnnotatedMethod> methods) {}
-
-    // Cache reflected fields and methods per class to prevent expensive introspection overhead
-    private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
 
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeService dataTypeService;
+    private final DaxSemanticRegistry semanticRegistry;
     ///----------------------------------------------------------------------------------------
 
-    public DaxBulkCollectionBuilder(DaxTagCodec tagCodec,DaxDataTypeService dataTypeService){
+    public DaxBulkCollectionBuilder(DaxSemanticRegistry semanticRegistry,DaxTagCodec tagCodec
+            ,DaxDataTypeService dataTypeService
+
+    ){
         this.tagCodec = tagCodec;
         this.dataTypeService = dataTypeService;
+        this.semanticRegistry = semanticRegistry;
     }
 
-    ///----------------------------------------------------------------------------------------
-
-    private ClassMetadata getClassMetadata(Class<?> clazz) {
-        return metadataCache.computeIfAbsent(clazz, clz -> {
-            List<AnnotatedField> fields = new ArrayList<>();
-
-            for (Field field : DaxLangTool.allFields(clz)) {
-                DaxTag tag = null;
-                if (field.isAnnotationPresent(DaxpField.class)) {
-                    tag = tagCodec.decode(field.getAnnotation(DaxpField.class));
-                } else if (field.isAnnotationPresent(DaxpValue.class)) {
-                    tag = tagCodec.decode(field.getAnnotation(DaxpValue.class));
-                }
-
-                if (tag != null) {
-                    field.setAccessible(true);
-                    fields.add(new AnnotatedField(field, tag));
-                }
-            }
-
-            List<AnnotatedMethod> methods = new ArrayList<>();
-            for (Method method : clz.getDeclaredMethods()) {
-                if (method.isAnnotationPresent(DaxpValue.class)) {
-                    method.setAccessible(true);
-                    methods.add(new AnnotatedMethod(method, tagCodec.decode(method.getAnnotation(DaxpValue.class))));
-                }
-            }
-
-            return new ClassMetadata(fields, methods);
-        });
-    }
     ///----------------------------------------------------------------------------------------
     private void writeHeaderFields(StringBuilder sb, ClassMetadata metadata) {
         boolean firstEntry = true;
@@ -137,6 +100,7 @@ public class DaxBulkCollectionBuilder {
     }
 
 
+    ///----------------------------------------------------------------------------------------
 
     private void appendPrimitiveRecord(StringBuilder sb, Object item) {
         sb.append(item != null ? item.toString() : "");
@@ -174,7 +138,7 @@ public class DaxBulkCollectionBuilder {
         } else {
             // Complex Entity Mode: Header row + Object values
             Class<?> clazz = first.getClass();
-            ClassMetadata metadata = getClassMetadata(clazz);
+            ClassMetadata metadata = semanticRegistry.getClassMetadata(clazz);
 
             // 1. Write Header (Tag IDs)
             writeHeader(sb, metadata);
@@ -214,7 +178,7 @@ public class DaxBulkCollectionBuilder {
         sb.append(tagCodec.encode(COLLECTION_KEY)).append(DaxCoreConstants.SEPARATOR_UNIT);
 
         if (isValueEntity) {
-            ClassMetadata metadata = getClassMetadata(sampleValue.getClass());
+            ClassMetadata metadata = semanticRegistry.getClassMetadata(sampleValue.getClass());
             writeHeaderFields(sb, metadata);
         } else {
             sb.append(tagCodec.encode(COLLECTION_VALUE));
@@ -227,7 +191,7 @@ public class DaxBulkCollectionBuilder {
                     .append(DaxCoreConstants.SEPARATOR_UNIT);
 
             if (isValueEntity && val != null) {
-                ClassMetadata metadata = getClassMetadata(val.getClass());
+                ClassMetadata metadata = semanticRegistry.getClassMetadata(val.getClass());
                 writeEntityRecordValues(sb, val, metadata);
             } else {
                 sb.append(val != null ? val.toString() : "");

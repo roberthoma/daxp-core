@@ -20,13 +20,14 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.annotation.DaxpField;
-import org.daxprotocol.core.annotation.DaxpValue;
 import org.daxprotocol.core.application.DaxCoreConfig;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
+import org.daxprotocol.core.registries.AnnotatedField;
+import org.daxprotocol.core.registries.AnnotatedMethod;
+import org.daxprotocol.core.registries.ClassMetadata;
 import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
@@ -38,14 +39,9 @@ import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
-import org.daxprotocol.core.tool.DaxLangTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
@@ -59,13 +55,6 @@ public class DaxObjectMessageFactory {
     private final DaxDataTypeService dataTypeService;
     private final DaxBulkCollectionBuilder bulkCollectionBuilder;
     private final DaxCoreConfig coreConfig;
-
-    private record AnnotatedField(Field field, DaxTag tag) {}
-    private record AnnotatedMethod(Method method, DaxTag tag) {}
-    private record ClassMetadata(List<AnnotatedField> fields, List<AnnotatedMethod> methods) {}
-
-    // Cache reflected fields and methods per class to prevent expensive introspection overhead
-    private final Map<Class<?>, ClassMetadata> metadataCache = new ConcurrentHashMap<>();
     ///----------------------------------------------------------------------------------------
     public DaxObjectMessageFactory(DaxCoreConfig coreConfig,DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
     ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService,
@@ -167,7 +156,7 @@ public class DaxObjectMessageFactory {
 
         body.putPair(blockIdx, ENTRY_TAG, blockTag);
 
-        ClassMetadata metadata = getClassMetadata(entry.getClass());
+        ClassMetadata metadata = semanticRegistry.getClassMetadata(entry.getClass());
 
         // Process fields
         for (AnnotatedField annotatedField : metadata.fields()) {
@@ -348,35 +337,5 @@ public class DaxObjectMessageFactory {
     }
 
 
-    ///----------------------------------------------------------------------------------------
-
-    private ClassMetadata getClassMetadata(Class<?> clazz) {
-        return metadataCache.computeIfAbsent(clazz, clz -> {
-            List<AnnotatedField> fields = new ArrayList<>();
-            for (Field field : DaxLangTool.allFields(clz)) {
-                DaxTag tag = null;
-                if (field.isAnnotationPresent(DaxpField.class)) {
-                    tag = tagCodec.decode(field.getAnnotation(DaxpField.class));
-                } else if (field.isAnnotationPresent(DaxpValue.class)) {
-                    tag = tagCodec.decode(field.getAnnotation(DaxpValue.class));
-                }
-
-                if (tag != null) {
-                    field.setAccessible(true);
-                    fields.add(new AnnotatedField(field, tag));
-                }
-            }
-
-            List<AnnotatedMethod> methods = new ArrayList<>();
-            for (Method method : clz.getDeclaredMethods()) {
-                if (method.isAnnotationPresent(DaxpValue.class)) {
-                    method.setAccessible(true);
-                    methods.add(new AnnotatedMethod(method, tagCodec.decode(method.getAnnotation(DaxpValue.class))));
-                }
-            }
-
-            return new ClassMetadata(fields, methods);
-        });
-    }
-    ///----------------------------------------------------------------------------------------
+   ///----------------------------------------------------------------------------------------
 }

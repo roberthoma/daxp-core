@@ -24,7 +24,6 @@ import jakarta.validation.constraints.Size;
 import org.daxprotocol.core.annotation.*;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
-import org.daxprotocol.core.factory.DaxBulkCollectionBuilder;
 import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;

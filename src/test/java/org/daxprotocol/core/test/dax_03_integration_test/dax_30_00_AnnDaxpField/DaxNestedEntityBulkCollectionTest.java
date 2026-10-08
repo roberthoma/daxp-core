@@ -79,14 +79,20 @@ public class DaxNestedEntityBulkCollectionTest extends DaxNamespaceConfigBaseIni
         printSemanticRegister();
         TestClass01 ttObj = new TestClass01();
 
-        DaxMessage msg = msgFactory.toDaxMessage("BULK.TTT",ttObj);
+        daxEngine.getCoreConfig().setMinBulkSize(100);
 
+        DaxMessage msg = msgFactory.toDaxMessage("BULK.TTT",ttObj);
         DaxPreamble preamble = new DaxPreamble();
 
 //        System.out.println(messageCodec.encode(msg, preamble));
         System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg, preamble)));
 //        System.out.println(messageCodec.encode(msg, preamble));
         DaxTag tag1011 = DaxTag.of(config.getAppNamespaceId(), 1011);
+
+        daxEngine.getCoreConfig().resetMinBulkSize();
+        DaxMessage msg2 = msgFactory.toDaxMessage("BULK.TTT",ttObj);
+        System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg2, preamble)));
+
         Assertions.assertEquals(DaxDataType.COLLECTION, semanticInspector.getDataType(tag1011));
 //        Assertions.assertEquals(DaxDataType.STRING, semanticInspector.getCollectionValueDataType(tag1001));
 //        Assertions.assertFalse(semanticInspector.hasKey(tag1001));

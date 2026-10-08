@@ -24,6 +24,4 @@ import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Method;
 
-public record AnnotatedMethod(Method method, DaxTag tag) {
-
-}
+public record AnnotatedMethod(Method method, DaxTag tag) { }

@@ -124,7 +124,7 @@ public class DaxEngine {
         semanticCollector = new DaxSemanticCollector(semanticRegistry, dataTypeService, tagCodec, semanticInspector);
 
         handlerRegistry = new DaxHandlerRegistry();
-        bulkCollectionBuilder = new DaxBulkCollectionBuilder(tagCodec, dataTypeService);
+        bulkCollectionBuilder = new DaxBulkCollectionBuilder(semanticRegistry, tagCodec, dataTypeService);
         objectMessageFactory =  new DaxObjectMessageFactory(coreConfig, tagCodec, dataTypeCodec, valueCodec,
                 semanticRegistry, dataTypeService, bulkCollectionBuilder);
 

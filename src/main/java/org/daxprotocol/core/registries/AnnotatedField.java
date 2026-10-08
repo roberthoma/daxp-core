@@ -24,6 +24,4 @@ import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.lang.reflect.Field;
 
-public  record AnnotatedField(Field field, DaxTag tag) {
-
-}
+public  record AnnotatedField(Field field, DaxTag tag) { }

@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -254,15 +255,11 @@ public class DaxSemanticCollector {
         }
 
     }
-    ///---------------------------------------------------------------------
+
+    /// ---------------------------------------------------------------------
 
     public void putTagAtrSizeMax(DaxTag entityTag, DaxTag tag, int max) {
-        if (entityTag == null){
-            putTagAtrSizeMax(tag,max);
-        }
-        else {
-            putEntityEntryAtrSizeMax(entityTag,tag,max);
-        }
+
     }
 
     public void putEntityEntry(DaxTag entityTag, DaxTag tag) {
@@ -270,4 +267,7 @@ public class DaxSemanticCollector {
                 DaxLangTool.addAndReturnSet(daxTags, tag) );
     }
 
+    public void registerClassMetadata(Class<?> clazz, List<AnnotatedField> fields, List<AnnotatedMethod> methods) {
+        semanticRegistry.registerClassMetadata(clazz, fields,methods);
+    }
 }
