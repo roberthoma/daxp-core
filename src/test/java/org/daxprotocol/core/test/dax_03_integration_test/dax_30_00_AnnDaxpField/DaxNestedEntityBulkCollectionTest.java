@@ -284,6 +284,8 @@ public class DaxNestedEntityBulkCollectionTest extends DaxNamespaceConfigBaseIni
             }
 
         }
+
+        daxEngine.register(BaseKeyEntityClass.class);
         daxEngine.register(BaseEntityClass.class);
         daxEngine.register(TestClass01.class);
 
