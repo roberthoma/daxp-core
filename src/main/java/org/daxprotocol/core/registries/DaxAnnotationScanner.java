@@ -503,11 +503,11 @@ public class DaxAnnotationScanner {
                 );
             }
 
-            if (field.isAnnotationPresent(DaxpTag.class)) {
+            else if (field.isAnnotationPresent(DaxpTag.class)) {
                 registerTag(field, entityTag);
             }
 
-            if (field.isAnnotationPresent(DaxpMessage.class)) {
+            else if (field.isAnnotationPresent(DaxpMessage.class)) {
                 registerDaxpMsg(field);
             }
         }
@@ -516,7 +516,7 @@ public class DaxAnnotationScanner {
 
             DaxpValue methodAnn = method.getAnnotation(DaxpValue.class);
             if (methodAnn == null) {
-                return;
+                continue;
             }
 
              tag = tagCodec.decode(methodAnn);

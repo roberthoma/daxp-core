@@ -20,7 +20,6 @@
 
 package org.daxprotocol.core.factory;
 
-
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
@@ -32,23 +31,20 @@ import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
+
 public class DaxBulkCollectionBuilder {
     private static final Logger logger = LoggerFactory.getLogger(DaxBulkCollectionBuilder.class);
-
 
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeService dataTypeService;
     private final DaxSemanticRegistry semanticRegistry;
-    ///----------------------------------------------------------------------------------------
 
-    public DaxBulkCollectionBuilder(DaxSemanticRegistry semanticRegistry,DaxTagCodec tagCodec
-            ,DaxDataTypeService dataTypeService
-
-    ){
+    public DaxBulkCollectionBuilder(DaxSemanticRegistry semanticRegistry, DaxTagCodec tagCodec, DaxDataTypeService dataTypeService) {
         this.tagCodec = tagCodec;
         this.dataTypeService = dataTypeService;
         this.semanticRegistry = semanticRegistry;
@@ -70,6 +66,7 @@ public class DaxBulkCollectionBuilder {
             firstEntry = false;
         }
     }
+
     ///----------------------------------------------------------------------------------------
     private void writeEntityRecordValues(StringBuilder sb, Object entity, ClassMetadata metadata) {
         boolean firstEntry = true;
@@ -78,7 +75,7 @@ public class DaxBulkCollectionBuilder {
             if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
             try {
                 Object val = annotatedField.field().get(entity);
-                sb.append(val != null ? val.toString() : "");
+                formatAndAppendValue(sb, val);
             } catch (IllegalAccessException e) {
                 logger.error("Bulk access error on field {}", annotatedField.field().getName(), e);
                 sb.append("");
@@ -90,7 +87,7 @@ public class DaxBulkCollectionBuilder {
             if (!firstEntry) sb.append(DaxCoreConstants.SEPARATOR_UNIT);
             try {
                 Object val = annotatedMethod.method().invoke(entity);
-                sb.append(val != null ? val.toString() : "");
+                formatAndAppendValue(sb, val);
             } catch (Exception e) {
                 logger.error("Bulk invocation error on method {}", annotatedMethod.method().getName(), e);
                 sb.append("");
@@ -99,23 +96,53 @@ public class DaxBulkCollectionBuilder {
         }
     }
 
+    ///----------------------------------------------------------------------------------------
+    private void formatAndAppendValue(StringBuilder sb, Object val) {
+        if (val == null) {
+            return;
+        }
+
+        Class<?> clazz = val.getClass();
+
+        if (clazz.isAnnotationPresent(DaxpEntity.class)) {
+            // Nested Entity handling: recursive bulk formatting
+            sb.append(entityToBulk(val));
+        } else if (val instanceof Iterable<?>) {
+            // Nested Collection handling
+            sb.append(collectionToBulk((Iterable<?>) val));
+        } else if (val instanceof Map<?, ?>) {
+            // Nested Map handling
+            sb.append(mapToBulk((Map<?, ?>) val));
+        } else {
+            // Primitive / String value
+            sb.append(val.toString());
+        }
+    }
 
     ///----------------------------------------------------------------------------------------
+    public String entityToBulk(Object entity) {
+        if (entity == null) {
+            return "";
+        }
+        return collectionToBulk(Collections.singletonList(entity));
+    }
 
+    ///----------------------------------------------------------------------------------------
     private void appendPrimitiveRecord(StringBuilder sb, Object item) {
         sb.append(item != null ? item.toString() : "");
     }
+
     ///----------------------------------------------------------------------------------------
     private void writeHeader(StringBuilder sb, ClassMetadata metadata) {
         writeHeaderFields(sb, metadata);
         sb.append(DaxCoreConstants.SEPARATOR_RECORD);
     }
+
     ///----------------------------------------------------------------------------------------
     private void writeEntityRecord(StringBuilder sb, Object entity, ClassMetadata metadata) {
         if (entity == null) return;
         writeEntityRecordValues(sb, entity, metadata);
     }
-
 
     ///----------------------------------------------------------------------------------------
     public String collectionToBulk(Iterable<?> collection) {
@@ -155,9 +182,8 @@ public class DaxBulkCollectionBuilder {
 
         return sb.toString();
     }
+
     ///----------------------------------------------------------------------------------------
-
-
     public String mapToBulk(Map<?, ?> map) {
         if (map.isEmpty()) {
             return "";
@@ -166,9 +192,7 @@ public class DaxBulkCollectionBuilder {
         StringBuilder sb = new StringBuilder();
         sb.append(DaxCoreConstants.SEPARATOR_FILE);
 
-        // Fetch the first element to inspect the value type in the map
         Map.Entry<?, ?> firstEntry = map.entrySet().iterator().next();
-        Object sampleKey = firstEntry.getKey();
         Object sampleValue = firstEntry.getValue();
 
         boolean isValueEntity = sampleValue != null &&
@@ -194,7 +218,7 @@ public class DaxBulkCollectionBuilder {
                 ClassMetadata metadata = semanticRegistry.getClassMetadata(val.getClass());
                 writeEntityRecordValues(sb, val, metadata);
             } else {
-                sb.append(val != null ? val.toString() : "");
+                formatAndAppendValue(sb, val);
             }
         });
         sb.append(DaxCoreConstants.END_OF_MEDIUM);
@@ -202,4 +226,3 @@ public class DaxBulkCollectionBuilder {
         return sb.toString();
     }
 }
-

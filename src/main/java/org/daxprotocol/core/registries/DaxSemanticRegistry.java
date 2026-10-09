@@ -331,7 +331,12 @@ public class DaxSemanticRegistry {
     }
     ///---------------------
     public void registerClassMetadata(Class<?> clazz, List<AnnotatedField> fields, List<AnnotatedMethod> methods){
-        metadataCache.computeIfAbsent( clazz, aClass -> new ClassMetadata(fields, methods) );
+//        metadataCache.computeIfAbsent( clazz, aClass -> new ClassMetadata(fields, methods) );
+        ClassMetadata cc =  new ClassMetadata(fields, methods);
+        if (!metadataCache.containsKey(clazz)){
+            metadataCache.put(clazz,cc);
+        }
+
     }
 
     public ClassMetadata getClassMetadata(Class<?> clazz) {
