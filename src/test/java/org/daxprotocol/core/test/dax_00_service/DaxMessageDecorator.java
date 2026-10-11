@@ -9,17 +9,19 @@ public class DaxMessageDecorator {
     public static String decorate(String msgStr){
 
         return msgStr.replace("$:1=","\n$:1=")
-                     .replace("$:4=","\n$:4=")
-                     .replace("$:9=","\n$:9=")
+                .replace("$:4=","\n$:4=")
+                .replace("$:9=","\n$:9=")
+                .replace("$:230=","$:230=\n")
+
 
                 //           .replace("$:11=","$:11[name]=")
-                //.replace(""+DaxCoreConstants.END_OF_MEDIUM+DaxCoreConstants.SEPARATOR_FILE,"</FS>")
 
-                .replace(""+DaxCoreConstants.SEPARATOR_FILE,"<FS>\n")
+                .replace(""+DaxCoreConstants.END_OF_MEDIUM+DaxCoreConstants.SEPARATOR_FILE,"<EM><FS>\n")
+                .replace(""+DaxCoreConstants.SEPARATOR_FILE,"<FS>")
                 .replace(""+DaxCoreConstants.SEPARATOR_GROUP,"<GS>")
                 .replace(""+DaxCoreConstants.SEPARATOR_RECORD,"<RS>\n")
                 .replace(""+DaxCoreConstants.SEPARATOR_UNIT,"<US>")
-                .replace(""+DaxCoreConstants.END_OF_MEDIUM,"\n<EM>")
+                .replace(""+DaxCoreConstants.END_OF_MEDIUM,"<EM>")
                 .replace(""+DaxCoreConstants.DEFAULT_PAIR_SEPARATOR,"<SOH>")
 
                 ;

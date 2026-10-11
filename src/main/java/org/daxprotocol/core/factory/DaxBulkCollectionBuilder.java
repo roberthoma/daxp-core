@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -195,7 +195,17 @@ public class DaxBulkCollectionBuilder {
 
     /**
      * Serializes a Map into DAXP bulk payload representation.
-     * Handles primitive and complex Entity types for both Key and Value using SEPARATOR_GROUP boundaries.
+     * Always wraps both Key and Value groups in SEPARATOR_GROUP (...) END_OF_MEDIUM + SEPARATOR_GROUP boundaries.
+     */
+
+    // =========================================================================================
+    // MAP HANDLING (Key -> Value)
+    // =========================================================================================
+
+    /**
+     * Serializes a Map into DAXP bulk payload representation.
+     * Wraps both Key and Value groups in SEPARATOR_GROUP (...) END_OF_MEDIUM + SEPARATOR_GROUP boundaries
+     * without intermediate unit separators.
      */
     public String mapToBulk(Map<?, ?> map) {
         if (map == null || map.isEmpty()) {
@@ -217,26 +227,26 @@ public class DaxBulkCollectionBuilder {
         // -------------------------------------------------------------------------------------
 
         // Header: KEY
+        sb.append(DaxCoreConstants.SEPARATOR_GROUP);
         if (isKeyEntity) {
             ClassMetadata keyMetadata = semanticRegistry.getClassMetadata(sampleKey.getClass());
-            sb.append(DaxCoreConstants.SEPARATOR_GROUP);
             writeHeaderFields(sb, keyMetadata);
-            sb.append(DaxCoreConstants.SEPARATOR_GROUP);
         } else {
             sb.append(tagCodec.encode(COLLECTION_KEY));
         }
+        sb.append(DaxCoreConstants.END_OF_MEDIUM);
+        sb.append(DaxCoreConstants.SEPARATOR_GROUP);
 
-        sb.append(DaxCoreConstants.SEPARATOR_UNIT);
-
-        // Header: VALUE
+        // Header: VALUE (Directly follows Key group, no SEPARATOR_UNIT)
+        sb.append(DaxCoreConstants.SEPARATOR_GROUP);
         if (isValueEntity) {
             ClassMetadata valueMetadata = semanticRegistry.getClassMetadata(sampleValue.getClass());
-            sb.append(DaxCoreConstants.SEPARATOR_GROUP);
             writeHeaderFields(sb, valueMetadata);
-            sb.append(DaxCoreConstants.SEPARATOR_GROUP);
         } else {
             sb.append(tagCodec.encode(COLLECTION_VALUE));
         }
+        sb.append(DaxCoreConstants.END_OF_MEDIUM);
+        sb.append(DaxCoreConstants.SEPARATOR_GROUP);
 
         // -------------------------------------------------------------------------------------
         // 2. BUILD MAP DATA RECORDS
@@ -245,26 +255,26 @@ public class DaxBulkCollectionBuilder {
             sb.append(DaxCoreConstants.SEPARATOR_RECORD);
 
             // Write Key
+            sb.append(DaxCoreConstants.SEPARATOR_GROUP);
             if (isKeyEntity && key != null) {
                 ClassMetadata keyMetadata = semanticRegistry.getClassMetadata(key.getClass());
-                sb.append(DaxCoreConstants.SEPARATOR_GROUP);
                 writeEntityRecordValues(sb, key, keyMetadata);
-                sb.append(DaxCoreConstants.SEPARATOR_GROUP);
             } else {
                 sb.append(key != null ? key.toString() : "");
             }
+            sb.append(DaxCoreConstants.END_OF_MEDIUM);
+            sb.append(DaxCoreConstants.SEPARATOR_GROUP);
 
-            sb.append(DaxCoreConstants.SEPARATOR_UNIT);
-
-            // Write Value
+            // Write Value (Directly follows Key group, no SEPARATOR_UNIT)
+            sb.append(DaxCoreConstants.SEPARATOR_GROUP);
             if (isValueEntity && val != null) {
                 ClassMetadata valueMetadata = semanticRegistry.getClassMetadata(val.getClass());
-                sb.append(DaxCoreConstants.SEPARATOR_GROUP);
                 writeEntityRecordValues(sb, val, valueMetadata);
-                sb.append(DaxCoreConstants.SEPARATOR_GROUP);
             } else {
                 formatAndAppendValue(sb, val);
             }
+            sb.append(DaxCoreConstants.END_OF_MEDIUM);
+            sb.append(DaxCoreConstants.SEPARATOR_GROUP);
         });
 
         sb.append(DaxCoreConstants.END_OF_MEDIUM);
