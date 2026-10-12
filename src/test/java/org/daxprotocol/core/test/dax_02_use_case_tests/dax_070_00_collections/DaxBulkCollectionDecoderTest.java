@@ -48,7 +48,7 @@ class DaxBulkCollectionDecoderTest extends DaxNamespaceConfigBaseInit {
     void testDecodePrimitiveCollectionFromRawPayload() {
         int namespaceId = config.getAppNamespaceId();
 
-        // Ręczne złożenie surowej ramki dla kolekcji typów prostych
+        // Manual assembly of the raw frame for the primitive types collection
         String payload = FS + "Volvo" + RS + "Porsche" + RS + "Nissan" + RS + "Ferrari" + EM + FS;
 
         System.out.println(DaxMessageDecorator.decorate(payload));
@@ -61,24 +61,24 @@ class DaxBulkCollectionDecoderTest extends DaxNamespaceConfigBaseInit {
 
     @Test
     void testDecodeMapWithEntityKeyAndEntityValueFromRawPayload() {
-         int namespaceId = config.getAppNamespaceId();
+        int namespaceId = config.getAppNamespaceId();
         daxEngine.register(VinKey.class);
         daxEngine.register(CarModel.class);
 
-        // Ręczne złożenie surowej ramki DAXP dla Map<VinKey, CarModel>
+        // Manual assembly of the raw DAXP frame for Map<VinKey, CarModel>
         StringBuilder sb = new StringBuilder();
         sb.append(FS);
 
-        // 1. Nagłówek Mapy: Key Header + Value Header
+        // 1. Map Header: Key Header + Value Header
         sb.append(GS).append("902").append(US).append("903").append(US).append("FIX:904").append(EM).append(GS);
         sb.append(GS).append("1002").append(US).append("1003").append(US).append("FIX:1004").append(EM).append(GS);
 
-        // 2. Rekord danych 1: VIN200481, DE, 101 -> Porsche, Taycan, 616
+        // 2. Data record 1: VIN200481, DE, 101 -> Porsche, Taycan, 616
         sb.append(RS);
         sb.append(GS).append("VIN200481").append(US).append("DE").append(US).append("101").append(EM).append(GS);
         sb.append(GS).append("Porsche").append(US).append("Taycan").append(US).append("616").append(EM).append(GS);
 
-        // 3. Rekord danych 2: VIN100283, US -> Tesla, Model S
+        // 3. Data record 2: VIN100283, US -> Tesla, Model S
         sb.append(RS);
         sb.append(GS).append("VIN100283").append(US).append("US").append(US).append(EM).append(GS);
         sb.append(GS).append("Tesla").append(US).append("Model S").append(US).append(EM).append(GS);
@@ -88,17 +88,17 @@ class DaxBulkCollectionDecoderTest extends DaxNamespaceConfigBaseInit {
 
         String rawPayload = sb.toString();
 
-        // Opcjonalna inspekcja dekoratorem
+        // Optional inspection using the decorator
         System.out.println("--- RAW DECODED PAYLOAD INSPECTION ---");
         System.out.println(DaxMessageDecorator.decorate(rawPayload));
 
-        // Wywołanie dekodera bezpośrednio na surowym ciągu znaków
+        // Call the decoder directly on the raw string payload
         Map<VinKey, CarModel> decodedMap = bulkCollectionDecoder.decodeMap(rawPayload, VinKey.class, CarModel.class, namespaceId);
 
         assertNotNull(decodedMap);
         assertEquals(2, decodedMap.size());
 
-        // Weryfikacja poprawności zdekodowanych obiektów
+        // Verify the correctness of the decoded objects
         boolean foundPorsche = false;
         for (Map.Entry<VinKey, CarModel> entry : decodedMap.entrySet()) {
             VinKey key = entry.getKey();
@@ -114,7 +114,7 @@ class DaxBulkCollectionDecoderTest extends DaxNamespaceConfigBaseInit {
                 break;
             }
         }
-        assertTrue(foundPorsche, "Dekoder powinien poprawnie zrekonstruować obiekt Porsche z klucza VIN200481");
+        assertTrue(foundPorsche, "The decoder should correctly reconstruct the Porsche object from the VIN200481 key");
     }
 
     // =========================================================================================
