@@ -82,7 +82,7 @@ public class DaxTagParser {
      * @throws DaxTagParserException if the format is invalid or tagId is not a numerical value.
      */
 
-    public DaxTag parseDaxTag(String tagStr, int msgnamespaceId) {
+    public DaxTag parseDaxTag(String tagStr, int msgNamespaceId) {
 
         if (tagStr == null) {
             throw new DaxTagParserException("NOT correct DaxTag: Input is null");
@@ -147,7 +147,7 @@ public class DaxTagParser {
         // 5. namespace ID resolution logic
         int namespaceId ;
         if (namespaceSymbol == null || namespaceSymbol.isEmpty()) {
-            namespaceId = msgnamespaceId ; // config.getAppnamespaceId();
+            namespaceId = msgNamespaceId ; // config.getAppnamespaceId();
         } else {
             namespaceId = namespaceMapper.getReferenceId(namespaceSymbol);
         }

@@ -230,5 +230,62 @@ public class DaxDataTypeService {
 
            return info.isColHasKey && !info.isJavaEnum;
        }
+       //---------------------------------------------------------------------------------------
+    // =====================================================================================
+    // TYPE CONVERSION METHOD
+    // =====================================================================================
+
+    /**
+     * Converts a raw string value from the DAXP stream into the target Java class type.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T convert(String valStr, Class<T> targetClass) {
+        if (targetClass == null) {
+            return null;
+        }
+
+        // Handle null or empty strings
+        if (valStr == null || valStr.isEmpty()) {
+            if (targetClass.isPrimitive()) {
+                if (targetClass == int.class) return (T) Integer.valueOf(0);
+                if (targetClass == long.class) return (T) Long.valueOf(0L);
+                if (targetClass == double.class) return (T) Double.valueOf(0.0);
+                if (targetClass == boolean.class) return (T) Boolean.FALSE;
+                if (targetClass == char.class) return (T) Character.valueOf('\0');
+            }
+            return null;
+        }
+
+        try {
+            if (targetClass == String.class) {
+                return (T) valStr;
+            } else if (targetClass == Integer.class || targetClass == int.class) {
+                return (T) Integer.valueOf(valStr);
+            } else if (targetClass == Long.class || targetClass == long.class) {
+                return (T) Long.valueOf(valStr);
+            } else if (targetClass == BigDecimal.class) {
+                return (T) new BigDecimal(valStr);
+            } else if (targetClass == Double.class || targetClass == double.class) {
+                return (T) Double.valueOf(valStr);
+            } else if (targetClass == Boolean.class || targetClass == boolean.class) {
+                return (T) Boolean.valueOf(valStr);
+            } else if (targetClass == Character.class || targetClass == char.class) {
+                return (T) Character.valueOf(valStr.charAt(0));
+            } else if (targetClass == LocalDate.class) {
+                return (T) LocalDate.parse(valStr);
+            } else if (targetClass == LocalDateTime.class) {
+                return (T) LocalDateTime.parse(valStr);
+            } else if (targetClass.isEnum()) {
+                Class<Enum> enumClass = (Class<Enum>) targetClass;
+                return (T) Enum.valueOf(enumClass, valStr);
+            }
+        } catch (Exception e) {
+            logger.error("Failed to convert string value [{}] to target class [{}]", valStr, targetClass.getName(), e);
+            throw new IllegalArgumentException("DAXP Data Conversion Error: Cannot convert '" + valStr + "' to " + targetClass.getName(), e);
+        }
+
+        logger.warn("Unsupported target class for conversion: {}", targetClass.getName());
+        return null;
+    }
 
 }

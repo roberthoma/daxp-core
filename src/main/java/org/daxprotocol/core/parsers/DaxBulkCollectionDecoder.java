@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,236 +17,304 @@
  * limitations under the License.
  * ***********************************************************************
  */
+
 package org.daxprotocol.core.parsers;
 
+import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
-import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.registries.AnnotatedField;
+import org.daxprotocol.core.registries.AnnotatedMethod;
 import org.daxprotocol.core.registries.ClassMetadata;
 import org.daxprotocol.core.registries.DaxSemanticRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
 import java.util.*;
 
 /**
- * High-performance, zero-split decoder for DAXP Bulk Collection format.
- * Parses hierarchical ASCII control characters (0x1C to 0x1F) using index cursors.
+ * Decodes DAXP bulk payload format back into entities, collections, and maps
+ * using index-based stream traversal without string splitting.
  */
 public class DaxBulkCollectionDecoder {
+    private static final Logger logger = LoggerFactory.getLogger(DaxBulkCollectionDecoder.class);
 
-//    private final DaxTagCodec tagCodec;
-//    private final DaxDataTypeService dataTypeService;
-//    private final DaxSemanticRegistry semanticRegistry;
-//
-//    public DaxBulkCollectionDecoder(DaxSemanticRegistry semanticRegistry, DaxTagCodec tagCodec, DaxDataTypeService dataTypeService) {
-//        this.tagCodec = tagCodec;
-//        this.dataTypeService = dataTypeService;
-//        this.semanticRegistry = semanticRegistry;
-//    }
-//
-//    /**
-//     * Decodes a DAXP bulk string into a target Java Map.
-//     */
-//    @SuppressWarnings("unchecked")
-//    public <K, V> Map<K, V> decodeMap(String bulkData, Class<K> keyClass, Class<V> valueClass) {
-//        Map<K, V> resultMap = new HashMap<>();
-//
-//        if (bulkData == null || bulkData.isEmpty()) {
-//            return resultMap;
-//        }
-//
-//        int len = bulkData.length();
-//        int cursor = 0;
-//
-//        // Strip leading/trailing FILE_SEPARATOR (0x1C) if present
-//        if (bulkData.charAt(cursor) == DaxCoreConstants.SEPARATOR_FILE) cursor++;
-//        int endBoundary = len;
-//        if (bulkData.charAt(endBoundary - 1) == DaxCoreConstants.SEPARATOR_FILE) endBoundary--;
-//
-//        // ---------------------------------------------------------------------
-//        // 1. PARSE HEADER ROW (Up to first RECORD_SEPARATOR 0x1E)
-//        // ---------------------------------------------------------------------
-//        int headerEnd = findNextSeparator(bulkData, cursor, endBoundary, DaxCoreConstants.SEPARATOR_RECORD);
-//        if (headerEnd == -1) {
-//            headerEnd = endBoundary; // Single header, no records
-//        }
-//
-//        List<DaxTag> keyTags = new ArrayList<>();
-//        List<DaxTag> valueTags = new ArrayList<>();
-//
-//        parseHeaderRow(bulkData, cursor, headerEnd, keyTags, valueTags);
-//
-//        // Move cursor past header and the RECORD_SEPARATOR
-//        cursor = headerEnd + 1;
-//
-//        // ---------------------------------------------------------------------
-//        // 2. PARSE DATA RECORDS (Iterating row by row using RECORD_SEPARATOR)
-//        // ---------------------------------------------------------------------
-//        ClassMetadata keyMetadata = semanticRegistry.getClassMetadata(keyClass);
-//        ClassMetadata valueMetadata = semanticRegistry.getClassMetadata(valueClass);
-//
-//        while (cursor < endBoundary) {
-//            int recordEnd = findNextSeparator(bulkData, cursor, endBoundary, DaxCoreConstants.SEPARATOR_RECORD);
-//            if (recordEnd == -1) {
-//                recordEnd = endBoundary;
-//            }
-//
-//            // Read line content
-//            if (cursor < recordEnd) {
-//                MapEntryHolder entry = parseDataRecord(
-//                        bulkData, cursor, recordEnd,
-//                        keyClass, valueClass,
-//                        keyTags, valueTags,
-//                        keyMetadata, valueMetadata
-//                );
-//
-//                if (entry != null) {
-//                    resultMap.put((K) entry.key, (V) entry.value);
-//                }
-//            }
-//
-//            cursor = recordEnd + 1;
-//        }
-//
-//        return resultMap;
-//    }
-//
-//    // =========================================================================================
-//    // PARSING HELPERS (INDEX-BASED)
-//    // =========================================================================================
-//
-//    private void parseHeaderRow(String data, int start, int end, List<DaxTag> keyTags, List<DaxTag> valueTags) {
-//        // Find the unit separator between Key Header and Value Header
-//        int unitSep = findNextSeparator(data, start, end, DaxCoreConstants.SEPARATOR_UNIT);
-//
-//        int keyEnd = (unitSep != -1) ? unitSep : end;
-//        int valueStart = (unitSep != -1) ? unitSep + 1 : end;
-//
-//        // Extract Key Tags
-//        extractTagsFromSegment(data, start, keyEnd, keyTags);
-//
-//        // Extract Value Tags
-//        if (valueStart < end) {
-//            extractTagsFromSegment(data, valueStart, end, valueTags);
-//        }
-//    }
-//
-//    private void extractTagsFromSegment(String data, int start, int end, List<DaxTag> tagList) {
-//        int pos = start;
-//
-//        // Skip GROUP_SEPARATOR if wrapped
-//        if (pos < end && data.charAt(pos) == DaxCoreConstants.SEPARATOR_GROUP) pos++;
-//        int actualEnd = end;
-//        if (actualEnd > pos && data.charAt(actualEnd - 1) == DaxCoreConstants.SEPARATOR_GROUP) actualEnd--;
-//
-//        int tokenStart = pos;
-//        while (pos <= actualEnd) {
-//            if (pos == actualEnd || data.charAt(pos) == DaxCoreConstants.SEPARATOR_UNIT) {
-//                if (tokenStart < pos) {
-//                    String tagStr = data.substring(tokenStart, pos);
-//                    tagList.add(tagCodec.decode(tagStr));
-//                }
-//                tokenStart = pos + 1;
-//            }
-//            pos++;
-//        }
-//    }
-//
-//    private MapEntryHolder parseDataRecord(
-//            String data, int start, int end,
-//            Class<?> keyClass, Class<?> valueClass,
-//            List<DaxTag> keyTags, List<DaxTag> valueTags,
-//            ClassMetadata keyMeta, ClassMetadata valMeta) {
-//
-//        int unitSep = findNextSeparator(data, start, end, DaxCoreConstants.SEPARATOR_UNIT);
-//        if (unitSep == -1) return null;
-//
-//        String keySegment = extractSegment(data, start, unitSep);
-//        String valueSegment = extractSegment(data, unitSep + 1, end);
-//
-//        Object keyObj = instantiateAndHydrate(keySegment, keyClass, keyTags, keyMeta);
-//        Object valObj = instantiateAndHydrate(valueSegment, valueClass, valueTags, valMeta);
-//
-//        return new MapEntryHolder(keyObj, valObj);
-//    }
-//
-//    private Object instantiateAndHydrate(String rawValue, Class<?> targetClass, List<DaxTag> tags, ClassMetadata metadata) {
-//        if (rawValue.isEmpty()) return null;
-//
-//        // 1. Primitive / Simple Type
-//        if (dataTypeService.isPrimitiveType(targetClass) || tags.isEmpty()) {
-//            return dataTypeService.convert(rawValue, targetClass);
-//        }
-//
-//        // 2. Complex Entity Object
-//        try {
-//            Object instance = targetClass.getDeclaredConstructor().newInstance();
-//            int pos = 0;
-//            int len = rawValue.length();
-//            int tagIndex = 0;
-//
-//            int tokenStart = 0;
-//            while (pos <= len) {
-//                if (pos == len || rawValue.charAt(pos) == DaxCoreConstants.SEPARATOR_UNIT) {
-//                    if (tagIndex < tags.size()) {
-//                        String fieldValStr = rawValue.substring(tokenStart, pos);
-//                        if (!fieldValStr.isEmpty()) {
-//                            DaxTag tag = tags.get(tagIndex);
-//                            injectFieldValue(instance, tag, fieldValStr, metadata);
-//                        }
-//                    }
-//                    tagIndex++;
-//                    tokenStart = pos + 1;
-//                }
-//                pos++;
-//            }
-//            return instance;
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException("Failed to hydrate object of type: " + targetClass.getName(), e);
-//        }
-//    }
-//
-//    private void injectFieldValue(Object instance, DaxTag tag, String valueStr, ClassMetadata metadata) {
-//        AnnotatedField field = metadata.getFieldByTag(tag);
-//        if (field != null) {
-//            try {
-//                Object convertedValue = dataTypeService.convert(valueStr, field.field().getType());
-//                field.field().setAccessible(true);
-//                field.field().set(instance, convertedValue);
-//            } catch (Exception e) {
-//                // Log or handle field set error
-//            }
-//        }
-//    }
-//
-//    private int findNextSeparator(String data, int start, int end, char separator) {
-//        for (int i = start; i < end; i++) {
-//            if (data.charAt(i) == separator) {
-//                return i;
-//            }
-//        }
-//        return -1;
-//    }
-//
-//    private String extractSegment(String data, int start, int end) {
-//        if (start >= end) return "";
-//
-//        // Strip GROUP_SEPARATOR if wrapped
-//        if (data.charAt(start) == DaxCoreConstants.SEPARATOR_GROUP) start++;
-//        if (end > start && data.charAt(end - 1) == DaxCoreConstants.SEPARATOR_GROUP) end--;
-//
-//        return data.substring(start, end);
-//    }
-//
-//    private static class MapEntryHolder {
-//        final Object key;
-//        final Object value;
-//
-//        MapEntryHolder(Object key, Object value) {
-//            this.key = key;
-//            this.value = value;
-//        }
-//    }
+    private final DaxTagCodec tagCodec;
+    private final DaxDataTypeService dataTypeService;
+    private final DaxSemanticRegistry semanticRegistry;
+
+    public DaxBulkCollectionDecoder(DaxSemanticRegistry semanticRegistry, DaxTagCodec tagCodec, DaxDataTypeService dataTypeService) {
+        this.tagCodec = tagCodec;
+        this.dataTypeService = dataTypeService;
+        this.semanticRegistry = semanticRegistry;
+    }
+
+    // =========================================================================================
+    // MAP DECODING
+    // =========================================================================================
+
+    /**
+     * Decodes a DAXP bulk payload string back into a Map without using split().
+     */
+    @SuppressWarnings("unchecked")
+    public <K, V> Map<K, V> decodeMap(String payload, Class<K> keyClass, Class<V> valueClass, int namespaceId) {
+        if (payload == null || payload.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        Map<K, V> result = new LinkedHashMap<>();
+        boolean isKeyEntity = keyClass.isAnnotationPresent(DaxpEntity.class);
+        boolean isValueEntity = valueClass.isAnnotationPresent(DaxpEntity.class);
+
+        String cleanPayload = stripPayloadBoundaries(payload);
+        if (cleanPayload.isEmpty()) {
+            return result;
+        }
+
+        List<String> records = parseRecords(cleanPayload);
+        if (records.isEmpty()) {
+            return result;
+        }
+
+        // 1. Parse Header (Record 0)
+        String headerRecord = records.get(0);
+        List<String> groupParts = extractGroupParts(headerRecord);
+
+        List<Object> keyHeaders = isKeyEntity && !groupParts.isEmpty() ? parseHeaderTags(groupParts.get(0), namespaceId)
+                                                                       : Collections.emptyList();
+        List<Object> valueHeaders = isValueEntity && groupParts.size() > 1 ? parseHeaderTags(groupParts.get(1), namespaceId)
+                                                                           : Collections.emptyList();
+
+        ClassMetadata keyMetadata = isKeyEntity ? semanticRegistry.getClassMetadata(keyClass) : null;
+        ClassMetadata valueMetadata = isValueEntity ? semanticRegistry.getClassMetadata(valueClass) : null;
+
+        // 2. Parse Data Records (Record 1 to N)
+        for (int i = 1; i < records.size(); i++) {
+            String dataRecord = records.get(i);
+            List<String> dataGroups = extractGroupParts(dataRecord);
+            if (dataGroups.size() < 2) {
+                continue;
+            }
+
+            K key = decodeKeyOrValue(dataGroups.get(0), keyClass, isKeyEntity, keyHeaders, keyMetadata);
+            V val = decodeKeyOrValue(dataGroups.get(1), valueClass, isValueEntity, valueHeaders, valueMetadata);
+
+            if (key != null) {
+                result.put(key, val);
+            }
+        }
+
+        return result;
+    }
+
+    // =========================================================================================
+    // COLLECTION DECODING
+    // =========================================================================================
+
+    /**
+     * Decodes a DAXP bulk payload string back into a List without using split().
+     */
+    public <T> List<T> decodeCollection(String payload, Class<T> itemClass, int namespaceId) {
+        if (payload == null || payload.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<T> result = new ArrayList<>();
+        boolean isEntity = itemClass.isAnnotationPresent(DaxpEntity.class);
+
+        String cleanPayload = stripPayloadBoundaries(payload);
+        if (cleanPayload.isEmpty()) {
+            return result;
+        }
+
+        List<String> records = parseRecords(cleanPayload);
+        if (records.isEmpty()) {
+            return result;
+        }
+
+        if (!isEntity) {
+            // Primitive Collection Mode
+            for (String record : records) {
+                result.add(dataTypeService.convert(record, itemClass));
+            }
+        } else {
+            // Complex Entity Collection Mode
+            List<Object> headers = parseHeaderTags(records.get(0), namespaceId);
+            ClassMetadata metadata = semanticRegistry.getClassMetadata(itemClass);
+
+            for (int i = 1; i < records.size(); i++) {
+                T entity = instantiateAndPopulateEntity(records.get(i), itemClass, metadata, headers);
+                if (entity != null) {
+                    result.add(entity);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // =========================================================================================
+    // INDEX-BASED PARSING HELPERS (NO SPLIT)
+    // =========================================================================================
+
+    private String stripPayloadBoundaries(String payload) {
+        String p = payload;
+        char fs = DaxCoreConstants.SEPARATOR_FILE;
+        char em = DaxCoreConstants.END_OF_MEDIUM;
+
+        if (!p.isEmpty() && p.charAt(0) == fs) {
+            p = p.substring(1);
+        }
+        if (!p.isEmpty() && p.charAt(p.length() - 1) == fs) {
+            p = p.substring(0, p.length() - 1);
+        }
+        if (!p.isEmpty() && p.charAt(p.length() - 1) == em) {
+            p = p.substring(0, p.length() - 1);
+        }
+        return p;
+    }
+
+    /**
+     * Splits payload into records using SEPARATOR_RECORD index scanning.
+     */
+    private List<String> parseRecords(String payload) {
+        List<String> records = new ArrayList<>();
+        int start = 0;
+        int len = payload.length();
+        char rs = DaxCoreConstants.SEPARATOR_RECORD;
+
+        while (start < len) {
+            int idx = payload.indexOf(rs, start);
+            if (idx == -1) {
+                records.add(payload.substring(start));
+                break;
+            } else {
+                records.add(payload.substring(start, idx));
+                start = idx + 1;
+            }
+        }
+        return records;
+    }
+
+    /**
+     * Splits record segments into fields using SEPARATOR_UNIT index scanning.
+     */
+    private List<String> parseFields(String segment) {
+        List<String> fields = new ArrayList<>();
+        if (segment == null || segment.isEmpty()) {
+            return fields;
+        }
+
+        int start = 0;
+        int len = segment.length();
+        char us = DaxCoreConstants.SEPARATOR_UNIT;
+
+        while (start < len) {
+            int idx = segment.indexOf(us, start);
+            if (idx == -1) {
+                fields.add(segment.substring(start));
+                break;
+            } else {
+                fields.add(segment.substring(start, idx));
+                start = idx + 1;
+            }
+        }
+        return fields;
+    }
+
+    /**
+     * Extracts text segments enclosed between <GS> ... <EM> using index scanning.
+     */
+    private List<String> extractGroupParts(String record) {
+        List<String> groups = new ArrayList<>();
+        int idx = 0;
+        int len = record.length();
+        char gs = DaxCoreConstants.SEPARATOR_GROUP;
+        char em = DaxCoreConstants.END_OF_MEDIUM;
+
+        while (idx < len) {
+            int start = record.indexOf(gs, idx);
+            if (start == -1) break;
+            int end = record.indexOf(em, start);
+            if (end == -1) break;
+
+            groups.add(record.substring(start + 1, end));
+            idx = end + 1;
+            if (idx < len && record.charAt(idx) == gs) {
+                idx++;
+            }
+        }
+        return groups;
+    }
+
+    private List<Object> parseHeaderTags(String headerSegment, int namespaceId) {
+        List<String> encodedTags = parseFields(headerSegment);
+        List<Object> tags = new ArrayList<>();
+        for (String t : encodedTags) {
+            if (!t.isEmpty()) {
+                tags.add(tagCodec.decode(t, namespaceId)); // TODO from mesg
+            }
+        }
+        return tags;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T decodeKeyOrValue(String segment, Class<T> clazz, boolean isEntity, List<Object> headers,
+            ClassMetadata metadata) {
+        if (!isEntity) {
+            return dataTypeService.convert(segment, clazz);
+        }
+        return instantiateAndPopulateEntity(segment, clazz, metadata, headers);
+    }
+
+    private <T> T instantiateAndPopulateEntity(String dataSegment, Class<T> clazz, ClassMetadata metadata, List<Object> headers) {
+        try {
+            Constructor<T> constructor = clazz.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            T instance = constructor.newInstance();
+
+            List<String> values = parseFields(dataSegment);
+
+            for (int i = 0; i < Math.min(values.size(), headers.size()); i++) {
+                Object tagId = headers.get(i);
+                String valStr = values.get(i);
+
+                setValueToEntity(instance, metadata, tagId, valStr);
+            }
+
+            return instance;
+        } catch (Exception e) {
+            logger.error("Failed to decode entity of type {}", clazz.getName(), e);
+            return null;
+        }
+    }
+
+    private void setValueToEntity(Object instance, ClassMetadata metadata, Object tagId, String valStr) {
+        for (AnnotatedField field : metadata.fields()) {
+            if (String.valueOf(field.tag()).equals(String.valueOf(tagId))) {
+                try {
+                    Object converted = dataTypeService.convert(valStr, field.field().getType());
+                    field.field().set(instance, converted);
+                } catch (Exception e) {
+                    logger.error("Failed to set field {}", field.field().getName(), e);
+                }
+                return;
+            }
+        }
+
+        for (AnnotatedMethod method : metadata.methods()) {
+            if (String.valueOf(method.tag()).equals(String.valueOf(tagId))) {
+                try {
+                    Class<?> paramType = method.method().getParameterTypes()[0];
+                    Object converted = dataTypeService.convert(valStr, paramType);
+                    method.method().invoke(instance, converted);
+                } catch (Exception e) {
+                    logger.error("Failed to invoke method {}", method.method().getName(), e);
+                }
+                return;
+            }
+        }
+    }
 }

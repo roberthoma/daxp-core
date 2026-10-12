@@ -33,6 +33,7 @@ import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
+import org.daxprotocol.core.parsers.DaxBulkCollectionDecoder;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.registries.*;
@@ -71,10 +72,8 @@ public class DaxEngine {
     private final DaxSemanticCollector semanticCollector;
     private final DaxCoreConfig coreConfig;
 
-
-
-
     private final DaxBulkCollectionBuilder bulkCollectionBuilder;
+    private final DaxBulkCollectionDecoder bulkCollectionDecoder;
 
 
     private final DaxSemanticInspector semanticInspector;
@@ -102,8 +101,6 @@ public class DaxEngine {
         namespaceMapper.registerPredefined(sysNamespace);
         namespaceMapper.registerPredefined(appNamespace);
 
-//        config.setAppnamespaceId( namespaceMapper.getReferenceId(appNamespace.getTagPrefix()));
-//        appNamespace.setId(config.getAppnamespaceId());
 
         tagParser  = new DaxTagParser(namespaceMapper);
         tagCodec   = new DaxTagCodec(namespaceConfig, namespaceMapper, tagParser );
@@ -125,6 +122,11 @@ public class DaxEngine {
 
         handlerRegistry = new DaxHandlerRegistry();
         bulkCollectionBuilder = new DaxBulkCollectionBuilder(semanticRegistry, tagCodec, dataTypeService);
+
+        bulkCollectionDecoder = new DaxBulkCollectionDecoder(semanticRegistry, tagCodec, dataTypeService);
+
+
+
         objectMessageFactory =  new DaxObjectMessageFactory(coreConfig, tagCodec, dataTypeCodec, valueCodec,
                 semanticRegistry, dataTypeService, bulkCollectionBuilder);
 
@@ -322,6 +324,11 @@ public class DaxEngine {
 
     public DaxCoreConfig getCoreConfig() {
         return coreConfig;
+    }
+
+
+    public DaxBulkCollectionDecoder getBulkCollectionDecoder(){
+        return bulkCollectionDecoder;
     }
 
 

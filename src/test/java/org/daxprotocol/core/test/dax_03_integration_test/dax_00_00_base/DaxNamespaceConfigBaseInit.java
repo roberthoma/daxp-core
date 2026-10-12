@@ -1,5 +1,6 @@
 package org.daxprotocol.core.test.dax_03_integration_test.dax_00_00_base;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreMessages;
 import org.daxprotocol.core.application.DaxEngine;
 import org.daxprotocol.core.codec.DaxFrameCodec;
@@ -17,6 +18,7 @@ import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.parsers.DaxBulkCollectionDecoder;
 import org.daxprotocol.core.parsers.DaxFrameParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.registries.DaxHandlerRegistry;
@@ -27,6 +29,12 @@ import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
 import org.junit.jupiter.api.BeforeEach;
 
 public class DaxNamespaceConfigBaseInit {
+    protected  char FS = DaxCoreConstants.SEPARATOR_FILE;
+    protected  char GS = DaxCoreConstants.SEPARATOR_GROUP;
+    protected  char RS = DaxCoreConstants.SEPARATOR_RECORD;
+    protected  char US = DaxCoreConstants.SEPARATOR_UNIT;
+    protected  char EM = DaxCoreConstants.END_OF_MEDIUM;
+
     protected  DaxEngine daxEngine;
     protected  int appNamespaceId;
     protected  DaxSemanticRegistry semanticRegistry;
@@ -47,6 +55,7 @@ public class DaxNamespaceConfigBaseInit {
     protected  DaxDataTypeService dataTypeService;
     protected  DaxSemanticInspector semanticInspector;
     protected  DaxBulkCollectionBuilder bulkCollectionBuilder;
+    protected  DaxBulkCollectionDecoder bulkCollectionDecoder;
 
 
 
@@ -76,7 +85,7 @@ public class DaxNamespaceConfigBaseInit {
             dataTypeService = daxEngine.getDataTypeService();
             semanticInspector = daxEngine.getSemanticInspector();
             bulkCollectionBuilder = daxEngine.getBulkCollectionBuilder();
-
+            bulkCollectionDecoder = daxEngine.getBulkCollectionDecoder();
             System.out.println("END OF INIT ENGINE");
 
         }
