@@ -110,7 +110,7 @@ public class DaxDataTypeCodec {
         throw new RuntimeException("Map<DaxTag, DaxPair<?>> encode  NOT IMPLEMENTED JET");
     }
     //--------------------------------------------------------------------------------------
-    private Set<DaxPair<?>> collectionEncode(Class<?> clazz, Type generitType){
+    private Set<DaxPair<?>> collectionEncode(Class<?> clazz, Type genericType){
         Set< DaxPair<?>> map = new HashSet<>();
         DaxCollectionInfo colInfo = dataTypeService.getCollectionInfo(clazz);
 
@@ -125,12 +125,12 @@ public class DaxDataTypeCodec {
 
         //**************************************
 
-        DaxDataType valueDataType ; //= DaxDataType.NONE;
-        DaxDataType keyDataType ; //= DaxDataType.NONE;
+        DaxDataType valueDataType ;
+        DaxDataType keyDataType ;
 
-        if (generitType instanceof ParameterizedType pt) {
+        if (genericType instanceof ParameterizedType pt) {
 
-            logger.info( "GeneritType.getTypeName()= {}", generitType.getTypeName());
+            logger.info( "GeneritType.getTypeName()= {}", genericType.getTypeName());
 
             Type rawType = pt.getRawType();
             Type[] args = pt.getActualTypeArguments();

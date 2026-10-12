@@ -44,34 +44,7 @@ public class DaxDataTypeService {
     public boolean isDaxpCollection(Object object){
         return decodeFromObject(object).equals(DaxDataType.COLLECTION) ;
     }
-    //--------------------------------------------------------------------------------------
 
-/*
-    public boolean isDaxpCollection(Class<?> clazz) {
-
-
-        if (clazz.equals(List.class)) return true;
-        if (clazz.equals(Map.class)) return true;
-        if (clazz.equals(Set.class)) return true;
-        if (clazz.equals(Queue.class)) return true;
-        if (clazz.equals(Collection.class)) return true;
-
-      //  if (clazz.equals(Enum.class)) return true;    //TODO CHECK again  this is dictionary
-        if (clazz.isEnum()) return true;              //TODO CHECK again  this is dictionary
-
-        if (Collection.class.isAssignableFrom(clazz)) {
-            return true;
-        }
-        if (Map.class.isAssignableFrom(clazz)) {
-            return true;
-        }
-
-        if (List.class.isAssignableFrom(clazz)) {
-            return true;
-        }
-
-        return false;
-    } */
     //--------------------------------------------------------------------------------------
 
     public boolean isDaxpCollection(Class<?> clazz) {
