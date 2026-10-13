@@ -69,7 +69,7 @@ public enum DaxBlockType {//extends DaxValue<String> {
             case 'I' -> BLOCK_INSTANCE;
             case 'D' -> BLOCK_TYPE;
             case 'F' -> BLOCK_FIELD;
-//            case 'C' -> BLOCK_COLLECTION;
+            case 'C' -> BLOCK_BULK_COLLECTION;
             case 'V' -> BLOCK_VALUE;
             default ->  throw new IllegalArgumentException("Unknown DAXP data type code: " + code);
 

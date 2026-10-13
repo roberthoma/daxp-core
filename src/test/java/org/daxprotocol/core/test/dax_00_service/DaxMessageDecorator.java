@@ -18,6 +18,7 @@ public class DaxMessageDecorator {
 
                 .replace(""+DaxCoreConstants.END_OF_MEDIUM+DaxCoreConstants.SEPARATOR_FILE,"<EM><FS>\n")
                 .replace(""+DaxCoreConstants.SEPARATOR_FILE,"<FS>")
+               // .replace(""+0x0000,"<NULL>")
                 .replace(""+DaxCoreConstants.SEPARATOR_GROUP,"<GS>")
                 .replace(""+DaxCoreConstants.SEPARATOR_RECORD,"<RS>\n")
                 .replace(""+DaxCoreConstants.SEPARATOR_UNIT,"<US>")

@@ -156,7 +156,7 @@ public class DaxEngine {
         );
 
         messageConverter     = new DaxMessageConverter(namespaceConfig,//namespaceMapper ,
-                semanticRegistry, tagCodec, dataTypeCodec, valueCodec, dataTypeService);
+                semanticRegistry, tagCodec, dataTypeCodec, valueCodec, dataTypeService, bulkCollectionDecoder);
 
 
 

@@ -24,12 +24,14 @@ import org.daxprotocol.core.annotation.DaxpField;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
+import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.exceptions.DaxException;
 import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.parsers.DaxBulkCollectionDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,19 +50,22 @@ public class DaxMessageConverter {
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
     private final DaxDataTypeService daxDataTypeService;
+    private final DaxBulkCollectionDecoder bulkCollectionDecoder;
 
     public DaxMessageConverter(DaxNamespaceConfig config,
             DaxSemanticRegistry semanticRegistry,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec,
             DaxValueCodec valueCodec,
-            DaxDataTypeService daxDataTypeService) {
+            DaxDataTypeService daxDataTypeService,
+            DaxBulkCollectionDecoder bulkCollectionDecoder) {
         this.config = config;
         this.semanticRegistry = semanticRegistry;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
         this.daxDataTypeService = daxDataTypeService;
+        this.bulkCollectionDecoder = bulkCollectionDecoder;
     }
 
     public <T> T createFromMessage(DaxMessage message, Class<T> targetClass) {
@@ -138,12 +143,36 @@ public class DaxMessageConverter {
 
     // --- Private Helper Handlers ---
 
-    private void populateCollectionField(DaxMessage message, Object instance, Field field, Set<Integer> refBlocksIdx) throws IllegalAccessException {
+    private void populateCollectionField(DaxMessage message, Object instance,
+                                        Field field,
+                                        Set<Integer> refBlocksIdx) throws IllegalAccessException
+    {
+
         Collection<Object> collection = createCollectionInstance(field.getType());
         Class<?> elementClass = getGenericTypeArgument(field, 0, String.class);
 
         for (Integer refIdx : refBlocksIdx) {
             int targetBlockIdx = validateAndGetBlockIndex(message, refIdx);
+
+            var block = message.getBody().getBlockMap(targetBlockIdx);
+            char blockCharCode =  block.get(DaxCoreTags.BLOCK_TYPE).getStrValue().charAt(0);
+            DaxBlockType blockType = DaxBlockType.fromCode(blockCharCode);
+
+            if(DaxBlockType.BLOCK_BULK_COLLECTION.equals(blockType )){
+                String bulkVal = message.getBody()
+                        .getBlockMap(targetBlockIdx)
+                        .get(DaxCoreTags.COLLECTION_BULK_DATA)
+                        .getStrValue();
+
+                collection.addAll(bulkCollectionDecoder.decodeCollection(
+                        bulkVal,
+                        elementClass,
+                        1 //TODO  get from preamble
+                ));
+                continue;
+            }
+
+            //------------
             Object elementValue;
 
             if (daxDataTypeService.isPrimitiveType(elementClass)) {
@@ -173,6 +202,24 @@ public class DaxMessageConverter {
         for (Integer refIdx : refBlocksIdx) {
             int targetBlockIdx = validateAndGetBlockIndex(message, refIdx);
             var blockMap = message.getBody().getBlockMap(targetBlockIdx);
+
+            char blockCharCode =  blockMap.get(DaxCoreTags.BLOCK_TYPE).getStrValue().charAt(0);
+            DaxBlockType blockType = DaxBlockType.fromCode(blockCharCode);
+
+            if(DaxBlockType.BLOCK_BULK_COLLECTION.equals(blockType )){
+                String bulkVal = message.getBody()
+                        .getBlockMap(targetBlockIdx)
+                        .get(DaxCoreTags.COLLECTION_BULK_DATA)
+                        .getStrValue();
+
+                map.putAll(bulkCollectionDecoder.decodeMap(
+                        bulkVal,
+                        keyClass,
+                        valueClass,
+                        1 //namespaceId  // todo to refactor
+                ));
+                continue;
+            }
 
             // Extract Key
             Object key;

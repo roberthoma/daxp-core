@@ -55,5 +55,6 @@ public class DaxSubEntity {
         this.value_1 = value_1;
         this.value2 = value2;
         this.dd = dd;
+        this.anyChar_5003 = 'C';
     }
 }
