@@ -588,11 +588,6 @@ public class DaxAnnotationScanner {
         //  Example: class TestSet implements Set<String> { ... }
 
         semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz));
-//        semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz,clazz.getG));
-//        Type type =  clazz.getGenericInterfaces()[0];
-//        semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz, type));
-//        semanticCollector.putTagAttributes(tag, dataTypeCodec.encode(clazz, clazz.getGenericSuperclass()));
-
         if (semanticRegistry.isCollectionDictionary(tag)){
                 Object[] constants = clazz.getEnumConstants();
                 if (constants != null) {

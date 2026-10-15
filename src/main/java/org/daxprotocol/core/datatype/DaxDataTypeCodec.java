@@ -38,12 +38,14 @@ public class DaxDataTypeCodec {
     private static final Logger logger = LoggerFactory.getLogger(DaxDataTypeCodec.class);
     DaxDataTypeService dataTypeService;
     DaxTagCodec tagCodec;
+    DaxCollectionTypeResolver collectionTypeResolver;
 
 
     //--------------------------------------------------------------------------------------
     public DaxDataTypeCodec(DaxDataTypeService dataTypeService, DaxTagCodec tagCodec){
         this.dataTypeService = dataTypeService;
         this.tagCodec = tagCodec;
+        this.collectionTypeResolver = new DaxCollectionTypeResolver();
 
     }
     //--------------------------------------------------------------------------------------
@@ -85,21 +87,41 @@ public class DaxDataTypeCodec {
 
     //--------------------------------------------------------------------------------------
     public Set<DaxPair<?>> encode(Class<?> clazz){
-        return encode(clazz, null);
+        return encode(clazz, clazz);
     }
     //--------------------------------------------------------------------------------------
-    public Set<DaxPair<?>> encode(Class<?> clazz, Type generitType){
+    public Set<DaxPair<?>> encode(Class<?> clazz, Type genericType) {
+        Objects.requireNonNull(clazz, "clazz");
 
-        if (dataTypeService.isDaxpCollection(clazz)){
-            return collectionEncode(clazz,generitType);
+        if (!dataTypeService.isDaxpCollection(clazz)) {
+            return Set.of(new DaxPairDataType(
+                    ATR_DATA_TYPE,
+                    dataTypeService.decodeClass(clazz)
+            ));
         }
 
-        //develop as generic collection
-        Set< DaxPair<?>> map = new HashSet<>();
+        // Keep your existing enum handling separate.
+        if (clazz.isEnum()) {
+            return collectionEncode(clazz, null);
+        }
 
-        map.add( new DaxPairDataType(ATR_DATA_TYPE,
-                DaxDataType.fromCode(  dataTypeService.decodeClass(clazz).getCode())));
-        return map;
+        boolean isMap = Map.class.isAssignableFrom(clazz);
+        boolean isCollection = Collection.class.isAssignableFrom(clazz);
+
+        if (isMap && isCollection) {
+            throw new IllegalArgumentException(
+                    "Ambiguous collection: implements both Map and Collection"
+            );
+        }
+
+        Class<?> contract = isMap ? Map.class : Collection.class;
+
+        Type resolvedType = collectionTypeResolver.resolve(
+                genericType != null ? genericType : clazz,
+                contract
+        );
+
+        return collectionEncode(clazz, resolvedType);
     }
     //--------------------------------------------------------------------------------------
     public DaxDataType decodeBaseDataType(Object obj) {

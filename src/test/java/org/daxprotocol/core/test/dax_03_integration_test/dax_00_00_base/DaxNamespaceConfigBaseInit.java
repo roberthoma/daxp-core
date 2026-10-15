@@ -41,7 +41,7 @@ public class DaxNamespaceConfigBaseInit {
     protected  DaxNamespaceMapper namespaceMapper;
     protected  DaxMessageCodec messageCodec;
     protected  DaxPreambleCodec preambleCodec;
-    protected DaxNamespaceConfig config;
+    protected  DaxNamespaceConfig config;
     protected  DaxTagCodec tagCodec;
     protected  DaxMessageConverter msgConverter;
     protected  DaxMessageFactory msgFactory;
