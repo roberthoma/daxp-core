@@ -76,16 +76,18 @@ public class DaxSemanticCollector {
     public void registerDataType( DaxTag tag, DaxDataType daxDataType ){
         DaxDataType existDataType = inspector.getDataType(tag);
 
+
+
         if (!daxDataType.equals(DaxDataType.NONE)){
             putTagAtrDataType(tag,daxDataType);
         }
-        else {
-            if (existDataType != daxDataType){
-                throw new RuntimeException("TAG EXIST WITH DATA TYPE "+ existDataType.getCode()+
-                        " NEW:"+daxDataType.getCode());
-            }
-
-        }
+//        else {
+//                if (existDataType != daxDataType){
+//                    throw new RuntimeException("TAG EXIST WITH DATA TYPE "+ existDataType.getCode()+
+//                            " NEW:"+daxDataType.getCode()+" tag:"+tagCodec.encode(tag));
+//                }
+//
+//        }
     }
 
 
