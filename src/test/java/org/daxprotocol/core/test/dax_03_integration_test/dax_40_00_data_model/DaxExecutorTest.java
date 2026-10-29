@@ -28,7 +28,7 @@ public class DaxExecutorTest extends DaxNamespaceConfigFullDataModelTest {
 
     @Test
     void executorTestDictionaryReq(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxCoreMessages.DATA_MODEL_REQ +"|$:9=148|";
+        String reqMsg = "DAXP{V=v0.1.0|EN=UTF-8|NS=XYZ|PS=0x7C}$:1="+ DaxCoreMessages.DATA_MODEL_REQ +"|$:9=148|";
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
 
@@ -48,7 +48,7 @@ public class DaxExecutorTest extends DaxNamespaceConfigFullDataModelTest {
 
     @Test
     void executorTestSimpleReq(){
-        String reqMsg = "DAXP|V=v0.1.0|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +"|$:9=43|";
+        String reqMsg = "DAXP{V=v0.1.0|PS=0x7C}$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +"|$:9=43|";
 
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
@@ -66,7 +66,7 @@ public class DaxExecutorTest extends DaxNamespaceConfigFullDataModelTest {
 
     @Test
     void executorTestSelectReq(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
+        String reqMsg = "DAXP{V=v0.1.0|EN=UTF-8|NS=XYZ|PS=0x7C}$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
                 "|$:108=5001;5002|$:9=234|";
 
         DaxFrame reqFrame = frameParser.parseFrame(reqMsg);
@@ -87,7 +87,7 @@ public class DaxExecutorTest extends DaxNamespaceConfigFullDataModelTest {
     }
     @Test
     void executorTestSelectReqSubDto(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
+        String reqMsg = "DAXP{V=v0.1.0|EN=UTF-8|NS=XYZ|PS=0x7C}$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
                 "|$:108=5001;8000|$:9=235|";
 
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);

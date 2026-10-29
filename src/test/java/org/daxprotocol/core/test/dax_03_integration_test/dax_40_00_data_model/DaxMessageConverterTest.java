@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class DaxMessageConverterTest extends DaxNamespaceConfigFullDataModelTest {
     @Test
     void msgConverterTest(){
-        String reqMsg = "DAXP|V=v0.1.0|EN=UTF-8|NS=XYZ|$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
+        String reqMsg = "DAXP{V=v0.1.0|EN=UTF-8|NS=XYZ|PS=0x7C}$:1="+ DaxAnySchemaRegister.MSG_BASE_ENTITY_Req +
                 "|$:9=43|";
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
 

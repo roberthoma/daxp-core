@@ -92,7 +92,7 @@ public class DaxNamespaceConfigBaseInit {
     }
 
     protected void printSemanticRegister(){
-        String reqMsg = "DAXP|$:1="+ DaxCoreMessages.DATA_MODEL_REQ +"|$:9=148|";
+        String reqMsg = "DAXP{PS=0x7C}$:1="+ DaxCoreMessages.DATA_MODEL_REQ +"|$:9=148|";
         DaxFrame frameReq = frameParser.parseFrame(reqMsg);
         DaxFrame frameResp = new DaxFrame();
         frameResp.setPreamble(preambleFactory.createRespPreamble(frameReq));

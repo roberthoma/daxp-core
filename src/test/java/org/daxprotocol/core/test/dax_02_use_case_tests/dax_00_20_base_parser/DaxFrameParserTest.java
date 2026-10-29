@@ -1,5 +1,6 @@
 package org.daxprotocol.core.test.dax_02_use_case_tests.dax_00_20_base_parser;
 
+import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 import org.daxprotocol.core.exceptions.DaxException;
@@ -12,6 +13,34 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
+
+    @Test
+    void rejectsInvalidFrameEnvelope() {
+        String[] invalid = {null, "", "DAXP|V=v1|", "OTHER{V=v1}", "DAXP{V=v1", "DAXP{}"};
+        for (String input : invalid) {
+            Assertions.assertThrows(DaxFrameParserException.class, () -> frameParser.parseFrame(input));
+        }
+    }
+
+    @Test
+    void parsesMessagesUsingPreambleSeparator() {
+        String body = "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|";
+        DaxFrame frame = frameParser.parseFrame(
+                "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|PS=0x01}" + body.replace('|', '\u0001'));
+        Assertions.assertEquals('\u0001', frame.getPreamble().getPairSeparator());
+        Assertions.assertEquals("CDD", frame.getFirstMessage().getMsgType());
+    }
+
+    @Test
+    void preambleOnlyParsingDoesNotParseBody() {
+        Assertions.assertEquals("V1", frameParser.parsePreamble("DAXP{V=v1}invalid body").getProtocolVersion());
+    }
+
+    @Test
+    void rejectsUnterminatedBody() {
+        Assertions.assertThrows(DaxFrameParserException.class,
+                () -> frameParser.parseFrame("DAXP{V=v1|PS=0x7C}$:1=CDD"));
+    }
 
     @Test
     void parsePreambleTest01(){
@@ -32,7 +61,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
 
     @Test
     void parsePreambleTest05(){
-        String msgStr = "  DAXP|V=v0.1.0 |  EN =UTF-8|NS=CRM|MQ=1|9=$:DR|2001=123|99=177|";
+        String msgStr = "  DAXP{V=v0.1.0 |  EN =UTF-8|NS=CRM|MQ=1|PS=0x7C}9=$:DR|2001=123|99=177|";
         DaxPreamble preamble ;
         try {
             preamble    = frameParser.parsePreamble(msgStr);
@@ -48,13 +77,13 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
 
     @Test
     void parsePreambleTest10_(){
-        String msgStr = "  DAXP|V=v0.1.0 |  ExN =UTF-8|NS=CRM|MC=1|9=$:DR|2001=123|99=177|";
+        String msgStr = "  DAXP{V=v0.1.0 |  ExN =UTF-8|NS=CRM|MC=1|PS=0x7C}9=$:DR|2001=123|99=177|";
         Assertions.assertThrows(DaxException.class,()->frameParser.parsePreamble(msgStr));
     }
 
     @Test
     void parsePreambleTest50(){
-            String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|";
+            String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x7C}";
             DaxPreamble preamble ;
             try {
                 preamble    = frameParser.parsePreamble(msgStr);
@@ -69,7 +98,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
 
     @Test
     void parsePreambleTest60(){
-        String msgStr = "DxAXP|V=v0.1.0|EN=UTF-8|NS=CRM|";
+        String msgStr = "DxAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x7C}";
         try {
             Assertions.assertThrowsExactly(DaxFrameParserException.class,() -> frameParser.parsePreamble(msgStr));
         } catch (Exception e) {
@@ -82,7 +111,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     void parseFrame_02(){
         try {
 
-            String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|"+
+            String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x7C}"+
                     "1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=177|";
             Assertions.assertThrowsExactly(DaxFrameParserException.class, () ->   frameParser.parseFrame(msgStr));
 
@@ -96,8 +125,11 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     @Test
     void parseFrame_01(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|"+
-                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|";
+//        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x7C}"+
+//                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|";
+
+        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x23}"+
+                "$:1=CDD#$:5=INST#$:8=2000#2080=Big bike#2001=123#2002=Robert#$:9=165#";
 
         DaxFrame frame;
         try {
@@ -106,10 +138,38 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
             Assertions.assertEquals ("CDD", msg.getMsgType());
             DaxTag t2080tag = DaxTag.of(namespaceMapper.getReferenceId("CRM") ,2080);
 
-
             Assertions.assertEquals ("Big bike",  msg.getBody()
                                                               .getBlock(0)
                                                               .get(t2080tag).getStrValue());
+
+
+        } catch (DaxException e) {
+            System.out.println(e.getDaxErrorCode());
+            System.out.println(e.getMessage());
+            Assertions.fail();
+        }
+
+    }
+
+    @Test
+    void parseFrame_03(){
+
+//        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x7C}"+
+//                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|";
+        char SOH= DaxCoreConstants.DEFAULT_PAIR_SEPARATOR;
+        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM}"+
+                "$:1=CDD"+SOH+"$:5=INST"+SOH+"$:8=2000"+SOH+"2080=Big bike"+SOH+"2001=123"+SOH+"2002=Robert"+SOH+"$:9=165"+SOH;
+
+        DaxFrame frame;
+        try {
+            frame = frameParser.parseFrame(msgStr);
+            DaxMessage msg = frame.getFirstMessage();
+            Assertions.assertEquals ("CDD", msg.getMsgType());
+            DaxTag t2080tag = DaxTag.of(namespaceMapper.getReferenceId("CRM") ,2080);
+
+            Assertions.assertEquals ("Big bike",  msg.getBody()
+                    .getBlock(0)
+                    .get(t2080tag).getStrValue());
 
 
         } catch (DaxException e) {
@@ -125,7 +185,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     @Test
     void parseFrame_04(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|"+
+        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|PS=0x7C}"+
                 "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=107|";
         DaxFrame frame;
         try {
@@ -145,7 +205,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     @Test
     void parseFrame_05_msg_quantity(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=2|"+
+        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|MQ=2|PS=0x7C}"+
                 "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|"+
                 "$:1=CDD|$:5=INST|$:8=2000|2080=A kuku|2001=334|2002=Ola|$:9=171|";
         DaxFrame frame;
@@ -166,7 +226,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     @Test
     void parseFrame_05_expected3Msg(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MC=3|"+
+        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|MC=3|PS=0x7C}"+
                 "1=CDD|" +
                 "7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|9=177|"+
                 "7=2|5=INST|100=2000|2080=Big bike|2001=125|2002=Marzena|9=134|";
@@ -180,7 +240,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     @Test
     void parseFrame_05_expected2Msg(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MC=2|"+
+        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|MC=2|PS=0x7C}"+
                 "1=CDD|" +
                 "7=1|5=INST|100=2000|2080=Big bike|2001=123|2002=Robert|9=177|"+
                 "7=2|5=INST|100=2000|2080=Big bike|2001=124|2002=Piotr|9=172|"+
@@ -193,7 +253,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     @Test
     void parseFrame_06(){
 
-        String msgStr = "DAXP|V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|"+
+        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|PS=0x7C}"+
                 "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|2005@4;5|$:9=214|";
         DaxFrame frame;
         try {
