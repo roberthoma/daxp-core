@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_ACTION;
-import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_BLOCK_REFERENCE;
+import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_REFERENCE;
 import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_EQUAL;
 
 public class DaxFrameParser {
@@ -59,11 +59,11 @@ public class DaxFrameParser {
     public DaxFrameParser(DaxNamespaceConfig config,
             DaxTagParser tagParser,
             DaxMessageFactory messageFactory,
-            DaxPreambleCodec preambleCodec,
+            DaxPreambleParser preambleParser,
             DaxPairCodec pairCodec) {
         this.tagParser = tagParser;
         this.messageFactory = messageFactory;
-        this.preambleParser = new DaxPreambleParser(preambleCodec);
+        this.preambleParser = preambleParser;
         this.pairCodec = pairCodec;
     }
 
@@ -112,7 +112,7 @@ public class DaxFrameParser {
             char foundOperator = 0;
             for (int i = prevIdx; i < nextIdx; i++) {
                 char c = frameStr.charAt(i);
-                if (c == OPERATOR_EQUAL || c == OPERATOR_BLOCK_REFERENCE || c == OPERATOR_ACTION) {
+                if (c == OPERATOR_EQUAL || c == OPERATOR_REFERENCE || c == OPERATOR_ACTION) {
                     operatorIdx = i;
                     foundOperator = c;
                     break;

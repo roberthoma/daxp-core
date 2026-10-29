@@ -56,7 +56,8 @@ public class DaxObjectMessageFactory {
     private final DaxBulkCollectionBuilder bulkCollectionBuilder;
     private final DaxCoreConfig coreConfig;
     ///----------------------------------------------------------------------------------------
-    public DaxObjectMessageFactory(DaxCoreConfig coreConfig,DaxTagCodec tagCodec, DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
+    public DaxObjectMessageFactory(DaxCoreConfig coreConfig,DaxTagCodec tagCodec,
+            DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
     ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService,
        DaxBulkCollectionBuilder bulkCollectionBuilder)
     {

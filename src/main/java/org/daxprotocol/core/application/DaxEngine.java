@@ -35,6 +35,7 @@ import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxSchemaMapper;
 import org.daxprotocol.core.parsers.DaxBulkCollectionDecoder;
 import org.daxprotocol.core.parsers.DaxFrameParser;
+import org.daxprotocol.core.parsers.DaxPreambleParser;
 import org.daxprotocol.core.parsers.DaxTagParser;
 import org.daxprotocol.core.registries.*;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
@@ -71,6 +72,7 @@ public class DaxEngine {
     private final DaxDispatcher dispatcher;
     private final DaxSemanticCollector semanticCollector;
     private final DaxCoreConfig coreConfig;
+    private final DaxPreambleParser preambleParser;
 
     private final DaxBulkCollectionBuilder bulkCollectionBuilder;
     private final DaxBulkCollectionDecoder bulkCollectionDecoder;
@@ -176,10 +178,10 @@ public class DaxEngine {
                                     );
 
 
-
+        preambleParser = new DaxPreambleParser(preambleCodec);
 
         frameParser =  new DaxFrameParser(namespaceConfig,tagParser,
-                                          messageFactory,preambleCodec,
+                                          messageFactory,preambleParser,
                                           pairCodec) ;
 
         //-----------------

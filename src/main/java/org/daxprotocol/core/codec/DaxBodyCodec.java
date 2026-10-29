@@ -83,7 +83,7 @@ public class DaxBodyCodec {
         //TODO Refactor blockSet.toString to own method
         tagBlockRefMap.forEach((tag, blockSet)
                 -> pairCodec.encode(sb, new DaxPairString(tag,valueCodec.toBlockRefString(blockSet),
-                                                           DaxCoreConstants.OPERATOR_BLOCK_REFERENCE)
+                                                           DaxCoreConstants.OPERATOR_REFERENCE)
                                     ,pairSeparator )
         );
 

@@ -13,20 +13,20 @@ public class DaxCoreConstants {
     *  Operators
     *
     * */
-    public static final char OPERATOR_EQUAL = '=';
-    public static final char OPERATOR_BLOCK_REFERENCE = '@';
-    public static final char OPERATOR_ACTION = '^';
+    public static final char OPERATOR_EQUAL     = '=';
+    public static final char OPERATOR_REFERENCE = '@';
+    public static final char OPERATOR_ACTION    = '^';
 
 
     /*****************************************************
-     *                Separators
+     *                Main Separator
      */
     /**  Pair separator on the WIRE (binary, non-printable). */
     public static char   DEFAULT_PAIR_SEPARATOR = 0x0001;
-    public static char[] ALLOWED_PAIR_SEPARATORS = { DEFAULT_PAIR_SEPARATOR,'|'};
 
-
-
+    /*****************************************************
+     *                Preamble Separators
+     */
     public static char   PREAMBLE_OPENING_BRACE  = '{';  // 0x7B Opening brace
     public static char   PREAMBLE_CLOSING_BRACE  = '}';  // 0x7D Closing brace
     public static char   PREAMBLE_PAIR_SEPARATOR = '|';  // 0x7C Vertical bar

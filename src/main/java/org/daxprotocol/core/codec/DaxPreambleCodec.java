@@ -52,7 +52,8 @@ public class DaxPreambleCodec {
         sb.append(tag)
                 .append(OPERATOR_EQUAL)
                 .append(value)
-                .append(pairSeparator);
+                .append(DaxCoreConstants.PREAMBLE_PAIR_SEPARATOR);
+//                .append(pairSeparator);
     }
 
 
@@ -71,10 +72,13 @@ public class DaxPreambleCodec {
 
         StringBuilder sb = new StringBuilder();
         sb.append(DaxCoreConstants.DAXP_NAMESPACE_SYMBOL)
-          .append(preamble.getPairSeparator());
-        encode(sb, DaxPreambleTag.VERSION.getTag(), preamble.getProtocolVersion() ,preamble.getPairSeparator()); //Always first
+          .append(DaxCoreConstants.PREAMBLE_OPENING_BRACE);
+
+        encode(sb, DaxPreambleTag.VERSION.getTag(), preamble.getProtocolVersion() ,
+                preamble.getPairSeparator());
 
         map.forEach((k, v) -> encode(sb,k,v,preamble.getPairSeparator()));
+        sb.setCharAt(sb.length() - 1, DaxCoreConstants.PREAMBLE_CLOSING_BRACE);
         return sb.toString();
     }
 
