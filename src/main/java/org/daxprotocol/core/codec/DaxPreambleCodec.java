@@ -89,10 +89,11 @@ public class DaxPreambleCodec {
         }
             DaxPreambleTag tag = DaxPreambleTag.fromTag(tagStr);
             switch (tag) {
-                case VERSION      -> preamble.setProtocolVersion(valueStr);
-                case ENCODING    -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
+                case VERSION        -> preamble.setProtocolVersion(valueStr);
+                case ENCODING       -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
                 case MSG_QUANTITY   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
-                case MSG_NAMESPACE -> preamble.setNamespaceId(namespaceMapper.getReferenceId(valueStr));
+                case MSG_NAMESPACE  -> preamble.setNamespaceId(namespaceMapper.getReferenceId(valueStr));
+                case PAIR_SEPARATOR -> preamble.setPairSeparator((char) Integer.decode(valueStr).intValue());
                 //case MSG_SENDER  -> preamble.setSe System.out.println("Sender: " + value);
             }
         }
