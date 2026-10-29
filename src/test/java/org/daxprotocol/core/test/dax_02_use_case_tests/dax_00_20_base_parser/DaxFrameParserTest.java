@@ -16,7 +16,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     @Test
     void parsePreambleTest01(){
         //Task is parse only PREAMBLE
-        String msgStr = "DAXP|V=v1.2.3|EN=UTF-16|NS=FIX|MQ=1|9=$:DR|2001=123|99=177|";
+        String msgStr = "DAXP{V=v1.2.3|EN=UTF-16|NS=FIX|MQ=1|PS=0x7C}$:1=$:DR|2001=123|99=177|";
         DaxPreamble preamble ;
         try {
            // msgStr = DaxMessageNormalizer.normalize(msgStr);

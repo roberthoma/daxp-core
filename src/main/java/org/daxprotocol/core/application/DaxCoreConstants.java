@@ -25,6 +25,12 @@ public class DaxCoreConstants {
     public static char   DEFAULT_PAIR_SEPARATOR = 0x0001;
     public static char[] ALLOWED_PAIR_SEPARATORS = { DEFAULT_PAIR_SEPARATOR,'|'};
 
+
+
+    public static char   PREAMBLE_OPENING_BRACE  = '{';  // 0x7B Opening brace
+    public static char   PREAMBLE_CLOSING_BRACE  = '}';  // 0x7D Closing brace
+    public static char   PREAMBLE_PAIR_SEPARATOR = '|';  // 0x7C Vertical bar
+
     public static final char NAMESPACE_TAG_SEPARATOR = ':';
     public static final CharSequence TAG_LIST_SEPARATOR    = ";";
     public static final char TAG_LIST_SEPARATOR_CHAR    = ';';

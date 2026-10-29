@@ -28,8 +28,8 @@ public enum DaxPreambleTag {
     ENCODING("EN"),       //Encoding
     MSG_NAMESPACE("NS"),
     MSG_QUANTITY("MQ"),
-    MSG_SENDER("SN");
-
+    MSG_SENDER("SN"),
+    PAIR_SEPARATOR("PS");
 
     private final String tag;
 
