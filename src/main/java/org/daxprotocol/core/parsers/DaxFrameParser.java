@@ -105,8 +105,10 @@ public class DaxFrameParser {
         boolean isChecksumLast = true;
 
         int nextIdx;
-        while ((nextIdx = frameStr.indexOf(pairSeparator, prevIdx)) != -1) {
-
+//        while ((nextIdx = frameStr.indexOf(pairSeparator, prevIdx)) != -1) {
+        while ((nextIdx = indexOfUnescaped(
+                        frameStr, pairSeparator, prevIdx)) !=-1)
+        {
             // Locate Operator
             int operatorIdx = -1;
             char foundOperator = 0;
@@ -200,6 +202,35 @@ public class DaxFrameParser {
         }
 
         frame.setMessageList(messageList);
+    }
+
+    private int indexOfUnescaped(
+            String text, char separator, int fromIndex) {
+
+        if (separator == '\\') {
+            throw new IllegalArgumentException(
+                    "Separator cannot equal the escape character");
+        }
+
+        int position = text.indexOf(separator, fromIndex);
+
+        while (position >= 0) {
+            int backslashes = 0;
+
+            for (int i = position - 1;
+                    i >= 0 && text.charAt(i) == '\\';
+                    i--) {
+                backslashes++;
+            }
+
+            if (backslashes % 2 == 0) {
+                return position;
+            }
+
+            position = text.indexOf(separator, position + 1);
+        }
+
+        return -1;
     }
 
 }

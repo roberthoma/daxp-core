@@ -128,8 +128,9 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
 //        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x7C}"+
 //                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|";
 
+        char escapeChar = '\\';
         String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x23}"+
-                "$:1=CDD#$:5=INST#$:8=2000#2080=Big bike#2001=123#2002=Robert#$:9=165#";
+                "$:1=CDD#$:5=INST#$:8=2000#2080=Big"+escapeChar+"#bike#2001=123#2002=Robert#$:9=4#";
 
         DaxFrame frame;
         try {
@@ -138,7 +139,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
             Assertions.assertEquals ("CDD", msg.getMsgType());
             DaxTag t2080tag = DaxTag.of(namespaceMapper.getReferenceId("CRM") ,2080);
 
-            Assertions.assertEquals ("Big bike",  msg.getBody()
+            Assertions.assertEquals ("Big#bike",  msg.getBody()
                                                               .getBlock(0)
                                                               .get(t2080tag).getStrValue());
 
@@ -186,7 +187,7 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
     void parseFrame_04(){
 
         String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|MQ=1|PS=0x7C}"+
-                "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=107|";
+                "$:1=CDD|$:7=1|$:5=INST|$:8=2000|2080=Big \\|bike|2001=123|2002=Robert|$:9=67|";
         DaxFrame frame;
         try {
             frame = frameParser.parseFrame(msgStr);

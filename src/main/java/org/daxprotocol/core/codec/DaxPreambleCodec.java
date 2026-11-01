@@ -53,7 +53,6 @@ public class DaxPreambleCodec {
                 .append(OPERATOR_EQUAL)
                 .append(value)
                 .append(DaxCoreConstants.PREAMBLE_PAIR_SEPARATOR);
-//                .append(pairSeparator);
     }
 
 
@@ -97,7 +96,11 @@ public class DaxPreambleCodec {
                 case ENCODING       -> DaxCharacterEncoding.fromName(valueStr).ifPresent(preamble::setEncoding);
                 case MSG_QUANTITY   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
                 case MSG_NAMESPACE  -> preamble.setNamespaceId(namespaceMapper.getReferenceId(valueStr));
-                case PAIR_SEPARATOR -> preamble.setPairSeparator((char) Integer.decode(valueStr).intValue());
+
+                case PAIR_SEPARATOR, GROUP_SEPARATOR, RECORD_SEPARATOR, UNIT_SEPARATOR
+                        -> preamble.setPairSeparator((char) Integer.decode(valueStr).intValue());
+
+
                 //case MSG_SENDER  -> preamble.setSe System.out.println("Sender: " + value);
             }
         }

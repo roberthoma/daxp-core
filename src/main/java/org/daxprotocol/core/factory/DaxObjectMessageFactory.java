@@ -101,7 +101,8 @@ public class DaxObjectMessageFactory {
         return new DaxMessage(head, body, trailer);
     }
     ///----------------------------------------------------------------------------------------
-    private void valueToBlock(int blockIdx,DaxBody body, DaxTag tag,Object value, Set<DaxTag> reqTagSet, DaxTag ownerTag){
+    private void valueToBlock(int blockIdx,DaxBody body, DaxTag tag,Object value, Set<DaxTag> reqTagSet,
+            DaxTag ownerTag){
          logger.trace("valueToBlock > tag {} ", tagCodec.encode(tag));
         if (value == null) {
             body.putPair(blockIdx, new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,

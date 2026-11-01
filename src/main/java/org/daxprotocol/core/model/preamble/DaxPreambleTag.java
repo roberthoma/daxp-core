@@ -29,7 +29,15 @@ public enum DaxPreambleTag {
     MSG_NAMESPACE("NS"),
     MSG_QUANTITY("MQ"),
     MSG_SENDER("SN"),
-    PAIR_SEPARATOR("PS");
+
+    PAIR_SEPARATOR("PS"),
+    GROUP_SEPARATOR("GS"),  //Group Separator
+    RECORD_SEPARATOR("RS"),  //Group Separator
+    UNIT_SEPARATOR("US"),  //Group Separator
+
+    // TOKEN
+    // TRANSACTION STATE:  BEGIN FINISH ABORT
+    ;
 
     private final String tag;
 

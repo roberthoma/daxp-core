@@ -32,8 +32,9 @@ public class DaxCoreConstants {
     public static char   PREAMBLE_PAIR_SEPARATOR = '|';  // 0x7C Vertical bar
 
     public static final char NAMESPACE_TAG_SEPARATOR = ':';
-    public static final CharSequence TAG_LIST_SEPARATOR    = ";";
-    public static final char TAG_LIST_SEPARATOR_CHAR    = ';';
+
+    public static final char TAG_LIST_SEPARATOR_CHAR     = ';';
+    public static final CharSequence TAG_LIST_SEPARATOR  = ";";
 
     public static final char DECIMAL_SEPARATOR    = '.';
 
