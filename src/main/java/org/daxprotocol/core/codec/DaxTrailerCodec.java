@@ -22,6 +22,7 @@ package org.daxprotocol.core.codec;
 
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.trailer.DaxTrailer;
 
 import java.util.List;
@@ -35,9 +36,9 @@ public class DaxTrailerCodec {
         this.pairCodec = pairCodec;
     }
 
-    public String encode(DaxTrailer trailer, char pairSeparator) {
+    public String encode(DaxTrailer trailer, DaxPreamble preamble) {
         StringBuilder sb = new StringBuilder();
-        pairCodec.encode(sb,CHECKSUM,String.valueOf(trailer.getChecksum()),pairSeparator);
+        pairCodec.encode(sb,CHECKSUM,String.valueOf(trailer.getChecksum()),preamble.getPairSeparator());
         return sb.toString();
     }
 

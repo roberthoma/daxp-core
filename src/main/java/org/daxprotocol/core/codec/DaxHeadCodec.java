@@ -22,6 +22,7 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.exceptions.DaxTagParserException;
 import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 
 
 import java.util.List;
@@ -37,15 +38,15 @@ public class DaxHeadCodec{
         this.pairCodec = pairCodec;
     }
 
-    public String encode(DaxHead head,int blockCount, char pairSeparator) {
+    public String encode(DaxHead head,int blockCount, DaxPreamble preamble) {
 
         StringBuilder sb = new StringBuilder();
 
-        pairCodec.encode(sb,MSG_TYPE,head.getMsgType(), pairSeparator);
+        pairCodec.encode(sb,MSG_TYPE,head.getMsgType(), preamble.getPairSeparator());
 
 
         if (blockCount>1) {
-            pairCodec.encode(sb, MSG_BLOCK_QUANTITY, String.valueOf(blockCount), pairSeparator);
+            pairCodec.encode(sb, MSG_BLOCK_QUANTITY, String.valueOf(blockCount), preamble.getPairSeparator());
         }
 
         return sb.toString();

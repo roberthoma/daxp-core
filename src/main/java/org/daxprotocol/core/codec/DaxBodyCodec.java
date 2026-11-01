@@ -22,6 +22,7 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPair;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.pair.DaxPairString;
 
@@ -100,7 +101,7 @@ public class DaxBodyCodec {
     }
 
     //@Override
-    public String encode(DaxBody body,char pairSeparator) {
+    public String encode(DaxBody body, DaxPreamble preamble) {
         boolean isBlockPair = body.getBlocksCount() > 1;
 
         StringBuilder sb = new StringBuilder();
@@ -109,7 +110,7 @@ public class DaxBodyCodec {
             .forEach((idx, map) ->
                 encodeBodyBlock(sb,isBlockPair,idx, map, body.getTagBlockRefMap(idx),
                                                          //body.getBlockNullTags(idx),
-                        pairSeparator)
+                        preamble.getPairSeparator())
                         );
 
 

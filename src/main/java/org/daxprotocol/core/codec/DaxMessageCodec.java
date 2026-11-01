@@ -58,15 +58,14 @@ public class DaxMessageCodec {
     public String encode(DaxMessage message, DaxPreamble preamble) {
 
         StringBuilder msgSb = new StringBuilder();
-        char pS = preamble.getPairSeparator();
 
-        msgSb.append(headCodec.encode(message.getHead(), message.getBody().getBlocksCount(), pS))
-             .append(bodyCodec.encode(message.getBody(), pS));
+        msgSb.append(headCodec.encode(message.getHead(), message.getBody().getBlocksCount(), preamble))
+             .append(bodyCodec.encode(message.getBody(), preamble));
 
         DaxTrailer trailer = new DaxTrailer();
 
         trailer.setChecksum(DaxChecksumService.calculateChecksum(msgSb.toString()));
-        msgSb.append(trailerCodec.encode(trailer,pS));
+        msgSb.append(trailerCodec.encode(trailer,preamble));
 
         //TODO create statistics counter for example avg message size
         //TODO  System.out.println("TODO Counter statistics message length = "+sb.length());
