@@ -136,7 +136,7 @@ public class DaxEngine {
         preambleCodec = new DaxPreambleCodec( namespaceMapper);
 
         DaxHeadCodec    headCodec    = new DaxHeadCodec(pairCodec);
-        DaxBodyCodec    bodyCodec    = new DaxBodyCodec(pairCodec, tagCodec, valueCodec);
+        DaxBodyEncoder bodyCodec    = new DaxBodyEncoder(pairCodec, tagCodec, valueCodec);
         DaxTrailerCodec trailerCodec = new DaxTrailerCodec(pairCodec);;
 
         messageCodec = new DaxMessageCodec(namespaceConfig, pairCodec,

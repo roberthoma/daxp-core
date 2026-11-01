@@ -22,9 +22,11 @@ package org.daxprotocol.core.factory;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.daxprotocol.core.application.DaxCoreConfig;
 import org.daxprotocol.core.application.DaxCoreConstants;
+import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
+import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.registries.AnnotatedField;
 import org.daxprotocol.core.registries.AnnotatedMethod;
 import org.daxprotocol.core.registries.ClassMetadata;
@@ -336,4 +338,44 @@ public class DaxBodyBuilder {
 
 
    ///----------------------------------------------------------------------------------------
+
+
+   //todo refactor. move to head codec
+   private  final Set<DaxTag> headSet = Set.of(MSG_TYPE,
+           MSG_BLOCK_QUANTITY
+           //new DaxTag(MSG_namespace)
+   );
+
+
+    public boolean isHeadTag(DaxTag tag){
+        return headSet.contains(tag);
+    }
+
+
+    public  DaxBody createBody(int blockCount , List<DaxPair<?>> listOfPair){
+        DaxBody body = new DaxBody();
+
+//        if (blockCount==0) {
+        body.nextBlock();
+//        }
+        for(DaxPair pair : listOfPair){
+            if(pair.getTag().equals(DaxCoreTags.CHECKSUM)){
+                break;
+            }
+            if (isHeadTag(pair.getTag())){
+                continue;
+            }
+            if (pair.getTag().equals(DaxCoreTags.BLOCK_INDEX)) {
+//                if (blockCount==0){
+//                    throw new RuntimeException("Body creation Exception : block index and blockCount==0 !!!");
+//                }
+                body.nextBlock();
+            }
+            body.putPair(pair);
+        }
+        return body;
+    }
+
+
+
 }

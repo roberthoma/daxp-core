@@ -47,7 +47,7 @@ public class DaxMessageFactory {
     private static final Logger logger = LoggerFactory.getLogger(DaxMessageFactory.class);
 
     private final DaxHeadCodec headCodec;
-    private final DaxBodyCodec bodyCodec;
+    private final DaxBodyEncoder bodyCodec;
     private final DaxTrailerCodec trailerCodec;
     private final DaxDataModelMessageFactory dicMessageFactory;
     private final DaxBodyBuilder bodyBuilder;
@@ -58,7 +58,7 @@ public class DaxMessageFactory {
             DaxSemanticRegistry dataModel,
             DaxTagCodec tagCodec,
             DaxHeadCodec headCodec,
-            DaxBodyCodec bodyCodec,
+            DaxBodyEncoder bodyCodec,
             DaxTrailerCodec trailerCodec,
             DaxValueCodec valueCodec,
             DaxDataTypeCodec dataTypeCodec,
@@ -163,14 +163,14 @@ public class DaxMessageFactory {
 
     public DaxMessage createMsg(String messageType, List<DaxPair<?>> listOfPair) {
         DaxHead head = headCodec.createHead(listOfPair);
-        DaxBody body = bodyCodec.createBody(head.getBlockCount(), listOfPair);
+        DaxBody body = bodyBuilder.createBody(head.getBlockCount(), listOfPair);
         DaxTrailer trailer = trailerCodec.createTrailer(listOfPair);
         return new DaxMessage(head, body, trailer);
     }
 
     public DaxMessage createMsg(List<DaxPair<?>> listOfPair) {
         DaxHead head = headCodec.createHead(listOfPair);
-        DaxBody body = bodyCodec.createBody(0, listOfPair);
+        DaxBody body = bodyBuilder.createBody(0, listOfPair);
         DaxTrailer trailer = trailerCodec.createTrailer(listOfPair);
         return new DaxMessage(head, body, trailer);
     }

@@ -37,7 +37,8 @@ public class DaxPairCodec {
     public DaxPairCodec(  DaxTagCodec tagCodec) {
         this.tagCodec = tagCodec;
     }
-    public   String encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble, char operator) {
+
+    private   String encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble, char operator) {
 
             sb.append(tagCodec.encode(tag))
                     .append(operator)
@@ -68,7 +69,7 @@ public class DaxPairCodec {
         return encode(sb,daxPair.getTag(),value ,preamble, daxPair.getOperator() );
     }
 
-
+ //-------------------------
     public  DaxPair<?>  decode(DaxTag tag, String valueStr, char operator, int namespaceId){
 
         DaxPair<?> pair;

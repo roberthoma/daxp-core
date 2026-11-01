@@ -32,14 +32,14 @@ public class DaxMessageCodec {
     DaxNamespaceConfig config;
     DaxPairCodec     pairCodec;
     DaxHeadCodec     headCodec;
-    DaxBodyCodec     bodyCodec;
+    DaxBodyEncoder bodyCodec;
     DaxTrailerCodec  trailerCodec;
 
     public DaxMessageCodec(
             DaxNamespaceConfig config,
             DaxPairCodec pairCodec,
             DaxHeadCodec headCodec,
-            DaxBodyCodec bodyCodec,
+            DaxBodyEncoder bodyCodec,
             DaxTrailerCodec trailerCodec
             ) {
       this.pairCodec = pairCodec;

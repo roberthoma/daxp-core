@@ -26,20 +26,17 @@ import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 import org.daxprotocol.core.model.pair.DaxPairString;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.daxprotocol.core.application.DaxCoreTags.*;
 
-
-public class DaxBodyCodec {
+public class DaxBodyEncoder {
 
     DaxPairCodec pairCodec;
     DaxTagCodec tagCodec;
     DaxValueCodec valueCodec;
 
-    public DaxBodyCodec(DaxPairCodec pairCodec, DaxTagCodec tagCodec, DaxValueCodec valueCodec) {
+    public DaxBodyEncoder(DaxPairCodec pairCodec, DaxTagCodec tagCodec, DaxValueCodec valueCodec) {
         this.pairCodec = pairCodec;
         this.tagCodec = tagCodec;
         this.valueCodec = valueCodec;
@@ -116,42 +113,6 @@ public class DaxBodyCodec {
 
 
         return sb.toString();
-    }
-
-    //todo refactor. move to head codec
-    private  final Set<DaxTag> headSet = Set.of(MSG_TYPE,
-            MSG_BLOCK_QUANTITY
-            //new DaxTag(MSG_namespace)
-    );
-
-
-    public boolean isHeadTag(DaxTag tag){
-        return headSet.contains(tag);
-    }
-
-
-    public  DaxBody createBody(int blockCount , List<DaxPair<?>> listOfPair){
-        DaxBody body = new DaxBody();
-
-//        if (blockCount==0) {
-            body.nextBlock();
-//        }
-        for(DaxPair pair : listOfPair){
-            if(pair.getTag().equals(DaxCoreTags.CHECKSUM)){
-                break;
-            }
-            if (isHeadTag(pair.getTag())){
-                continue;
-            }
-            if (pair.getTag().equals(DaxCoreTags.BLOCK_INDEX)) {
-//                if (blockCount==0){
-//                    throw new RuntimeException("Body creation Exception : block index and blockCount==0 !!!");
-//                }
-                body.nextBlock();
-            }
-            body.putPair(pair);
-        }
-        return body;
     }
 
 }
