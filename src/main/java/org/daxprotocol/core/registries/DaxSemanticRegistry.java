@@ -21,7 +21,6 @@
 package org.daxprotocol.core.registries;
 
 import org.daxprotocol.core.application.DaxCoreTags;
-import org.daxprotocol.core.factory.DaxBulkCollectionBuilder;
 import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.namespace.*;
 import org.daxprotocol.core.datatype.DaxDataType;

@@ -46,13 +46,13 @@ public class DaxBodyCodec {
     }
 
     private void encodeBodyBlock(StringBuilder sb, boolean isBlogIdx ,
-                                      int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
-                                      Map<DaxTag, Set<Integer>> tagBlockRefMap,
-                                     char pairSeparator)
+                                 int blockIdx ,Map<DaxTag, DaxPair<?>> blockMap,
+                                 Map<DaxTag, Set<Integer>> tagBlockRefMap,
+                                 DaxPreamble preamble)
     {
         if (isBlogIdx) {
            // sb.append("\n");  only for debug mode
-            pairCodec.encode(sb, DaxCoreTags.BLOCK_INDEX, String.valueOf(blockIdx+1), pairSeparator);
+            pairCodec.encode(sb, DaxCoreTags.BLOCK_INDEX, String.valueOf(blockIdx+1), preamble);
        }
 
         if (!blockMap.containsKey(DaxCoreTags.BLOCK_TYPE) ){
@@ -64,10 +64,10 @@ public class DaxBodyCodec {
         }
 
         DaxPair<?> blockType =  blockMap.get(DaxCoreTags.BLOCK_TYPE);
-        pairCodec.encode(sb, DaxCoreTags.BLOCK_TYPE, blockType.getStrValue(), pairSeparator);
+        pairCodec.encode(sb, DaxCoreTags.BLOCK_TYPE, blockType.getStrValue(), preamble);
 
         if (blockMap.containsKey(DaxCoreTags.ENTRY_TAG) ){
-            pairCodec.encode(sb, blockMap.get(DaxCoreTags.ENTRY_TAG), pairSeparator);
+            pairCodec.encode(sb, blockMap.get(DaxCoreTags.ENTRY_TAG), preamble);
         }
 
         blockMap.forEach((tag, pair) ->
@@ -77,7 +77,7 @@ public class DaxBodyCodec {
                 !tag.equals(DaxCoreTags.ENTRY_TAG)
             )
             {
-                pairCodec.encode(sb, pair, pairSeparator);
+                pairCodec.encode(sb, pair, preamble);
             }
         });
 
@@ -85,7 +85,7 @@ public class DaxBodyCodec {
         tagBlockRefMap.forEach((tag, blockSet)
                 -> pairCodec.encode(sb, new DaxPairString(tag,valueCodec.toBlockRefString(blockSet),
                                                            DaxCoreConstants.OPERATOR_REFERENCE)
-                                    ,pairSeparator )
+                                    ,preamble )
         );
 
 
@@ -110,7 +110,7 @@ public class DaxBodyCodec {
             .forEach((idx, map) ->
                 encodeBodyBlock(sb,isBlockPair,idx, map, body.getTagBlockRefMap(idx),
                                                          //body.getBlockNullTags(idx),
-                        preamble.getPairSeparator())
+                        preamble)
                         );
 
 

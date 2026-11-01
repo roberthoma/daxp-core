@@ -25,6 +25,7 @@ import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTagSet;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import java.util.Arrays;
@@ -36,35 +37,35 @@ public class DaxPairCodec {
     public DaxPairCodec(  DaxTagCodec tagCodec) {
         this.tagCodec = tagCodec;
     }
-    public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator, char operator) {
+    public   String encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble, char operator) {
 
             sb.append(tagCodec.encode(tag))
                     .append(operator)
                     .append(strValue)
-                    .append(pairSeparator);
+                    .append(preamble.getPairSeparator());
 
         return sb.toString() ;
     }
 
-    public   String encode(StringBuilder sb, DaxTag tag, String strValue , char pairSeparator) {
-        return encode(sb, tag, strValue , pairSeparator, DaxCoreConstants.OPERATOR_EQUAL);
+    public   String encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble) {
+        return encode(sb, tag, strValue , preamble, DaxCoreConstants.OPERATOR_EQUAL);
     }
 
 
-    public   String encode(StringBuilder sb, DaxPair<?> daxPair, char pairSeparator ) {
+    public   String encode(StringBuilder sb, DaxPair<?> daxPair, DaxPreamble preamble ) {
         String value;
         if (daxPair.getValue() instanceof DaxTag){
             value = tagCodec.encode((DaxTag) daxPair.getValue());
-            return encode(sb,daxPair.getTag(),value ,pairSeparator , daxPair.getOperator());
+            return encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
         }
         if (daxPair.getValue() instanceof DaxDataType){
             value =  daxPair.getDataTypeValue().getCode();
-            return encode(sb,daxPair.getTag(),value ,pairSeparator , daxPair.getOperator());
+            return encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
 
         }
 
         value = daxPair.getStrValue();
-        return encode(sb,daxPair.getTag(),value ,pairSeparator, daxPair.getOperator() );
+        return encode(sb,daxPair.getTag(),value ,preamble, daxPair.getOperator() );
     }
 
 

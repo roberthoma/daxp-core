@@ -39,13 +39,6 @@ public class DaxCoreConstants {
     public static final char DECIMAL_SEPARATOR    = '.';
 
 
-
-//    public static final char TAG_LIST_SEPARATOR    = ';';
-//    public static final char VALUE_LIST_SEPARATOR  = ';';
-//    public static final char namespace_TAG_SEPARATOR = ',';
-//    public static final CharSequence VALUE_LIST_SEPARATOR    = ";";
-//    public static final CharSequence namespace_TAG_SEPARATOR = ":";
-
     /****************************************************
     *     BULK collection separators
     *      HEX value

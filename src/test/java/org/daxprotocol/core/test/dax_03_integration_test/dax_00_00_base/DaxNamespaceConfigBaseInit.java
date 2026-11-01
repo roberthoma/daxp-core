@@ -12,7 +12,7 @@ import org.daxprotocol.core.namespace.DaxpNamespaceConfigFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.dispatcher.DaxDispatcher;
-import org.daxprotocol.core.factory.DaxBulkCollectionBuilder;
+import org.daxprotocol.core.factory.DaxBulkCollectionEncoder;
 import org.daxprotocol.core.factory.DaxMessageFactory;
 import org.daxprotocol.core.factory.DaxPreambleFactory;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
@@ -54,7 +54,7 @@ public class DaxNamespaceConfigBaseInit {
     protected  DaxDataTypeCodec dataTypeCodec;
     protected  DaxDataTypeService dataTypeService;
     protected  DaxSemanticInspector semanticInspector;
-    protected  DaxBulkCollectionBuilder bulkCollectionBuilder;
+    protected DaxBulkCollectionEncoder bulkCollectionBuilder;
     protected  DaxBulkCollectionDecoder bulkCollectionDecoder;
 
 

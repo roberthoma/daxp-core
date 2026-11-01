@@ -24,8 +24,8 @@ import org.daxprotocol.core.codec.*;
 import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.namespace.DaxpNamespaceConfigFactory;
 import org.daxprotocol.core.exceptions.DaxException;
-import org.daxprotocol.core.factory.DaxBulkCollectionBuilder;
-import org.daxprotocol.core.factory.DaxObjectMessageFactory;
+import org.daxprotocol.core.factory.DaxBulkCollectionEncoder;
+import org.daxprotocol.core.factory.DaxBodyBuilder;
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.namespace.DaxNamespaceFactory;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
@@ -74,7 +74,7 @@ public class DaxEngine {
     private final DaxCoreConfig coreConfig;
     private final DaxPreambleParser preambleParser;
 
-    private final DaxBulkCollectionBuilder bulkCollectionBuilder;
+    private final DaxBulkCollectionEncoder bulkCollectionBuilder;
     private final DaxBulkCollectionDecoder bulkCollectionDecoder;
 
 
@@ -82,7 +82,7 @@ public class DaxEngine {
     private final DaxDataTypeService dataTypeService;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
-    private final DaxObjectMessageFactory objectMessageFactory; // new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
+    private final DaxBodyBuilder objectMessageFactory; // new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
 
     //TODO move tagParser to tagCodec
 
@@ -123,13 +123,13 @@ public class DaxEngine {
         semanticCollector = new DaxSemanticCollector(semanticRegistry, dataTypeService, tagCodec, semanticInspector);
 
         handlerRegistry = new DaxHandlerRegistry();
-        bulkCollectionBuilder = new DaxBulkCollectionBuilder(semanticRegistry, tagCodec, dataTypeService);
+        bulkCollectionBuilder = new DaxBulkCollectionEncoder(semanticRegistry, tagCodec, dataTypeService);
 
         bulkCollectionDecoder = new DaxBulkCollectionDecoder(semanticRegistry, tagCodec, dataTypeService);
 
 
 
-        objectMessageFactory =  new DaxObjectMessageFactory(coreConfig, tagCodec, dataTypeCodec, valueCodec,
+        objectMessageFactory =  new DaxBodyBuilder(coreConfig, tagCodec, dataTypeCodec, valueCodec,
                 semanticRegistry, dataTypeService, bulkCollectionBuilder);
 
         pairCodec     = new DaxPairCodec    (tagCodec);
@@ -320,7 +320,7 @@ public class DaxEngine {
         }
     }
 
-    public DaxBulkCollectionBuilder getBulkCollectionBuilder() {
+    public DaxBulkCollectionEncoder getBulkCollectionBuilder() {
         return bulkCollectionBuilder;
     }
 

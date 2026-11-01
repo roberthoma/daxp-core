@@ -50,7 +50,7 @@ public class DaxMessageFactory {
     private final DaxBodyCodec bodyCodec;
     private final DaxTrailerCodec trailerCodec;
     private final DaxDataModelMessageFactory dicMessageFactory;
-    private final DaxObjectMessageFactory objectService;
+    private final DaxBodyBuilder bodyBuilder;
 
 
 
@@ -62,13 +62,13 @@ public class DaxMessageFactory {
             DaxTrailerCodec trailerCodec,
             DaxValueCodec valueCodec,
             DaxDataTypeCodec dataTypeCodec,
-            DaxObjectMessageFactory objectService
+            DaxBodyBuilder bodyBuilder
     ) {
         this.headCodec = headCodec;
         this.bodyCodec = bodyCodec;
         this.trailerCodec = trailerCodec;
         this.dicMessageFactory =  new DaxDataModelMessageFactory(tagCodec, dataModel);
-        this.objectService     =  objectService ;// new DaxObjectMessageFactory(tagCodec, dataTypeCodec, valueCodec, dataModel);
+        this.bodyBuilder =  bodyBuilder ;
     }
 
     public DaxMessage createDictionaryReq() {
@@ -80,19 +80,25 @@ public class DaxMessageFactory {
     }
 
     public DaxMessage toDaxMessage(String messageType, Object daxDataEntry) {
-        return objectService.toDaxMessageFromObject(messageType, daxDataEntry, null);
+        DaxHead head = new DaxHead(messageType);
+        DaxTrailer trailer = new DaxTrailer();
+        DaxBody body =  bodyBuilder.toDaxMessageFromObject( daxDataEntry, null);
+        return new DaxMessage(head, body, trailer);
     }
 
     @SuppressWarnings("unchecked")
     public DaxMessage toDaxMessage(DaxMessage reqMsg, String respMsgType, Object daxDataEntry) {
+        DaxHead head = new DaxHead(respMsgType);
+        DaxTrailer trailer = new DaxTrailer();
+
         Set<DaxTag> tagSet = null;
 
         if (reqMsg.containsField(0, REQ_FIELD_LIST))
         {
             tagSet = (Set<DaxTag>) reqMsg.get(0, REQ_FIELD_LIST).getValue();
         }
-
-        return objectService.toDaxMessageFromObject(respMsgType, daxDataEntry, tagSet);
+        DaxBody body = bodyBuilder.toDaxMessageFromObject(daxDataEntry, tagSet);
+        return new DaxMessage(head, body, trailer);
     }
 
 

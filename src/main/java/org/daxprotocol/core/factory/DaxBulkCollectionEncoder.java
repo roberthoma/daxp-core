@@ -41,14 +41,14 @@ import static org.daxprotocol.core.application.DaxCoreTags.*;
  * Serializes entities, collections, and maps into DAXP bulk payload format.
  * Utilizes standard ASCII control separators (0x1C to 0x1F) for hierarchical boundaries.
  */
-public class DaxBulkCollectionBuilder {
-    private static final Logger logger = LoggerFactory.getLogger(DaxBulkCollectionBuilder.class);
+public class DaxBulkCollectionEncoder {
+    private static final Logger logger = LoggerFactory.getLogger(DaxBulkCollectionEncoder.class);
 
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeService dataTypeService;
     private final DaxSemanticRegistry semanticRegistry;
 
-    public DaxBulkCollectionBuilder(DaxSemanticRegistry semanticRegistry, DaxTagCodec tagCodec, DaxDataTypeService dataTypeService) {
+    public DaxBulkCollectionEncoder(DaxSemanticRegistry semanticRegistry, DaxTagCodec tagCodec, DaxDataTypeService dataTypeService) {
         this.tagCodec = tagCodec;
         this.dataTypeService = dataTypeService;
         this.semanticRegistry = semanticRegistry;
@@ -121,9 +121,9 @@ public class DaxBulkCollectionBuilder {
         if (clazz.isAnnotationPresent(DaxpEntity.class)) {
             sb.append(entityToBulk(val));
         } else if (val instanceof Iterable<?>) {
-            sb.append(collectionToBulk((Iterable<?>) val));
+            sb.append(collectionEncode((Iterable<?>) val));
         } else if (val instanceof Map<?, ?>) {
-            sb.append(mapToBulk((Map<?, ?>) val));
+            sb.append(mapEncode((Map<?, ?>) val));
         } else {
             sb.append(val.toString());
         }
@@ -132,11 +132,11 @@ public class DaxBulkCollectionBuilder {
     /**
      * Converts a single entity object into a bulk representation wrapped as a single-element list.
      */
-    public String entityToBulk(Object entity) {
+    private String entityToBulk(Object entity) {
         if (entity == null) {
             return "";
         }
-        return collectionToBulk(Collections.singletonList(entity));
+        return collectionEncode(Collections.singletonList(entity));
     }
 
     // =========================================================================================
@@ -146,7 +146,7 @@ public class DaxBulkCollectionBuilder {
     /**
      * Serializes an Iterable (List or Set) into DAXP bulk payload representation.
      */
-    public String collectionToBulk(Iterable<?> collection) {
+    public String collectionEncode(Iterable<?> collection) {
         Iterator<?> iterator = collection.iterator();
         if (!iterator.hasNext()) {
             return "";
@@ -207,7 +207,7 @@ public class DaxBulkCollectionBuilder {
      * Wraps both Key and Value groups in SEPARATOR_GROUP (...) END_OF_MEDIUM + SEPARATOR_GROUP boundaries
      * without intermediate unit separators.
      */
-    public String mapToBulk(Map<?, ?> map) {
+    public String mapEncode(Map<?, ?> map) {
         if (map == null || map.isEmpty()) {
             return "";
         }

@@ -32,34 +32,31 @@ import org.daxprotocol.core.registries.DaxSemanticRegistry;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.exceptions.DaxException;
-import org.daxprotocol.core.model.DaxMessage;
 import org.daxprotocol.core.model.body.DaxBody;
-import org.daxprotocol.core.model.head.DaxHead;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
-import org.daxprotocol.core.model.trailer.DaxTrailer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static org.daxprotocol.core.application.DaxCoreTags.*;
 
-public class DaxObjectMessageFactory {
+public class DaxBodyBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(DaxObjectMessageFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(DaxBodyBuilder.class);
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
     private final DaxSemanticRegistry semanticRegistry;
     private final DaxDataTypeService dataTypeService;
-    private final DaxBulkCollectionBuilder bulkCollectionBuilder;
+    private final DaxBulkCollectionEncoder bulkCollectionBuilder;
     private final DaxCoreConfig coreConfig;
     ///----------------------------------------------------------------------------------------
-    public DaxObjectMessageFactory(DaxCoreConfig coreConfig,DaxTagCodec tagCodec,
+    public DaxBodyBuilder(DaxCoreConfig coreConfig,DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
     ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService,
-       DaxBulkCollectionBuilder bulkCollectionBuilder)
+       DaxBulkCollectionEncoder bulkCollectionBuilder)
     {
         this.coreConfig = coreConfig;
         this.tagCodec = tagCodec;
@@ -78,13 +75,10 @@ public class DaxObjectMessageFactory {
         return daxDataEntry != null ? List.of(daxDataEntry) : List.of();
     }
     ///----------------------------------------------------------------------------------------
-    public DaxMessage toDaxMessageFromObject(String messageType,
-                                             Object daxDataEntries,
+    public  DaxBody  toDaxMessageFromObject( Object daxDataEntries,
                                              Set<DaxTag> reqTagSet)
     {
-        DaxHead head = new DaxHead(messageType);
         DaxBody body = new DaxBody();
-        DaxTrailer trailer = new DaxTrailer();
 
         for (Object entry : normalizeToList(daxDataEntries)) {
             if (entry != null && entry.getClass().isAnnotationPresent(DaxpEntity.class)) {
@@ -98,12 +92,14 @@ public class DaxObjectMessageFactory {
             }
         }
 
-        return new DaxMessage(head, body, trailer);
+        return body;
     }
     ///----------------------------------------------------------------------------------------
     private void valueToBlock(int blockIdx,DaxBody body, DaxTag tag,Object value, Set<DaxTag> reqTagSet,
-            DaxTag ownerTag){
+                              DaxTag ownerTag)
+    {
          logger.trace("valueToBlock > tag {} ", tagCodec.encode(tag));
+
         if (value == null) {
             body.putPair(blockIdx, new DaxPairString(tag, DaxCoreConstants.OPERATION_NULL,
                                                           DaxCoreConstants.OPERATOR_ACTION));
@@ -286,7 +282,7 @@ public class DaxObjectMessageFactory {
                                 Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
         if (isBulkCompose(tag,map)) {
-            bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.mapToBulk(map), ownerTag);
+            bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.mapEncode(map), ownerTag);
         } else {
             map.forEach((key, value) ->
                     collectionElementToBlock(blockIdx, tag, body, key, value, reqTagSet, ownerTag)
@@ -301,7 +297,7 @@ public class DaxObjectMessageFactory {
                                      Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
         if (isBulkCompose(tag,collection)) {
-            bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.collectionToBulk(collection), ownerTag);
+            bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.collectionEncode(collection), ownerTag);
         } else {
             collection.forEach(objVal ->
                     collectionElementToBlock(blockIdx, tag, body, null, objVal, reqTagSet, ownerTag)

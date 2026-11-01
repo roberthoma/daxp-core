@@ -42,11 +42,11 @@ public class DaxHeadCodec{
 
         StringBuilder sb = new StringBuilder();
 
-        pairCodec.encode(sb,MSG_TYPE,head.getMsgType(), preamble.getPairSeparator());
+        pairCodec.encode(sb,MSG_TYPE,head.getMsgType(), preamble);
 
 
         if (blockCount>1) {
-            pairCodec.encode(sb, MSG_BLOCK_QUANTITY, String.valueOf(blockCount), preamble.getPairSeparator());
+            pairCodec.encode(sb, MSG_BLOCK_QUANTITY, String.valueOf(blockCount), preamble);
         }
 
         return sb.toString();
