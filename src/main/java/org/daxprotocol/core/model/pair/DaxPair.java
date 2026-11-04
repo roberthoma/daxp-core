@@ -66,7 +66,7 @@ public abstract class DaxPair<T>{
 //Move to data type decode
     public String getStrValue() {
         if (value instanceof Boolean){
-            return ((Boolean)value)? "Y" : "N";   //   TRUE / FALSE
+            return ((Boolean)value)? "Y" : "N";   //   TRUE / FALSE  //todo to refactor
         }
 
         if (value == null ) { return null;}

@@ -22,6 +22,7 @@ package org.daxprotocol.core.codec;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.datatype.DaxDataTypeService;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTagSet;
@@ -34,42 +35,56 @@ import java.util.stream.Collectors;
 
 public class DaxPairCodec {
     DaxTagCodec tagCodec;
-    public DaxPairCodec(  DaxTagCodec tagCodec) {
+
+    //TODO devqalop for using DaxDataTypeService
+    DaxDataTypeService dataTypeService;
+    public DaxPairCodec(  DaxTagCodec tagCodec, DaxDataTypeService  dataTypeService) {
         this.tagCodec = tagCodec;
+        this.dataTypeService = dataTypeService;
     }
 
-    private   String encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble, char operator) {
-
+    private   void encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble, char operator) {
             sb.append(tagCodec.encode(tag))
                     .append(operator)
                     .append(strValue)
                     .append(preamble.getPairSeparator());
-
-        return sb.toString() ;
     }
 
-    public   String encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble) {
-        return encode(sb, tag, strValue , preamble, DaxCoreConstants.OPERATOR_EQUAL);
+    public   void  encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble) {
+         encode(sb, tag, strValue , preamble, DaxCoreConstants.OPERATOR_EQUAL);
     }
 
 
-    public   String encode(StringBuilder sb, DaxPair<?> daxPair, DaxPreamble preamble ) {
+    public void  encode(StringBuilder sb, DaxPair<?> daxPair, DaxPreamble preamble ) {
         String value;
+
         if (daxPair.getValue() instanceof DaxTag){
             value = tagCodec.encode((DaxTag) daxPair.getValue());
-            return encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
+            encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
+            return;
         }
         if (daxPair.getValue() instanceof DaxDataType){
             value =  daxPair.getDataTypeValue().getCode();
-            return encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
-
+            encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
+           return;
         }
 
+
+        if(dataTypeService.isDaxpCollection(daxPair.getValue()) ){
+         //   value = "" ?????
+         //   encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
+            return;
+        }
+//            if (dataTypeService.isDaxpCollection(value)) {
+
+
         value = daxPair.getStrValue();
-        return encode(sb,daxPair.getTag(),value ,preamble, daxPair.getOperator() );
+
+        encode(sb,daxPair.getTag(),value ,preamble, daxPair.getOperator() );
+        return;
     }
 
- //-------------------------
+
     public  DaxPair<?>  decode(DaxTag tag, String valueStr, char operator, int namespaceId){
 
         DaxPair<?> pair;
@@ -84,9 +99,7 @@ public class DaxPairCodec {
         else {
             pair = new DaxPairString(tag, valueStr ,operator);
         }
-
        return pair;
-
     }
 
 }

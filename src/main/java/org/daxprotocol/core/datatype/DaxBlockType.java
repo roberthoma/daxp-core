@@ -24,14 +24,14 @@ package org.daxprotocol.core.datatype;
 
 public enum DaxBlockType {//extends DaxValue<String> {
 
-    BLOCK_MESSAGE('M',"Message block"), /// Only in dictionary type message
-    BLOCK_NAMESPACE('S',"Namespace block"), /// Only in dictionary type message
-    BLOCK_ENTITY('E', "Entity block"),
+    BLOCK_MESSAGE('M',"Message definition block"), /// Only in dictionary type message
+    BLOCK_NAMESPACE('S',"Namespace definition block"), /// Only in dictionary type message
+    BLOCK_ENTITY('E', "Entity definition block"),
     BLOCK_TYPE('T',"Type definition block"), /// Only in dictionary type message
     BLOCK_FIELD('F',"Field definition block"),
-    BLOCK_VALUE('V',"Value  block"),   // Nested entity value or one record from collection
-    BLOCK_BULK_COLLECTION('C',"Bulk collection block"),   // Nested entity value or one record from collection
-    BLOCK_INSTANCE('I',"Instance of entity block")
+    BLOCK_INSTANCE('I',"Instance of entity block"),
+    BLOCK_VALUE('V',"Value block"),   // Nested entity value or one record from collection
+    BLOCK_BULK_COLLECTION('C',"Bulk collection block")   // Nested entity value or one record from collection
    ;
     private final Character code;
     private final String description;

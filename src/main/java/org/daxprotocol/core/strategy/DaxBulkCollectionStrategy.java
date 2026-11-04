@@ -20,5 +20,5 @@
 
 package org.daxprotocol.core.strategy;
 
-public class DaxCollectionEncodingStrategy {
+public class DaxBulkCollectionStrategy {
 }

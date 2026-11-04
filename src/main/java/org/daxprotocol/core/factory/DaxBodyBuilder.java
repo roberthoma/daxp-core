@@ -233,6 +233,9 @@ public class DaxBodyBuilder {
                                    Set<DaxTag> reqTagSet,DaxTag ownerTag)
     {
         logger.trace("begin processCollection block {}, tag {}", blockIdx, tag.getTagId());
+//        if (isBulkCompose(tag,object)) {
+//
+//        }
 
         if (dataTypeService.isMap(object)) {
             processMapBlock(blockIdx, tag, body, (Map<?, ?>) object, reqTagSet, ownerTag);

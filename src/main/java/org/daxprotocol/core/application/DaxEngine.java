@@ -103,11 +103,10 @@ public class DaxEngine {
         namespaceMapper.registerPredefined(sysNamespace);
         namespaceMapper.registerPredefined(appNamespace);
 
+        dataTypeService = new DaxDataTypeService();
 
         tagParser  = new DaxTagParser(namespaceMapper);
         tagCodec   = new DaxTagCodec(namespaceConfig, namespaceMapper, tagParser );
-
-        dataTypeService = new DaxDataTypeService();
         dataTypeCodec = new DaxDataTypeCodec(dataTypeService, tagCodec);
 
         valueCodec = new DaxValueCodec(dataTypeCodec);
@@ -132,7 +131,7 @@ public class DaxEngine {
         objectMessageFactory =  new DaxBodyBuilder(coreConfig, tagCodec, dataTypeCodec, valueCodec,
                 semanticRegistry, dataTypeService, bulkCollectionBuilder);
 
-        pairCodec     = new DaxPairCodec    (tagCodec);
+        pairCodec     = new DaxPairCodec    (tagCodec, dataTypeService);
         preambleCodec = new DaxPreambleCodec( namespaceMapper);
 
         DaxHeadCodec    headCodec    = new DaxHeadCodec(pairCodec);
