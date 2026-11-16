@@ -23,7 +23,8 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
 //TODO For refactoring and with respecting escaping chars
-public abstract class DaxPair<T>{
+//public abstract class DaxPair<T>{
+public class DaxPair<T>{
     DaxTag tag;
     char operator;
     protected T value;

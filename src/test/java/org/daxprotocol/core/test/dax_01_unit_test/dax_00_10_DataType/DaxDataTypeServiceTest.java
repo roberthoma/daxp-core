@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -32,6 +33,20 @@ public class DaxDataTypeServiceTest {
 
     static class PlainObject {
         private String id;
+    }
+
+    static class FieldTypes {
+        private String text;
+        private int number;
+        private Boolean flag;
+        private BigDecimal decimal;
+        private LocalDate date;
+        private List<String> list;
+        private Set<SampleDaxpEntity> set;
+        private Map<String, SampleDaxpEntity> map;
+        private SampleDaxpEntity entity;
+        private TestEnum dictionary;
+        private PlainObject unknown;
     }
 
     private DaxDataTypeService service;
@@ -134,9 +149,40 @@ public class DaxDataTypeServiceTest {
         assertThat(service.decodeClass(Map.class)).isEqualTo(DaxDataType.COLLECTION);
         assertThat(service.decodeClass(SampleDaxpEntity.class)).isEqualTo(DaxDataType.ENTITY);
         assertThat(service.decodeClass(Enum.class)).isEqualTo(DaxDataType.STRING);
+        assertThat(service.decodeClass(TestEnum.class)).isEqualTo(DaxDataType.STRING);
         assertThat(service.decodeClass(PlainObject.class)).isEqualTo(DaxDataType.UNKNOWN);
 
         printLog("Finished decodeClass test");
+    }
+
+    @Test
+    @DisplayName("decodeClass(Field) should classify declared field types without reading their values")
+    void decodeField() throws NoSuchFieldException {
+        Map<String, DaxDataType> expectedTypes = Map.ofEntries(
+                Map.entry("text", DaxDataType.STRING),
+                Map.entry("number", DaxDataType.INTEGER),
+                Map.entry("flag", DaxDataType.BOOLEAN),
+                Map.entry("decimal", DaxDataType.DECIMAL),
+                Map.entry("date", DaxDataType.LOCAL_DATE),
+                Map.entry("list", DaxDataType.COLLECTION),
+                Map.entry("set", DaxDataType.COLLECTION),
+                Map.entry("map", DaxDataType.COLLECTION),
+                Map.entry("entity", DaxDataType.ENTITY),
+                Map.entry("dictionary", DaxDataType.STRING),
+                Map.entry("unknown", DaxDataType.UNKNOWN));
+
+        for (var entry : expectedTypes.entrySet()) {
+            Field field = FieldTypes.class.getDeclaredField(entry.getKey());
+            assertThat(service.decodeClass(field))
+                    .as("Declared type of field %s", field.getName())
+                    .isEqualTo(entry.getValue());
+        }
+    }
+
+    @Test
+    @DisplayName("decodeClass(Field) should return NONE for a null field")
+    void decodeNullField() {
+        assertThat(service.decodeClass((Field) null)).isEqualTo(DaxDataType.NONE);
     }
 
     @Test

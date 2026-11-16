@@ -20,7 +20,6 @@
 package org.daxprotocol.core.factory;
 
 import org.daxprotocol.core.annotation.DaxpEntity;
-import org.daxprotocol.core.application.DaxCoreConfig;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
@@ -38,6 +37,7 @@ import org.daxprotocol.core.model.body.DaxBody;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTag;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.daxprotocol.core.strategy.DaxBulkCollectionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
@@ -53,14 +53,14 @@ public class DaxBodyBuilder {
     private final DaxSemanticRegistry semanticRegistry;
     private final DaxDataTypeService dataTypeService;
     private final DaxBulkCollectionEncoder bulkCollectionBuilder;
-    private final DaxCoreConfig coreConfig;
+    private final DaxBulkCollectionStrategy bulkCollectionStrategy;
     ///----------------------------------------------------------------------------------------
-    public DaxBodyBuilder(DaxCoreConfig coreConfig,DaxTagCodec tagCodec,
+    public DaxBodyBuilder(DaxBulkCollectionStrategy  bulkCollectionStrategy ,DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec, DaxValueCodec valueCodec
     ,  DaxSemanticRegistry semanticRegistry, DaxDataTypeService dataTypeService,
        DaxBulkCollectionEncoder bulkCollectionBuilder)
     {
-        this.coreConfig = coreConfig;
+        this.bulkCollectionStrategy = bulkCollectionStrategy;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
@@ -233,9 +233,12 @@ public class DaxBodyBuilder {
                                    Set<DaxTag> reqTagSet,DaxTag ownerTag)
     {
         logger.trace("begin processCollection block {}, tag {}", blockIdx, tag.getTagId());
-//        if (isBulkCompose(tag,object)) {
-//
-//        }
+
+        if (bulkCollectionStrategy.isBulkCompose(object)) {
+           bulkCollectionToBlock(blockIdx, tag, body, object, ownerTag);
+  //          body.putPair(blockIdx, new DaxPair<>(COLLECTION_BULK_DATA,object));
+            return;
+        }
 
         if (dataTypeService.isMap(object)) {
             processMapBlock(blockIdx, tag, body, (Map<?, ?>) object, reqTagSet, ownerTag);
@@ -250,43 +253,10 @@ public class DaxBodyBuilder {
         }
     }
     ///----------------------------------------------------------------------------------------
-    private boolean isBulkCompose(DaxTag tag, Iterable<?> iterable) {
-
-        if (iterable instanceof Collection<?> col) {
-            return   isBulkCompose( tag,col.size());
-        }
-
-        int count = 0;
-        for (Object ignored : iterable) {
-            count++;
-            return isBulkCompose( tag,count);
-        }
-        return false;
-    }
-
-    ///----------------------------------------------------------------------------------------
-    private boolean isBulkCompose(DaxTag tag,Map<?, ?> map){
-        return isBulkCompose( tag,map.size());
-    }
-
-    ///----------------------------------------------------------------------------------------
-    private boolean isBulkCompose(DaxTag tag,int size){
-    //todo for develop check by tag that any entity or collection is flat or not
-    // if on flat return false
-
-        if (size > coreConfig.getMinBulkSize()) {
-            return true;
-        }
-        return false;
-    }
-
-
-    ///----------------------------------------------------------------------------------------
-
     private void processMapBlock(int blockIdx, DaxTag tag, DaxBody body, Map<?, ?> map,
                                 Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
-        if (isBulkCompose(tag,map)) {
+        if (bulkCollectionStrategy.isBulkCompose(map)) {
             bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.mapEncode(map), ownerTag);
         } else {
             map.forEach((key, value) ->
@@ -301,8 +271,8 @@ public class DaxBodyBuilder {
     private void processIterableBlock(int blockIdx, DaxTag tag, DaxBody body, Iterable<?> collection,
                                      Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
-        if (isBulkCompose(tag,collection)) {
-            bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.collectionEncode(collection), ownerTag);
+        if (bulkCollectionStrategy.isBulkCompose(collection)) {
+            bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.iterableCollectionEncode(collection), ownerTag);
         } else {
             collection.forEach(objVal ->
                     collectionElementToBlock(blockIdx, tag, body, null, objVal, reqTagSet, ownerTag)
@@ -330,7 +300,9 @@ public class DaxBodyBuilder {
             Set<DaxTag> reqTagSet,
             DaxTag ownerTag
     ) {
-        if (dataTypeService.isPrimitiveType(element.getClass())) {
+        if (dataTypeService.isPrimitiveType(element.getClass())
+           || collectionTag.getTagId()==230)
+            {
             body.putPair(nestedIdx, valueCodec.encodeToPairs(collectionTag, element));
             body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID, ownerTag));
             body.putPair(nestedIdx, new DaxPairTag(ENTRY_TAG, tag));

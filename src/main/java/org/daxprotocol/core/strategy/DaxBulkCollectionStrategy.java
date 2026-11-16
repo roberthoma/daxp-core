@@ -20,5 +20,56 @@
 
 package org.daxprotocol.core.strategy;
 
+import org.daxprotocol.core.application.DaxCoreConfig;
+
+import java.util.Collection;
+import java.util.Map;
+
 public class DaxBulkCollectionStrategy {
+
+    private final DaxCoreConfig coreConfig;
+
+    public DaxBulkCollectionStrategy(DaxCoreConfig coreConfig) {
+        this.coreConfig = coreConfig;
+    }
+
+    public boolean isBulkCompose(Object object) {
+        if (object instanceof Iterable<?> iterable) {
+            return isBulkCompose(iterable);
+        }
+        if (object instanceof Map<?, ?> map) {
+            return isBulkCompose(map);
+        }
+        return false;
+    }
+
+    public boolean isBulkCompose(Iterable<?> iterable) {
+
+        if (iterable instanceof Collection<?> col) {
+            return   isBulkCompose(col.size());
+        }
+
+        int count = 0;
+        for (Object ignored : iterable) {
+            count++;
+            return isBulkCompose(count);
+        }
+        return false;
+    }
+
+    ///----------------------------------------------------------------------------------------
+    public boolean isBulkCompose(Map<?, ?> map){
+        return isBulkCompose(map.size());
+    }
+
+    ///----------------------------------------------------------------------------------------
+    private boolean isBulkCompose(int size){
+    //todo for develop check by tag that any entity or collection is flat or not
+    // if on flat return false
+
+        if (size > coreConfig.getMinBulkSize()) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -25,6 +25,7 @@ import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.datatype.DaxBlockType;
+import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
@@ -45,7 +46,7 @@ public class DaxMessageConverter {
     private static final Logger logger = LoggerFactory.getLogger(DaxMessageConverter.class);
 
     private final DaxNamespaceConfig config;
-    private final DaxSemanticRegistry semanticRegistry;
+    private final DaxSemanticInspector semanticInspector;
     private final DaxTagCodec tagCodec;
     private final DaxDataTypeCodec dataTypeCodec;
     private final DaxValueCodec valueCodec;
@@ -53,14 +54,14 @@ public class DaxMessageConverter {
     private final DaxBulkCollectionDecoder bulkCollectionDecoder;
 
     public DaxMessageConverter(DaxNamespaceConfig config,
-            DaxSemanticRegistry semanticRegistry,
+            DaxSemanticInspector semanticInspector,
             DaxTagCodec tagCodec,
             DaxDataTypeCodec dataTypeCodec,
             DaxValueCodec valueCodec,
             DaxDataTypeService daxDataTypeService,
             DaxBulkCollectionDecoder bulkCollectionDecoder) {
         this.config = config;
-        this.semanticRegistry = semanticRegistry;
+        this.semanticInspector = semanticInspector;
         this.tagCodec = tagCodec;
         this.dataTypeCodec = dataTypeCodec;
         this.valueCodec = valueCodec;
@@ -72,7 +73,7 @@ public class DaxMessageConverter {
         return createFromMessage(message, targetClass, 0);
     }
 
-    public <T> T createFromMessage(DaxMessage message, Class<T> targetClass, int blockIdx) {
+    private <T> T createFromMessage(DaxMessage message, Class<T> targetClass, int blockIdx) {
         T instance = instantiateClass(targetClass);
 
         for (Field field : targetClass.getDeclaredFields()) {
@@ -83,6 +84,18 @@ public class DaxMessageConverter {
 
             DaxTag tag = tagCodec.decode(ann);
             field.setAccessible(true);
+            DaxDataType ttType =  semanticInspector.getDataType(tag);
+
+            if (ttType== DaxDataType.NONE){
+                logger.warn("Not scanned or registered  datatype for tag={}", tagCodec.encode(tag, true));
+            }
+
+
+            //nie wszystkie typy są w rejestrze : takie jak encje, typy enum ... tdo rozbudowannia skaner i i poniższy
+            //  kod do budowy kolecji .
+            //do eleiminacji DaxReferenceType ,,,
+            //
+            // Powstał DataType.REF  który zwróca tag wskazujący na innych type dołożyuć tag
 
             try {
                 if (message.isNullAt(blockIdx, tag)) {
@@ -152,6 +165,7 @@ public class DaxMessageConverter {
         Class<?> elementClass = getGenericTypeArgument(field, 0, String.class);
 
         for (Integer refIdx : refBlocksIdx) {
+            logger.trace("Block refIdx={}",refIdx);
             int targetBlockIdx = validateAndGetBlockIndex(message, refIdx);
 
             var block = message.getBody().getBlockMap(targetBlockIdx);
@@ -159,16 +173,17 @@ public class DaxMessageConverter {
             DaxBlockType blockType = DaxBlockType.fromCode(blockCharCode);
 
             if(DaxBlockType.BLOCK_BULK_COLLECTION.equals(blockType )){
-                String bulkVal = message.getBody()
+//                String bulkVal = message.getBody()
+                Collection<?> bulkVal = Collections.singleton(message.getBody()
                         .getBlockMap(targetBlockIdx)
                         .get(DaxCoreTags.COLLECTION_BULK_DATA)
-                        .getStrValue();
-
-                collection.addAll(bulkCollectionDecoder.decodeCollection(
-                        bulkVal,
-                        elementClass,
-                        1 //TODO  get from preamble
-                ));
+                        .getValue());
+                field.set(instance, collection);
+//                collection.addAll(bulkCollectionDecoder.decodeCollection(
+//                        bulkVal,
+//                        elementClass,
+//                        1 //TODO  get from preamble
+//                ));
                 continue;
             }
 

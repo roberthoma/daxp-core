@@ -199,12 +199,16 @@ public class DaxAnnotationScanner {
 
         // Resolve data type
         DaxDataType resolvedDataType = (daxDataType == DaxDataType.NONE)
-                ? dataTypeService.decodeClass(field.getType())
+                ? dataTypeService.decodeClass(field)
                 : daxDataType;
+//        DaxDataType resolvedDataType = (daxDataType == DaxDataType.NONE)
+//                ? dataTypeService.decodeClass(field.getType())
+//                : daxDataType;
 
         // Ensure unified parameter order: (tag, entityTag, dataType) or (tag, dataType)
         if (resolvedDataType.isPrimitiveType() || dataTypeService.isPrimitiveType(field.getType())) {
             semanticCollector.registerDataType(tag, entityTag, resolvedDataType);
+//            semanticCollector.registerDataType(tag, entityTag, resolvedDataType);
         } else {
             handleComplexTypeRegistration(field, tag, entityTag);
         }
@@ -222,7 +226,7 @@ public class DaxAnnotationScanner {
         Class<?> fieldType = field.getType();
 
         logger.debug("Processing complex type: {} for tag: {} entity: {}",
-                fieldType.getName(), tagCodec.encode(tag), tagCodec.encode(entityTag));
+                fieldType.getSimpleName(), tagCodec.encode(tag), tagCodec.encode(entityTag));
 
         // Check if the type is already registered
         DaxTag refTag = classDaxTagMap.get(fieldType);
@@ -430,6 +434,7 @@ public class DaxAnnotationScanner {
         String entityName = !entityAnn.name().isBlank() ? entityAnn.name() : clazz.getSimpleName();
         classDaxTagMap.put(clazz, entityTag);
 
+        semanticCollector.putTagAtrDataType(entityTag,DaxDataType.ENTITY);
         semanticCollector.putTagAtrName(entityTag, entityName);
         semanticCollector.putTagAtrDescription(entityTag, entityAnn.description());
         semanticCollector.putTagAtrDataType(entityTag, DaxDataType.ENTITY);

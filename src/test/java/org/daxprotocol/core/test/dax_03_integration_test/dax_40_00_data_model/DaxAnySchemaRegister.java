@@ -68,8 +68,8 @@ public class DaxAnySchemaRegister {
     public static final int TEST_VALUE_SUB_ENTITY_5077 =  5077;
 
 
-    @DaxpTag( description = "Tested not used TAG", daxDataType = DaxDataType.TAG)
-    public static final int TEST_NOT_USE_TAG_987654321 =  999999999;
+//    @DaxpTag( description = "Tested not used TAG", daxDataType = DaxDataType.TAG)
+//    public static final int TEST_NOT_USE_TAG_987654321 =  999999999;
 
 
     @DaxpMessage(description = "Base Entity DATA")

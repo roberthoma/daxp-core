@@ -25,6 +25,7 @@ import org.daxprotocol.core.annotation.DaxpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -103,6 +104,8 @@ public class DaxDataTypeService {
         if (clazz.equals(LocalDate.class)) return DaxDataType.LOCAL_DATE;
         if (clazz.equals(LocalDateTime.class)) return DaxDataType.LOCAL_DATE_TIME;
 
+        if (Enum.class.isAssignableFrom(clazz)) return DaxDataType.STRING;
+
         if(isDaxpCollection(clazz)) return DaxDataType.COLLECTION;
 
         if (clazz.isAnnotationPresent(DaxpEntity.class)) {
@@ -112,8 +115,6 @@ public class DaxDataTypeService {
 //        if (DaxpDictionary.class.isAssignableFrom(clazz)) {
 //            return DaxDataType.COLLECTION;
 //        }
-
-        if (clazz.equals(Enum.class)) return DaxDataType.STRING;   //?????????
 
         return DaxDataType.UNKNOWN;
     }
@@ -261,4 +262,14 @@ public class DaxDataTypeService {
         return null;
     }
 
+    /**
+     * Resolves the DAXP data type from a field's declared type.
+     * Generic collections are classified by their container type.
+     *
+     * @param field the field to inspect, or null
+     * @return the declared type's DAXP data type, or NONE for a null field
+     */
+    public DaxDataType decodeClass(Field field) {
+        return decodeClass(field == null ? null : field.getType());
+    }
 }

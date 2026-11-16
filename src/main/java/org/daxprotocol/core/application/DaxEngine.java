@@ -44,6 +44,7 @@ import org.daxprotocol.core.namespace.DaxNamespace;
 import org.daxprotocol.core.mapper.DaxMessageMapper;
 import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.codec.DaxTrailerCodec;
+import org.daxprotocol.core.strategy.DaxBulkCollectionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,6 +78,7 @@ public class DaxEngine {
     private final DaxBulkCollectionEncoder bulkCollectionBuilder;
     private final DaxBulkCollectionDecoder bulkCollectionDecoder;
 
+    private final DaxBulkCollectionStrategy bulkCollectionStrategy;
 
     private final DaxSemanticInspector semanticInspector;
     private final DaxDataTypeService dataTypeService;
@@ -89,7 +91,9 @@ public class DaxEngine {
 
 //    public DaxEngine(DaxConfig config){
     public DaxEngine(Properties properties){
-         coreConfig = new DaxCoreConfig();
+        coreConfig = new DaxCoreConfig();
+
+        bulkCollectionStrategy = new DaxBulkCollectionStrategy(coreConfig);
 
         this.namespaceConfig = DaxpNamespaceConfigFactory.createConfig(properties);
 
@@ -128,10 +132,11 @@ public class DaxEngine {
 
 
 
-        objectMessageFactory =  new DaxBodyBuilder(coreConfig, tagCodec, dataTypeCodec, valueCodec,
+
+        objectMessageFactory =  new DaxBodyBuilder(bulkCollectionStrategy, tagCodec, dataTypeCodec, valueCodec,
                 semanticRegistry, dataTypeService, bulkCollectionBuilder);
 
-        pairCodec     = new DaxPairCodec    (tagCodec, dataTypeService);
+        pairCodec     = new DaxPairCodec    (tagCodec, dataTypeService, bulkCollectionBuilder);
         preambleCodec = new DaxPreambleCodec( namespaceMapper);
 
         DaxHeadCodec    headCodec    = new DaxHeadCodec(pairCodec);
@@ -157,7 +162,7 @@ public class DaxEngine {
         );
 
         messageConverter     = new DaxMessageConverter(namespaceConfig,//namespaceMapper ,
-                semanticRegistry, tagCodec, dataTypeCodec, valueCodec, dataTypeService, bulkCollectionDecoder);
+                semanticInspector, tagCodec, dataTypeCodec, valueCodec, dataTypeService, bulkCollectionDecoder);
 
 
 

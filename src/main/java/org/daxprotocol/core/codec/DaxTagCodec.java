@@ -63,21 +63,35 @@ public class DaxTagCodec {
     /**
      * Encodes a {@link DaxTag} into its formatted string representation based on its namespace.
      *
-     * @param tag the {@link DaxTag} to encode
+     * @param tag          the {@link DaxTag} to encode
+     * @param isFullEncode whether to force the inclusion of the namespace prefix even if
+     *                     the tag's namespace matches the application's namespace
      * @return the string representation of the tag, formatted with namespace prefixes if applicable
      */
-    public String encode(DaxTag tag){
+    public String encode(DaxTag tag, boolean isFullEncode){
         if(tag.getNamespaceId() == DaxCoreConstants.DAXP_NAMESPACE_ID){
             return  DaxCoreConstants.DAXP_NAMESPACE_TAG_PREFIX +
                     DaxCoreConstants.NAMESPACE_TAG_SEPARATOR + tag.getTagId();
         }
 
-        if(tag.getNamespaceId() != config.getAppNamespaceId())
+        if(tag.getNamespaceId() != config.getAppNamespaceId()
+                || isFullEncode
+        )
         {
             return  namespaceMapper.getReference(tag.getNamespaceId()) +
                     DaxCoreConstants.NAMESPACE_TAG_SEPARATOR + tag.getTagId();
         }
         return String.valueOf(tag.getTagId());
+    }
+
+    /**
+     * Encodes a {@link DaxTag} into its formatted string representation using standard encoding rules.
+     *
+     * @param tag the {@link DaxTag} to encode
+     * @return the string representation of the tag
+     */
+    public String encode(DaxTag tag){
+        return encode(tag, false);
     }
 
     /**

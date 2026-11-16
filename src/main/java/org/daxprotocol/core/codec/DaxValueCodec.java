@@ -86,9 +86,11 @@ public class DaxValueCodec {
             case BOOLEAN -> Set.of(new DaxPairBoolean(tag,(Boolean) obj));
             case DOUBLE -> Set.of(new DaxPairDouble(tag,(Double) obj));
             case LONG  ->  Set.of(new DaxPairLong(tag,(Long) obj));
-            case TAG       -> Set.of(new DaxPairTag(tag,(DaxTag) obj));
-            default      -> { logger.error(" NO DATA TYPE CONVERTING {}",obj.getClass().getName());
-                throw new RuntimeException("NO DATA TYPE CONVERTING !!!");}
+        //    case TAG       -> Set.of(new DaxPairTag(tag,(DaxTag) obj));
+            default -> Set.of(new DaxPair<>(tag,obj));
+
+//            default      -> { logger.error(" NO DATA TYPE CONVERTING {}",obj.getClass().getName());
+//                throw new RuntimeException("NO DATA TYPE CONVERTING !!!");}
         };
 
     }

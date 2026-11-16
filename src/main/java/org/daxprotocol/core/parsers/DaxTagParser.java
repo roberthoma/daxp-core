@@ -22,14 +22,17 @@ package org.daxprotocol.core.parsers;
 
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.exceptions.DaxTagParserException;
+import org.daxprotocol.core.factory.DaxBodyBuilder;
 import org.daxprotocol.core.mapper.DaxNamespaceMapper;
 import org.daxprotocol.core.model.tag.DaxTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DaxTagParser {
-
+    private static final Logger logger = LoggerFactory.getLogger(DaxTagParser.class);
     DaxNamespaceMapper namespaceMapper;
 
     public DaxTagParser(DaxNamespaceMapper namespaceMapper) {
@@ -59,7 +62,7 @@ public class DaxTagParser {
                 // (Standard trim-like behavior)
                 continue;
             } else {
-                throw new DaxTagParserException("Invalid character: " + c);
+                throw new DaxTagParserException("Invalid character: " + c + " in seq: "+seq);
             }
         }
 
@@ -83,7 +86,7 @@ public class DaxTagParser {
      */
 
     public DaxTag parseDaxTag(String tagStr, int msgNamespaceId) {
-
+        logger.trace("parseDaxTag tagStr={}",tagStr);
         if (tagStr == null) {
             throw new DaxTagParserException("NOT correct DaxTag: Input is null");
         }

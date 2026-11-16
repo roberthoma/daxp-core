@@ -23,6 +23,7 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
+import org.daxprotocol.core.factory.DaxBulkCollectionEncoder;
 import org.daxprotocol.core.model.pair.DaxPair;
 import org.daxprotocol.core.model.pair.DaxPairString;
 import org.daxprotocol.core.model.pair.DaxPairTagSet;
@@ -38,9 +39,11 @@ public class DaxPairCodec {
 
     //TODO devqalop for using DaxDataTypeService
     DaxDataTypeService dataTypeService;
-    public DaxPairCodec(  DaxTagCodec tagCodec, DaxDataTypeService  dataTypeService) {
+    DaxBulkCollectionEncoder bulkCollectionBuilder;
+    public DaxPairCodec(  DaxTagCodec tagCodec, DaxDataTypeService  dataTypeService, DaxBulkCollectionEncoder bulkCollectionBuilder) {
         this.tagCodec = tagCodec;
         this.dataTypeService = dataTypeService;
+        this.bulkCollectionBuilder = bulkCollectionBuilder;
     }
 
     private   void encode(StringBuilder sb, DaxTag tag, String strValue , DaxPreamble preamble, char operator) {
@@ -69,19 +72,14 @@ public class DaxPairCodec {
            return;
         }
 
-
         if(dataTypeService.isDaxpCollection(daxPair.getValue()) ){
-         //   value = "" ?????
-         //   encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
+            value = bulkCollectionBuilder.collectionEncode(daxPair.getValue());
+            encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
             return;
         }
-//            if (dataTypeService.isDaxpCollection(value)) {
-
 
         value = daxPair.getStrValue();
-
         encode(sb,daxPair.getTag(),value ,preamble, daxPair.getOperator() );
-        return;
     }
 
 

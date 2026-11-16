@@ -284,7 +284,7 @@ public class DaxNestedEntityBulkCollectionTest extends DaxNamespaceConfigBaseIni
         VinToCarRegistry registry = new VinToCarRegistry();
         DaxMessage msg = msgFactory.toDaxMessage("BULK.VIN_MAP", registry);
         DaxPreamble preamble = new DaxPreamble();
-
+        System.out.println("-A---------------------------------------");
         System.out.println(messageCodec.encode(msg, preamble));
         System.out.println(DaxMessageDecorator.decorate(messageCodec.encode(msg, preamble)));
 

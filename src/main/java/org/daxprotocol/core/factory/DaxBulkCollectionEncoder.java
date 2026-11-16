@@ -121,7 +121,7 @@ public class DaxBulkCollectionEncoder {
         if (clazz.isAnnotationPresent(DaxpEntity.class)) {
             sb.append(entityToBulk(val));
         } else if (val instanceof Iterable<?>) {
-            sb.append(collectionEncode((Iterable<?>) val));
+            sb.append(iterableCollectionEncode((Iterable<?>) val));
         } else if (val instanceof Map<?, ?>) {
             sb.append(mapEncode((Map<?, ?>) val));
         } else {
@@ -136,7 +136,7 @@ public class DaxBulkCollectionEncoder {
         if (entity == null) {
             return "";
         }
-        return collectionEncode(Collections.singletonList(entity));
+        return iterableCollectionEncode(Collections.singletonList(entity));
     }
 
     // =========================================================================================
@@ -146,7 +146,7 @@ public class DaxBulkCollectionEncoder {
     /**
      * Serializes an Iterable (List or Set) into DAXP bulk payload representation.
      */
-    public String collectionEncode(Iterable<?> collection) {
+    public String iterableCollectionEncode(Iterable<?> collection) {
         Iterator<?> iterator = collection.iterator();
         if (!iterator.hasNext()) {
             return "";
@@ -280,5 +280,23 @@ public class DaxBulkCollectionEncoder {
         sb.append(DaxCoreConstants.END_OF_MEDIUM);
         sb.append(DaxCoreConstants.SEPARATOR_FILE);
         return sb.toString();
+    }
+
+    /**
+     * Serializes a collection into DAXP bulk payload format, delegating maps to
+     * {@link #mapEncode(Map)} and iterables to {@link #iterableCollectionEncode(Iterable)}.
+     *
+     * @param collection the map or iterable to encode
+     * @return the encoded bulk payload, or an empty string if the input is null,
+     *         unsupported, or empty
+     */
+    public String collectionEncode(Object collection) {
+        if (collection instanceof Map<?, ?> map) {
+            return mapEncode(map);
+        }
+        if (collection instanceof Iterable<?> iterable) {
+            return iterableCollectionEncode(iterable);
+        }
+        return "";
     }
 }
