@@ -300,8 +300,8 @@ public class DaxBodyBuilder {
             Set<DaxTag> reqTagSet,
             DaxTag ownerTag
     ) {
-        if (dataTypeService.isPrimitiveType(element.getClass())
-           || collectionTag.getTagId()==230)
+        if (  dataTypeService.isPrimitiveType(element.getClass())
+           || collectionTag.equals(DaxCoreTags.COLLECTION_BULK_DATA)) // ??????????
             {
             body.putPair(nestedIdx, valueCodec.encodeToPairs(collectionTag, element));
             body.putPair(nestedIdx, new DaxPairTag(ENTRY_OWNER_ID, ownerTag));

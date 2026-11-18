@@ -188,6 +188,10 @@ public class DaxAnyTestEntity {   //TODO
         return subEntity_5077;
     }
 
+    public Map<Integer, DaxSubEntity> getSubEntityMap_5116() {
+        return subEntityMap_5116;
+    }
+
     public DaxAnyTestEntity(){
 
     }

@@ -20,7 +20,6 @@
 
 package org.daxprotocol.core.datatype;
 
-import org.daxprotocol.core.annotation.DaxpDictionary;
 import org.daxprotocol.core.annotation.DaxpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -242,7 +241,7 @@ public class DaxDataTypeService {
             } else if (targetClass == Double.class || targetClass == double.class) {
                 return (T) Double.valueOf(valStr);
             } else if (targetClass == Boolean.class || targetClass == boolean.class) {
-                return (T) Boolean.valueOf(valStr);
+                return (T) Boolean.valueOf(valStr); //TODO "Y" not return true
             } else if (targetClass == Character.class || targetClass == char.class) {
                 return (T) Character.valueOf(valStr.charAt(0));
             } else if (targetClass == LocalDate.class) {

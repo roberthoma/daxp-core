@@ -23,8 +23,7 @@ import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.datatype.DaxDataType;
 import org.daxprotocol.core.model.tag.DaxTag;
 //TODO For refactoring and with respecting escaping chars
-//public abstract class DaxPair<T>{
-public class DaxPair<T>{
+public abstract class DaxPair<T>{
     DaxTag tag;
     char operator;
     protected T value;
@@ -119,14 +118,3 @@ public DaxTag getTag() {
 }
 
 
-/*
-
-
-public <T> T getValue(DaxTag tag, Class<T> type) {
-    DaxValue<?> wrappedValue = tagPairMap.get(tag);
-    if (wrappedValue == null) return null;
-
-    // Tutaj możesz sprawdzić spójność z tagDataType
-    return type.cast(wrappedValue.getValue());
-}
-*/

@@ -79,7 +79,17 @@ public class DaxValueCodec {
 
 
         return switch (dataType){
-       //     case COLLECTION ->  dataTypeCodec.encode(obj.getClass());   //TODO to change ?????
+            case COLLECTION -> {
+                if (obj instanceof Map<?, ?> map) {
+                    yield Set.of(new DaxPairMap(tag, map));
+                }
+                if (obj instanceof Collection<?> collection) {
+                    yield Set.of(new DaxPairCollection(tag, collection));
+                }
+                throw new IllegalArgumentException(
+                        "Unsupported collection type: " + obj.getClass().getName());
+            }
+
             case STRING ->  Set.of( new DaxPairString(tag, obj.toString()));
             case INTEGER -> Set.of(new DaxPairInteger(tag,(Integer) obj));
             case CHARACTER -> Set.of(new DaxPairCharacter(tag,(Character) obj));
@@ -87,10 +97,14 @@ public class DaxValueCodec {
             case DOUBLE -> Set.of(new DaxPairDouble(tag,(Double) obj));
             case LONG  ->  Set.of(new DaxPairLong(tag,(Long) obj));
         //    case TAG       -> Set.of(new DaxPairTag(tag,(DaxTag) obj));
-            default -> Set.of(new DaxPair<>(tag,obj));
+   //       default -> Set.of(new DaxPair<>(tag,obj));
 
-//            default      -> { logger.error(" NO DATA TYPE CONVERTING {}",obj.getClass().getName());
-//                throw new RuntimeException("NO DATA TYPE CONVERTING !!!");}
+            default      -> {
+                logger.error(" NO DATA TYPE CONVERTING {} , Datatype:{}",obj.getClass().getName(), dataType);
+
+                throw new RuntimeException("NO DATA TYPE CONVERTING !!!");
+
+            }
         };
 
     }

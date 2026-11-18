@@ -26,6 +26,7 @@ import org.daxprotocol.core.codec.DaxTagCodec;
 import org.daxprotocol.core.codec.DaxValueCodec;
 import org.daxprotocol.core.datatype.DaxBlockType;
 import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.model.pair.DaxPairCollection;
 import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.datatype.DaxDataTypeCodec;
 import org.daxprotocol.core.datatype.DaxDataTypeService;
@@ -87,7 +88,7 @@ public class DaxMessageConverter {
             DaxDataType ttType =  semanticInspector.getDataType(tag);
 
             if (ttType== DaxDataType.NONE){
-                logger.warn("Not scanned or registered  datatype for tag={}", tagCodec.encode(tag, true));
+                logger.error("Not scanned or registered  datatype for tag={}", tagCodec.encode(tag, true));
             }
 
 
@@ -173,17 +174,14 @@ public class DaxMessageConverter {
             DaxBlockType blockType = DaxBlockType.fromCode(blockCharCode);
 
             if(DaxBlockType.BLOCK_BULK_COLLECTION.equals(blockType )){
-//                String bulkVal = message.getBody()
-                Collection<?> bulkVal = Collections.singleton(message.getBody()
+                DaxPairCollection coll = (DaxPairCollection)message.getBody()
                         .getBlockMap(targetBlockIdx)
-                        .get(DaxCoreTags.COLLECTION_BULK_DATA)
-                        .getValue());
-                field.set(instance, collection);
-//                collection.addAll(bulkCollectionDecoder.decodeCollection(
-//                        bulkVal,
-//                        elementClass,
-//                        1 //TODO  get from preamble
-//                ));
+                        .get(DaxCoreTags.COLLECTION_BULK_DATA);
+
+                Collection<?>  list = coll.getValue();
+
+                field.set(instance, list);
+
                 continue;
             }
 
@@ -222,17 +220,18 @@ public class DaxMessageConverter {
             DaxBlockType blockType = DaxBlockType.fromCode(blockCharCode);
 
             if(DaxBlockType.BLOCK_BULK_COLLECTION.equals(blockType )){
-                String bulkVal = message.getBody()
-                        .getBlockMap(targetBlockIdx)
-                        .get(DaxCoreTags.COLLECTION_BULK_DATA)
-                        .getStrValue();
-
-                map.putAll(bulkCollectionDecoder.decodeMap(
-                        bulkVal,
-                        keyClass,
-                        valueClass,
-                        1 //namespaceId  // todo to refactor
-                ));
+                var bulkPair = blockMap.get(DaxCoreTags.COLLECTION_BULK_DATA);
+                Object payload = bulkPair == null ? null : bulkPair.getValue();
+                if (payload instanceof Map<?, ?> bulkMap) {
+                    map.putAll(bulkMap);
+                } else if (payload instanceof String encoded) {
+                    map.putAll(bulkCollectionDecoder.decodeMap(
+                            encoded, keyClass, valueClass, tag.getNamespaceId()));
+                } else {
+                    throw new DaxException("DAXP-XXXXX", "Invalid bulk map payload for field '" + field.getName()
+                            + "': expected Map or String, got "
+                            + (payload == null ? "null" : payload.getClass().getName()));
+                }
                 continue;
             }
 
