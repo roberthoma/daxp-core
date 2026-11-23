@@ -142,7 +142,12 @@ public class DaxFrameParser {
                     listOfPair.clear();
                 }
 
-                DaxPair<?> pair = pairCodec.decode(tag, valueStr, foundOperator, preamble.getNamespaceId());
+                DaxPair<?> pair = pairCodec.decode(
+                        tag,
+                        unescapeValue(valueStr, pairSeparator),
+                        foundOperator,
+                        preamble.getNamespaceId());
+
                 listOfPair.add(pair);
 
                 if (tag.equals(DaxCoreTags.CHECKSUM)) {
@@ -231,6 +236,25 @@ public class DaxFrameParser {
         }
 
         return -1;
+    }
+
+    private String unescapeValue(String value, char separator) {
+        StringBuilder result = new StringBuilder(value.length());
+
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (c == '\\' && i + 1 < value.length()) {
+                char next = value.charAt(i + 1);
+                if (next == separator || next == '\\') {
+                    result.append(next);
+                    i++;
+                    continue;
+                }
+            }
+            result.append(c);
+        }
+
+        return result.toString();
     }
 
 }
