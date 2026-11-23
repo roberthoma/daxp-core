@@ -22,6 +22,7 @@ package org.daxprotocol.core.registries;
 
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.datatype.DaxDataType;
+import org.daxprotocol.core.model.pair.DaxPairBoolean;
 import org.daxprotocol.core.model.tag.DaxTag;
 
 import static org.daxprotocol.core.application.DaxCoreTags.ATR_DATA_TYPE;
@@ -63,13 +64,26 @@ public class DaxSemanticInspector {
         return attributes.get(DaxCoreTags.COLLECTION_VALUE_DATA_TYPE).getDataTypeValue();
     }
 
-    private boolean checkBooleanValue(DaxTag tag, DaxTag booleanValueTag){
-            var attributes = semanticRegistry.getTagAttributes().getAttributMap().get(tag);
 
-            if( attributes.containsKey(booleanValueTag)){
-                return attributes.get(booleanValueTag).getBooleanValue();
-            }
+    private boolean checkBooleanValue(DaxTag tag, DaxTag booleanValueTag) {
+        var attributes = semanticRegistry.getTagAttributes()
+                .getAttributMap().get(tag);
+
+        if (attributes == null) {
             return false;
+        }
+
+        var pair = attributes.get(booleanValueTag);
+        if (pair == null) {
+            return false;
+        }
+
+        if (pair instanceof DaxPairBoolean booleanPair) {
+            return Boolean.TRUE.equals(booleanPair.getValue());
+        }
+
+        throw new IllegalArgumentException(
+                "Expected DaxPairBoolean for attribute " + booleanValueTag);
     }
 
     public boolean hasKey(DaxTag tag) {

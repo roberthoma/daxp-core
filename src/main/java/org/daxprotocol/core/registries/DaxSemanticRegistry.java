@@ -320,9 +320,10 @@ public class DaxSemanticRegistry {
     public boolean isCollectionDictionary(DaxTag tag){
         if(tagAttributes.containsKey(tag)){
             if(tagAttributes.getAttributMap().get(tag).containsKey(DaxCoreTags.COLLECTION_IS_DICTIONARY)){
-                return tagAttributes.getAttributMap()
+                return (boolean) (tagAttributes.getAttributMap()
                                      .get(tag)
-                                      .get(DaxCoreTags.COLLECTION_IS_DICTIONARY).getBooleanValue();
+                                     .get(DaxCoreTags.COLLECTION_IS_DICTIONARY))
+                                     .getValue();
             }
         }
 

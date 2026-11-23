@@ -172,7 +172,7 @@ public class DaxMessagePopulator {
             }
             if(blockPairMap.containsKey(DaxCoreTags.ATR_READONLY)) {
                 semanticCollector.putTagAtrReadOnly(tag,
-                        blockPairMap.get(DaxCoreTags.ATR_READONLY).getBooleanValue()
+                        (boolean)blockPairMap.get(DaxCoreTags.ATR_READONLY).getValue() // BooleanValue()
                 );
             }
 

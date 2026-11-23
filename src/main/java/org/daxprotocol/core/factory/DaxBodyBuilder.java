@@ -113,7 +113,9 @@ public class DaxBodyBuilder {
 //             System.out.println("PRIMITIVE ");
 //         }
 
-        if (dataTypeService.isPrimitiveType(value.getClass())) {
+//        if (dataTypeService.isPrimitiveType(value.getClass())) {
+        if (value instanceof Enum<?> ||
+                dataTypeService.isPrimitiveType(value.getClass())) {
             body.putPair(blockIdx, valueCodec.encodeToPairs(tag, value));
             return;
         }

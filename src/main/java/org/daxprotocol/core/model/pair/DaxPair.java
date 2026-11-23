@@ -97,15 +97,15 @@ public abstract class DaxPair<T>{
     }
 //
 //
-    public Boolean getBooleanValue() {
-        if( value instanceof Character) {
-            return (Character) value == 'Y' ? Boolean.TRUE : Boolean.FALSE;
-        }
-        if( value instanceof String) {
-            return value.equals("Y") ? Boolean.TRUE : Boolean.FALSE;
-        }
-        return (Boolean) value;
-    }
+//    public Boolean getBooleanValue() {
+//        if( value instanceof Character) {
+//            return (Character) value == 'Y' ? Boolean.TRUE : Boolean.FALSE;
+//        }
+//        if( value instanceof String) {
+//            return value.equals("Y") ? Boolean.TRUE : Boolean.FALSE;
+//        }
+//        return (Boolean) value;
+//    }
 
     public DaxDataType getDataTypeValue() {
         return (DaxDataType) value;

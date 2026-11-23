@@ -58,7 +58,7 @@ public class DaxMessageConverterTest extends DaxNamespaceConfigFullDataModelTest
         Assertions.assertEquals(original.getAnyChar_5003(), rebuilt.getAnyChar_5003(), "anyChar_5003");
         Assertions.assertEquals(original.getAnyBoolean(), rebuilt.getAnyBoolean(), "anyBoolean");
         Assertions.assertEquals(original.getFixTestValue_FIX_51(), rebuilt.getFixTestValue_FIX_51(), "fixTestValue_FIX_51");
-     //   Assertions.assertEquals(original.getEnumValue_5032(), rebuilt.getEnumValue_5032(), "enumValue_5032");
+        Assertions.assertEquals(original.getEnumValue_5032(), rebuilt.getEnumValue_5032(), "enumValue_5032");
         Assertions.assertEquals(original.getAnyStr(), rebuilt.getAnyStr(), "anyStr");
 
         DaxSubEntity expected = original.getSubEntity_5077();

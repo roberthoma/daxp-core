@@ -39,7 +39,14 @@ public class DaxValueCodec {
     private  final Map<Class<?>, Function<String, Object>> CONVERTERS = new HashMap<>();
 
     DaxDataTypeCodec dataTypeCodec;
-
+    private static Boolean decodeBoolean(String value) {
+        return switch (value) {
+            case "Y" -> Boolean.TRUE;
+            case "N" -> Boolean.FALSE;
+            default -> throw new IllegalArgumentException(
+                    "Invalid DAXP boolean: " + value);
+        };
+    }
     public DaxValueCodec(DaxDataTypeCodec dataTypeCodec){
         this.dataTypeCodec = dataTypeCodec;
 
@@ -48,8 +55,8 @@ public class DaxValueCodec {
         CONVERTERS.put(Integer.class, Integer::valueOf);
         CONVERTERS.put(long.class, Long::parseLong);
         CONVERTERS.put(Long.class, Long::valueOf);
-        CONVERTERS.put(boolean.class, Boolean::parseBoolean);
-        CONVERTERS.put(Boolean.class, Boolean::valueOf);
+        CONVERTERS.put(boolean.class, DaxValueCodec::decodeBoolean);
+        CONVERTERS.put(Boolean.class, DaxValueCodec::decodeBoolean);
         CONVERTERS.put(double.class, Double::parseDouble);
         CONVERTERS.put(Double.class, Double::valueOf);
         CONVERTERS.put(Character.class, c->c.charAt(0));
@@ -90,7 +97,12 @@ public class DaxValueCodec {
                         "Unsupported collection type: " + obj.getClass().getName());
             }
 
-            case STRING ->  Set.of( new DaxPairString(tag, obj.toString()));
+            case STRING -> Set.of(new DaxPairString(
+                    tag,
+                    obj instanceof Enum<?> enumValue
+                            ? enumValue.name()
+                            : obj.toString()));
+
             case INTEGER -> Set.of(new DaxPairInteger(tag,(Integer) obj));
             case CHARACTER -> Set.of(new DaxPairCharacter(tag,(Character) obj));
             case BOOLEAN -> Set.of(new DaxPairBoolean(tag,(Boolean) obj));
