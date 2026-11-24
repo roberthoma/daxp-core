@@ -22,7 +22,7 @@ public class DaxCoreConstants {
      *                Main Separator
      */
     /**  Pair separator on the WIRE (binary, non-printable). */
-    public static char   DEFAULT_PAIR_SEPARATOR = 0x0001;
+    public static char   DEFAULT_PAIR_SEPARATOR = 0x0001;  //PS
 
     /*****************************************************
      *                Preamble Separators
@@ -38,6 +38,7 @@ public class DaxCoreConstants {
 
     public static final char DECIMAL_SEPARATOR    = '.';
 
+    public static final char ESCAPE_CHAR = '\\';
 
     /****************************************************
     *     BULK collection separators

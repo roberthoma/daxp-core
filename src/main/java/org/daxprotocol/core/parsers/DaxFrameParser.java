@@ -22,7 +22,6 @@ package org.daxprotocol.core.parsers;
 import org.daxprotocol.core.application.DaxCoreConstants;
 import org.daxprotocol.core.application.DaxCoreTags;
 import org.daxprotocol.core.codec.DaxPairCodec;
-import org.daxprotocol.core.codec.DaxPreambleCodec;
 import org.daxprotocol.core.namespace.DaxNamespaceConfig;
 import org.daxprotocol.core.exceptions.DaxFrameParserException;
 import org.daxprotocol.core.exceptions.DaxPreambleException;
@@ -42,6 +41,7 @@ import java.util.List;
 import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_ACTION;
 import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_REFERENCE;
 import static org.daxprotocol.core.application.DaxCoreConstants.OPERATOR_EQUAL;
+import static org.daxprotocol.core.application.DaxCoreConstants.ESCAPE_CHAR;
 
 public class DaxFrameParser {
     private static final Logger logger = LoggerFactory.getLogger(DaxFrameParser.class);
@@ -212,7 +212,7 @@ public class DaxFrameParser {
     private int indexOfUnescaped(
             String text, char separator, int fromIndex) {
 
-        if (separator == '\\') {
+        if (separator == ESCAPE_CHAR) {
             throw new IllegalArgumentException(
                     "Separator cannot equal the escape character");
         }
@@ -223,7 +223,7 @@ public class DaxFrameParser {
             int backslashes = 0;
 
             for (int i = position - 1;
-                    i >= 0 && text.charAt(i) == '\\';
+                    i >= 0 && text.charAt(i) == ESCAPE_CHAR;
                     i--) {
                 backslashes++;
             }
@@ -243,9 +243,9 @@ public class DaxFrameParser {
 
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
-            if (c == '\\' && i + 1 < value.length()) {
+            if (c == ESCAPE_CHAR && i + 1 < value.length()) {
                 char next = value.charAt(i + 1);
-                if (next == separator || next == '\\') {
+                if (next == separator || next == ESCAPE_CHAR) {
                     result.append(next);
                     i++;
                     continue;

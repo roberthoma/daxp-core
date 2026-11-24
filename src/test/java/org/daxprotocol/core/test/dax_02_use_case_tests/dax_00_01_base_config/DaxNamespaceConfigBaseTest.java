@@ -41,8 +41,6 @@ public class DaxNamespaceConfigBaseTest {
     protected static DaxDataTypeCodec dataTypeCodec;
     protected static DaxDataTypeService dataTypeService;
 
-
-
     @BeforeAll
     public static void initAll() {
         if (daxEngine == null) {
