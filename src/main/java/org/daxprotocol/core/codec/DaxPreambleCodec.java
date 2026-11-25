@@ -97,9 +97,10 @@ public class DaxPreambleCodec {
                 case MSG_QUANTITY   -> preamble.setMsgCnt(Integer.parseInt(valueStr));
                 case MSG_NAMESPACE  -> preamble.setNamespaceId(namespaceMapper.getReferenceId(valueStr));
 
-                case PAIR_SEPARATOR, GROUP_SEPARATOR, RECORD_SEPARATOR, UNIT_SEPARATOR
-                        -> preamble.setPairSeparator((char) Integer.decode(valueStr).intValue());
-
+                case PAIR_SEPARATOR    -> preamble.setPairSeparator((char) Integer.decode(valueStr).intValue());
+                case GROUP_SEPARATOR -> preamble.setGroupSeparator((char) Integer.decode(valueStr).intValue());
+                case RECORD_SEPARATOR -> preamble.setRecordSeparator((char) Integer.decode(valueStr).intValue());
+                case UNIT_SEPARATOR -> preamble.setUnitSeparator((char) Integer.decode(valueStr).intValue());
 
                 //case MSG_SENDER  -> preamble.setSe System.out.println("Sender: " + value);
             }

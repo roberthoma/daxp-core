@@ -105,9 +105,7 @@ public class DaxFrameParser {
         boolean isChecksumLast = true;
 
         int nextIdx;
-//        while ((nextIdx = frameStr.indexOf(pairSeparator, prevIdx)) != -1) {
-        while ((nextIdx = indexOfUnescaped(
-                        frameStr, pairSeparator, prevIdx)) !=-1)
+        while ((nextIdx = indexOfUnescaped( frameStr, pairSeparator, prevIdx)) !=-1)
         {
             // Locate Operator
             int operatorIdx = -1;
@@ -125,7 +123,7 @@ public class DaxFrameParser {
                 throw new DaxFrameParserException("Incompatible or missing operator in DAXP message tag!");
             }
 
-            String tagStr = frameStr.substring(prevIdx, operatorIdx).trim();
+            String tagStr   = frameStr.substring(prevIdx, operatorIdx).trim();
             String valueStr = frameStr.substring(operatorIdx + 1, nextIdx);
 
             try {

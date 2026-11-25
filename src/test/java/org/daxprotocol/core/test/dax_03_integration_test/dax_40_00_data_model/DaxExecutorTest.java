@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-@DisplayName("Testy Skanera I EKSEKUCJI :) Refleksji DAXP")
+@DisplayName("DAXP Scanner and Execution :) Reflection Tests")
 public class DaxExecutorTest extends DaxNamespaceConfigFullDataModelTest {
 
     @Test

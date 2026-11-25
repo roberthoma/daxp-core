@@ -30,6 +30,10 @@ import org.daxprotocol.core.encoding.DaxCharacterEncoding;
 public class DaxPreamble {
 
     private char pairSeparator = DaxCoreConstants.DEFAULT_PAIR_SEPARATOR;
+    private char groupSeparator = DaxCoreConstants.SEPARATOR_GROUP;
+    private char recordSeparator = DaxCoreConstants.SEPARATOR_RECORD;
+    private char unitSeparator = DaxCoreConstants.SEPARATOR_UNIT;
+
     private String protocolVersion =  DaxNamespaceConfig.PROTOCOL_VERSION;
     private int msgCnt = -1;  //quantity                 //CNT  Number of item messages following preamble. Default 1
     private DaxCharacterEncoding encoding;
@@ -45,6 +49,30 @@ public class DaxPreamble {
 
     public char getPairSeparator() {
         return pairSeparator;
+    }
+
+    public char getGroupSeparator() {
+        return groupSeparator;
+    }
+
+    public void setGroupSeparator(char groupSeparator) {
+        this.groupSeparator = groupSeparator;
+    }
+
+    public char getRecordSeparator() {
+        return recordSeparator;
+    }
+
+    public void setRecordSeparator(char recordSeparator) {
+        this.recordSeparator = recordSeparator;
+    }
+
+    public char getUnitSeparator() {
+        return unitSeparator;
+    }
+
+    public void setUnitSeparator(char unitSeparator) {
+        this.unitSeparator = unitSeparator;
     }
 
     public DaxPreamble(DaxCharacterEncoding encoding ){

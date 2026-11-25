@@ -238,23 +238,32 @@ public class DaxBodyBuilder {
 
         if (bulkCollectionStrategy.isBulkCompose(object)) {
            bulkCollectionToBlock(blockIdx, tag, body, object, ownerTag);
-  //          body.putPair(blockIdx, new DaxPair<>(COLLECTION_BULK_DATA,object));
-            return;
+           return;
         }
 
         if (dataTypeService.isMap(object)) {
-            processMapBlock(blockIdx, tag, body, (Map<?, ?>) object, reqTagSet, ownerTag);
+            ((Map<?, ?>) object).forEach((key, value) ->
+                            collectionElementToBlock(blockIdx, tag, body, key, value, reqTagSet, ownerTag) );
+            //processMapBlock(blockIdx, tag, body, (Map<?, ?>) object, reqTagSet, ownerTag);
         } else if (object instanceof Iterable<?> iterable) {
-            processIterableBlock(blockIdx, tag, body, iterable, reqTagSet, ownerTag);
+            iterable.forEach(objVal ->
+                            collectionElementToBlock(blockIdx, tag, body, null, objVal, reqTagSet, ownerTag)) ;
+            //processIterableBlock(blockIdx, tag, body, iterable, reqTagSet, ownerTag);
         } else if (object != null && object.getClass().isArray()) {
+            arrayToIterable(object).forEach(objVal ->
+                            collectionElementToBlock(blockIdx, tag, body, null, objVal, reqTagSet, ownerTag));
+            /*
             processIterableBlock(blockIdx, tag, body, arrayToIterable(object), reqTagSet, ownerTag);
+            */
+
         } else {
             logger.error("processCollection standard failure for object type: {}",
                     object != null ? object.getClass().getName() : "null");
-            throw new DaxException("DAXP-XX432", "Invalid collection payload provided to processCollection");
+            throw new DaxException("DAXP-00432", "Invalid collection payload provided to processCollection");
         }
     }
     ///----------------------------------------------------------------------------------------
+/*
     private void processMapBlock(int blockIdx, DaxTag tag, DaxBody body, Map<?, ?> map,
                                 Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
@@ -266,23 +275,23 @@ public class DaxBodyBuilder {
             );
         }
     }
-
-
+*/
     ///----------------------------------------------------------------------------------------
-
+/*
     private void processIterableBlock(int blockIdx, DaxTag tag, DaxBody body, Iterable<?> collection,
                                      Set<DaxTag> reqTagSet, DaxTag ownerTag)
     {
         if (bulkCollectionStrategy.isBulkCompose(collection)) {
             bulkCollectionToBlock(blockIdx, tag, body, bulkCollectionBuilder.iterableCollectionEncode(collection), ownerTag);
         } else {
+
             collection.forEach(objVal ->
                     collectionElementToBlock(blockIdx, tag, body, null, objVal, reqTagSet, ownerTag)
             );
         }
     }
+ */
     ///----------------------------------------------------------------------------------------
-
     private Iterable<?> arrayToIterable(Object array) {
         int length = java.lang.reflect.Array.getLength(array);
         List<Object> list = new ArrayList<>(length);

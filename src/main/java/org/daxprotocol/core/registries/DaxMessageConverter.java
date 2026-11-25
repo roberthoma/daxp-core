@@ -151,7 +151,7 @@ public class DaxMessageConverter {
                 f.set(obj, converted);
             }
         } catch (Exception e) {
-            throw new DaxException("DAXP-XXXX1 Failed to update object of type " + clazz.getSimpleName() + " from message", e);
+            throw new DaxException("DAXP-00231 Failed to update object of type " + clazz.getSimpleName() + " from message", e);
         }
     }
 

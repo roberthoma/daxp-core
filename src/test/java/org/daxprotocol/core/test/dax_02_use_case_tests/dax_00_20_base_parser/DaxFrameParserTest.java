@@ -128,9 +128,9 @@ public class DaxFrameParserTest extends DaxNamespaceConfigBaseTest {
 //        String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x7C}"+
 //                "$:1=CDD|$:5=INST|$:8=2000|2080=Big bike|2001=123|2002=Robert|$:9=165|";
 
-        char escapeChar = '\\';
+
         String msgStr = "DAXP{V=v0.1.0|EN=UTF-8|NS=CRM|PS=0x23}"+
-                "$:1=CDD#$:5=INST#$:8=2000#2080=Big"+escapeChar+"#bike#2001=123#2002=Robert#$:9=4#";
+                "$:1=CDD#$:5=INST#$:8=2000#2080=Big"+DaxCoreConstants.ESCAPE_CHAR+"#bike#2001=123#2002=Robert#$:9=4#";
 
         DaxFrame frame;
         try {
