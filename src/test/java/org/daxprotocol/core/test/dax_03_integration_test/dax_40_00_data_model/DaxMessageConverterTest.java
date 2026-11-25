@@ -2,6 +2,7 @@ package org.daxprotocol.core.test.dax_03_integration_test.dax_40_00_data_model;
 
 import org.daxprotocol.core.model.DaxFrame;
 import org.daxprotocol.core.model.DaxMessage;
+import org.daxprotocol.core.model.preamble.DaxPreamble;
 import org.daxprotocol.core.test.dax_00_service.DaxMessageDecorator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -95,7 +96,8 @@ public class DaxMessageConverterTest extends DaxNamespaceConfigFullDataModelTest
                 "DAXP{V=v0.1.0|EN=UTF-8|NS=XYZ|PS=0x7C}$:1="
                         + DaxAnySchemaRegister.MSG_BASE_ENTITY_Req + "|$:9=43|");
         DaxFrame response = new DaxFrame();
-        response.setPreamble(preambleFactory.createRespPreamble(request));
+        DaxPreamble respPreamble=preambleFactory.createRespPreamble(request);
+        response.setPreamble(respPreamble);
         response.addMessage(msgFactory.toDaxMessage(request.getFirstMessage(),
                 DaxAnySchemaRegister.MSG_BASE_ENTITY_DATA, original));
 
@@ -108,7 +110,7 @@ public class DaxMessageConverterTest extends DaxNamespaceConfigFullDataModelTest
             var pair = block.get(bulkTag);
             if (pair != null && pair.getValue() instanceof java.util.Map<?, ?> map) {
                 block.put(bulkTag, new org.daxprotocol.core.model.pair.DaxPairString(
-                        bulkTag, daxEngine.getBulkCollectionBuilder().mapEncode(map)));
+                        bulkTag, daxEngine.getBulkCollectionBuilder().mapEncode(map,respPreamble)));
             }
         }
         for (DaxMessage message : java.util.List.of(rawMessage, encodedMessage)) {

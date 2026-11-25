@@ -73,7 +73,7 @@ public class DaxPairCodec {
         }
 
         if(dataTypeService.isDaxpCollection(daxPair.getValue()) ){
-            value = bulkCollectionBuilder.collectionEncode(daxPair.getValue());
+            value = bulkCollectionBuilder.collectionEncode(daxPair.getValue(),preamble);
             encode(sb,daxPair.getTag(),value ,preamble , daxPair.getOperator());
             return;
         }

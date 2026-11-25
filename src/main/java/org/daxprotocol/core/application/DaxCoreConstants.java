@@ -50,6 +50,15 @@ public class DaxCoreConstants {
     public static char SEPARATOR_UNIT          = 0x001F; //	<US> Unit Separator
     public static char END_OF_MEDIUM           = 0x0019; //	<EM> End of medium
 
+    public static char DEBUG_SEPARATOR_FILE          = '{'; //	<FS> File Separator
+    public static char DEBUG_SEPARATOR_GROUP         = 0x001D; // <GS> Group Separator
+    public static char DEBUG_SEPARATOR_RECORD        = '#'; // <RS> Record Separator
+    public static char DEBUG_SEPARATOR_UNIT          = ';'; //	<US> Unit Separator
+    public static char DEBUG_END_OF_MEDIUM           = 0x0019; //	<EM> End of medium
+
+
+//    nitially allow a small set such as
+//    |, #, and ;. Exclude backslash, operators, tag syntax, braces, whitespace, and bulk control characters.
 
     /*****************************************************
      *     DAXP  mappers
